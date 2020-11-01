@@ -31,6 +31,16 @@ class View:
            border: 5px solid #3464AB;
            
         }
+        #NAVBUTTON_CURRENT {
+           border-radius: 35px;
+           border: 5px solid Red;
+           
+        }
+        #SEPARATOR {
+           
+           background-color: #1CEBD6;
+           
+        }
         
         #SWITCH {
            border-radius: 360px;
@@ -149,9 +159,9 @@ class View:
         #CAMERA_LABEL {
         	color: white;
         	font-weight: bold;
-        	border-bottom: 2px solid yellow;
-        	border-left: 2px solid yellow;
-        	border-right: 2px solid yellow;
+        	border-bottom: 2px solid #3464AB;
+        	border-left: 2px solid #3464AB;
+        	border-right: 2px solid #3464AB;
         }
         
         #IMAGE {
@@ -195,6 +205,12 @@ class View:
         #DATA_FRAME {
         border: 2px solid #3464AB;
         }
+        #DATA_FRAME_BG {
+        
+        background-image: url("../resources/t.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        }
         
         #frame1 {
            background: #141C31;
@@ -216,13 +232,14 @@ class View:
 		self.capture.set(4, 340)
 		#Glade file setup
 		gladeFile = "Main.glade"
-		builder = Gtk.Builder()
-		builder.add_from_file(gladeFile)
+		self.builder = Gtk.Builder()
+		self.builder.add_from_file(gladeFile)
 		#GUI Layout
-		self.window = builder.get_object("window1")
-		self.window2 = builder.get_object("window2")
-		self.image1 = builder.get_object("image1")
-		self.image2 = builder.get_object("image2")
+		self.window = self.builder.get_object("window1")
+		self.window2 = self.builder.get_object("window2")
+		self.window3 = self.builder.get_object("window3")
+		self.image1 = self.builder.get_object("image1")
+		self.image2 = self.builder.get_object("image2")
 
 
 

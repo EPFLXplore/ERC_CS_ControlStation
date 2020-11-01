@@ -144,7 +144,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <child>
-                                      <object class="GtkButton" id="HD">
+                                      <object class="GtkButton">
                                         <property name="label" translatable="yes">HD</property>
                                         <property name="name">NAVBUTTON</property>
                                         <property name="width_request">134</property>
@@ -194,7 +194,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <child>
-                                      <object class="GtkButton" id="SCIENCE">
+                                      <object class="GtkButton">
                                         <property name="label" translatable="yes">Science</property>
                                         <property name="name">NAVBUTTON</property>
                                         <property name="width_request">134</property>
@@ -865,586 +865,6 @@
       </object>
     </child>
   </object>
-  <object class="GtkWindow" id="prev2">
-    <property name="can_focus">False</property>
-    <child type="titlebar">
-      <placeholder/>
-    </child>
-    <child>
-      <object class="GtkBox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkGrid">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkImage">
-                <property name="name">IMAGE</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="pixbuf">../../../Downloads/epfl-xplore--dark-blue-(2).png</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="name">Window_Top</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">0</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkFrame">
-            <property name="name">frame1</property>
-            <property name="height_request">182</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hexpand">False</property>
-            <property name="vexpand">False</property>
-            <property name="label_xalign">0</property>
-            <property name="shadow_type">none</property>
-            <child>
-              <object class="GtkAlignment">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="left_padding">12</property>
-                <child>
-                  <object class="GtkLayout">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkGrid">
-                        <property name="width_request">150</property>
-                        <property name="height_request">118</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <child>
-                          <object class="GtkFrame">
-                            <property name="name">TAB_FRAME</property>
-                            <property name="width_request">175</property>
-                            <property name="height_request">40</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label_xalign">0</property>
-                            <property name="shadow_type">none</property>
-                            <child>
-                              <object class="GtkAlignment">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="left_padding">12</property>
-                                <child>
-                                  <object class="GtkLayout">
-                                    <property name="height_request">40</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <child>
-                                      <object class="GtkButton">
-                                        <property name="label" translatable="yes">Navigation</property>
-                                        <property name="name">NAVBUTTON</property>
-                                        <property name="width_request">134</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="receives_default">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="x">9</property>
-                                        <property name="y">1</property>
-                                      </packing>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child type="label">
-                              <object class="GtkLabel">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">0</property>
-                            <property name="top_attach">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkFrame">
-                            <property name="name">TAB_FRAME</property>
-                            <property name="width_request">175</property>
-                            <property name="height_request">40</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label_xalign">0</property>
-                            <property name="shadow_type">none</property>
-                            <child>
-                              <object class="GtkAlignment">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="left_padding">12</property>
-                                <child>
-                                  <object class="GtkLayout">
-                                    <property name="height_request">40</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <child>
-                                      <object class="GtkButton">
-                                        <property name="label" translatable="yes">HD</property>
-                                        <property name="name">NAVBUTTON</property>
-                                        <property name="width_request">134</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="receives_default">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="x">9</property>
-                                        <property name="y">1</property>
-                                      </packing>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child type="label">
-                              <object class="GtkLabel">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">0</property>
-                            <property name="top_attach">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkFrame">
-                            <property name="name">TAB_FRAME</property>
-                            <property name="width_request">175</property>
-                            <property name="height_request">40</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label_xalign">0</property>
-                            <property name="shadow_type">none</property>
-                            <child>
-                              <object class="GtkAlignment">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="left_padding">12</property>
-                                <child>
-                                  <object class="GtkLayout">
-                                    <property name="height_request">40</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <child>
-                                      <object class="GtkButton">
-                                        <property name="label" translatable="yes">Science</property>
-                                        <property name="name">NAVBUTTON</property>
-                                        <property name="width_request">134</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="receives_default">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="x">9</property>
-                                        <property name="y">1</property>
-                                      </packing>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child type="label">
-                              <object class="GtkLabel">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">0</property>
-                            <property name="top_attach">2</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkFrame">
-                            <property name="name">TAB_FRAME</property>
-                            <property name="width_request">175</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label_xalign">0</property>
-                            <property name="shadow_type">none</property>
-                            <child>
-                              <object class="GtkAlignment">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="left_padding">12</property>
-                                <child>
-                                  <object class="GtkImage">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="pixbuf">../../../Downloads/milorobot.png</property>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child type="label">
-                              <object class="GtkLabel">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">0</property>
-                            <property name="top_attach">3</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="y">525</property>
-                      </packing>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child type="label">
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel">
-            <property name="name">Tab-Label</property>
-            <property name="height_request">47</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">SCIENCE</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-  </object>
-  <object class="GtkWindow" id="prev3">
-    <property name="can_focus">False</property>
-    <child type="titlebar">
-      <placeholder/>
-    </child>
-    <child>
-      <object class="GtkBox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkGrid">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkImage">
-                <property name="name">IMAGE</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="pixbuf">../../../Downloads/epfl-xplore--dark-blue-(2).png</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="name">Window_Top</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">0</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkFrame">
-            <property name="name">frame1</property>
-            <property name="height_request">182</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hexpand">False</property>
-            <property name="vexpand">False</property>
-            <property name="label_xalign">0</property>
-            <property name="shadow_type">none</property>
-            <child>
-              <object class="GtkAlignment">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="left_padding">12</property>
-                <child>
-                  <object class="GtkLayout">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkGrid">
-                        <property name="width_request">150</property>
-                        <property name="height_request">118</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <child>
-                          <object class="GtkFrame">
-                            <property name="name">TAB_FRAME</property>
-                            <property name="width_request">175</property>
-                            <property name="height_request">40</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label_xalign">0</property>
-                            <property name="shadow_type">none</property>
-                            <child>
-                              <object class="GtkAlignment">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="left_padding">12</property>
-                                <child>
-                                  <object class="GtkLayout">
-                                    <property name="height_request">32</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <child>
-                                      <object class="GtkButton">
-                                        <property name="label" translatable="yes">Navigation</property>
-                                        <property name="name">NAVBUTTON</property>
-                                        <property name="width_request">134</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="receives_default">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="x">9</property>
-                                        <property name="y">1</property>
-                                      </packing>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child type="label">
-                              <object class="GtkLabel">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">0</property>
-                            <property name="top_attach">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkFrame">
-                            <property name="name">TAB_FRAME</property>
-                            <property name="width_request">175</property>
-                            <property name="height_request">40</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label_xalign">0</property>
-                            <property name="shadow_type">none</property>
-                            <child>
-                              <object class="GtkAlignment">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="left_padding">12</property>
-                                <child>
-                                  <object class="GtkLayout">
-                                    <property name="height_request">32</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <child>
-                                      <object class="GtkButton">
-                                        <property name="label" translatable="yes">HD</property>
-                                        <property name="name">NAVBUTTON</property>
-                                        <property name="width_request">134</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="receives_default">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="x">9</property>
-                                        <property name="y">1</property>
-                                      </packing>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child type="label">
-                              <object class="GtkLabel">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">0</property>
-                            <property name="top_attach">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkFrame">
-                            <property name="name">TAB_FRAME</property>
-                            <property name="width_request">175</property>
-                            <property name="height_request">40</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label_xalign">0</property>
-                            <property name="shadow_type">none</property>
-                            <child>
-                              <object class="GtkAlignment">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="left_padding">12</property>
-                                <child>
-                                  <object class="GtkLayout">
-                                    <property name="height_request">32</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <child>
-                                      <object class="GtkButton">
-                                        <property name="label" translatable="yes">Science</property>
-                                        <property name="name">NAVBUTTON</property>
-                                        <property name="width_request">134</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="receives_default">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="x">9</property>
-                                        <property name="y">1</property>
-                                      </packing>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child type="label">
-                              <object class="GtkLabel">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">0</property>
-                            <property name="top_attach">2</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkFrame">
-                            <property name="name">TAB_FRAME</property>
-                            <property name="width_request">175</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label_xalign">0</property>
-                            <property name="shadow_type">none</property>
-                            <child>
-                              <object class="GtkAlignment">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="left_padding">12</property>
-                                <child>
-                                  <object class="GtkImage">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="pixbuf">../../../Downloads/milorobot.png</property>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child type="label">
-                              <object class="GtkLabel">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="left_attach">0</property>
-                            <property name="top_attach">3</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="y">525</property>
-                      </packing>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child type="label">
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel">
-            <property name="name">Tab-Label</property>
-            <property name="height_request">47</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Handling Device</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-  </object>
   <object class="GtkApplicationWindow" id="window1">
     <property name="can_focus">False</property>
     <property name="show_menubar">False</property>
@@ -1466,7 +886,7 @@
                 <property name="name">IMAGE</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="pixbuf">../../../Downloads/epfl-xplore--dark-blue-(2).png</property>
+                <property name="pixbuf">../resources/epfl-xplore--dark-blue-(2).png</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -1539,9 +959,9 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <child>
-                                      <object class="GtkButton" id="NAVBUTTON1">
+                                      <object class="GtkButton">
                                         <property name="label" translatable="yes">Navigation</property>
-                                        <property name="name">NAVBUTTON</property>
+                                        <property name="name">NAVBUTTON_CURRENT</property>
                                         <property name="width_request">134</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
@@ -1588,13 +1008,14 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <child>
-                                      <object class="GtkButton" id="HD1">
+                                      <object class="GtkButton" id="HD">
                                         <property name="label" translatable="yes">HD</property>
                                         <property name="name">NAVBUTTON</property>
                                         <property name="width_request">134</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
+                                        <signal name="clicked" handler="on_HD_clicked" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="x">9</property>
@@ -1637,14 +1058,14 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <child>
-                                      <object class="GtkButton" id="SCIENCE1">
+                                      <object class="GtkButton" id="SCIENCE">
                                         <property name="label" translatable="yes">Science</property>
                                         <property name="name">NAVBUTTON</property>
                                         <property name="width_request">134</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
-                                        <signal name="clicked" handler="on_SCIENCE1_clicked" swapped="no"/>
+                                        <signal name="clicked" handler="on_SCIENCE_clicked" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="x">9</property>
@@ -1684,7 +1105,7 @@
                                   <object class="GtkImage">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="pixbuf">../../../Downloads/milorobot.png</property>
+                                    <property name="pixbuf">../resources/milorobot.png</property>
                                   </object>
                                 </child>
                               </object>
@@ -1710,7 +1131,7 @@
                       <object class="GtkFrame">
                         <property name="name">DATA_FRAME</property>
                         <property name="width_request">180</property>
-                        <property name="height_request">140</property>
+                        <property name="height_request">169</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label_xalign">0</property>
@@ -1790,7 +1211,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="y">370</property>
+                        <property name="y">350</property>
                       </packing>
                     </child>
                     <child>
@@ -1846,6 +1267,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
+                                    <property name="margin_left">66</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">2</property>
@@ -2002,15 +1424,12 @@
                           </object>
                         </child>
                       </object>
-                      <packing>
-                        <property name="y">4</property>
-                      </packing>
                     </child>
                     <child>
                       <object class="GtkFrame">
                         <property name="name">DATA_FRAME</property>
-                        <property name="width_request">280</property>
-                        <property name="height_request">850</property>
+                        <property name="width_request">340</property>
+                        <property name="height_request">865</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label_xalign">0</property>
@@ -2033,8 +1452,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="x">200</property>
-                        <property name="y">4</property>
+                        <property name="x">185</property>
                       </packing>
                     </child>
                     <child>
@@ -2229,7 +1647,7 @@
                         <property name="stock">gtk-missing-image</property>
                       </object>
                       <packing>
-                        <property name="x">1170</property>
+                        <property name="x">1180</property>
                       </packing>
                     </child>
                     <child>
@@ -2242,7 +1660,7 @@
                         <property name="label" translatable="yes">Front</property>
                       </object>
                       <packing>
-                        <property name="x">1170</property>
+                        <property name="x">1180</property>
                         <property name="y">358</property>
                       </packing>
                     </child>
@@ -2254,7 +1672,7 @@
                         <property name="stock">gtk-missing-image</property>
                       </object>
                       <packing>
-                        <property name="x">500</property>
+                        <property name="x">530</property>
                       </packing>
                     </child>
                     <child>
@@ -2267,7 +1685,7 @@
                         <property name="label" translatable="yes">Rear</property>
                       </object>
                       <packing>
-                        <property name="x">500</property>
+                        <property name="x">530</property>
                         <property name="y">358</property>
                       </packing>
                     </child>
@@ -2326,7 +1744,7 @@
                 <property name="name">IMAGE</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="pixbuf">../../../Downloads/epfl-xplore--dark-blue-(2).png</property>
+                <property name="pixbuf">../resources/epfl-xplore--dark-blue-(2).png</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -2393,17 +1811,18 @@
                                 <property name="left_padding">12</property>
                                 <child>
                                   <object class="GtkLayout">
-                                    <property name="height_request">32</property>
+                                    <property name="height_request">40</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <child>
-                                      <object class="GtkButton">
+                                      <object class="GtkButton" id="NAV">
                                         <property name="label" translatable="yes">Navigation</property>
                                         <property name="name">NAVBUTTON</property>
                                         <property name="width_request">134</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
+                                        <signal name="clicked" handler="on_NAV_clicked" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="x">9</property>
@@ -2442,7 +1861,7 @@
                                 <property name="left_padding">12</property>
                                 <child>
                                   <object class="GtkLayout">
-                                    <property name="height_request">32</property>
+                                    <property name="height_request">40</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <child>
@@ -2453,6 +1872,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
+                                        <signal name="clicked" handler="on_HD_clicked" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="x">9</property>
@@ -2491,13 +1911,13 @@
                                 <property name="left_padding">12</property>
                                 <child>
                                   <object class="GtkLayout">
-                                    <property name="height_request">32</property>
+                                    <property name="height_request">40</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <child>
                                       <object class="GtkButton">
                                         <property name="label" translatable="yes">Science</property>
-                                        <property name="name">NAVBUTTON</property>
+                                        <property name="name">NAVBUTTON_CURRENT</property>
                                         <property name="width_request">134</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
@@ -2541,7 +1961,7 @@
                                   <object class="GtkImage">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="pixbuf">../../../Downloads/milorobot.png</property>
+                                    <property name="pixbuf">../resources/milorobot.png</property>
                                   </object>
                                 </child>
                               </object>
@@ -2561,6 +1981,193 @@
                       </object>
                       <packing>
                         <property name="y">525</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">gtk-missing-image</property>
+                      </object>
+                      <packing>
+                        <property name="x">1170</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="name">CAMERA_LABEL</property>
+                        <property name="width_request">640</property>
+                        <property name="height_request">25</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Science Bay</property>
+                      </object>
+                      <packing>
+                        <property name="x">1170</property>
+                        <property name="y">358</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkFrame">
+                        <property name="name">DATA_FRAME</property>
+                        <property name="width_request">167</property>
+                        <property name="height_request">498</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label_xalign">0</property>
+                        <property name="shadow_type">none</property>
+                        <child>
+                          <object class="GtkAlignment">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="left_padding">12</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="y">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkFrame">
+                        <property name="name">DATA_FRAME_BG</property>
+                        <property name="width_request">939</property>
+                        <property name="height_request">847</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label_xalign">0</property>
+                        <property name="shadow_type">none</property>
+                        <child>
+                          <object class="GtkAlignment">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="left_padding">12</property>
+                            <child>
+                              <object class="GtkLayout">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <child>
+                                  <object class="GtkSeparator">
+                                    <property name="name">SEPARATOR</property>
+                                    <property name="width_request">1</property>
+                                    <property name="height_request">52</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">455</property>
+                                    <property name="y">14</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSeparator">
+                                    <property name="name">SEPARATOR</property>
+                                    <property name="width_request">1</property>
+                                    <property name="height_request">52</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">455</property>
+                                    <property name="y">742</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSeparator">
+                                    <property name="name">SEPARATOR</property>
+                                    <property name="width_request">279</property>
+                                    <property name="height_request">1</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">455</property>
+                                    <property name="y">15</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSeparator">
+                                    <property name="name">SEPARATOR</property>
+                                    <property name="width_request">279</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">176</property>
+                                    <property name="y">794</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSeparator">
+                                    <property name="name">SEPARATOR</property>
+                                    <property name="width_request">70</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">795</property>
+                                    <property name="y">405</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSeparator">
+                                    <property name="name">SEPARATOR</property>
+                                    <property name="width_request">70</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">53</property>
+                                    <property name="y">405</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSeparator">
+                                    <property name="name">SEPARATOR</property>
+                                    <property name="height_request">18</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">53</property>
+                                    <property name="y">387</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSeparator">
+                                    <property name="height_request">18</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">865</property>
+                                    <property name="y">405</property>
+                                  </packing>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="x">192</property>
                       </packing>
                     </child>
                   </object>
@@ -2616,7 +2223,7 @@
                 <property name="name">IMAGE</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="pixbuf">../../../Downloads/epfl-xplore--dark-blue-(2).png</property>
+                <property name="pixbuf">../resources/epfl-xplore--dark-blue-(2).png</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -2683,7 +2290,7 @@
                                 <property name="left_padding">12</property>
                                 <child>
                                   <object class="GtkLayout">
-                                    <property name="height_request">32</property>
+                                    <property name="height_request">40</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <child>
@@ -2694,6 +2301,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
+                                        <signal name="clicked" handler="on_NAV_clicked" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="x">9</property>
@@ -2732,13 +2340,13 @@
                                 <property name="left_padding">12</property>
                                 <child>
                                   <object class="GtkLayout">
-                                    <property name="height_request">32</property>
+                                    <property name="height_request">40</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <child>
                                       <object class="GtkButton">
                                         <property name="label" translatable="yes">HD</property>
-                                        <property name="name">NAVBUTTON</property>
+                                        <property name="name">NAVBUTTON_CURRENT</property>
                                         <property name="width_request">134</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
@@ -2781,7 +2389,7 @@
                                 <property name="left_padding">12</property>
                                 <child>
                                   <object class="GtkLayout">
-                                    <property name="height_request">32</property>
+                                    <property name="height_request">40</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <child>
@@ -2792,6 +2400,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
+                                        <signal name="clicked" handler="on_SCIENCE_clicked" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="x">9</property>
@@ -2831,7 +2440,7 @@
                                   <object class="GtkImage">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="pixbuf">../../../Downloads/milorobot.png</property>
+                                    <property name="pixbuf">../resources/milorobot.png</property>
                                   </object>
                                 </child>
                               </object>
