@@ -1,5 +1,6 @@
 import gi
 import cv2
+import cairo
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk, GLib, GdkPixbuf
@@ -76,11 +77,14 @@ class View:
            background-color: #1CEBD6;
 
         }
+		#SEPARATOR_2{
+			background-color: #8e9ea3
+		}
 
         #SWITCH {
            border-radius: 360px;
-           border: 5px solid red;
-           background: #FD8080;
+           border: 5px solid #49bf28;
+           background: #83d16d;
 
         }
 
@@ -123,10 +127,10 @@ class View:
 
         }
         #SWITCH:hover{
-          background : #FFA9A9;
+          background : #b8e3ac;
         }
         #SWITCH:active{
-          background : #FD8080;
+          background : #83d16d;
         }
 
         #Start{
@@ -219,14 +223,30 @@ class View:
            font-weight: bold;
            font-size: 38px;
            border: 10px solid red;
+		   border-radius: 20px
         }
+		#HD_LABEL{
+			color: white;
+
+			font-size: 12px;
+			border: 3px solid white;
+			border-radius: 20px;
+		}
          #MANUAL {
 
            color: Green;
            font-weight: bold;
            font-size: 38px;
            border: 10px solid Green;
+		   border-radius: 20px;
         }
+		#SET{
+			color: Green;
+			font-weight: bold;
+			font-size: 18px;
+			border: 5px solid Green;
+			border-radius: 360px;
+		}
 
         #Window_Top {
            background: #141C31;
@@ -238,15 +258,24 @@ class View:
         }
 
         #DATA_FRAME {
-        border: 2px solid #3464AB;
+        	border: 2px solid #3464AB;
         }
         #DATA_FRAME_2 {
-        border: 2px solid #00FFD7;
-        border-radius : 10px;
+        	border: 2px solid #00FFD7;
+        	border-radius : 10px;
         }
 		#DATA_FRAME_3{
-		border: 5px dashed #00FFD7;
-        border-radius : 360px;
+			border: 5px dashed #00FFD7;
+        	border-radius : 360px;
+		}
+		#DATA_FRAME_4{
+			border: 5px solid yellow;
+        	background: #6C83B8;
+		}
+		#DATA_FRAME_6{
+			background-image: url("../resources/HD2.png");
+			background-repeat: no-repeat;
+			background-position: bottom;
 		}
 		#TUBE_BUTTON{
 			border-radius: 360px;
@@ -256,9 +285,9 @@ class View:
 		}
         #DATA_FRAME_BG {
 
-        background-image: url("../resources/t.png");
-        background-repeat: no-repeat;
-        background-position: center;
+	        background-image: url("../resources/t.png");
+	        background-repeat: no-repeat;
+	        background-position: center;
         }
 
         #frame1 {
@@ -274,7 +303,23 @@ class View:
            font-weight: bold;
            font-size: 15px;
         }
+		#DATA_LABEL_SM{
+			color: #e8da1a;
+            font-weight: bold;
+            font-size: 15px;
+		}
+		#DATA_LABEL_MD{
+			color: #e8da1a;
+            font-weight: bold;
+            font-size: 25px;
+		}
+		#DATA_COMPASS{
+			background-image: url("../resources/compass.png");
+	        background-repeat: no-repeat;
+	        background-position: center;
+		}
         """
+
 		provider.load_from_data(css)
 		self.capture = cv2.VideoCapture(0)
 		self.capture.set(3, 500)
@@ -286,11 +331,12 @@ class View:
 		#GUI Layout
 		self.window = self.builder.get_object("window1")
 		self.window2 = self.builder.get_object("window2")
-		self.window3 = self.builder.get_object("window3")
+		
 		self.image1 = self.builder.get_object("image1")
 		self.image2 = self.builder.get_object("image2")
 
-
+		self.battery = self.builder.get_object("battery")
+		#self.surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, self.builder.get_object("compass").get_allocated_width(), self.builder.get_object("compass").get_allocated_height())
 
 	def show_frame(self, *args):
 
