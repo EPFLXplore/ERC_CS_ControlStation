@@ -225,6 +225,14 @@ class View:
            border: 10px solid red;
 		   border-radius: 20px
         }
+		#AUTO_2 {
+
+           color: Red;
+           font-weight: bold;
+           font-size: 18px;
+           border: 10px solid red;
+		   border-radius: 20px
+        }
 		#HD_LABEL{
 			color: white;
 
@@ -237,6 +245,14 @@ class View:
            color: Green;
            font-weight: bold;
            font-size: 38px;
+           border: 10px solid Green;
+		   border-radius: 20px;
+        }
+         #MANUAL_2 {
+
+           color: Green;
+           font-weight: bold;
+           font-size: 18px;
            border: 10px solid Green;
 		   border-radius: 20px;
         }
@@ -331,7 +347,7 @@ class View:
 		#GUI Layout
 		self.window = self.builder.get_object("window1")
 		self.window2 = self.builder.get_object("window2")
-		
+
 		self.image1 = self.builder.get_object("image1")
 		self.image2 = self.builder.get_object("image2")
 
