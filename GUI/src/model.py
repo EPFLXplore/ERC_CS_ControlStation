@@ -3,8 +3,13 @@
 
 	Model Class (MVC)
 '''
+
 class Model:
 
-	#Constructor
+	'''
+	Constructor
+	'''
+
 	def __init__(self):
+
 		pass

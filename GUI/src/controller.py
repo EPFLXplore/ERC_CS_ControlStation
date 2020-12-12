@@ -3,6 +3,7 @@ import cv2
 import sys
 import cairo
 
+import ropsy
 from model import Model
 from view import View
 
@@ -22,6 +23,7 @@ class App(Gtk.Application):
     Gtk.Application.__init__(self)
     self.model = Model()
     self.view = View(self)
+    rospy.init_node("Control_Station")
 
 
   def do_startup(self):
@@ -49,13 +51,13 @@ class Controller():
 
     def __init__(self):
       self.rotation = 0.0
-      
-      
+
+
       #Initialisation gamepad et thread
       self.gamepad = Gamepad()
       self.gamepad.cmode('NAV')
       if self.gamepad.control != None:
-        self.t_game = Thread(target = self.gamepad.run, daemon =True) 
+        self.t_game = Thread(target = self.gamepad.run, daemon =True)
         self.t_game.start()
 
     def on_NAV_clicked(self, *args):
@@ -90,11 +92,11 @@ class Controller():
          ctx.rotate(self.rotation)
          ctx.rel_line_to(0, -65)
          ctx.stroke()
-         
+
     def connect_gamepad(self):
       self.gamepad.connect()
       if self.gamepad.control != None:
-        self.t_game = Thread(target = self.gamepad.run, daemon =True) 
+        self.t_game = Thread(target = self.gamepad.run, daemon =True)
         self.t_game.start()
 
 class Gamepad(Thread):
@@ -110,10 +112,10 @@ class Gamepad(Thread):
     else:
       sys.stderr.write('Failed to find the haptic motor.\n')
       self.control = None
-    
+
     # ~ self.nav_pub = rospy.Publisher('NAV_AXE', Nav, queue_size=10)
     # ~ rospy.init_node('control_station', anonymous=True)
-    
+
     self.axe_HD_old=[0, 0, 0, 0, 0, 0, 0]
     self.axe_NAV_old=[0., 0.]
     self.axe_HD_new=[0, 0, 0, 0, 0, 0, 0]
@@ -132,7 +134,7 @@ class Gamepad(Thread):
     else:
       sys.stderr.write('Failed to find the haptic motor.\n')
       self.control = None
-    
+
   def run (self):
     dec = Decode_manette()
     for event in self.control.read_loop():
@@ -149,8 +151,8 @@ class Gamepad(Thread):
                 app.controller.on_SCIENCE_clicked()
               elif self.mode == 'SC':
                 app.controller.on_NAV_clicked()
-                
-                
+
+
             if event.code==dec.optBtn:
               if self.mode == 'NAV':
                 if self.modeNAV == 'MAN':
@@ -166,8 +168,8 @@ class Gamepad(Thread):
                 else:
                   print('MAN')
                   self.modeHD='MAN'
-            
-                
+
+
         if (self.mode)== 'NAV': #PARTIE NAVIGATION--------------------
           if event.type == ecodes.EV_KEY:
             if event.value==1:
@@ -182,15 +184,15 @@ class Gamepad(Thread):
                 self.axe_NAV_new[0] = -absevent.event.value
               elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_X":
                 self.axe_NAV_new[1] = absevent.event.value-127 #[0 255] -> [-127 127]
-              
+
               #Envoi rotation et vitesse seulement quand il y a eu un changement
               if compare_list(self.axe_NAV_old,self.axe_NAV_new, 5)!=1:
                 print("envoi",self.axe_NAV_new ,' ',self.axe_NAV_old)
                 self.axe_NAV_old[0] = self.axe_NAV_new[0]
                 self.axe_NAV_old[1] = self.axe_NAV_new[1]
                 # ~ self.nav_pub.publish(self.axe_NAV_old)
-              
-          
+
+
         elif (self.mode)== 'HD': #PARTIE HANDLING DEVICE
           if self.modeHD=='MAN':
             # ~ print('HD')
@@ -234,14 +236,14 @@ class Gamepad(Thread):
                 self.axe_HD_new[2] = eval_axe(absevent.event.value)
               elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Y":#Axe4
                 self.axe_HD_new[3] = eval_axe(absevent.event.value)
-                  
+
               #envoi valeurs axe si et seulement si il y a eu un changement
               if compare_list(self.axe_HD_old,self.axe_HD_new, 0)!=1:
                   print("envoi HD",self.axe_HD_new ,' ',self.axe_HD_old)
                   for k in range(len(self.axe_HD_new)):
                     self.axe_HD_old[k] = self.axe_HD_new[k]
-                    
-                    
+
+
           elif self.modeHD=='AUTO':#Direct Kinematics
             if event.type == ecodes.EV_KEY:
               if event.value==1:
@@ -257,7 +259,7 @@ class Gamepad(Thread):
                   self.axe_HDA_new[3]=1
                 elif event.code==dec.r1Btn : #Touche r1 rotationX
                   self.axe_HDA_new[3]=-1
-                
+
               elif event.value==0:
                 if event.code==dec.l2Btn: #Touche l2 axe 6 relacher
                   self.axe_HDA_new[2]=0
@@ -271,7 +273,7 @@ class Gamepad(Thread):
                   self.axe_HDA_new[6]=0
                 elif event.code==dec.tBtn : #Touche r1 pince
                   self.axe_HDA_new[6]=0
-                  
+
             elif event.type == ecodes.EV_ABS:
               absevent = categorize(event)
               if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RY":#Axe Y
@@ -282,8 +284,8 @@ class Gamepad(Thread):
                 self.axe_HDA_new[5] = absevent.event.value
               elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_HAT0Y":#RotY
                 self.axe_HDA_new[4] = absevent.event.value
-                
-                
+
+
             if compare_list(self.axe_HDA_old,self.axe_HDA_new, 0)!=1:
               print("envoi HD",self.axe_HDA_new ,' ',self.axe_HDA_old)
               for k in range(len(self.axe_HDA_new)):
@@ -295,11 +297,11 @@ class Gamepad(Thread):
             if event.value==1:
               if event.code==304: #Touche A
                   print('SC')
-      
 
-  def cmode(self, mode): 
+
+  def cmode(self, mode):
     self.mode = mode
-    
+
 def eval_axe(axe_value): #Donne le sens de rotation bras robot
   value=0
   if axe_value <= 10:
@@ -312,7 +314,7 @@ def eval_axe(axe_value): #Donne le sens de rotation bras robot
     return value
 
 def compare_list(list1, list2, tolerance):
-  #compare deux liste avec une certaine tolerance 
+  #compare deux liste avec une certaine tolerance
   for k in range(len(list1)):
     if (list1[k]+tolerance >= list2[k] and list1[k]-tolerance <= list2[k])!=1:
       return 0
