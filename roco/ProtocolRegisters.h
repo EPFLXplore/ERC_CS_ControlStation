@@ -31,6 +31,8 @@ REGISTER(ResponsePacket)
 REGISTER(ProgressPacket)
 REGISTER(ErrorPacket)
 
+REGISTER(DataPacket)
+
 REGISTER(Avionics_BaroTempPacket)
 REGISTER(Avionics_AccelMagPacket)
 REGISTER(Handling_GripperPacket)

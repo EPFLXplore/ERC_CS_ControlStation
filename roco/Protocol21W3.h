@@ -75,5 +75,9 @@ struct Science_MeasurePacket {
   float mass;
 } __attribute__((packed));
 
+struct DataPacket {
+	uint32_t data;
+} __attribute__((packed));
+
 
 #endif /* PROTOCOL_PROTOCOL20W18_H_ */
