@@ -16,7 +16,7 @@ int main() {
 	std::cout << "Starting send test..." << std::endl;
 
 
-	NetworkServerIO* server_io = new NetworkServerIO(PORT_B);
+	NetworkServerIO* server_io = new NetworkServerIO(PORT_A);
 
 	// server_io->receive(&handle_input);
 
