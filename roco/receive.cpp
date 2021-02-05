@@ -11,11 +11,13 @@
 #include <unistd.h>
 
 #include "RoCo.h"
+#include <boost/bind.hpp>
 
 std::string ss;
 
-void handle_packet(uint8_t sender_id, PingPacket* packet) {
+void handle_packet(uint8_t sender_id, PingPacket* packet, int var) {
   ss = "Ping C2C: " + std::to_string((PingPacket().time - packet->time).count()) + "ns";
+  std::cout<<var<<std::endl;
   //ss << "Ping C2C: " << (PingPacket().time - packet->time).count() << "ns" << std::endl;
 }
 
@@ -36,9 +38,10 @@ int main() {
 
 
 	NetworkBus* client_bus = new NetworkBus(client_io);
+  int num = 12;
 
   while(true){
-    client_bus->handle(handle_packet);
+    client_bus->handle(boost::bind(handle_packet, _1, _2, num));
     std::cout<<ss<<std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(1));
   }
