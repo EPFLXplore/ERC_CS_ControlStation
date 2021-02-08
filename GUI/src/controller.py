@@ -1,25 +1,41 @@
+'''
+Controller.py
+
+@Author: Emile Janho Dit Hreich
+         Gergoire Lacroix
+'''
+
+
 import gi
 import cv2
 import sys
 import cairo
-
-import ropsy
+import rospy
 from model import Model
 from view import View
-
 #gamepad
 from threading import Thread
 import evdev
 from evdev import*
-
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk, GLib, GdkPixbuf
 
 
+'''
+Class App
+
+The main Application
+
+Attributes:
+    -model: Model class
+    -view: view class
+    -controller: controller class
+
+    MVC Template
+'''
 class App(Gtk.Application):
 
   def __init__(self):
-
     Gtk.Application.__init__(self)
     self.model = Model()
     self.view = View(self)
@@ -28,14 +44,11 @@ class App(Gtk.Application):
 
   def do_startup(self):
     Gtk.Application.do_startup(self)
-
     self.controller = Controller()
-
     self.view.window.connect("delete-event", self.on_quit)
     self.view.window2.connect("delete-event", self.on_quit)
     self.view.builder.connect_signals(self.controller)
     GLib.idle_add(self.view.show_frame)
-
 
   def do_activate(self):
     self.view.window.set_application(app)
@@ -43,10 +56,19 @@ class App(Gtk.Application):
     self.view.window.present()
 
   def on_quit(self, action, param):
-
     self.quit()
 
 
+'''
+Class Controller
+
+The class responsible for the input/output logic
+
+Attributes:
+    -Gamepad gamepad ->
+    -Thread t-game ->
+
+'''
 class Controller():
 
     def __init__(self):
@@ -61,19 +83,16 @@ class Controller():
         self.t_game.start()
 
     def on_NAV_clicked(self, *args):
-
       app.view.window.present()
       App.get_active_window(app).hide()
       self.gamepad.cmode('NAV')
 
     def on_HD_clicked(self, *args):
-
       # ~ app.view.window3.present()
       # ~ App.get_active_window(app).hide()
       self.gamepad.cmode('HD')
 
     def on_SCIENCE_clicked(self, *args):
-
       app.view.window2.present()
       App.get_active_window(app).hide()
       self.gamepad.cmode('SC')
@@ -85,7 +104,6 @@ class Controller():
 
 
     def draw_compass(self, widget, ctx):
-
          ctx.set_line_width(3)
          ctx.set_source_rgb(0.0,1.0,0.1)
          ctx.move_to(90, 78)
@@ -99,8 +117,16 @@ class Controller():
         self.t_game = Thread(target = self.gamepad.run, daemon =True)
         self.t_game.start()
 
-class Gamepad(Thread):
 
+'''
+Class Gamepad
+
+
+Attributes:
+    -
+
+'''
+class Gamepad(Thread):
 
   def __init__(self):
   # ~ connect gamepad
@@ -337,6 +363,8 @@ class Decode_manette():
     self.r3Btn = 318
 
 
-
+'''
+Main
+'''
 app = App()
 app.run(sys.argv)
