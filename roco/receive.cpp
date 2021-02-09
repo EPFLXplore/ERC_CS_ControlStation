@@ -16,9 +16,9 @@
 
 std::string ss;
 
-void handle_packet(uint8_t sender_id, PingPacket* packet, int var) {
+void handle_packet(uint8_t sender_id, PingPacket* packet, void* var) {
   ss = "Ping C2C: " + std::to_string((PingPacket().time - packet->time).count()) + "ns";
-  std::cout<<var<<std::endl;
+  std::cout<<*(int *)var<<std::endl;
   //ss << "Ping C2C: " << (PingPacket().time - packet->time).count() << "ns" << std::endl;
 }
 
@@ -40,10 +40,11 @@ int main() {
 
 	NetworkBus* client_bus = new NetworkBus(client_io);
   int num = 12;
+  int* pnum = &num;
+  void* pvnum = (void*) pnum;
 
   while(true){
-    std::function<void(uint8_t, PingPacket*)> f = boost::bind(handle_packet, _1, _2, num);
-    client_bus->handle(f);
+    client_bus->handle(handle_packet, pvnum);
     std::cout<<ss<<std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(1));
   }
