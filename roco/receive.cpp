@@ -12,6 +12,7 @@
 
 #include "RoCo.h"
 #include <boost/bind.hpp>
+#include <functional>
 
 std::string ss;
 
@@ -41,7 +42,8 @@ int main() {
   int num = 12;
 
   while(true){
-    client_bus->handle(boost::bind(handle_packet, _1, _2, num));
+    std::function<void(uint8_t, PingPacket*)> f = boost::bind(handle_packet, _1, _2, num);
+    client_bus->handle(f);
     std::cout<<ss<<std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(1));
   }
