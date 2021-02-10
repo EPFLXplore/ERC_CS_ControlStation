@@ -64,7 +64,7 @@ int main(int argc, char **argv)
 	std::cout << "Starting main test..." << std::endl;
 
 
-  // create RoCo client, ip address of server, port of server 
+  // create RoCo client, ip address of server, port of server
 	NetworkClientIO* client_io_2 = new NetworkClientIO("127.0.0.1", PORT_B);
 
 	// client_io_2->receive(&handle_input);

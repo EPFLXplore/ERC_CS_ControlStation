@@ -52,6 +52,7 @@ ErrorPacket
 #include <boost/bind.hpp>
 
 #include "RoCo.h"
+#include "handlers.h"
 
 // Simulates the control station - avionics ROS-RoCo interface, receives message
 // from sender.cpp (RoCo) and forwards it to listener.py using ROS
@@ -82,18 +83,18 @@ int main(int argc, char **argv)
 
   ros::Publisher sc_measure_pub = n.advertise<std_msgs::Float32>("measures", 1000);
 
-  ros::Publisher ping_pub = n.advertise<std_msgs::Float32>("ping", 1000); // use time msgeg
-  ros::Publisher request_pub = n.advertise<std_msgs::UInt32MultiArray>("request", 1000);
-  ros::Publisher response_pub = n.advertise<std_msgs::UInt32MultiArray>("response", 1000);
-  ros::Publisher progress_pub = n.advertise<std_msgs::UInt32MultiArray>("progress", 1000);
-  ros::Publisher error_pub = n.advertise<std_msgs::UInt8>("error", 1000);
+  // ros::Publisher ping_pub = n.advertise<std_msgs::Float32>("ping", 1000); // use time msgeg
+  // ros::Publisher request_pub = n.advertise<std_msgs::UInt32MultiArray>("request", 1000);
+  // ros::Publisher response_pub = n.advertise<std_msgs::UInt32MultiArray>("response", 1000);
+  // ros::Publisher progress_pub = n.advertise<std_msgs::UInt32MultiArray>("progress", 1000);
+  // ros::Publisher error_pub = n.advertise<std_msgs::UInt8>("error", 1000);
 
   // the only one that might need a subscribe might be for the request
 
 
 
   // 1 Hz refresh rate of the node
-  ros::Rate loop_rate(100);
+  ros::Rate loop_rate(10);
 
 
 	std::cout << "Starting main test..." << std::endl;
@@ -121,22 +122,22 @@ int main(int argc, char **argv)
 
     // have to use boost:bind for the handle functions so that each handler
     // uses the right publisher
-    client_2_bus->handle(boost::bind(handle_barotemp, _1, _2, av_barotemp_pub));
-    client_2_bus->handle(boost::bind(handle_accelmag, _1, _2, av_accelmag_pub));
+    client_2_bus->handle(handle_barotemp,  (void*)&av_barotemp_pub);
+    client_2_bus->handle(handle_accelmag,  (void*)&av_accelmag_pub);
 
-    client_2_bus->handle(boost::bind(handle_gripper, _1, _2, ha_gripper_pub));
+    client_2_bus->handle(handle_gripper,  (void*)&ha_gripper_pub);
 
-    client_2_bus->handle(boost::bind(handle_system, _1, _2, po_system_pub));
-    client_2_bus->handle(boost::bind(handle_voltages, _1, _2, po_voltage_pub));
-    client_2_bus->handle(boost::bind(handle_currents, _1, _2, po_current_pub));
+    client_2_bus->handle(handle_system,  (void*)&po_system_pub);
+    client_2_bus->handle(handle_voltages,  (void*)&po_voltage_pub);
+    client_2_bus->handle(handle_currents,  (void*)&po_current_pub);
 
-    client_2_bus->handle(boost::bind(handle_measures, _1, _2, sc_measure_pub));
+    client_2_bus->handle(handle_measures,  (void*)&sc_measure_pub);
 
-    client_2_bus->handle(boost::bind(handle_ping, _1, _2, ping_pub));
-    client_2_bus->handle(boost::bind(handle_request, _1, _2, request_pub));
-    client_2_bus->handle(boost::bind(handle_response, _1, _2, response_pub));
-    client_2_bus->handle(boost::bind(handle_progress, _1, _2, progress_pub));
-    client_2_bus->handle(boost::bind(handle_error, _1, _2, error_pub));
+    // client_2_bus->handle(handle_ping,  (void*)&ping_pub);
+    // client_2_bus->handle(handle_request,  (void*)&request_pub);
+    // client_2_bus->handle(handle_response,  (void*)&response_pub);
+    // client_2_bus->handle(handle_progress,  (void*)&progress_pub);
+    // client_2_bus->handle(handle_error,  (void*)&error_pub);
 
     // used to handle ros communication events, i.e. callback to function
     ros::spinOnce();

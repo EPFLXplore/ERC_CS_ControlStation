@@ -26,7 +26,7 @@ int main() {
 	std::cout << "Starting receive test..." << std::endl;
 
 
-	NetworkClientIO* client_io = new NetworkClientIO("127.0.0.1", PORT_B);
+	NetworkClientIO* client_io = new NetworkClientIO("192.168.1.1", PORT_A);
 
 	// server_io->receive(&handle_input);
 
