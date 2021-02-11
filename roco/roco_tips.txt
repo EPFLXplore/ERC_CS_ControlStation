@@ -1,0 +1,26 @@
+-----To add a new packet-----
+
+1) Write the packet in the protocol file  (e.g. Protocol21W3.h), i.e. create
+a structure and fill it with the needed variables.
+Example:
+
+struct DataPacket {
+	uint32_t data;
+} __attribute__((packed));
+
+Don't forget to add the suffix "__attribute__((packed))".
+
+2) Define the packet in the class initialization in the NetworkBus.cpp file
+and don't forget to add its id (must be different than the ids of the other
+packets and smaller than 64).
+Example:
+
+define<DataPacket>(32);
+
+3) Register the packet by adding it to the file ProtocolRegisters.h in the
+correctly defined protocol (between #ifdef PROTOCOL_21W3 and #endif).
+Example:
+
+REGISTER(DataPacket)
+
+4) All done ! Enjoy using your newly designed packet.
