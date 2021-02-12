@@ -11,7 +11,9 @@ import cv2
 import sys
 import cairo
 import rospy
+import time
 from model import Model
+from rospy.impl.tcpros_base import DEFAULT_BUFF_SIZE
 from view import View
 #gamepad
 from threading import Thread
@@ -37,6 +39,7 @@ Attributes:
 class App(Gtk.Application):
 
   def __init__(self):
+    
     Gtk.Application.__init__(self)
     self.model = Model()
     self.view = View(self)
@@ -44,6 +47,7 @@ class App(Gtk.Application):
     ###initialize the ROS node from the Control Station
     rospy.init_node('control_station', anonymous=True)   
 
+    self.stopwatch = Stopwatch()
 
   def do_startup(self):
     Gtk.Application.do_startup(self)
@@ -53,8 +57,11 @@ class App(Gtk.Application):
     self.view.builder.connect_signals(self.controller)
     GLib.idle_add(self.view.show_frame)
 
+    GLib.idle_add(self.view.show_time)
+    self.stopwatch.start()
+
 ###ROS test#####################################################
-    rospy.Subscriber('barotemp', Float32MultiArray, self.model.callback_barotemp)
+    rospy.Subscriber('barotemp', Float32MultiArray, Controller.callback_barotemp)
     rospy.Subscriber('accelmag', Float32MultiArray, self.model.callback_accelmag)
     rospy.Subscriber('gripper', Float32, self.model.callback_gripper)
     rospy.Subscriber('system', Float32MultiArray, self.model.callback_system)
@@ -68,8 +75,23 @@ class App(Gtk.Application):
     self.view.NAV.present()
 
   def on_quit(self, action, param):
+    Model.run_thread = False
+    self.stopwatch.join()
     self.quit()
 
+
+class Stopwatch(Thread):
+
+  def __init__(self):
+    Thread.__init__(self)
+    self.hours = 0
+    self.minutes = 0
+    self.seconds = 0
+  
+  def run(self):
+    app.model.get_time()
+    
+  
 
 '''
 Class Controller
@@ -112,7 +134,7 @@ class Controller():
     def on_SWITCH_clicked(self, *args):
       self.rotation += 0.05
       app.view.builder.get_object("compass").queue_draw()
-      app.view.battery.set_text("1.00")
+      print(app.model.time_array[2])
 
 
     def draw_compass(self, widget, ctx):
@@ -128,6 +150,40 @@ class Controller():
       if self.gamepad.control != None:
         self.t_game = Thread(target = self.gamepad.run, daemon =True)
         self.t_game.start()
+
+    def on_avionics_details_clicked(self, *args):
+      app.view.details_pop.popup()
+
+###ROS CallBacks
+    def callback_barotemp(msg):
+
+      print("Pressure: " + str(msg.data[0]), "\n", \
+            "Temperature: ", msg.data[1])
+      barotemp = msg.data[0]
+      app.view.battery.set_text(str(barotemp))
+
+
+    def callback_accelmag(msg):
+        print("acceleration: ", msg.data[0:3], "\n", \
+              "angular: ", msg.data[3:6], "\n", \
+              "magneto: ", msg.data[6:], "\n")
+
+    def callback_gripper(msg):
+        print("Gripper voltage: ", msg.data, "\n")
+
+    def callback_system(msg):
+        print("Battery: ", msg.data[0], "\n", \
+              "State: ", msg.data[1])
+
+    def callback_voltages(msg):
+        print("voltages: ", msg.data[0], "\n")
+
+    def callback_currents(msg):
+        print("currents: ", msg.data[0], "\n")
+
+    def callback_measures(msg):
+        print("Mass: ", msg.data, "\n")
+
 
 
 '''

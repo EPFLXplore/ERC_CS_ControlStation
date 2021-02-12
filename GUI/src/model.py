@@ -3,44 +3,39 @@
 
 	Model Class (MVC)
 '''
-import rospy
-from std_msgs.msg import String, Float32, Float32MultiArray
+import time
 
 class Model:
 
 	'''
 	Constructor
 	'''
-
-	def __init__(self):
-
-		a=0
+	run_thread = True
+	time_array=[0,0,0]
 	
-	def callback_barotemp(msg):
-		print("Pressure: " + str(msg.data[0]), "\n", \
-					"Temperature: ", msg.data[1])
-		# rospy.loginfo("Pressure: " + str(msg.data[0]), "\n", \
-		#               "Temperature: ", msg.data[1])
+		
+		
 
-	def callback_accelmag(msg):
-		print("acceleration: ", msg.data[0:3], "\n", \
-					"angular: ", msg.data[3:6], "\n", \
-					"magneto: ", msg.data[6:], "\n")
+	def get_time(self):
+		s=0
+		m=0
+		h=0
+		while s<=60:
 
-	def callback_gripper(msg):
-		print("Gripper voltage: ", msg.data, "\n")
+			
+			time.sleep(1)
+			s+=1
+			if s==60:
+				m+=1
+				s=0
+				if (m == 60):
+					h += 1
+					m = 0
+			Model.time_array[0] = h
+			Model.time_array[1] = m
+			Model.time_array[2] = s
+			if (Model.run_thread == False):
+				break
+			
 
-	def callback_system(msg):
-		print("Battery: ", msg.data[0], "\n", \
-					"State: ", msg.data[1])
 
-	def callback_voltages(msg):
-		print("voltages: ", msg.data[0], "\n")
-
-	def callback_currents(msg):
-		print("currents: ", msg.data[0], "\n")
-
-	def callback_measures(msg):
-		print("Mass: ", msg.data, "\n")
-
-	

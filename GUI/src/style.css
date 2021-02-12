@@ -256,6 +256,7 @@
 
         #DATA_FRAME {
         	border: 2px solid #616161;
+         background: #1f1f1f;
         }
         #DATA_FRAME_2 {
         	border: 2px solid #2379fa;
@@ -321,4 +322,4 @@
 	        background-repeat: no-repeat;
 	        background-position: center;
 		}
-      
+     

@@ -5,6 +5,7 @@ View.py
 import gi
 import cv2
 import cairo
+from model import Model
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk, GLib, GdkPixbuf
 '''
@@ -44,9 +45,18 @@ class View:
 
 		self.image1 = self.builder.get_object("image1")
 		self.image2 = self.builder.get_object("image2")
-
+		#Avionics
+		self.details_button = self.builder.get_object("avionics_details")
+		self.details_pop = self.builder.get_object("av_details")
 		self.battery = self.builder.get_object("battery")
-		#self.surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, self.builder.get_object("compass").get_allocated_width(), self.builder.get_object("compass").get_allocated_height())
+
+		#stopwatch data
+		self.seconds_nav = self.builder.get_object("seconds_nav")
+		self.minutes_nav = self.builder.get_object("minutes_nav")
+		self.hours_nav = self.builder.get_object("hours_nav")
+		self.seconds_sc = self.builder.get_object("seconds_sc")
+		self.minutes_sc = self.builder.get_object("minutes_sc")
+		self.hours_sc = self.builder.get_object("hours_sc")
 
 	def show_frame(self, *args):
 
@@ -60,4 +70,14 @@ class View:
 		self.image1.set_from_pixbuf(pb.copy())
 		self.image2.set_from_pixbuf(pb.copy())
 
+		return True
+
+	
+	def show_time(self, *args):
+		self.seconds_nav.set_text(str(Model.time_array[2]))
+		self.minutes_nav.set_text(str(Model.time_array[1]))
+		self.hours_nav.set_text(str(Model.time_array[0]))
+		self.seconds_sc.set_text(str(Model.time_array[2]))
+		self.minutes_sc.set_text(str(Model.time_array[1]))
+		self.hours_sc.set_text(str(Model.time_array[0]))
 		return True
