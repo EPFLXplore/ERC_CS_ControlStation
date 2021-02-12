@@ -17,6 +17,7 @@ from view import View
 from threading import Thread
 import evdev
 from evdev import*
+from std_msgs.msg import String, Float32, Float32MultiArray
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk, GLib, GdkPixbuf
 
@@ -39,21 +40,32 @@ class App(Gtk.Application):
     Gtk.Application.__init__(self)
     self.model = Model()
     self.view = View(self)
-    rospy.init_node("Control_Station")
+    
+    ###initialize the ROS node from the Control Station
+    rospy.init_node('control_station', anonymous=True)   
 
 
   def do_startup(self):
     Gtk.Application.do_startup(self)
     self.controller = Controller()
-    self.view.window.connect("delete-event", self.on_quit)
-    self.view.window2.connect("delete-event", self.on_quit)
+    self.view.NAV.connect("delete-event", self.on_quit)
+    self.view.SCIENCE.connect("delete-event", self.on_quit)
     self.view.builder.connect_signals(self.controller)
     GLib.idle_add(self.view.show_frame)
 
+###ROS test#####################################################
+    rospy.Subscriber('barotemp', Float32MultiArray, self.model.callback_barotemp)
+    rospy.Subscriber('accelmag', Float32MultiArray, self.model.callback_accelmag)
+    rospy.Subscriber('gripper', Float32, self.model.callback_gripper)
+    rospy.Subscriber('system', Float32MultiArray, self.model.callback_system)
+    rospy.Subscriber('voltages', Float32MultiArray, self.model.callback_voltages)
+    rospy.Subscriber('currents', Float32MultiArray, self.model.callback_currents)
+    rospy.Subscriber('measures', Float32, self.model.callback_measures)
+##################################################################
   def do_activate(self):
-    self.view.window.set_application(app)
-    self.view.window2.set_application(app)
-    self.view.window.present()
+    self.view.NAV.set_application(app)
+    self.view.SCIENCE.set_application(app)
+    self.view.NAV.present()
 
   def on_quit(self, action, param):
     self.quit()
@@ -83,7 +95,7 @@ class Controller():
         self.t_game.start()
 
     def on_NAV_clicked(self, *args):
-      app.view.window.present()
+      app.view.NAV.present()
       App.get_active_window(app).hide()
       self.gamepad.cmode('NAV')
 
@@ -93,7 +105,7 @@ class Controller():
       self.gamepad.cmode('HD')
 
     def on_SCIENCE_clicked(self, *args):
-      app.view.window2.present()
+      app.view.SCIENCE.present()
       App.get_active_window(app).hide()
       self.gamepad.cmode('SC')
 

@@ -39,8 +39,8 @@ class View:
 		self.builder = Gtk.Builder()
 		self.builder.add_from_file(gladeFile)
 		#GUI Layout
-		self.window = self.builder.get_object("window1")
-		self.window2 = self.builder.get_object("window2")
+		self.NAV = self.builder.get_object("navigationTab")
+		self.SCIENCE = self.builder.get_object("scienceTab")
 
 		self.image1 = self.builder.get_object("image1")
 		self.image2 = self.builder.get_object("image2")
