@@ -34,6 +34,12 @@
         	border: 5px solid #FFB800;
 
 		}
+      #Calibrate{
+         color: orange;
+        	font-weight: bold;
+        	font-size: 15px;
+        	border: 5px solid orange;
+      }
 
         #NAVBUTTON {
            border-radius: 35px;
@@ -250,6 +256,7 @@
 
         #DATA_FRAME {
         	border: 2px solid #616161;
+         background: #1f1f1f;
         }
         #DATA_FRAME_2 {
         	border: 2px solid #2379fa;
@@ -315,4 +322,4 @@
 	        background-repeat: no-repeat;
 	        background-position: center;
 		}
-      
+     

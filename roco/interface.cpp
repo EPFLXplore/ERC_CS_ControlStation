@@ -101,7 +101,7 @@ int main(int argc, char **argv)
 
 
   // create RoCo client, ip address of server, port of server
-	NetworkClientIO* client_io_2 = new NetworkClientIO("127.0.0.1", PORT_B);
+	NetworkClientIO* client_io_2 = new NetworkClientIO("192.168.1.2", PORT_B);
 
 	// client_io_2->receive(&handle_input);
   // connect client
