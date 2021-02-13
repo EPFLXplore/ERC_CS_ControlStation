@@ -1,3 +1,15 @@
+-----Important files in the folder-----
+
+1) avionics.cpp : simulation of the avionics part of the RoCo communication
+graph.
+
+2) interface.cpp, handlers.h : interface between avionics and control station
+node. handlers file contains how to handle packets received on RoCo and
+transmit them to control station through ROS.
+
+3) cs.py, callbacks.py : simulation of the control station node. callbacks
+contains callback functions to message received through subscribed topics.
+
 -----To add a new packet-----
 
 1) Write the packet in the protocol file  (e.g. Protocol21W3.h), i.e. create
