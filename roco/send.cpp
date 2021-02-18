@@ -42,6 +42,9 @@ int main() {
 
   while(true){
     PingPacket packet;
+		//packet.time = static_cast<uint64_t> (std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::time_point<std::chrono::system_clock>{}.time_since_epoch()).count());
+		//std::cout<<(packet.time-std::chrono::high_resolution_clock::now()).count()<<std::endl;
+		std::cout<<packet.time<<std::endl;
     server_bus->send<PingPacket>(&packet);
     count+=1;
     std::cout << "PingPacket "<<count<<" sent" << std::endl;
