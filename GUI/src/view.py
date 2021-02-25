@@ -32,7 +32,7 @@ class View:
 		provider.load_from_path('style.css')
 		
 
-		self.capture = cv2.VideoCapture(0)
+		self.capture = cv2.VideoCapture(-1)
 		self.capture.set(3, 500)
 		self.capture.set(4, 340)
 		#Glade file setup
@@ -42,13 +42,22 @@ class View:
 		#GUI Layout
 		self.NAV = self.builder.get_object("navigationTab")
 		self.SCIENCE = self.builder.get_object("scienceTab")
+		self.AV = self.builder.get_object("avionicsTab")
 
 		self.image1 = self.builder.get_object("image1")
 		self.image2 = self.builder.get_object("image2")
 		#Avionics
 		self.details_button = self.builder.get_object("avionics_details")
+		self.details_pop_sc = self.builder.get_object("details_pop_sc")
 		self.details_pop = self.builder.get_object("av_details")
 		self.battery = self.builder.get_object("battery")
+
+		#HD
+		self.controls_hd = self.builder.get_object("controls_hd")
+		self.control_mode =self.builder.get_object("kinematics_mode_label")
+
+		#NAV
+		self.nav_state = self.builder.get_object("nav_state")
 
 		#stopwatch data
 		self.seconds_nav = self.builder.get_object("seconds_nav")
