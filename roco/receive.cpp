@@ -9,24 +9,25 @@
 #include <thread>
 #include <cstring>
 #include <unistd.h>
+#include <chrono>
 
 #include "RoCo.h"
 #include <boost/bind.hpp>
 #include <functional>
 
-std::string ss;
-
 void handle_packet(uint8_t sender_id, PingPacket* packet, void* var) {
-  ss = "Ping C2C: " + std::to_string((PingPacket().time - packet->time).count()) + "ns";
-  std::cout<<*(int *)var<<std::endl;
-  //ss << "Ping C2C: " << (PingPacket().time - packet->time).count() << "ns" << std::endl;
+  //std::cout<<"Ping C2C: "<<(PingPacket().time - packet->time).count()<<"ns";
+  // uint64_t current_time = static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds> (std::chrono::time_point<std::chrono::system_clock>{}.time_since_epoch()).count());
+  //std::cout<<packet->time<<std::endl;
+  std::cout<<"Ping C2C: "<<PingPacket().time - packet->time<<"ns"<<std::endl;
+  // std::cout<<*(int *)var<<std::endl;
 }
 
 int main() {
 	std::cout << "Starting receive test..." << std::endl;
 
 
-	NetworkClientIO* client_io = new NetworkClientIO("192.168.1.1", PORT_A);
+	NetworkClientIO* client_io = new NetworkClientIO("127.0.0.1", PORT_B);
 
 	// server_io->receive(&handle_input);
 
@@ -45,8 +46,7 @@ int main() {
 
   while(true){
     client_bus->handle(handle_packet, pvnum);
-    std::cout<<ss<<std::endl;
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    //std::this_thread::sleep_for(std::chrono::seconds(1));
   }
 
 }
