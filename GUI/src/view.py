@@ -32,7 +32,7 @@ class View:
 		provider.load_from_path('style.css')
 		
 
-		self.capture = cv2.VideoCapture(0)
+		self.capture = cv2.VideoCapture("http://192.168.1.20/1")
 		self.capture.set(3, 500)
 		self.capture.set(4, 340)
 		#Glade file setup
