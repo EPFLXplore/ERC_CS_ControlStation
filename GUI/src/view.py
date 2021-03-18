@@ -37,8 +37,8 @@ class View:
 		self.capture.set(3, 500)
 		self.capture.set(4, 340)		
 		################Video capture
-		fourcc = cv2.VideoWriter_fourcc('m','p','4','v') 
-		self.out = cv2.VideoWriter('output.avi', fourcc, 24.0, (500, 340)) 
+		fourcc = cv2.VideoWriter_fourcc(*'XVID')
+		self.out = cv2.VideoWriter('output.avi', fourcc, 20.0, ( int(self.capture.get(3)), int(self.capture.get(4)))) 
 		##############################
 
 
@@ -55,14 +55,27 @@ class View:
 		self.image1 = self.builder.get_object("image1")
 		self.image2 = self.builder.get_object("image2")
 		#Avionics
-		self.details_button = self.builder.get_object("avionics_details")
-		self.details_pop_sc = self.builder.get_object("details_pop_sc")
-		self.details_pop = self.builder.get_object("av_details")
-		self.battery = self.builder.get_object("battery")
+		self.battery_nav = self.builder.get_object("battery_nav")
+		self.battery_sc = self.builder.get_object("battery_sc")
+		self.battery_av = self.builder.get_object("battery_sc")
+		self.battery_level = self.builder.get_object("battery_level_bar")
+
+		self.temperature_av = self.builder.get_object("temperature_av")
+
+		self.voltage_main_nav = self.builder.get_object("voltage_main_nav")
+		self.voltage_main_sc = self.builder.get_object("voltage_main_sc")
+
+		self.current_main_nav = self.builder.get_object("current_main_nav")
+		self.current_main_sc = self.builder.get_object("current_main_sc")
+
+		self.pressure_nav = self.builder.get_object("pressure_nav")
+		self.pressure_sc = self.builder.get_object("pressure_sc")
+		self.pressure_av = self.builder.get_object("pressure_av")
 
 		#HD
 		self.controls_hd = self.builder.get_object("controls_hd")
 		self.control_mode =self.builder.get_object("kinematics_mode_label")
+		
 
 		#NAV
 		self.nav_state = self.builder.get_object("nav_state")
@@ -77,12 +90,11 @@ class View:
 
 	def show_frame(self, *args):
 
-		self.ret, self.frame = self.capture.read()
-		self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
-		hs2 = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
-		self.out.write(hs2)
-
-		framecp = self.frame.copy()
+		ret, frame = self.capture.read()
+		framecp = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+		
+		if(ret == True):
+			self.out.write(frame)
 
 		pb=GdkPixbuf.Pixbuf.new_from_data(framecp.tobytes(), GdkPixbuf.Colorspace.RGB, False, 8, framecp.shape[1], framecp.shape[0], framecp.shape[2]*framecp.shape[1])
 
