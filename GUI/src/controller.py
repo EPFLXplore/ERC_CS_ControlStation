@@ -83,6 +83,8 @@ class App(Gtk.Application):
   def on_quit(self, action, param):
     Model.run_thread = False
     self.stopwatch.join()
+    self.view.capture.release()
+    self.view.out.release()
     self.quit()
 
 '''
@@ -226,7 +228,11 @@ class Controller():
       print("Pressure: " + str(msg.data[0]), "\n", \
             "Temperature: ", msg.data[1])
       barotemp = msg.data[0]
-      app.view.battery.set_text(str(barotemp))
+      app.view.pressure_nav.set_text(str(msg.data[0]))
+      app.view.pressure_sc.set_text(str(msg.data[0]))
+      app.view.pressure_av.set_text(str(msg.data[0]))
+
+      app.view.temperature_av.ser_text(str(msg.data[1]))
 
 
     def callback_accelmag(msg):
@@ -240,6 +246,9 @@ class Controller():
     def callback_system(msg):
         print("Battery: ", msg.data[0], "\n", \
               "State: ", msg.data[1])
+        app.view.battery_nav.set_text(str(msg.data[0]))
+        app.view.battery_sc.set_text(str(msg.data[0]))
+        app.view.battery_av.set_text(str(msg.data[0]))
 
     def callback_voltages(msg):
         print("voltages: ", msg.data[0], "\n")
