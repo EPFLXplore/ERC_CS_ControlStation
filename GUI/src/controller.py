@@ -23,7 +23,8 @@ from view import View
 from threading import Thread
 import evdev
 from evdev import*
-from std_msgs.msg import String, Float32, Float32MultiArray
+from std_msgs.msg import Float32, Float32MultiArray
+
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk, GLib, GdkPixbuf
 
@@ -66,7 +67,8 @@ class App(Gtk.Application):
     self.stopwatch.start()
 
 ###ROS test#####################################################
-    rospy.Subscriber('barotemp', Float32MultiArray, Controller.callback_barotemp)
+    rospy.Subscriber('randInt', Float32MultiArray, Controller.callback_barotemp)
+    # rospy.Subscriber('barotemp', Float32MultiArray, Controller.callback_barotemp)
     rospy.Subscriber('accelmag', Float32MultiArray, Controller.callback_accelmag)
     rospy.Subscriber('gripper', Float32, Controller.callback_gripper)
     rospy.Subscriber('system', Float32MultiArray, Controller.callback_system)
@@ -120,6 +122,10 @@ Class Controller
 
 '''
 class Controller():
+
+    ##data labels display value attributes
+    barotemp = [0,0]
+
 
     def __init__(self):
       self.rotation = 0.0
@@ -219,21 +225,27 @@ class Controller():
       except:
         self.state = 0
       
-      # print(app.view.nav_state.get_active())
 
 
-    ###ROS CallBacks
+############################ROS CallBacks######################################################################
+    def display_1(self):
+      app.view.pressure_nav.set_text(str(Controller.barotemp[0]))
+      app.view.pressure_av.set_text(str(Controller.barotemp[0]))
+      app.view.pressure_sc.set_text(str(Controller.barotemp[0]))
+
+
     def callback_barotemp(msg):
-
-      print("Pressure: " + str(msg.data[0]), "\n", \
-            "Temperature: ", msg.data[1])
-      barotemp = msg.data[0]
-      app.view.pressure_nav.set_text(str(msg.data[0]))
-      app.view.pressure_sc.set_text(str(msg.data[0]))
-      app.view.pressure_av.set_text(str(msg.data[0]))
-
-      app.view.temperature_av.ser_text(str(msg.data[1]))
-
+      Controller.barotemp[0] = msg.data[0]
+      Controller.barotemp[1] = msg.data[1]
+      # GLib.idle_add(Controller.display_2, msg)
+      # GLib.idle_add(Controller.display_3, msg)
+      # GLib.idle_add(app.view.battery_nav.set_text(str(msg.data)))
+      # GLib.idle_add(app.view.battery_sc.set_text(str(msg.data)))
+      # GLib.idle_add(app.view.battery_av.set_text(str(msg.data)))
+      # app.view.pressure_sc.set_text(str(msg.data[0]))
+      # app.view.pressure_av.set_text(str(msg.data[0]))
+      # app.view.temperature_av.ser_text(str(msg.data[1]))
+    
 
     def callback_accelmag(msg):
         print("acceleration: ", msg.data[0:3], "\n", \
@@ -259,7 +271,7 @@ class Controller():
     def callback_measures(msg):
         print("Mass: ", msg.data, "\n")
 
-
+################################################################################################################
 
 '''
 Class Gamepad
