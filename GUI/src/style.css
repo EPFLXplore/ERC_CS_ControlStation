@@ -78,6 +78,23 @@
        
       }
 
+      #SWITCH:hover{
+         border-radius: 20px;
+         border: 2px solid #fffb00;
+         background: #b7c72c;
+         font-size: small;
+         color: white;
+      }
+      
+      #SWITCH:active{
+         border-radius: 20px;
+         border: 2px solid #fffb00;
+         background: #c7cf79;
+         font-size: small;
+         color: white;
+      }
+
+
         #Idle{
 
         	color: #4797CD;
@@ -257,6 +274,24 @@
          background: #1f1f1f
 		}
 
+      #SET:hover{
+         color: rgb(4, 211, 4);
+			font-weight: bold;
+			font-size: 12px;
+			border: 2px solid rgb(4, 211, 4);
+			border-radius: 360px;
+         background: #8bee6d
+      }
+
+      #SET:active{
+         color: rgb(4, 211, 4);
+			font-weight: bold;
+			font-size: 12px;
+			border: 2px solid rgb(4, 211, 4);
+			border-radius: 360px;
+         background: #6ba859
+      }
+
         #Window_Top {
            /* background: #141C31; */
            background: #000000;
@@ -272,11 +307,33 @@
          color: #2379fa;
         }
 
+        #imageCapture:hover{
+         background: #4753c3;
+         border-color: #2379fa ;
+         color: #2379fa;
+        }
+        #imageCapture:active{
+         background: #505585;
+         border-color: #2379fa ;
+         color: #2379fa;
+        }
+
         #showButton{
          background: #1f1f1f;
          border-color: yellow;
          color: yellow;
         }
+        #showButton:hover{
+         background: #e2ce1d;
+         border-color: yellow;
+         color: yellow;
+        }
+        #showButton:active{
+         background: #dacd5a;
+         border-color: yellow;
+         color: yellow;
+        }
+
         #entry{
          background: #1f1f1f;
          color:white;

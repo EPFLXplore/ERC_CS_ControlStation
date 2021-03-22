@@ -3,30 +3,27 @@
 
 @breif
 
-@Author: Emile Janho Dit Hreich
+@Author: Emile Hreich
          Gergoire Lacroix
 
 @date 25/02/2021
 '''
 
-
 import gi
-import cv2
 import sys
-import cairo
 import rospy
-import time
+import logging
 from model import Model
 from rospy.impl.tcpros_base import DEFAULT_BUFF_SIZE
 from view import View
-#gamepad
 from threading import Thread
 import evdev
 from evdev import*
-from std_msgs.msg import Float32, Float32MultiArray
-
+from std_msgs.msg import String, Float32, Float32MultiArray, Bool, Int32
+from nav_msgs.msg import Odometry
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gdk, GLib, GdkPixbuf
+from gi.repository import Gtk, GLib
+###############################################################
 
 
 '''
@@ -49,10 +46,24 @@ class App(Gtk.Application):
     self.model = Model()
     self.view = View(self)
     
-    ###initialize the ROS node from the Control Station
+    #initialization of the Control Station ROS node
     rospy.init_node('control_station', anonymous=True)   
-
+    #stopwatch initialization
     self.stopwatch = Stopwatch()
+
+  formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+  def setup_logger(name, log_file, level):
+    """To setup as many loggers as you want"""
+
+    handler = logging.FileHandler(log_file)        
+    handler.setFormatter(App.formatter)
+
+    logger = logging.getLogger(str(name))
+    logger.setLevel(level)
+    logger.addHandler(handler)
+
+    return logger
+
 
   def do_startup(self):
     Gtk.Application.do_startup(self)
@@ -62,20 +73,49 @@ class App(Gtk.Application):
     self.view.AV.connect("delete-event", self.on_quit)
     self.view.builder.connect_signals(self.controller)
     GLib.idle_add(self.view.show_frame)
-
     GLib.idle_add(self.view.show_time)
+    GLib.idle_add(self.view.display_avionics)
+    GLib.idle_add(self.view.display_science)
+    GLib.idle_add(self.view.display_handling_device)
+    GLib.idle_add(self.view.display_navigation)
     self.stopwatch.start()
 
-###ROS test#####################################################
-    rospy.Subscriber('randInt', Float32MultiArray, Controller.callback_barotemp)
-    # rospy.Subscriber('barotemp', Float32MultiArray, Controller.callback_barotemp)
+    #ROS TOPICS SUBSCRIPTION
+    #AVIONICS
+    rospy.Subscriber('barotemp', Float32MultiArray, Controller.callback_barotemp)
     rospy.Subscriber('accelmag', Float32MultiArray, Controller.callback_accelmag)
     rospy.Subscriber('gripper', Float32, Controller.callback_gripper)
     rospy.Subscriber('system', Float32MultiArray, Controller.callback_system)
     rospy.Subscriber('voltages', Float32MultiArray, Controller.callback_voltages)
     rospy.Subscriber('currents', Float32MultiArray, Controller.callback_currents)
     rospy.Subscriber('measures', Float32, Controller.callback_measures)
-##################################################################
+
+    #NAVIGATION
+    rospy.Subscriber('waypoint', Float32MultiArray, Controller.callback_waypoint)
+    rospy.Subscriber('tags', Float32MultiArray, Controller.callback_tags)
+    rospy.Subscriber('signal_AM', Bool, Controller.callback_signal_AM)
+    rospy.Subscriber('rover_state', Int32, Controller.callback_rover_state)
+    rospy.Subscriber('nav_logs', String, Controller.callback_nav_logs)
+    rospy.Subscriber('mission_state_d1', Int32, Controller.callback_mission_state_d1)
+    rospy.Subscriber('current_position', Odometry, Controller.callback_current_position)
+    #TODO: controls for navigation
+    #SCIENCE
+    #TODO: Controls for science
+    #HANDLING DEVICE
+
+    #TODO: Controls for Handling Device
+
+    #ROS_TOPICS PUBLISHERS
+
+
+    #LOGGERS
+    avionics_logger = App.setup_logger('avlogger', "../Logs/avionics.log",logging.INFO)
+    navigation_logger = App.setup_logger('navlogger', "../Logs/navigation.log", logging.INFO)
+    hd_logger = App.setup_logger('hdlogger', "../Logs/HD.log",logging.INFO)
+    science_logger = App.setup_logger('sclogger', "../Logs/science.log", logging.INFO)
+
+
+ 
   def do_activate(self):
     self.view.NAV.set_application(app)
     self.view.SCIENCE.set_application(app)
@@ -123,10 +163,6 @@ Class Controller
 '''
 class Controller():
 
-    ##data labels display value attributes
-    barotemp = [0,0]
-
-
     def __init__(self):
       self.rotation = 0.0
 
@@ -168,8 +204,6 @@ class Controller():
       self.gamepad.cmode('NAV')
 
     def on_HD_clicked(self, *args):
-      # ~ app.view.window3.present()
-      # ~ App.get_active_window(app).hide()
       self.gamepad.cmode('HD')
 
     def on_SCIENCE_clicked(self, *args):
@@ -195,7 +229,6 @@ class Controller():
       app.view.builder.get_object("compass").queue_draw()
       print(app.model.time_array[2])
 
-
     def draw_compass(self, widget, ctx):
          ctx.set_line_width(3)
          ctx.set_source_rgb(1.0,0.0,0.1)
@@ -210,15 +243,12 @@ class Controller():
         self.t_game = Thread(target = self.gamepad.run, daemon =True)
         self.t_game.start()
 
-
     def on_controls_hd_changed(self, *args):
       self.controls = self.controls_hd_switch.get(app.view.controls_hd.get_active(), "invalid index")
       app.view.control_mode.set_text(self.controls)
-      # print(self.controls)
 
     def on_nav_state_changed(self, *args):
       try:
-        # print(self.state)
         app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(0.3)
         self.state = app.view.nav_state.get_active()
         app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(1.0)
@@ -227,7 +257,9 @@ class Controller():
       
 
 
-############################ROS CallBacks######################################################################
+############################ROS CALLBACKS########################
+
+    #AVIONICS
     def display_1(self):
       app.view.pressure_nav.set_text(str(Controller.barotemp[0]))
       app.view.pressure_av.set_text(str(Controller.barotemp[0]))
@@ -237,41 +269,50 @@ class Controller():
     def callback_barotemp(msg):
       Controller.barotemp[0] = msg.data[0]
       Controller.barotemp[1] = msg.data[1]
-      # GLib.idle_add(Controller.display_2, msg)
-      # GLib.idle_add(Controller.display_3, msg)
-      # GLib.idle_add(app.view.battery_nav.set_text(str(msg.data)))
-      # GLib.idle_add(app.view.battery_sc.set_text(str(msg.data)))
-      # GLib.idle_add(app.view.battery_av.set_text(str(msg.data)))
-      # app.view.pressure_sc.set_text(str(msg.data[0]))
-      # app.view.pressure_av.set_text(str(msg.data[0]))
-      # app.view.temperature_av.ser_text(str(msg.data[1]))
-    
 
     def callback_accelmag(msg):
-        print("acceleration: ", msg.data[0:3], "\n", \
-              "angular: ", msg.data[3:6], "\n", \
-              "magneto: ", msg.data[6:], "\n")
+        pass
 
     def callback_gripper(msg):
-        print("Gripper voltage: ", msg.data, "\n")
+        pass
 
     def callback_system(msg):
-        print("Battery: ", msg.data[0], "\n", \
-              "State: ", msg.data[1])
-        app.view.battery_nav.set_text(str(msg.data[0]))
-        app.view.battery_sc.set_text(str(msg.data[0]))
-        app.view.battery_av.set_text(str(msg.data[0]))
+        pass
 
     def callback_voltages(msg):
-        print("voltages: ", msg.data[0], "\n")
+        pass
 
     def callback_currents(msg):
-        print("currents: ", msg.data[0], "\n")
+        pass
 
     def callback_measures(msg):
-        print("Mass: ", msg.data, "\n")
+        pass
 
-################################################################################################################
+    #NAVIGATION
+    def callback_waypoint(msg):
+      pass
+
+    def callback_tags(msg):
+      pass
+
+    def callback_signal_AM(msg):
+      pass
+
+    def callback_rover_state(msg):
+      pass
+
+    def callback_nav_logs(msg):
+      pass
+
+    def callback_mission_state_d1(msg):
+      pass
+
+    def callback_current_position(msg):
+      pass
+    #SCIENCE
+
+    #HANDLING DEVICE
+######################################################################
 
 '''
 Class Gamepad
@@ -479,7 +520,6 @@ class Gamepad(Thread):
             if event.value==1:
               if event.code==304: #Touche A
                   print('SC')
-
 
   def cmode(self, mode):
     self.mode = mode

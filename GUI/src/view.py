@@ -1,16 +1,15 @@
 '''
 View.py
+
 	@Author: Emile Janho Dit Hreich
 '''
 import gi
 import cv2
-import cairo
 from model import Model
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gdk, GLib, GdkPixbuf
+from gi.repository import Gtk, Gdk, GdkPixbuf
 '''
 View Class
-
 
 	@Attributes
 		controller -> Controller
@@ -20,7 +19,7 @@ View Class
 '''
 class View:
 
-	#Constructor
+	
 	def __init__(self, controller):
 
 		self.controller = controller
@@ -28,20 +27,13 @@ class View:
 		provider = Gtk.CssProvider()
 		style_context = Gtk.StyleContext()
 		style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-		#provider.load_from_data('/src/style.css')
 		provider.load_from_path('style.css')
 		
-
 		self.capture = cv2.VideoCapture(-1)
-
 		self.capture.set(3, 500)
 		self.capture.set(4, 340)		
-		################Video capture
 		fourcc = cv2.VideoWriter_fourcc(*'XVID')
 		self.out = cv2.VideoWriter('output.avi', fourcc, 20.0, ( int(self.capture.get(3)), int(self.capture.get(4)))) 
-		##############################
-
-
 
 		#Glade file setup
 		gladeFile = "Main.glade"
@@ -102,7 +94,6 @@ class View:
 		self.image2.set_from_pixbuf(pb.copy())
 
 		return True
-
 	
 	def show_time(self, *args):
 		self.seconds_nav.set_text(str(Model.time_array[2]))
@@ -112,3 +103,15 @@ class View:
 		self.minutes_sc.set_text(str(Model.time_array[1]))
 		self.hours_sc.set_text(str(Model.time_array[0]))
 		return True
+
+	def display_avionics(self, *args):
+		pass
+
+	def display_navigation(self, *args):
+		pass
+
+	def display_science(self, *args):
+		pass
+
+	def display_handling_device(self, *args):
+		pass
