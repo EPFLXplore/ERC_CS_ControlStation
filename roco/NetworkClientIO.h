@@ -32,9 +32,11 @@ public:
 
 	int8_t connectClient();
 	void disconnectClient();
+	bool is_connected();
 
 	void receive(const std::function<void (uint8_t sender_id, uint8_t* buffer, uint32_t length)> &receiver);
 	void transmit(uint8_t* buffer, uint32_t length);
+
 
 private:
 	const char* address_str;

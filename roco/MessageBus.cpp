@@ -183,7 +183,7 @@ void MessageBus::receive(uint8_t sender_id, uint8_t *pointer, uint32_t length) {
 		uint8_t packet_id = *pointer++;
 
 		PacketDefinition* def = &definitions_by_id[packet_id & 0b00111111];
-		ReconstructionBuffer* indexable_buffer = &reconstruction_buffers[sender_id];
+		ReconstructionBuffer* indexable_buffer = &reconstruction_buffers[sender_id & 0b00111111];
 
 		if(indexable_buffer->index + length > max_packet_size) {
 			indexable_buffer->index = 0; // Corrupted packet
@@ -198,7 +198,7 @@ void MessageBus::receive(uint8_t sender_id, uint8_t *pointer, uint32_t length) {
 			// Packet is complete. Forward buffer to handler.
 
 			if(handlers[packet_id & 0b00111111] != nullptr) {
-				handlers[packet_id & 0b00111111](sender_id, indexable_buffer->buffer, publishers[packet_id]);
+				handlers[packet_id & 0b00111111](sender_id, indexable_buffer->buffer, publishers[packet_id & 0b00111111]);
 			}
 
 			if(forwarders[packet_id & 0b00111111] != nullptr) {

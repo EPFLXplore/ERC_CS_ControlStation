@@ -39,11 +39,12 @@ handlers.
 void handle_barotemp(uint8_t sender_id, Avionics_BaroTempPacket* packet, void* ros_publisher)
 {
   std_msgs::Float32MultiArray msg;
-  //Clear array
+  // //Clear array
 	msg.data.clear();
   msg.data.push_back(packet->pressure);
   msg.data.push_back(packet->temperature);
-
+  std::cout<<packet->pressure<<"\n"<<packet->temperature<<std::endl;
+  //
   ((ros::Publisher *)ros_publisher)->publish(msg);
 }
 

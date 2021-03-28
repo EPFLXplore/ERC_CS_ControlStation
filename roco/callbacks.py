@@ -1,6 +1,7 @@
 import rospy
 from std_msgs.msg import String, Float32, Float32MultiArray
 
+
 def callback_barotemp(msg):
     print("Pressure: " + str(msg.data[0]), "\n", \
                   "Temperature: ", msg.data[1])
@@ -20,7 +21,7 @@ def callback_system(msg):
                   "State: ", msg.data[1])
 
 def callback_voltages(msg):
-    print("voltages: ", msg.data[0], "\n")
+    print("voltages: ", msg.data[0],msg.data[1], msg.data[2], msg.data[3], "\n")
 
 def callback_currents(msg):
     print("currents: ", msg.data[0], "\n")

@@ -1,11 +1,13 @@
-I = imread('soilsoil.jpg');
-
+pkg load image
+I = imread('picture_1.png');
 
 I = rgb2gray(I) > 100; % Try different values 
 I = imfill(I, 'holes');
+figure
 imshow(I)
 
 BW = edge(I,'canny');
+figure
 imshow(BW);
 
 [H,theta,rho] = hough(BW);
@@ -26,6 +28,7 @@ P = houghpeaks(H,5,'threshold',ceil(0.3*max(H(:))));
 
 x = theta(P(:,2));
 y = rho(P(:,1));
+figure
 plot(x,y,'s','color','black');
 
 lines = houghlines(BW,theta,rho,P,'FillGap',5,'MinLength',7);

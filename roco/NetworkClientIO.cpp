@@ -97,6 +97,10 @@ void NetworkClientIO::disconnectClient() {
 	}
 }
 
+bool NetworkClientIO::is_connected() {
+	return connected;
+}
+
 /*
  * Closes all used IO resources
  */
@@ -132,15 +136,17 @@ void NetworkClientIO::receiveThread() {
 			} else {
 				// Connection was closed by server
 				std::cout << "[Client@" << ntohs(address.sin_port) << "] Client disconnected by server" << std::endl;
+				disconnectClient();
 				break;
 				// Do not decrement the num_sockets field since our IDs are not linear
 			}
 		}
 	}
 
-	std::cout << "[Client@" << ntohs(address.sin_port) << "] Client disconnected" << std::endl;
+	//std::cout << "[Client@" << ntohs(address.sin_port) << "] Client disconnected" << std::endl;
 
-	disconnectClient();
+	// disconnectClient();
+	return;
 }
 
 /*
