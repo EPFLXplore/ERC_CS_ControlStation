@@ -3,7 +3,7 @@ CC = $(CXX)
 CXXFLAGS = -std=c++17 -Wall
 LDLIBS = -lm
 
-TARGET = sender
+TARGET = avionics
 TARGETo = $(TARGET).o
 TARGETcpp = $(TARGET).cpp
 
