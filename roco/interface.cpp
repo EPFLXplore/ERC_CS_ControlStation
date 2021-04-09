@@ -100,66 +100,84 @@ int main(int argc, char **argv)
 	std::cout << "Starting main test..." << std::endl;
 
 
-  // // create RoCo client, ip address of server, port of server
-	// NetworkClientIO* client_io_2 = new NetworkClientIO("127.0.0.1", PORT_B);
+  // create RoCo client, ip address of server, port of server
+	NetworkClientIO* client_io_2 = new NetworkClientIO("127.0.0.1", PORT_B);
 
-  // // connect client
-	// int result = client_io_2->connectClient();
+  // connect client
+	int result = client_io_2->connectClient();
 
-  // if(result < 0) {
-  // 	std::cout << "Network Client IO connection failed with error code " << result << std::endl;
-  // 	std::cout << std::strerror(errno) << std::endl;
-  // }
+  if(result < 0) {
+  	std::cout << "Network Client IO connection failed with error code " << result << std::endl;
+  	std::cout << std::strerror(errno) << std::endl;
+  }
 
-  // NetworkBus* client_2_bus = new NetworkBus(client_io_2);
+  NetworkBus* client_2_bus = new NetworkBus(client_io_2);
 
   // create RoCo server
-  NetworkServerIO* server_io = new NetworkServerIO(42666);
+  // NetworkServerIO* server_io = new NetworkServerIO(42666);
   
-  // connect server
-	int32_t result = server_io->connectServer();
+  // // connect server
+	// int32_t result = server_io->connectServer();
   
-  if(result < 0) {
-		std::cout << "Network Server IO connection failed with error code " << result << std::endl;
-		std::cout << std::strerror(errno) << std::endl;
-	} else {
-		std::cout << "Connected to network server IO" << std::endl;
-	}
+  // if(result < 0) {
+	// 	std::cout << "Network Server IO connection failed with error code " << result << std::endl;
+	// 	std::cout << std::strerror(errno) << std::endl;
+	// } else {
+	// 	std::cout << "Connected to network server IO" << std::endl;
+	// }
   
-  NetworkBus* client_2_bus = new NetworkBus(server_io);
+  // NetworkBus* client_2_bus = new NetworkBus(server_io);
 
 
   //-----set client bus to handle different packets-----
-  // client_2_bus->handle(handle_barotemp,  (void*)&av_barotemp_pub);
-  // client_2_bus->handle(handle_accelmag,  (void*)&av_accelmag_pub);
+  client_2_bus->handle(handle_barotemp,  (void*)&av_barotemp_pub);
+  client_2_bus->handle(handle_accelmag,  (void*)&av_accelmag_pub);
 
-  // client_2_bus->handle(handle_gripper,  (void*)&ha_gripper_pub);
+  client_2_bus->handle(handle_gripper,  (void*)&ha_gripper_pub);
 
-  // client_2_bus->handle(handle_system,  (void*)&po_system_pub);
-  // client_2_bus->handle(handle_voltages,  (void*)&po_voltage_pub);
-  // client_2_bus->handle(handle_currents,  (void*)&po_current_pub);
+  client_2_bus->handle(handle_system,  (void*)&po_system_pub);
+  client_2_bus->handle(handle_voltages,  (void*)&po_voltage_pub);
+  client_2_bus->handle(handle_currents,  (void*)&po_current_pub);
 
-  // client_2_bus->handle(handle_measures,  (void*)&sc_measure_pub);
+  client_2_bus->handle(handle_measures,  (void*)&sc_measure_pub);
 
+
+  // while(1)
+  // {
+  //   if(!(client_io_2->is_connected()))
+  //   {
+  //     client_io_2->connectClient();
+  //   }
+  //   sleep(1);
+  // }
 
   while (ros::ok())
   {
-    // std::cout<<"JAJ";
-    // if(!(client_io_2->is_connected()))
-    // {
-    //   client_io_2->connectClient();
-    // }
+    // loop to try to reconnect to server if disconnected
+    if(!(client_io_2->is_connected()))
+    {
+      result = client_io_2->connectClient();
+      if(result < 0) {
+  	    std::cout << "Network Client IO connection failed with error code " << result << std::endl;
+  	    std::cout << std::strerror(errno) << std::endl;
+      }
+    }
 
-    client_2_bus->handle(handle_barotemp,  (void*)&av_barotemp_pub);
-    client_2_bus->handle(handle_accelmag,  (void*)&av_accelmag_pub);
+
+
+
     
-    client_2_bus->handle(handle_gripper,  (void*)&ha_gripper_pub);
+
+    // client_2_bus->handle(handle_barotemp,  (void*)&av_barotemp_pub);
+    // client_2_bus->handle(handle_accelmag,  (void*)&av_accelmag_pub);
     
-    client_2_bus->handle(handle_system,  (void*)&po_system_pub);
-    client_2_bus->handle(handle_voltages,  (void*)&po_voltage_pub);
-    client_2_bus->handle(handle_currents,  (void*)&po_current_pub);
+    // client_2_bus->handle(handle_gripper,  (void*)&ha_gripper_pub);
     
-    client_2_bus->handle(handle_measures,  (void*)&sc_measure_pub);
+    // client_2_bus->handle(handle_system,  (void*)&po_system_pub);
+    // client_2_bus->handle(handle_voltages,  (void*)&po_voltage_pub);
+    // client_2_bus->handle(handle_currents,  (void*)&po_current_pub);
+    
+    // client_2_bus->handle(handle_measures,  (void*)&sc_measure_pub);
 
     // client_2_bus->handle(handle_ping,  (void*)&ping_pub);
     // client_2_bus->handle(handle_request,  (void*)&request_pub);

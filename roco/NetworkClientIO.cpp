@@ -92,9 +92,10 @@ int8_t NetworkClientIO::connectClient() {
  */
 void NetworkClientIO::disconnectClient() {
 	if(connected) {
-		this->connected = false;
 		closeSocket();
+		this->connected = false;
 	}
+	this->reception_thread.detach(); // very important to handle disconnections
 }
 
 bool NetworkClientIO::is_connected() {
