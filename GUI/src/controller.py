@@ -4,7 +4,7 @@
 @breif
 
 @Author: Emile Hreich
-         Gergoire Lacroix
+         Gregoire Lacroix
 
 @date 25/02/2021
 '''
@@ -19,8 +19,14 @@ from view import View
 from threading import Thread
 import evdev
 from evdev import*
+
+#ROS Msg Import
 from std_msgs.msg import String, Float32, Float32MultiArray, Bool, Int32
 from nav_msgs.msg import Odometry
+from xplore_msg.msg import cs_to_hd_msg
+from geometry_msgs.msg import Twist
+
+
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GLib
 ###############################################################
@@ -317,7 +323,7 @@ class Controller():
 '''
 Class Gamepad
 
-@Description:
+@Description: Thread to 
 
 @Attributes:
     -
@@ -326,27 +332,39 @@ Class Gamepad
 class Gamepad(Thread):
 
   def __init__(self):
-  # ~ connect gamepad
+  # ~ connection search gamepad
     for path in evdev.list_devices():
       self.control = evdev.InputDevice(path)
       if evdev.ecodes.EV_FF in self.control.capabilities():
-        self._running = True #variable arret thread
+        self._running = True #variable to stop gamepad thread
         break
     else:
       sys.stderr.write('Failed to find the haptic motor.\n')
       self.control = None
 
-    # ~ self.nav_pub = rospy.Publisher('NAV_AXE', Nav, queue_size=10)
-    # ~ rospy.init_node('control_station', anonymous=True)
-
+    self.nav_pub = rospy.Publisher('/nav/cmd_dir', Twist, queue_size=10)
+    self.msg_nav_dir=Twist()
+    self.msg_nav_dir.linear.x=0
+    self.msg_nav_dir.linear.y=0
+    self.msg_nav_dir.linear.z=0
+    self.msg_nav_dir.angular.x = 0
+    self.msg_nav_dir.angular.y = 0
+    self.msg_nav_dir.angular.z = 0
+    
+    self.hd_pub = rospy.Publisher('/hd/cmd_axe', cs_to_hd_msg, queue_size=10)
+    self.HD_control_msg= cs_to_hd_msg()
+    self.HD_control_msg.mode=0
+    self.HD_control_msg.active=clear_tab(self.HD_control_msg.active)
     self.axe_HD_old=[0, 0, 0, 0, 0, 0, 0]
     self.axe_NAV_old=[0., 0.]
     self.axe_HD_new=[0, 0, 0, 0, 0, 0, 0]
     self.axe_NAV_new=[0., 0.]
-    self.axe_HDA_new=[0, 0, 0, 0, 0, 0, 0]
-    self.axe_HDA_old=[0, 0, 0, 0, 0, 0, 0]
+    
     self.modeHD='MAN'
+    self.HD_control_msg= cs_to_hd_msg()
     self.modeNAV='MAN'
+
+    
 
   def connect(self):
     for path in evdev.list_devices():
@@ -369,11 +387,11 @@ class Gamepad(Thread):
           if event.value==1:
             if event.code==dec.shaBtn: #Touche Share
               if self.mode == 'NAV':
-                app.controller.on_HD_clicked()
+                self.cmode('HD')
+                print(self.mode)
               elif self.mode == 'HD':
-                app.controller.on_SCIENCE_clicked()
-              elif self.mode == 'SC':
-                app.controller.on_NAV_clicked()
+                self.cmode('NAV')
+                print(self.mode)
 
 
             if event.code==dec.optBtn:
@@ -386,11 +404,21 @@ class Gamepad(Thread):
                   self.modeNAV='MAN'
               elif self.mode == 'HD':
                 if self.modeHD == 'MAN':
+                  self.HD_control_msg.mode=1
+                  self.HD_control_msg.active=clear_tab(self.HD_control_msg.active)
+                  self.axe_HD_old=[0, 0, 0, 0, 0, 0, 0]
+                  self.axe_HD_new=[0, 0, 0, 0, 0, 0, 0]
+                  self.hd_pub.publish(self.HD_control_msg)
                   print('AUTO')
                   self.modeHD='AUTO'
                 else:
                   print('MAN')
                   self.modeHD='MAN'
+                  self.HD_control_msg.mode=0
+                  self.HD_control_msg.active=clear_tab(self.HD_control_msg.active)
+                  self.axe_HD_old=[0, 0, 0, 0, 0, 0, 0]
+                  self.axe_HD_new=[0, 0, 0, 0, 0, 0, 0]
+                  self.hd_pub.publish(self.HD_control_msg)
 
 
         if (self.mode)== 'NAV': #PARTIE NAVIGATION--------------------
@@ -399,50 +427,53 @@ class Gamepad(Thread):
               if event.code==dec.xBtn: #Touche A
                   print('NAV')
           if self.modeNAV=='MAN': #MANUEL ----------------------------
+            # ~ Configuration 2 for NAV
+            # ~ if event.type == ecodes.EV_ABS:
+              # ~ absevent = categorize(event)
+              # ~ if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Y":
+                # ~ self.axe_NAV_new[0] = -absevent.event.value
+              # ~ if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RY":
+                # ~ self.axe_NAV_new[1] = -absevent.event.value
+                
+            # ~ Configuration 1 for NAV
             if event.type == ecodes.EV_ABS:
               absevent = categorize(event)
               if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RZ":
                 self.axe_NAV_new[0] = absevent.event.value
               elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Z":
                 self.axe_NAV_new[0] = -absevent.event.value
-              elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_X":
-                self.axe_NAV_new[1] = absevent.event.value-127 #[0 255] -> [-127 127]
+              elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_X":  #Direction sur l axe X du joystick gauche
+                self.axe_NAV_new[1] = absevent.event.value
 
-              #Envoi rotation et vitesse seulement quand il y a eu un changement
+              #Publish variation to NAV only when it was changed
               if compare_list(self.axe_NAV_old,self.axe_NAV_new, 5)!=1:
                 print("envoi",self.axe_NAV_new ,' ',self.axe_NAV_old)
                 self.axe_NAV_old[0] = self.axe_NAV_new[0]
                 self.axe_NAV_old[1] = self.axe_NAV_new[1]
-                # ~ self.nav_pub.publish(self.axe_NAV_old)
+                self.msg_nav_dir.linear.x=self.axe_NAV_new[0]
+                self.msg_nav_dir.angular.z = self.axe_NAV_new[1]
+                self.nav_pub.publish(self.msg_nav_dir)
 
-
-        elif (self.mode)== 'HD': #PARTIE HANDLING DEVICE
+        #Handling Device 
+        elif (self.mode)== 'HD': 
           if self.modeHD=='MAN':
-            # ~ print('HD')
             #BOUTON--------------------
             if event.type == ecodes.EV_KEY:
-              if event.value==1:
+              if event.value==1: #APPUI
+                print(event.code)
                 if event.code==dec.l1Btn and self.axe_HD_new[4]==0: #Touche l1 axe 5
                   self.axe_HD_new[4]=1
                 elif event.code==dec.r1Btn and self.axe_HD_new[4]==0: #Touche r1 axe 5
                   self.axe_HD_new[4]=-1
-                elif event.code==dec.l2Btn and self.axe_HD_new[5]==0: #Touche l1 axe 6
-                  self.axe_HD_new[5]=1
-                elif event.code==dec.r2Btn and self.axe_HD_new[5]==0: #Touche r1 axe 6
-                  self.axe_HD_new[5]=-1
-                elif event.code==dec.cBtn and self.axe_HD_new[6]==0: #Touche r1 axe 6
+                elif event.code==dec.cBtn and self.axe_HD_new[6]==0: #Touche carre ouverture pince
                   self.axe_HD_new[6]=1
-                elif event.code==dec.tBtn and self.axe_HD_new[6]==0: #Touche r1 axe 6
+                elif event.code==dec.tBtn and self.axe_HD_new[6]==0: #Touche triangle fermeture pince
                   self.axe_HD_new[6]=-1
-              elif event.value==0:
+              elif event.value==0: #RELACHEMENT BOUTON AXE = 0 
                 if event.code==dec.l1Btn: #Touche l1 axe 5
                   self.axe_HD_new[4]=0
                 elif event.code==dec.r1Btn: #Touche r1 axe 5
                   self.axe_HD_new[4]=0
-                elif event.code==dec.l2Btn: #Touche l2 axe 6
-                  self.axe_HD_new[5]=0
-                elif event.code==dec.r2Btn: #Touche r2 axe 6
-                  self.axe_HD_new[5]=0
                 elif event.code==dec.cBtn: #Touche r1 pince
                   self.axe_HD_new[6]=0
                 elif event.code==dec.tBtn : #Touche r1 pince
@@ -459,60 +490,87 @@ class Gamepad(Thread):
                 self.axe_HD_new[2] = eval_axe(absevent.event.value)
               elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Y":#Axe4
                 self.axe_HD_new[3] = eval_axe(absevent.event.value)
-
+              #Axe 6
+              elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Z":#Axe4
+                if absevent.event.value>=250:
+                  self.axe_HD_new[5] = 1
+                else:
+                  self.axe_HD_new[5] = 0
+              elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RZ":#Axe4
+                if absevent.event.value>=250:
+                  self.axe_HD_new[5] = -1
+                else:
+                  self.axe_HD_new[5] = 0
+      
               #envoi valeurs axe si et seulement si il y a eu un changement
-              if compare_list(self.axe_HD_old,self.axe_HD_new, 0)!=1:
-                  print("envoi HD",self.axe_HD_new ,' ',self.axe_HD_old)
-                  for k in range(len(self.axe_HD_new)):
-                    self.axe_HD_old[k] = self.axe_HD_new[k]
+            if compare_list(self.axe_HD_old,self.axe_HD_new, 0)!=1:
+                print("envoi HD",self.axe_HD_new ,' ',self.axe_HD_old)
+                for k in range(len(self.axe_HD_new)):
+                  self.axe_HD_old[k] = self.axe_HD_new[k]
+                  self.HD_control_msg.active[k]=self.axe_HD_new[k]
+                self.hd_pub.publish(self.HD_control_msg)
 
 
           elif self.modeHD=='AUTO':#Direct Kinematics
             if event.type == ecodes.EV_KEY:
               if event.value==1:
                 if event.code==dec.cBtn: #Touche r1 pince
-                  self.axe_HDA_new[6]=1
+                  self.axe_HD_new[6]=1
                 elif event.code==dec.tBtn : #Touche r1 pince
-                  self.axe_HDA_new[6]=-1
+                  self.axe_HD_new[6]=-1
                 elif event.code==dec.l2Btn and self.axe_HD_new[5]==0: #Touche l2 axe Z
-                  self.axe_HDA_new[2]=1
+                  self.axe_HD_new[2]=1
                 elif event.code==dec.r2Btn and self.axe_HD_new[5]==0: #Touche r2 axe Z
-                  self.axe_HDA_new[2]=-1
+                  self.axe_HD_new[2]=-1
                 elif event.code==dec.l1Btn : #Touche l1 rotationX
-                  self.axe_HDA_new[3]=1
+                  self.axe_HD_new[3]=1
                 elif event.code==dec.r1Btn : #Touche r1 rotationX
-                  self.axe_HDA_new[3]=-1
+                  self.axe_HD_new[3]=-1
 
               elif event.value==0:
                 if event.code==dec.l2Btn: #Touche l2 axe 6 relacher
-                  self.axe_HDA_new[2]=0
+                  self.axe_HD_new[2]=0
                 elif event.code==dec.r2Btn: #Touche r2 axe 6 relacher
-                  self.axe_HDA_new[2]=0
+                  self.axe_HD_new[2]=0
                 elif event.code==dec.l1Btn: #Touche l1 rotationX
-                  self.axe_HDA_new[3]=0
+                  self.axe_HD_new[3]=0
                 elif event.code==dec.r1Btn: #Touche r1 rotationX
-                  self.axe_HDA_new[3]=0
+                  self.axe_HD_new[3]=0
                 elif event.code==dec.cBtn: #Touche r1 pince
-                  self.axe_HDA_new[6]=0
+                  self.axe_HD_new[6]=0
                 elif event.code==dec.tBtn : #Touche r1 pince
-                  self.axe_HDA_new[6]=0
+                  self.axe_HD_new[6]=0
 
             elif event.type == ecodes.EV_ABS:
               absevent = categorize(event)
               if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RY":#Axe Y
-                self.axe_HDA_new[1] = eval_axe(absevent.event.value)
+                self.axe_HD_new[1] = eval_axe(absevent.event.value)
               elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_X":#Axe X
-                self.axe_HDA_new[0] = eval_axe(absevent.event.value)
+                self.axe_HD_new[0] = eval_axe(absevent.event.value)
               elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_HAT0X":#Rotz
-                self.axe_HDA_new[5] = absevent.event.value
+                self.axe_HD_new[5] = absevent.event.value
               elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_HAT0Y":#RotY
-                self.axe_HDA_new[4] = absevent.event.value
+                self.axe_HD_new[4] = absevent.event.value
+              #Axe Z
+              elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Z":#AxeZ
+                if absevent.event.value>=250:
+                  self.axe_HD_new[2] = 1
+                else:
+                  self.axe_HD_new[2] = 0
+              elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RZ":#AxeZ
+                if absevent.event.value>=250:
+                  self.axe_HD_new[2] = -1
+                else:
+                  self.axe_HD_new[2] = 0
 
 
-            if compare_list(self.axe_HDA_old,self.axe_HDA_new, 0)!=1:
-              print("envoi HD",self.axe_HDA_new ,' ',self.axe_HDA_old)
-              for k in range(len(self.axe_HDA_new)):
-                self.axe_HDA_old[k] = self.axe_HDA_new[k]
+            #envoi valeurs axe si et seulement si il y a eu un changement
+            if compare_list(self.axe_HD_old,self.axe_HD_new, 0)!=1:
+                print("envoi HD",self.axe_HD_new ,' ',self.axe_HD_old)
+                for k in range(len(self.axe_HD_new)):
+                  self.axe_HD_old[k] = self.axe_HD_new[k]
+                  self.HD_control_msg.active[k]=self.axe_HD_new[k]
+                self.hd_pub.publish(self.HD_control_msg)
 
         elif (self.mode)== 'SC':
           if event.type == ecodes.EV_KEY:
@@ -521,19 +579,17 @@ class Gamepad(Thread):
               if event.code==304: #Touche A
                   print('SC')
 
+
   def cmode(self, mode):
     self.mode = mode
 
-def eval_axe(axe_value): #Donne le sens de rotation bras robot
-  value=0
-  if axe_value <= 10:
-    value = 1
-    return value
-  elif axe_value >= 245:
-    value = -1
-    return value
-  elif axe_value > 10 and axe_value < 245:
-    return value
+def eval_axe(axe_value): #Donne le sens de rotation bras robot 32768 est la valeur max renvoyé par la manette
+  if axe_value <= -32700:
+    return -1
+  elif axe_value >= 32700:
+    return 1
+  elif axe_value > -32700 and axe_value < 32700:
+    return 0
 
 def compare_list(list1, list2, tolerance):
   #compare deux liste avec une certaine tolerance
@@ -542,6 +598,12 @@ def compare_list(list1, list2, tolerance):
       return 0
   return 1
 
+def clear_tab(tab):
+  #Clear the tab
+  for k in range(len(tab)):
+    tab[k]=0
+  return tab
+  
 class Decode_manette():
   def __init__(self):
     self.xBtn = 304
