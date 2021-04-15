@@ -95,6 +95,7 @@ void NetworkClientIO::disconnectClient() {
 		this->connected = false;
 		closeSocket();
 	}
+	this->reception_thread.detach(); // very important to handle disconnections
 }
 
 bool NetworkClientIO::is_connected() {

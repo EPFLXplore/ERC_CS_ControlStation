@@ -24,8 +24,15 @@ NetworkBus::NetworkBus(IODriver* driver) : IOBus(driver, network_frame, sizeof(n
 	define<Power_CurrentPacket>(5);
 	define<Science_MeasurePacket>(6);
 
-	define<DataPacket>(7);
+	define<Reset_PowerSupplyPacket>(7);
+	define<Switch_AvionicsPacket>(8);
+	define<Switch_RamanPacket>(9);
+	define<Switch_JetsonPacket>(10);
+	define<Switch_LidarPacket>(11);
+	define<Switch_EthernetPacket>(12);
 
+
+	define<DataPacket>(58);
 	define<PingPacket>(59);
 	define<RequestPacket>(60);
 	define<ResponsePacket>(61);

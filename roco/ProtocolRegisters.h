@@ -30,7 +30,6 @@ REGISTER(RequestPacket)
 REGISTER(ResponsePacket)
 REGISTER(ProgressPacket)
 REGISTER(ErrorPacket)
-
 REGISTER(DataPacket)
 
 REGISTER(Avionics_BaroTempPacket)
@@ -40,6 +39,13 @@ REGISTER(Power_SystemPacket)
 REGISTER(Power_VoltagePacket)
 REGISTER(Power_CurrentPacket)
 REGISTER(Science_MeasurePacket)
+
+REGISTER(Reset_PowerSupplyPacket)
+REGISTER(Switch_AvionicsPacket)
+REGISTER(Switch_RamanPacket)
+REGISTER(Switch_JetsonPacket)
+REGISTER(Switch_LidarPacket)
+REGISTER(Switch_EthernetPacket)
 #endif
 
 

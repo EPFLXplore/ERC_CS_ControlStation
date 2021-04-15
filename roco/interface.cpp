@@ -33,7 +33,8 @@ ErrorPacket
 #include "std_msgs/Float32MultiArray.h"
 #include "std_msgs/UInt32MultiArray.h"
 #include "std_msgs/Float32.h"
-#include "std_msgs/UInt8.h"
+#include "std_msgs/UInt32.h"
+#include "std_msgs/Bool.h"
 #include "std_msgs/Time.h"
 
 #include <sstream>
@@ -54,7 +55,7 @@ ErrorPacket
 #include "RoCo.h"
 #include "handlers.h"
 
-// Simulates the control station - avionics ROS-RoCo interface, receives message
+// Simulates the control station - (avionics/power_supply) ROS-RoCo interface, receives message
 // from sender.cpp (RoCo) and forwards it to listener.py using ROS
 
 int main(int argc, char **argv)
@@ -88,8 +89,6 @@ int main(int argc, char **argv)
   // ros::Publisher response_pub = n.advertise<std_msgs::UInt32MultiArray>("response", 1000);
   // ros::Publisher progress_pub = n.advertise<std_msgs::UInt32MultiArray>("progress", 1000);
   // ros::Publisher error_pub = n.advertise<std_msgs::UInt8>("error", 1000);
-
-  // the only one that might need a subscribe might be for the request
 
 
 
@@ -142,14 +141,14 @@ int main(int argc, char **argv)
   client_2_bus->handle(handle_measures,  (void*)&sc_measure_pub);
 
 
-  // while(1)
-  // {
-  //   if(!(client_io_2->is_connected()))
-  //   {
-  //     client_io_2->connectClient();
-  //   }
-  //   sleep(1);
-  // }
+  //-----define ROS topics on which to subscribe----- Communication to power_supply
+
+  ros::Subscriber reset_power_sub= n.subscribe<std_msgs::Bool>("reset_power", 1000, boost::bind(reset_power_supply_callback, _1, client_2_bus));
+  ros::Subscriber switch_avionics_sub = n.subscribe<std_msgs::Bool>("switch_avionics", 1000, boost::bind(switch_avionics_callback, _1, client_2_bus));
+  ros::Subscriber switch_raman_sub = n.subscribe<std_msgs::Bool>("switch_raman", 1000, boost::bind(switch_raman_callback, _1, client_2_bus));
+  ros::Subscriber switch_jetson_sub = n.subscribe<std_msgs::Bool>("switch_jetson", 1000, boost::bind(switch_jetson_callback, _1, client_2_bus));
+  ros::Subscriber switch_lidar_sub = n.subscribe<std_msgs::Bool>("switch_lidar", 1000, boost::bind(switch_lidar_callback, _1, client_2_bus));
+  ros::Subscriber switch_ethernet_sub = n.subscribe<std_msgs::Bool>("switch_ethernet", 1000, boost::bind(switch_ethernet_callback, _1, client_2_bus));
 
   while (ros::ok())
   {
@@ -162,22 +161,6 @@ int main(int argc, char **argv)
   	    std::cout << std::strerror(errno) << std::endl;
       }
     }
-
-
-
-
-    
-
-    // client_2_bus->handle(handle_barotemp,  (void*)&av_barotemp_pub);
-    // client_2_bus->handle(handle_accelmag,  (void*)&av_accelmag_pub);
-    
-    // client_2_bus->handle(handle_gripper,  (void*)&ha_gripper_pub);
-    
-    // client_2_bus->handle(handle_system,  (void*)&po_system_pub);
-    // client_2_bus->handle(handle_voltages,  (void*)&po_voltage_pub);
-    // client_2_bus->handle(handle_currents,  (void*)&po_current_pub);
-    
-    // client_2_bus->handle(handle_measures,  (void*)&sc_measure_pub);
 
     // client_2_bus->handle(handle_ping,  (void*)&ping_pub);
     // client_2_bus->handle(handle_request,  (void*)&request_pub);

@@ -13,7 +13,8 @@ handlers.
 #include "std_msgs/Float32MultiArray.h"
 #include "std_msgs/UInt32MultiArray.h"
 #include "std_msgs/Float32.h"
-#include "std_msgs/UInt8.h"
+#include "std_msgs/UInt32.h"
+#include "std_msgs/Bool.h"
 
 #include <sstream>
 #include <string>
@@ -144,4 +145,51 @@ void handle_progress(uint8_t sender_id, ProgressPacket* packet, void* ros_publis
 void handle_error(uint8_t sender_id, ErrorPacket* packet, void* ros_publisher)
 {
 
+}
+
+
+///// Send to power control unit 
+
+void reset_power_supply_callback(const boost::shared_ptr<std_msgs::Bool const> msg, NetworkBus* sender)
+{
+  std::cout<<msg->data<<std::endl;
+  Reset_PowerSupplyPacket packet;
+  packet.reset = msg->data;
+  sender->send<Reset_PowerSupplyPacket>(&packet);
+  std::cout<<packet.reset<<" sent!"<<std::endl;
+}
+
+void switch_avionics_callback(const boost::shared_ptr<std_msgs::Bool const> msg, NetworkBus* sender)
+{
+  Switch_AvionicsPacket packet;
+  packet.on = msg->data;
+  sender->send<Switch_AvionicsPacket>(&packet);
+}
+
+void switch_raman_callback(const boost::shared_ptr<std_msgs::Bool const> msg, NetworkBus* sender)
+{
+  Switch_RamanPacket packet;
+  packet.on = msg->data;
+  sender->send<Switch_RamanPacket>(&packet);
+}
+
+void switch_jetson_callback(const boost::shared_ptr<std_msgs::Bool const> msg, NetworkBus* sender)
+{
+  Switch_JetsonPacket packet;
+  packet.on = msg->data;
+  sender->send<Switch_JetsonPacket>(&packet);
+}
+
+void switch_lidar_callback(const boost::shared_ptr<std_msgs::Bool const> msg, NetworkBus* sender)
+{
+  Switch_LidarPacket packet;
+  packet.on = msg->data;
+  sender->send<Switch_LidarPacket>(&packet);
+}
+
+void switch_ethernet_callback(const boost::shared_ptr<std_msgs::Bool const> msg, NetworkBus* sender)
+{
+  Switch_EthernetPacket packet;
+  packet.on = msg->data;
+  sender->send<Switch_EthernetPacket>(&packet);
 }

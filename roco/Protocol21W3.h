@@ -39,6 +39,10 @@ struct ErrorPacket {
 	uint8_t error_id;
 } __attribute__((packed));
 
+struct DataPacket {
+	uint32_t data;
+} __attribute__((packed));
+
 // Avionics
 struct Avionics_BaroTempPacket {
   float pressure;
@@ -75,8 +79,31 @@ struct Science_MeasurePacket {
   float mass;
 } __attribute__((packed));
 
-struct DataPacket {
-	uint32_t data;
+
+// Power supply packets
+
+struct Reset_PowerSupplyPacket {
+	bool reset;
+} __attribute__((packed));
+
+struct Switch_AvionicsPacket {
+	bool on;
+} __attribute__((packed));
+
+struct Switch_RamanPacket  {
+	bool on;
+} __attribute__((packed));
+
+struct Switch_JetsonPacket  {
+	bool on;
+} __attribute__((packed));
+
+struct Switch_LidarPacket  {
+	bool on;
+} __attribute__((packed));
+
+struct Switch_EthernetPacket  {
+	bool on;
 } __attribute__((packed));
 
 
