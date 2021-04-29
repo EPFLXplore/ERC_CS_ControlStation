@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 '''
 @file Controller.py
 
@@ -23,7 +24,7 @@ from evdev import*
 #ROS Msg Import
 from std_msgs.msg import String, Float32, Float32MultiArray, Bool, Int32
 from nav_msgs.msg import Odometry
-from xplore_msg.msg import cs_to_hd_msg
+from xplore_msg.msg import HandlingControl
 from geometry_msgs.msg import Twist
 
 
@@ -72,6 +73,7 @@ class App(Gtk.Application):
 
 
   def do_startup(self):
+    zoom=1
     Gtk.Application.do_startup(self)
     self.controller = Controller()
     self.view.NAV.connect("delete-event", self.on_quit)
@@ -104,7 +106,6 @@ class App(Gtk.Application):
     rospy.Subscriber('nav_logs', String, Controller.callback_nav_logs)
     rospy.Subscriber('mission_state_d1', Int32, Controller.callback_mission_state_d1)
     rospy.Subscriber('current_position', Odometry, Controller.callback_current_position)
-    #TODO: controls for navigation
     #SCIENCE
     #TODO: Controls for science
     #HANDLING DEVICE
@@ -171,6 +172,7 @@ class Controller():
 
     def __init__(self):
       self.rotation = 0.0
+      self.nav_image_index=1
 
       #NAV
       self.nav_state_switch = {
@@ -260,6 +262,11 @@ class Controller():
         app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(1.0)
       except:
         self.state = 0
+        
+    def on_capture_image_button_nav_clicked(self, *args):
+      self.nav_image_index+=1
+      app.view.capture_image(self.nav_image_index)
+      
       
 
 
@@ -342,7 +349,7 @@ class Gamepad(Thread):
       sys.stderr.write('Failed to find the haptic motor.\n')
       self.control = None
 
-    self.nav_pub = rospy.Publisher('/nav/cmd_dir', Twist, queue_size=10)
+    self.nav_pub = rospy.Publisher('cmd_vel', Twist, queue_size=1)
     self.msg_nav_dir=Twist()
     self.msg_nav_dir.linear.x=0
     self.msg_nav_dir.linear.y=0
@@ -350,9 +357,10 @@ class Gamepad(Thread):
     self.msg_nav_dir.angular.x = 0
     self.msg_nav_dir.angular.y = 0
     self.msg_nav_dir.angular.z = 0
+    self.rate =rospy.Rate(10)
     
-    self.hd_pub = rospy.Publisher('/hd/cmd_axe', cs_to_hd_msg, queue_size=10)
-    self.HD_control_msg= cs_to_hd_msg()
+    self.hd_pub = rospy.Publisher('cmd_hd',HandlingControl, queue_size=1)
+    self.HD_control_msg= HandlingControl()
     self.HD_control_msg.mode=0
     self.HD_control_msg.active=clear_tab(self.HD_control_msg.active)
     self.axe_HD_old=[0, 0, 0, 0, 0, 0, 0]
@@ -361,7 +369,6 @@ class Gamepad(Thread):
     self.axe_NAV_new=[0., 0.]
     
     self.modeHD='MAN'
-    self.HD_control_msg= cs_to_hd_msg()
     self.modeNAV='MAN'
 
     
@@ -378,6 +385,8 @@ class Gamepad(Thread):
 
   def run (self):
     dec = Decode_manette()
+    advance = 0
+    retreat = 0
     for event in self.control.read_loop():
       if event.type!=0:
         if (self._running)==0:
@@ -439,44 +448,56 @@ class Gamepad(Thread):
             if event.type == ecodes.EV_ABS:
               absevent = categorize(event)
               if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RZ":
-                self.axe_NAV_new[0] = absevent.event.value
+                if (retreat==0):
+                  self.axe_NAV_new[0] = round(absevent.event.value/255, 1)
+                  advance = 1
+                if absevent.event.value==0:
+                  advance = 0
               elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Z":
-                self.axe_NAV_new[0] = -absevent.event.value
+                if (advance==0):
+                  self.axe_NAV_new[0] = round(-absevent.event.value/255, 1)
+                  retreat = 1
+                if absevent.event.value==0:
+                  retreat =0
               elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_X":  #Direction sur l axe X du joystick gauche
-                self.axe_NAV_new[1] = absevent.event.value
+                if (absevent.event.value>0):
+                  self.axe_NAV_new[1] = round(absevent.event.value/32767, 1) #Max value :32768
+                else:
+                  self.axe_NAV_new[1] = round(absevent.event.value/32768, 1) #Max value :32768
 
-              #Publish variation to NAV only when it was changed
-              if compare_list(self.axe_NAV_old,self.axe_NAV_new, 5)!=1:
+              #Publish variation with round 0.1 to NAV only when it was changed
+              if (compare_list(self.axe_NAV_old,self.axe_NAV_new, 0)!=1):
                 print("envoi",self.axe_NAV_new ,' ',self.axe_NAV_old)
                 self.axe_NAV_old[0] = self.axe_NAV_new[0]
                 self.axe_NAV_old[1] = self.axe_NAV_new[1]
                 self.msg_nav_dir.linear.x=self.axe_NAV_new[0]
                 self.msg_nav_dir.angular.z = self.axe_NAV_new[1]
                 self.nav_pub.publish(self.msg_nav_dir)
-
+                
         #Handling Device 
         elif (self.mode)== 'HD': 
           if self.modeHD=='MAN':
             #BOUTON--------------------
             if event.type == ecodes.EV_KEY:
-              if event.value==1: #APPUI
-                print(event.code)
-                if event.code==dec.l1Btn and self.axe_HD_new[4]==0: #Touche l1 axe 5
+              #Push
+              if event.value==1: 
+                if event.code==dec.l1Btn and self.axe_HD_new[4]==0: #L1 axe 5 = 1
                   self.axe_HD_new[4]=1
-                elif event.code==dec.r1Btn and self.axe_HD_new[4]==0: #Touche r1 axe 5
+                elif event.code==dec.r1Btn and self.axe_HD_new[4]==0: #R1 axe 5 = -1
                   self.axe_HD_new[4]=-1
-                elif event.code==dec.cBtn and self.axe_HD_new[6]==0: #Touche carre ouverture pince
+                elif event.code==dec.cBtn and self.axe_HD_new[6]==0: #Square button open the gripper
                   self.axe_HD_new[6]=1
-                elif event.code==dec.tBtn and self.axe_HD_new[6]==0: #Touche triangle fermeture pince
+                elif event.code==dec.tBtn and self.axe_HD_new[6]==0: #Triangle button close the gripper
                   self.axe_HD_new[6]=-1
-              elif event.value==0: #RELACHEMENT BOUTON AXE = 0 
-                if event.code==dec.l1Btn: #Touche l1 axe 5
+              #Release
+              elif event.value==0: 
+                if event.code==dec.l1Btn: #L1 axe 5 = 1
                   self.axe_HD_new[4]=0
-                elif event.code==dec.r1Btn: #Touche r1 axe 5
+                elif event.code==dec.r1Btn: #R1 axe 5 = -1
                   self.axe_HD_new[4]=0
-                elif event.code==dec.cBtn: #Touche r1 pince
+                elif event.code==dec.cBtn: #Square button Stop the opening
                   self.axe_HD_new[6]=0
-                elif event.code==dec.tBtn : #Touche r1 pince
+                elif event.code==dec.tBtn : #Triangle button Stop the closing
                   self.axe_HD_new[6]=0
             #AXE-------------------------
             elif event.type == ecodes.EV_ABS:

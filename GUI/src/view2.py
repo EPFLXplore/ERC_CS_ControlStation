@@ -1,18 +1,15 @@
-
-
 '''
 View.py
+
 	@Author: Emile Janho Dit Hreich
 '''
 import gi
 import cv2
-import cairo
 from model import Model
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gdk, GLib, GdkPixbuf
+from gi.repository import Gtk, Gdk, GdkPixbuf
 '''
 View Class
-
 
 	@Attributes
 		controller -> Controller
@@ -22,7 +19,7 @@ View Class
 '''
 class View:
 
-	#Constructor
+	
 	def __init__(self, controller):
 
 		self.controller = controller
@@ -30,20 +27,13 @@ class View:
 		provider = Gtk.CssProvider()
 		style_context = Gtk.StyleContext()
 		style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-		#provider.load_from_data('/src/style.css')
 		provider.load_from_path('style.css')
-		self.capture = cv2.VideoCapture(-1)
 		
-
-		#self.capture = cv2.VideoCapture("rtsp://xplore1:xplore@192.168.1.50:554/s1")
-		self.capture2 = cv2.VideoCapture("rtsp://root:Plokmijn123!@192.168.1.57/axis-media/media.amp")
-		self.frame = 0
-		################Video capture
+		self.capture = cv2.VideoCapture(-1)
+		self.capture.set(3, 500)
+		self.capture.set(4, 340)		
 		fourcc = cv2.VideoWriter_fourcc(*'XVID')
 		self.out = cv2.VideoWriter('output.avi', fourcc, 20.0, ( int(self.capture.get(3)), int(self.capture.get(4)))) 
-		##############################
-
-
 
 		#Glade file setup
 		gladeFile = "Main.glade"
@@ -55,7 +45,7 @@ class View:
 		self.AV = self.builder.get_object("avionicsTab")
 
 		self.image1 = self.builder.get_object("image1")
-		self.image3 = self.builder.get_object("image3")
+		self.image2 = self.builder.get_object("image2")
 		#Avionics
 		self.battery_nav = self.builder.get_object("battery_nav")
 		self.battery_sc = self.builder.get_object("battery_sc")
@@ -90,52 +80,31 @@ class View:
 		self.minutes_sc = self.builder.get_object("minutes_sc")
 		self.hours_sc = self.builder.get_object("hours_sc")
 
-	def show_frame(self,*args):
+	def show_frame(self, *args):
 
-		#ret, self.frame = self.capture.read()
-		ret2, frame2 = self.capture2.read()
+		ret, frame = self.capture.read()
+		framecp = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 		
-		ims2 = cv2.resize(frame2, (640, 360))
-		framecp2 = cv2.cvtColor(ims2, cv2.COLOR_BGR2RGB)
+		if(ret == True):
+			self.out.write(frame)
 
-		#ims = cv2.resize(self.frame, (640, 360))
-		#framecp = cv2.cvtColor(ims, cv2.COLOR_BGR2RGB)
-		
-		
-		#if(ret == True):
-			#self.out.write(self.frame)
+		pb=GdkPixbuf.Pixbuf.new_from_data(framecp.tobytes(), GdkPixbuf.Colorspace.RGB, False, 8, framecp.shape[1], framecp.shape[0], framecp.shape[2]*framecp.shape[1])
 
-		#pb=GdkPixbuf.Pixbuf.new_from_data(framecp.tobytes(), GdkPixbuf.Colorspace.RGB, False, 8, framecp.shape[1], framecp.shape[0], framecp.shape[2]*framecp.shape[1])
-		pb2=GdkPixbuf.Pixbuf.new_from_data(framecp2.tobytes(), GdkPixbuf.Colorspace.RGB, False, 8, framecp2.shape[1], framecp2.shape[0], framecp2.shape[2]*framecp2.shape[1])
-
-		#self.image1.set_from_pixbuf(pb.copy())
-		self.image3.set_from_pixbuf(pb2.copy())
-		
-
+		self.image1.set_from_pixbuf(pb.copy())
+		self.image2.set_from_pixbuf(pb.copy())
 
 		return True
-
-	def capture_image(self, index):
-		name_format="nav_camera_capture%d.jpeg" % (index)
-		print(name_format)
-		cv2.imwrite(name_format, self.frame) 
-		
 	
 	def show_time(self, *args):
-		seconds ='{:02d}'.format(Model.time_array[2])
-		minutes ='{:02d}'.format(Model.time_array[1]) 
-		hours = '{:02d}'.format(Model.time_array[0])
-
-		self.seconds_nav.set_text(seconds)
-		self.minutes_nav.set_text(minutes)
-		self.hours_nav.set_text(hours)
-		self.seconds_sc.set_text(seconds)
-		self.minutes_sc.set_text(minutes)
-		self.hours_sc.set_text(hours)
+		self.seconds_nav.set_text(str(Model.time_array[2]))
+		self.minutes_nav.set_text(str(Model.time_array[1]))
+		self.hours_nav.set_text(str(Model.time_array[0]))
+		self.seconds_sc.set_text(str(Model.time_array[2]))
+		self.minutes_sc.set_text(str(Model.time_array[1]))
+		self.hours_sc.set_text(str(Model.time_array[0]))
 		return True
 
 	def display_avionics(self, *args):
-		# pressure = '{:05d}'.format(self.model.barotemp[2])
 		pass
 
 	def display_navigation(self, *args):
