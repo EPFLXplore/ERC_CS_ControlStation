@@ -1,0 +1,3 @@
+[submodule "RoCo"]
+	path = RoCo
+	url = git@github.com:EPFLXplore/RoCo.git
