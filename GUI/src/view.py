@@ -6,10 +6,11 @@ View.py
 '''
 import gi
 import cv2
-import cairo
+
 from model import Model
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gdk, GLib, GdkPixbuf
+from gi.repository import Gtk, Gdk, GdkPixbuf
+
 '''
 View Class
 
@@ -38,10 +39,11 @@ class View:
 		#self.capture = cv2.VideoCapture("rtsp://xplore1:xplore@192.168.1.50:554/s1")
 		self.capture2 = cv2.VideoCapture("rtsp://root:Plokmijn123!@192.168.1.57/axis-media/media.amp")
 		self.frame = 0
-		################Video capture
+
+		#Video capture
 		fourcc = cv2.VideoWriter_fourcc(*'XVID')
 		self.out = cv2.VideoWriter('output.avi', fourcc, 20.0, ( int(self.capture.get(3)), int(self.capture.get(4)))) 
-		##############################
+		
 
 
 
@@ -135,8 +137,17 @@ class View:
 		return True
 
 	def display_avionics(self, *args):
-		# pressure = '{:05d}'.format(self.model.barotemp[2])
-		pass
+		pressure = '{:05d}'.format(Model.barotemp[0])
+		temperature = '{:05d}'.format(Model.barotemp[1])
+		self.pressure_nav.set_text(str(pressure))
+		self.pressure_av.set_text(str(pressure))
+		self.pressure_sc.set_text(str(pressure))
+		self.temperature_av.set_text(str(temperature))
+		#TODO
+		
+		
+		
+		
 
 	def display_navigation(self, *args):
 		pass

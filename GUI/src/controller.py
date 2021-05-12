@@ -2,7 +2,11 @@
 '''
 @file Controller.py
 
-@breif
+@breif MVC Template
+  This file initializes the Application, defines I/O behaviours.
+  It also initializes the ROS Control Station nodes along with the
+  publisher and the subscribers.
+  It contains a class to read inputs from a PS4 like controller.
 
 @Author: Emile Hreich
          Gregoire Lacroix
@@ -73,7 +77,7 @@ class App(Gtk.Application):
 
 
   def do_startup(self):
-    zoom=1
+    
     Gtk.Application.do_startup(self)
     self.controller = Controller()
     self.view.NAV.connect("delete-event", self.on_quit)
@@ -273,15 +277,11 @@ class Controller():
 ############################ROS CALLBACKS########################
 
     #AVIONICS
-    def display_1(self):
-      app.view.pressure_nav.set_text(str(Controller.barotemp[0]))
-      app.view.pressure_av.set_text(str(Controller.barotemp[0]))
-      app.view.pressure_sc.set_text(str(Controller.barotemp[0]))
-
-
     def callback_barotemp(msg):
-      Controller.barotemp[0] = msg.data[0]
-      Controller.barotemp[1] = msg.data[1]
+      Model.barotemp[0] = msg.data[0]
+      Model.barotemp[1] = msg.data[1]
+      # Controller.barotemp[0] = msg.data[0]
+      # Controller.barotemp[1] = msg.data[1]
 
     def callback_accelmag(msg):
         pass

@@ -9,23 +9,23 @@ class Model:
 
 
 	run_thread = True
-	time_array=[0,0,0]
+	time_array =[0,0,0]
 
 	#AVIONICS DATA
-	barotemp = [-1,-1]
-	accelmag = [-1, -1, -1]
-	gripper = 0.0
-	system = []
-	voltages = [-1,-1,-1,-1]
-	currents = [-1, -1, -1, -1]
-	measures = 0.0
+	barotemp 		= [-1,-1]
+	accelmag 		= [-1, -1, -1]
+	gripper 		= 0.0
+	system 			= []
+	voltages 		= [-1,-1,-1,-1]
+	currents 		= [-1, -1, -1, -1]
+	measures 		= 0.0
 
 	#NAVIGATION DATA
-	waypoint = [-1, -1, -1]
-	tags = []
-	signal_AM = False
-	rover_state = 0
-	nav_logs = ""
+	waypoint 		= [-1, -1, -1]
+	tags 			= []
+	signal_AM 		= False
+	rover_state 	= 0
+	nav_logs 		= ""
 	mission_state_d1 = 0
 	#current position
 	
