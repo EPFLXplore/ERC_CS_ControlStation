@@ -67,8 +67,48 @@
            background: #1f1f1f;
            font-size: small;
            color: white;
-         
         }
+        #start_button{
+         border-radius: 20px;
+         border: 5px solid green;
+         background: #1f1f1f;
+         font-size: small;
+         color: white;
+        }
+        #start_button:hover{
+         background : #71f14a;
+         }
+         #start_button:active{
+         background : #0faf44;
+         }
+        #wait_button{
+         border-radius: 20px;
+         border: 5px solid yellow;
+         background: #1f1f1f;
+         font-size: small;
+         color: white;
+        }
+        #wait_button:hover{
+         background : #f1e64a;
+         }
+         #wait_button:active{
+         background : #acaf0f;
+         }
+        #resume_button{
+         border-radius: 20px;
+         border: 5px solid rgb(20, 142, 163);
+         background: #1f1f1f;
+         font-size: 9px;
+         color: white;
+        }
+        #resume_button:hover{
+         background : #4abcf1;
+         }
+         #resume_button:active{
+         background : #0f82af;
+         }
+
+
         #SWITCH {
          border-radius: 20px;
          border: 2px solid #fffb00;
@@ -437,5 +477,11 @@
          border: 5px solid #2379fa;
          
       }
+
+      #switch{
+         color: white;
+         font-size: 15px;
+      }
+      
 
      

@@ -1,8 +1,8 @@
 import evdev
-from evdev import*
-from threading import Thread
 import rospy
-from xplore_msg.msg import HandlingControl
+from evdev             import*
+from threading         import Thread
+from xplore_msg.msg    import HandlingControl
 from geometry_msgs.msg import Twist
 import sys
 

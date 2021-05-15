@@ -8,8 +8,8 @@ import time
 class Model:
 
 
-	run_thread = True
-	time_array =[0,0,0]
+	run_thread 		= True
+	time_array 		=[0,0,0]
 
 	#AVIONICS DATA
 	barotemp 		= [-1,-1]
@@ -34,13 +34,11 @@ class Model:
 	#HANDLING DEVICE DATA
 	
 		
-	def get_time(self):
+	def get_time():
 		s=0
 		m=0
 		h=0
-		while s<=60:
-
-			
+		while s<=60:	
 			time.sleep(1)
 			s+=1
 			if s==60:

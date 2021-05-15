@@ -1916,6 +1916,130 @@
                                     <property name="y">188</property>
                                   </packing>
                                 </child>
+                                <child>
+                                  <object class="GtkSwitch">
+                                    <property name="width_request">54</property>
+                                    <property name="height_request">25</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="active">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">410</property>
+                                    <property name="y">124</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSwitch">
+                                    <property name="width_request">54</property>
+                                    <property name="height_request">25</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="active">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">410</property>
+                                    <property name="y">62</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSwitch">
+                                    <property name="width_request">54</property>
+                                    <property name="height_request">25</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="active">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">410</property>
+                                    <property name="y">186</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSwitch">
+                                    <property name="width_request">54</property>
+                                    <property name="height_request">25</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="active">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">410</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSwitch">
+                                    <property name="width_request">54</property>
+                                    <property name="height_request">25</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="active">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">410</property>
+                                    <property name="y">248</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="name">switch</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">POWER</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">283</property>
+                                    <property name="y">13</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="name">switch</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">LIDAR</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">283</property>
+                                    <property name="y">74</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="name">switch</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">RAMAN</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">283</property>
+                                    <property name="y">137</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="name">switch</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">ETHERNET</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">283</property>
+                                    <property name="y">196</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="name">switch</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">JETSON</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">283</property>
+                                    <property name="y">259</property>
+                                  </packing>
+                                </child>
                               </object>
                             </child>
                           </object>
@@ -1936,6 +2060,7 @@
                       <object class="GtkImage">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="opacity">0.29999999999999999</property>
                         <property name="pixbuf">../resources/temperatureW.png</property>
                       </object>
                       <packing>
@@ -2528,33 +2653,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <child>
-                                  <object class="GtkLabel" id="auto_nav">
-                                    <property name="name">AUTO</property>
-                                    <property name="width_request">200</property>
-                                    <property name="height_request">56</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">AUTOMATIC</property>
-                                  </object>
-                                  <packing>
-                                    <property name="y">8</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkLabel" id="manual_nav">
-                                    <property name="name">MANUAL</property>
-                                    <property name="width_request">200</property>
-                                    <property name="height_request">56</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">MANUAL</property>
-                                  </object>
-                                  <packing>
-                                    <property name="x">208</property>
-                                    <property name="y">8</property>
-                                  </packing>
-                                </child>
-                                <child>
                                   <object class="GtkButton">
                                     <property name="label" translatable="yes">STOP</property>
                                     <property name="name">Emergency</property>
@@ -2565,7 +2663,49 @@
                                     <property name="receives_default">True</property>
                                   </object>
                                   <packing>
-                                    <property name="x">423</property>
+                                    <property name="x">415</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton">
+                                    <property name="label" translatable="yes">START</property>
+                                    <property name="name">start_button</property>
+                                    <property name="width_request">70</property>
+                                    <property name="height_request">70</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">30</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton">
+                                    <property name="label" translatable="yes">WAIT</property>
+                                    <property name="name">wait_button</property>
+                                    <property name="width_request">70</property>
+                                    <property name="height_request">70</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">160</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton">
+                                    <property name="label" translatable="yes">RESUME</property>
+                                    <property name="name">resume_button</property>
+                                    <property name="width_request">70</property>
+                                    <property name="height_request">70</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">274</property>
                                   </packing>
                                 </child>
                               </object>
@@ -4537,19 +4677,6 @@
                                   <packing>
                                     <property name="x">76</property>
                                     <property name="y">303</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkButton">
-                                    <property name="label" translatable="yes">SWITCH</property>
-                                    <property name="name">SWITCH</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="x">29</property>
-                                    <property name="y">353</property>
                                   </packing>
                                 </child>
                                 <child>
