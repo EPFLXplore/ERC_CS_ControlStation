@@ -52,7 +52,7 @@ class App(Gtk.Application):
     self.view  = View(self)
     self.controller = controller
     #initialization of the Control Station ROS node
-    rospy.init_node('control_station', anonymous=True)   
+    # rospy.init_node('control_station', anonymous=True)   
     #stopwatch initialization
     self.stopwatch = stp()
 

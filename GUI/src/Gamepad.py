@@ -2,7 +2,7 @@ import evdev
 import rospy
 from evdev             import*
 from threading         import Thread
-from xplore_msg.msg    import HandlingControl
+#from xplore_msg.msg    import HandlingControl
 from geometry_msgs.msg import Twist
 import sys
 
@@ -38,13 +38,13 @@ class Gamepad(Thread):
     self.msg_nav_dir.angular.z = 0
     self.rate =rospy.Rate(10)
     
-    self.hd_pub = rospy.Publisher('cmd_hd',HandlingControl, queue_size=1)
-    self.HD_control_msg= HandlingControl()
-    self.HD_control_msg.mode=0
-    self.HD_control_msg.active=clear_tab(self.HD_control_msg.active)
-    self.axe_HD_old=[0, 0, 0, 0, 0, 0, 0]
+    # self.hd_pub = rospy.Publisher('cmd_hd',HandlingControl, queue_size=1)
+    # self.HD_control_msg= HandlingControl()
+    # self.HD_control_msg.mode=0
+    # self.HD_control_msg.active=clear_tab(self.HD_control_msg.active)
+    # self.axe_HD_old=[0, 0, 0, 0, 0, 0, 0]
     self.axe_NAV_old=[0., 0.]
-    self.axe_HD_new=[0, 0, 0, 0, 0, 0, 0]
+    # self.axe_HD_new=[0, 0, 0, 0, 0, 0, 0]
     self.axe_NAV_new=[0., 0.]
     
     self.modeHD='MAN'

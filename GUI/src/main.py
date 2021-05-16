@@ -3,6 +3,7 @@ from model                  import Model
 import Application
 import Gamepad as gamepad
 import sys
+import rospy
 '''
 Class Controller
 
@@ -18,6 +19,7 @@ Class Controller
 class Controller():
     app = 0
     def __init__(self):
+      rospy.init_node('control_station', anonymous=True)
       self.rotation = 0.0
       self.nav_image_index=1
 
@@ -145,6 +147,18 @@ class Controller():
     def callback_measures(msg):
         pass
 
+    def callback_reset_power(msg):
+      pass
+    def callback_switch_power(msg):
+      pass
+    def callback_switch_raman(msg):
+      pass
+    def callback_switch_jetson(msg):
+      pass
+    def callback_switch_LIDAR(msg):
+      pass
+    def callback_switch_ethernet(msg):
+      pass
     #NAVIGATION
     def callback_waypoint(msg):
       pass
