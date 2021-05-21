@@ -9,7 +9,7 @@
   It contains a class to read inputs from a PS4 like controller.
 
 @Author: Emile Hreich
-         Gregoire Lacroix
+         
 
 @date 25/02/2021
 '''
@@ -17,19 +17,17 @@ import gi
 
 import rospy
 import logging
-
+from Controller import Controller
 from Stopwatch              import Stopwatch as stp
 from model                  import Model
 from rospy.impl.tcpros_base import DEFAULT_BUFF_SIZE
 from view                   import View
-# from threading              import Thread
 from std_msgs.msg           import String, Float32, Float32MultiArray, Bool, Int32
 from nav_msgs.msg           import Odometry
-
+import sys
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GLib
 #==============================================================
-
 
 '''
 Class: App
@@ -45,12 +43,12 @@ Class: App
 '''
 class App(Gtk.Application):
 
-  def __init__(self, controller):
+  def __init__(self):
     
     Gtk.Application.__init__(self)
     self.model = Model()
     self.view  = View(self)
-    self.controller = controller
+    self.controller = Controller(self)
     #initialization of the Control Station ROS node
     # rospy.init_node('control_station', anonymous=True)   
     #stopwatch initialization
@@ -144,6 +142,10 @@ class App(Gtk.Application):
     self.view.out.release()
     self.quit()
 
-    
+'''
+Main
+'''
+app = App()
+app.run(sys.argv)    
   
 

@@ -4,7 +4,6 @@ View.py
 '''
 import gi
 import cv2
-
 from model 		   import Model
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk, GdkPixbuf

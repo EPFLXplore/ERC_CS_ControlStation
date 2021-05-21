@@ -1,8 +1,14 @@
+'''
+@File  :
+
+@Author: Gregoire Lacroix
+'''
+
 import evdev
 import rospy
 from evdev             import*
 from threading         import Thread
-#from xplore_msg.msg    import HandlingControl
+from xplore_msg.msg    import HandlingControl
 from geometry_msgs.msg import Twist
 import sys
 
