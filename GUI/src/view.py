@@ -124,13 +124,14 @@ class View:
 		return True
 
 	def display_avionics(self, *args):
-		pressure = '{:05d}'.format(Model.barotemp[0])
-		temperature = '{:05d}'.format(Model.barotemp[1])
+		pressure = round(Model.barotemp[0],2)
+		temperature = round(Model.barotemp[1], 2)
 		self.pressure_nav.set_text(str(pressure))
 		self.pressure_av.set_text(str(pressure))
 		self.pressure_sc.set_text(str(pressure))
 		self.temperature_av.set_text(str(temperature))
 		#TODO
+		return True
 		
 		
 		

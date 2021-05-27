@@ -81,6 +81,7 @@ class App(Gtk.Application):
     GLib.idle_add(self.view.display_science)
     GLib.idle_add(self.view.display_handling_device)
     GLib.idle_add(self.view.display_navigation)
+    GLib.idle_add(self.controller.gamepad.debug)
     self.stopwatch.start()
 
     #ROS TOPICS SUBSCRIPTION

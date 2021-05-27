@@ -123,7 +123,7 @@ class Controller():
 #ROS CALLBACKS
 
     #AVIONICS
-    def callback_barotemp(msg):
+    def callback_barotemp(self, msg):
       Model.barotemp[0] = msg.data[0]
       Model.barotemp[1] = msg.data[1]
       

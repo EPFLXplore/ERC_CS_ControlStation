@@ -3,15 +3,15 @@
 
 @Author: Gregoire Lacroix
 '''
-
 import evdev
 import rospy
 from evdev             import*
 from threading         import Thread
-from xplore_msg.msg    import HandlingControl
+# from xplore_msg.msg    import HandlingControl
 from geometry_msgs.msg import Twist
 import sys
-
+#DEBUG
+from std_msgs.msg           import String
 '''
 Class Gamepad
 
@@ -35,6 +35,9 @@ class Gamepad(Thread):
       self.control = None
 
     self.nav_pub = rospy.Publisher('cmd_vel', Twist, queue_size=1)
+    ################
+    self.nav_pub_debug = rospy.Publisher('cmd_vel_debug', String, queue_size=1)
+    ###############
     self.msg_nav_dir=Twist()
     self.msg_nav_dir.linear.x=0
     self.msg_nav_dir.linear.y=0
@@ -56,6 +59,10 @@ class Gamepad(Thread):
     self.modeHD='MAN'
     self.modeNAV='MAN'
 
+  def debug(self, *args):
+    print("debug")  
+    self.nav_pub_debug.publish("debug")
+    return True
     
 
   def connect(self):
