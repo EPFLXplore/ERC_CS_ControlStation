@@ -92,18 +92,15 @@ class App(Gtk.Application):
     rospy.Subscriber('mass',            Float32,           self.controller.callback_measures         )
 
     ##Power suplly avionics commands
-    rospy.Publisher('reset_power',      Bool,              self.controller.callback_reset_power      )
-    rospy.Publisher('switch_power',     Bool,              self.controller.callback_switch_power     )
-    rospy.Publisher('switch_raman',     Bool,              self.controller.callback_switch_raman     )
-    rospy.Publisher('switch_jetson',    Bool,              self.controller.callback_switch_jetson    )
-    rospy.Publisher('switch_LIDAR',     Bool,              self.controller.callback_switch_LIDAR     )
-    rospy.Publisher('switch_ethernet',  Bool,              self.controller.callback_switch_ethernet  )
+    rospy.Publisher('reset_power',      Bool,              self.controller.callback_reset_power      , queue_size=1)
+    rospy.Publisher('switch_power',     Bool,              self.controller.callback_switch_power     , queue_size=1)
+    rospy.Publisher('switch_raman',     Bool,              self.controller.callback_switch_raman     , queue_size=1)
+    rospy.Publisher('switch_jetson',    Bool,              self.controller.callback_switch_jetson    , queue_size=1)
+    rospy.Publisher('switch_LIDAR',     Bool,              self.controller.callback_switch_LIDAR     , queue_size=1)
+    rospy.Publisher('switch_ethernet',  Bool,              self.controller.callback_switch_ethernet  , queue_size=1)
     rospy.Subscriber('system',          Float32MultiArray, self.controller.callback_system           )
     rospy.Subscriber('voltages',        Float32MultiArray, self.controller.callback_voltages         )
     rospy.Subscriber('currents',        Float32MultiArray, self.controller.callback_currents         )
-
-
-
 
     #NAVIGATION
     rospy.Subscriber('waypoint',         Float32MultiArray, self.controller.callback_waypoint        )
