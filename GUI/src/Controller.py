@@ -106,7 +106,6 @@ class Controller():
 
     def on_nav_state_changed(self, *args):
       try:
-        print(self.state)
         self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(0.3)
         self.state = self.app.view.nav_state.get_active()
         self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(1.0)
@@ -127,8 +126,6 @@ class Controller():
       Model.barotemp[0] = msg.data[0]
       Model.barotemp[1] = msg.data[1]
       
-      # Controller.barotemp[0] = msg.data[0]
-      # Controller.barotemp[1] = msg.data[1]
 
     def callback_accelmag(msg):
         pass

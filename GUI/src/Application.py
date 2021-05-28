@@ -48,9 +48,7 @@ class App(Gtk.Application):
     Gtk.Application.__init__(self)
     self.model = Model()
     self.view  = View(self)
-    self.controller = Controller(self)
-    #initialization of the Control Station ROS node
-    # rospy.init_node('control_station', anonymous=True)   
+    self.controller = Controller(self) 
     #stopwatch initialization
     self.stopwatch = stp()
 
@@ -70,7 +68,6 @@ class App(Gtk.Application):
   def do_startup(self):
     
     Gtk.Application.do_startup(self)
-    # self.controller = controller
     self.view.NAV.connect("delete-event", self.on_quit)
     self.view.SCIENCE.connect("delete-event", self.on_quit)
     self.view.AV.connect("delete-event", self.on_quit)
@@ -81,7 +78,6 @@ class App(Gtk.Application):
     GLib.idle_add(self.view.display_science)
     GLib.idle_add(self.view.display_handling_device)
     GLib.idle_add(self.view.display_navigation)
-    GLib.idle_add(self.controller.gamepad.debug)
     self.stopwatch.start()
 
     #ROS TOPICS SUBSCRIPTION
@@ -113,11 +109,6 @@ class App(Gtk.Application):
     #SCIENCE
     #TODO: Controls for science
     #HANDLING DEVICE
-
-    #TODO: Controls for Handling Device
-
-    #ROS_TOPICS PUBLISHERS
-
 
     #LOGGERS
     avionics_logger       = App.setup_logger('avlogger', "../Logs/avionics.log",logging.INFO    )
