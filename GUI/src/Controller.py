@@ -1,10 +1,38 @@
 from threading              import Thread
+from genpy.message import check_type
 from model                  import Model
 import Gamepad as gamepad
 import rospy
 import gi
+from enum import IntEnum
+import time
+from std_msgs.msg           import Int32MultiArray
+
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+#=====================================================
+#FINITE STATE MACHINE
+
+class task(IntEnum):
+  IDLE        = 1
+  MAINTENANCE = 2
+  SCIENCE     = 3
+  PROBING     = 4
+  NAVIGATION  = 5
+  MANUAL      = 6
+  WAITING     = 7
+
+class instruction(IntEnum):
+  WORK   = 1
+  WAIT   = 2
+  STOP   = 3
+  RESUME = 4
+
+# ROVER_STATE    = task.IDLE
+# INSTRUCTION    = instruction.WORK
+# TASK_COMPLETED = False
+# CONFIRMATION   = 0
+#=====================================================
 '''
 Class Controller
 
@@ -19,6 +47,13 @@ Class Controller
 '''
 class Controller():
     
+    #=======================================================
+    ROVER_STATE    = task.IDLE
+    INSTRUCTION    = instruction.WORK
+    TASK_COMPLETED = False
+    CONFIRMATION   = 0
+    #=======================================================
+
     def __init__(self, Application):
       rospy.init_node('control_station', anonymous=True)
       self.rotation = 0.0
@@ -50,12 +85,8 @@ class Controller():
         self.t_game = Thread(target = self.gamepad.run, daemon =True)
         self.t_game.start()
 
-    def on_NAV_clicked(self, *args):
-      self.app.view.NAV.present()
-      Gtk.Application.get_active_window(self.app).hide()
-      self.gamepad.cmode('NAV')
 
-    def on_NAV2_clicked(self, *args):
+    def on_navigation_clicked(self, *args):
       self.app.view.NAV.present()
       Gtk.Application.get_active_window(self.app).hide()
       self.gamepad.cmode('NAV')
@@ -63,21 +94,12 @@ class Controller():
     def on_HD_clicked(self, *args):
       self.gamepad.cmode('HD')
 
-    def on_SCIENCE_clicked(self, *args):
+    def on_science_clicked(self, *args):
       self.app.view.SCIENCE.present()
       Gtk.Application.get_active_window(self.app).hide()
       self.gamepad.cmode('SC')
 
-    def on_SCIENCE2_clicked(self, *args):
-      self.app.view.SCIENCE.present()
-      Gtk.Application.get_active_window(self.app).hide()
-      self.gamepad.cmode('SC')
-
-    def on_AV1_clicked(self, *args):
-      self.app.view.AV.present()
-      Gtk.Application.get_active_window(self.app).hide()
-
-    def on_AV2_clicked(self, *args):
+    def on_avionics_clicked(self, *args):
       self.app.view.AV.present()
       Gtk.Application.get_active_window(self.app).hide()
 
@@ -107,7 +129,9 @@ class Controller():
     def on_nav_state_changed(self, *args):
       try:
         self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(0.3)
-        self.state = self.app.view.nav_state.get_active()
+        
+        self.state = self.app.view.nav_state.get_active() +1
+        Controller.ROVER_STATE = self.state +1
         self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(1.0)
       except:
         self.state = 0
@@ -115,18 +139,104 @@ class Controller():
     def on_capture_image_button_nav_clicked(self, *args):
       self.nav_image_index+=1
       self.app.view.capture_image(self.nav_image_index)
+
+    def wait_confirmation():
+      s=0
+      while(s < 1):
+        if(Controller.CONFIRMATION):
+          s = 1
+        else:
+          s += 0.3
+          time.sleep(0.3)
+
+    def check_reception_error(self):
+      if(Controller.CONFIRMATION == 0):
+        
+        self.app.view.warning_icon.set_opacity(1.0)
+        self.app.view.ok_icon.set_opacity(0.3)
+        Controller.ROVER_STATE = task.IDLE
+        Controller.INSTRUCTION = instruction.WORK
+        state = [Controller.ROVER_STATE, Controller.INSTRUCTION]
+        state = Int32MultiArray(data = state)
+        self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(0.3)
+        self.state = 0
+        self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(1.0)
+        self.app.state_pub.publish(state)
+
+
+    def on_start_clicked(self, *args):
+      print("debug")
+      if(Controller.ROVER_STATE != task.IDLE):
+        self.app.view.warning_icon.set_opacity(0.3)
+        self.app.view.ok_icon.set_opacity(1.0)
+        Controller.INSTRUCTION = instruction.WORK.value
+        print(Controller.ROVER_STATE)
+        print(Controller.INSTRUCTION)
+        array = [Controller.ROVER_STATE, Controller.INSTRUCTION]
+        # array = [3, 1]
+        state = Int32MultiArray(data= array)
+        # state2.data[0] = state[0]
+        # state2.data[1] = state[1]
+        self.app.state_pub.publish(state)
+        Controller.wait_confirmation()
+        self.check_reception_error()
+
+    def on_wait_clicked(self, *args):
+
+      if(Controller.ROVER_STATE != task.IDLE and Controller.ROVER_STATE != task.MANUAL):
+        Controller.INSTRUCTION = instruction.WAIT
+        state = [Controller.ROVER_STATE, Controller.INSTRUCTION]
+        self.app.state_pub.publish(state)
+        Controller.wait_confirmation()
+        self.check_reception_error()
+
+    def on_resume_clicked(self, *args):
+
+      if(Controller.ROVER_STATE == task.WAITING):
+        Controller.INSTRUCTION = instruction.RESUME
+        state = [Controller.ROVER_STATE, Controller.INSTRUCTION]
+        self.app.state_pub.publish(state)
+        Controller.wait_confirmation()
+        self.check_reception_error()
+
+    def on_stop_clicked(self, *args):
+
+      if(Controller.ROVER_STATE != task.MANUAL):
+        Controller.INSTRUCTION = instruction.STOP
+        state = [Controller.ROVER_STATE, Controller.INSTRUCTION]
+        state = Int32MultiArray(data = state)
+        self.app.state_pub.publish(state)
+        Controller.ROVER_STATE = task.IDLE
+        self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(0.3)
+        self.state = 0
+        self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(1.0)
+        Controller.wait_confirmation()
+        self.check_reception_error()
       
       
 
 #=======================================================================
 #ROS CALLBACKS
+    #===================================================================
+    #FINITE STATE MACHINE
+    def callback_confirm(self, msg):
+      if(msg.data):
+        print("debug confirmed")
+        Controller.CONFIRMATION = 1
 
+    def callback_completed(self, msg):
+      if(msg):
+        Controller.ROVER_STATE = task.IDLE
+        self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(0.3)
+        self.state = 0
+        self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(1.0)
+
+    #====================================================================
     #AVIONICS
     def callback_barotemp(self, msg):
       Model.barotemp[0] = msg.data[0]
       Model.barotemp[1] = msg.data[1]
       
-
     def callback_accelmag(msg):
         pass
 
@@ -145,18 +255,7 @@ class Controller():
     def callback_measures(msg):
         pass
 
-    def callback_reset_power(msg):
-      pass
-    def callback_switch_power(msg):
-      pass
-    def callback_switch_raman(msg):
-      pass
-    def callback_switch_jetson(msg):
-      pass
-    def callback_switch_LIDAR(msg):
-      pass
-    def callback_switch_ethernet(msg):
-      pass
+    #====================================================================
     #NAVIGATION
     def callback_waypoint(msg):
       pass

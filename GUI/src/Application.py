@@ -22,12 +22,12 @@ from Stopwatch              import Stopwatch as stp
 from model                  import Model
 from rospy.impl.tcpros_base import DEFAULT_BUFF_SIZE
 from view                   import View
-from std_msgs.msg           import String, Float32, Float32MultiArray, Bool, Int32
+from std_msgs.msg           import String, Float32, Float32MultiArray, Bool, Int32, Int32MultiArray
 from nav_msgs.msg           import Odometry
 import sys
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GLib
-#==============================================================
+#================================================================
 
 '''
 Class: App
@@ -72,15 +72,21 @@ class App(Gtk.Application):
     self.view.SCIENCE.connect("delete-event", self.on_quit)
     self.view.AV.connect("delete-event", self.on_quit)
     self.view.builder.connect_signals(self.controller)
-    GLib.idle_add(self.view.show_frame)
-    GLib.idle_add(self.view.show_time)
-    GLib.idle_add(self.view.display_avionics)
-    GLib.idle_add(self.view.display_science)
-    GLib.idle_add(self.view.display_handling_device)
-    GLib.idle_add(self.view.display_navigation)
+    # GLib.idle_add(self.view.show_frame)
+    # GLib.idle_add(self.view.show_time)
+    # GLib.idle_add(self.view.display_avionics)
+    # GLib.idle_add(self.view.display_science)
+    # GLib.idle_add(self.view.display_handling_device)
+    # GLib.idle_add(self.view.display_navigation)
     self.stopwatch.start()
 
-    #ROS TOPICS SUBSCRIPTION
+    #=========================================================================================================
+    #ROS TOPICS
+    #FINITE STATE MACHINE
+    rospy.Subscriber('confirmation',    Int32,             self.controller.callback_confirm          )
+    rospy.Subscriber('completed',       Int32,             self.controller.callback_completed        )
+    self.state_pub        = rospy.Publisher('state'    ,        Int32MultiArray,   queue_size=1      )
+
     #AVIONICS
     rospy.Subscriber('barotemp',        Float32MultiArray, self.controller.callback_barotemp         )
     rospy.Subscriber('accelmag',        Float32MultiArray, self.controller.callback_accelmag         )
@@ -88,12 +94,12 @@ class App(Gtk.Application):
     rospy.Subscriber('mass',            Float32,           self.controller.callback_measures         )
 
     ##Power suplly avionics commands
-    rospy.Publisher('reset_power',      Bool,              self.controller.callback_reset_power      , queue_size=1)
-    rospy.Publisher('switch_power',     Bool,              self.controller.callback_switch_power     , queue_size=1)
-    rospy.Publisher('switch_raman',     Bool,              self.controller.callback_switch_raman     , queue_size=1)
-    rospy.Publisher('switch_jetson',    Bool,              self.controller.callback_switch_jetson    , queue_size=1)
-    rospy.Publisher('switch_LIDAR',     Bool,              self.controller.callback_switch_LIDAR     , queue_size=1)
-    rospy.Publisher('switch_ethernet',  Bool,              self.controller.callback_switch_ethernet  , queue_size=1)
+    self.power_reset_pub   = rospy.Publisher('reset_power',      Bool,    queue_size=1)
+    self.power_switch_pub  = rospy.Publisher('switch_power',     Bool,    queue_size=1)
+    self.raman_switch_pub  = rospy.Publisher('switch_raman',     Bool,    queue_size=1)
+    self.jetson_switch_pub = rospy.Publisher('switch_jetson',    Bool,    queue_size=1)
+    self.LIDAR_switch_pub  = rospy.Publisher('switch_LIDAR',     Bool,    queue_size=1)
+    self.ethernet_switch   = rospy.Publisher('switch_ethernet',  Bool,    queue_size=1)
     rospy.Subscriber('system',          Float32MultiArray, self.controller.callback_system           )
     rospy.Subscriber('voltages',        Float32MultiArray, self.controller.callback_voltages         )
     rospy.Subscriber('currents',        Float32MultiArray, self.controller.callback_currents         )
@@ -110,11 +116,12 @@ class App(Gtk.Application):
     #TODO: Controls for science
     #HANDLING DEVICE
 
+    #==========================================================================================================
     #LOGGERS
-    avionics_logger       = App.setup_logger('avlogger', "../Logs/avionics.log",logging.INFO    )
+    avionics_logger       = App.setup_logger('avlogger', "../Logs/avionics.log",    logging.INFO)
     navigation_logger     = App.setup_logger('navlogger', "../Logs/navigation.log", logging.INFO)
-    hd_logger             = App.setup_logger('hdlogger', "../Logs/HD.log",logging.INFO          )
-    science_logger        = App.setup_logger('sclogger', "../Logs/science.log", logging.INFO    )
+    hd_logger             = App.setup_logger('hdlogger', "../Logs/HD.log",          logging.INFO)
+    science_logger        = App.setup_logger('sclogger', "../Logs/science.log",     logging.INFO)
 
 
  

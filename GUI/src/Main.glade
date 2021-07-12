@@ -102,7 +102,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
-                                        <signal name="clicked" handler="on_NAV2_clicked" swapped="no"/>
+                                        <signal name="clicked" handler="on_navigation_clicked" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="x">9</property>
@@ -152,7 +152,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
-                                        <signal name="clicked" handler="on_SCIENCE2_clicked" swapped="no"/>
+                                        <signal name="clicked" handler="on_science_clicked" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="x">9</property>
@@ -2343,7 +2343,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
-                                        <signal name="clicked" handler="on_SCIENCE_clicked" swapped="no"/>
+                                        <signal name="clicked" handler="on_science_clicked" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="x">9</property>
@@ -2427,7 +2427,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
-                                        <signal name="clicked" handler="on_AV1_clicked" swapped="no"/>
+                                        <signal name="clicked" handler="on_avionics_clicked" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="x">9</property>
@@ -2647,7 +2647,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <child>
-                                  <object class="GtkButton">
+                                  <object class="GtkButton" id="stop">
                                     <property name="label" translatable="yes">STOP</property>
                                     <property name="name">Emergency</property>
                                     <property name="width_request">70</property>
@@ -2655,27 +2655,14 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
+                                    <signal name="clicked" handler="on_stop_clicked" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="x">415</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkButton">
-                                    <property name="label" translatable="yes">START</property>
-                                    <property name="name">start_button</property>
-                                    <property name="width_request">70</property>
-                                    <property name="height_request">70</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="x">30</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkButton">
+                                  <object class="GtkButton" id="wait">
                                     <property name="label" translatable="yes">WAIT</property>
                                     <property name="name">wait_button</property>
                                     <property name="width_request">70</property>
@@ -2683,13 +2670,14 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
+                                    <signal name="clicked" handler="on_wait_clicked" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="x">160</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkButton">
+                                  <object class="GtkButton" id="resume">
                                     <property name="label" translatable="yes">RESUME</property>
                                     <property name="name">resume_button</property>
                                     <property name="width_request">70</property>
@@ -2697,9 +2685,25 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
+                                    <signal name="clicked" handler="on_resume_clicked" swapped="no"/>
                                   </object>
                                   <packing>
-                                    <property name="x">274</property>
+                                    <property name="x">278</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="start">
+                                    <property name="label" translatable="yes">START</property>
+                                    <property name="name">start_button</property>
+                                    <property name="width_request">70</property>
+                                    <property name="height_request">70</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <signal name="clicked" handler="on_start_clicked" swapped="no"/>
+                                  </object>
+                                  <packing>
+                                    <property name="x">30</property>
                                   </packing>
                                 </child>
                               </object>
@@ -3051,7 +3055,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkImage">
+                                  <object class="GtkImage" id="warning_icon_nav">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="opacity">0.29999999999999999</property>
@@ -5184,7 +5188,7 @@ SubSampling
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkButton">
+                                  <object class="GtkButton" id="start_sc">
                                     <property name="label" translatable="yes">START</property>
                                     <property name="name">start_button</property>
                                     <property name="width_request">70</property>
@@ -5192,6 +5196,7 @@ SubSampling
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
+                                    <signal name="clicked" handler="on_start_clicked" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="x">595</property>
@@ -5275,7 +5280,7 @@ SubSampling
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
-                                        <signal name="clicked" handler="on_NAV_clicked" swapped="no"/>
+                                        <signal name="clicked" handler="on_navigation_clicked" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="x">9</property>
@@ -5408,7 +5413,7 @@ SubSampling
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
-                                        <signal name="clicked" handler="on_AV2_clicked" swapped="no"/>
+                                        <signal name="clicked" handler="on_avionics_clicked" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="x">9</property>

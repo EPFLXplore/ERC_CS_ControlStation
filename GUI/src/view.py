@@ -7,6 +7,13 @@ import cv2
 from model 		   import Model
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk, GdkPixbuf
+#=========================================================
+
+NAV_CAMERA_1_ADDRESS 	= "rtsp://xplore1:xplore@192.168.1.50:554/s1"
+NAV_CAMERA_2_ADDRESS 	= "rtsp://xplore1:xplore@192.168.1.51:554/s1"
+SCIENCE_CAMERA_ADDRESS 	= "rtsp://root:Plokmijn123!@192.168.1.57/axis-media/media.amp"
+
+#=========================================================
 
 '''
 View Class
@@ -33,8 +40,8 @@ class View:
 		
 		
 
-		self.capture = cv2.VideoCapture("rtsp://xplore1:xplore@192.168.1.50:554/s1")
-		self.capture2 = cv2.VideoCapture("rtsp://root:Plokmijn123!@192.168.1.57/axis-media/media.amp")
+		self.capture = cv2.VideoCapture(NAV_CAMERA_1_ADDRESS)
+		self.capture2 = cv2.VideoCapture(SCIENCE_CAMERA_ADDRESS)
 		self.frame = 0
 
 		#Video capture
@@ -73,6 +80,9 @@ class View:
 		self.control_mode 			= self.builder.get_object("kinematics_mode_label")
 		#NAV
 		self.nav_state 				= self.builder.get_object("nav_state")
+		self.ok_icon 				= self.builder.get_object("ok_icon_nav")
+		self.warning_icon 			= self.builder.get_object("warning_icon_nav")
+		self.error_icon 			= self.builder.get_object("error_icon_nav")
 		#stopwatch data
 		self.seconds_nav 			= self.builder.get_object("seconds_nav")
 		self.minutes_nav 			= self.builder.get_object("minutes_nav")
