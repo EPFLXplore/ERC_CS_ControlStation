@@ -3065,6 +3065,20 @@
                                     <property name="x">128</property>
                                   </packing>
                                 </child>
+                                <child>
+                                  <object class="GtkButton" id="switch_cam">
+                                    <property name="label" translatable="yes">SWITCH CAM</property>
+                                    <property name="name">imageCapture</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <signal name="clicked" handler="on_switch_cam_clicked" swapped="no"/>
+                                  </object>
+                                  <packing>
+                                    <property name="x">171</property>
+                                    <property name="y">139</property>
+                                  </packing>
+                                </child>
                               </object>
                             </child>
                           </object>
@@ -3527,7 +3541,7 @@
                         <property name="height_request">25</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">ROVER</property>
+                        <property name="label" translatable="yes">ROVER 2</property>
                       </object>
                       <packing>
                         <property name="x">1180</property>
@@ -4183,13 +4197,13 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="CAMERA1">
                         <property name="name">CAMERA_LABEL</property>
                         <property name="width_request">640</property>
                         <property name="height_request">25</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">HANDLING DEVICE</property>
+                        <property name="label" translatable="yes">ROVER 1</property>
                       </object>
                       <packing>
                         <property name="x">530</property>

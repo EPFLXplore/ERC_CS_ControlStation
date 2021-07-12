@@ -47,6 +47,22 @@ class Controller():
         4: "navigation_label",
         5: "manual_label",
       }
+      self.sc_state_switch = {
+        0: "idle_label1",
+        1: "maintenance_label1",
+        2: "science_label1",
+        3: "probing_label1",
+        4: "navigation_label1",
+        5: "manual_label1",
+      }
+      self.av_state_switch = {
+        0: "idle_label2",
+        1: "maintenance_label2",
+        2: "science_label2",
+        3: "probing_label2",
+        4: "navigation_label2",
+        5: "manual_label2",
+      }
       self.state = 0
 
       #HD
@@ -119,6 +135,9 @@ class Controller():
       self.nav_image_index+=1
       self.app.view.capture_image(self.nav_image_index)
 
+    def on_switch_cam_clicked(self, *args):
+      pass
+
     def wait_confirmation():
       s=0
       while(s < 1):
@@ -140,22 +159,19 @@ class Controller():
         self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(0.3)
         self.state = 0
         self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(1.0)
+        # self.nav_state_switch.set_active_id(0)
+        
         self.app.state_pub.publish(state)
 
 
     def on_start_clicked(self, *args):
-      print("debug")
+      
       if(Controller.ROVER_STATE != task.IDLE):
         self.app.view.warning_icon.set_opacity(0.3)
         self.app.view.ok_icon.set_opacity(1.0)
         Controller.INSTRUCTION = instruction.WORK.value
-        print(Controller.ROVER_STATE)
-        print(Controller.INSTRUCTION)
         array = [Controller.ROVER_STATE, Controller.INSTRUCTION]
-        # array = [3, 1]
-        state = Int32MultiArray(data= array)
-        # state2.data[0] = state[0]
-        # state2.data[1] = state[1]
+        state = Int32MultiArray(data=array)
         self.app.state_pub.publish(state)
         Controller.wait_confirmation()
         self.check_reception_error()
