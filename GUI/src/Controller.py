@@ -7,32 +7,11 @@ import gi
 from enum import IntEnum
 import time
 from std_msgs.msg           import Int32MultiArray
+from Globals import *
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-#=====================================================
-#FINITE STATE MACHINE
 
-class task(IntEnum):
-  IDLE        = 1
-  MAINTENANCE = 2
-  SCIENCE     = 3
-  PROBING     = 4
-  NAVIGATION  = 5
-  MANUAL      = 6
-  WAITING     = 7
-
-class instruction(IntEnum):
-  WORK   = 1
-  WAIT   = 2
-  STOP   = 3
-  RESUME = 4
-
-# ROVER_STATE    = task.IDLE
-# INSTRUCTION    = instruction.WORK
-# TASK_COMPLETED = False
-# CONFIRMATION   = 0
-#=====================================================
 '''
 Class Controller
 
