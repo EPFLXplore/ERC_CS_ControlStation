@@ -22,7 +22,7 @@ from Stopwatch              import Stopwatch as stp
 from model                  import Model
 from rospy.impl.tcpros_base import DEFAULT_BUFF_SIZE
 from view                   import View
-from std_msgs.msg           import String, Float32, Float32MultiArray, Bool, Int32, Int32MultiArray
+from std_msgs.msg           import String, Float32, Float32MultiArray, Bool, Int32, UInt8MultiArray
 from nav_msgs.msg           import Odometry
 import sys
 gi.require_version('Gtk', '3.0')
@@ -85,7 +85,7 @@ class App(Gtk.Application):
     #FINITE STATE MACHINE
     rospy.Subscriber('confirmation',    Int32,             self.controller.callback_confirm          )
     rospy.Subscriber('completed',       Int32,             self.controller.callback_completed        )
-    self.state_pub        = rospy.Publisher('state'    ,        Int32MultiArray,   queue_size=1      )
+    self.state_pub        = rospy.Publisher('state'    ,        UInt8MultiArray,   queue_size=1      )
 
     #AVIONICS
     rospy.Subscriber('barotemp',        Float32MultiArray, self.controller.callback_barotemp         )
@@ -134,8 +134,8 @@ class App(Gtk.Application):
   def on_quit(self, action, param):
     Model.run_thread = False
     self.stopwatch.join()
-    self.view.capture.release()
-    self.view.out.release()
+    # self.view.capture.release()
+    # self.view.out.release()
     self.quit()
 
 '''

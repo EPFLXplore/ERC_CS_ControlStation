@@ -1435,7 +1435,7 @@
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel" id="waiting_label1">
+                                      <object class="GtkLabel" id="navigation_label1">
                                         <property name="name">Waiting</property>
                                         <property name="width_request">150</property>
                                         <property name="height_request">44</property>
@@ -1450,7 +1450,7 @@
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel" id="working_label1">
+                                      <object class="GtkLabel" id="science_label1">
                                         <property name="name">Working</property>
                                         <property name="width_request">150</property>
                                         <property name="height_request">44</property>
@@ -1480,7 +1480,7 @@
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel" id="resume_label1">
+                                      <object class="GtkLabel" id="manual_label1">
                                         <property name="name">Resume</property>
                                         <property name="width_request">150</property>
                                         <property name="height_request">44</property>
@@ -1495,7 +1495,7 @@
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel" id="wait_label1">
+                                      <object class="GtkLabel" id="probing_label1">
                                         <property name="name">Wait</property>
                                         <property name="width_request">150</property>
                                         <property name="height_request">44</property>
@@ -1510,7 +1510,7 @@
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel" id="start_label1">
+                                      <object class="GtkLabel" id="maintenance_label1">
                                         <property name="name">Start</property>
                                         <property name="width_request">150</property>
                                         <property name="height_request">44</property>
@@ -4906,13 +4906,14 @@ SIZE</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="nav_state2">
+                                  <object class="GtkComboBox" id="sc_state">
                                     <property name="name">navState</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="model">state_liststore</property>
                                     <property name="has_entry">True</property>
                                     <property name="entry_text_column">0</property>
+                                    <signal name="changed" handler="on_sc_state_changed" swapped="no"/>
                                     <child internal-child="entry">
                                       <object class="GtkEntry">
                                         <property name="name">entry</property>
@@ -4951,6 +4952,7 @@ SIZE</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
+                                    <signal name="clicked" handler="on_stop_clicked" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="x">696</property>
@@ -4966,7 +4968,6 @@ SIZE</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
-                                    <signal name="clicked" handler="on_Tube1_button_clicked" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="x">157</property>
@@ -4993,7 +4994,7 @@ SIZE</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel" id="waiting_label2">
+                                      <object class="GtkLabel" id="navigation_label2">
                                         <property name="name">Waiting</property>
                                         <property name="width_request">150</property>
                                         <property name="height_request">44</property>
@@ -5008,7 +5009,7 @@ SIZE</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel" id="working_label2">
+                                      <object class="GtkLabel" id="science_label2">
                                         <property name="name">Working</property>
                                         <property name="width_request">150</property>
                                         <property name="height_request">44</property>
@@ -5023,7 +5024,7 @@ SIZE</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel" id="abort_label2">
+                                      <object class="GtkLabel" id="waiting_label2">
                                         <property name="name">Abort</property>
                                         <property name="width_request">150</property>
                                         <property name="height_request">44</property>
@@ -5038,7 +5039,7 @@ SIZE</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel" id="resume_label2">
+                                      <object class="GtkLabel" id="manual_label2">
                                         <property name="name">Resume</property>
                                         <property name="width_request">150</property>
                                         <property name="height_request">44</property>
@@ -5053,7 +5054,7 @@ SIZE</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel" id="wait_label2">
+                                      <object class="GtkLabel" id="probing_label2">
                                         <property name="name">Wait</property>
                                         <property name="width_request">150</property>
                                         <property name="height_request">44</property>
@@ -5068,7 +5069,7 @@ SIZE</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel" id="start_label2">
+                                      <object class="GtkLabel" id="maintenance_label2">
                                         <property name="name">Start</property>
                                         <property name="width_request">150</property>
                                         <property name="height_request">44</property>
@@ -5225,6 +5226,7 @@ SubSampling
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
+                                    <signal name="clicked" handler="on_wait_clicked" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="x">694</property>
@@ -5239,6 +5241,7 @@ SubSampling
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
+                                    <signal name="clicked" handler="on_resume_clicked" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="x">595</property>

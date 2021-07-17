@@ -40,17 +40,17 @@ class View:
 		
 		
 
-		self.capture = cv2.VideoCapture(NAV_CAMERA_1_ADDRESS)
-		self.capture2 = cv2.VideoCapture(SCIENCE_CAMERA_ADDRESS)
-		self.frame = 0
+		# self.capture = cv2.VideoCapture(NAV_CAMERA_1_ADDRESS)
+		# self.capture2 = cv2.VideoCapture(SCIENCE_CAMERA_ADDRESS)
+		# self.frame = 0
 
 		#Video capture
-		fourcc 						= cv2.VideoWriter_fourcc(*'XVID')
-		self.out 					= cv2.VideoWriter('output.avi', 
-													  fourcc, 20.0,
-													(int(self.capture.get(3)), 
-													int(self.capture.get(4)))
-													) 
+		# fourcc 						= cv2.VideoWriter_fourcc(*'XVID')
+		# self.out 					= cv2.VideoWriter('output.avi', 
+		# 											  fourcc, 20.0,
+		# 											(int(self.capture.get(3)), 
+		# 											int(self.capture.get(4)))
+		# 											) 
 		
 		#Glade file setup
 		gladeFile 					= "Main.glade"
@@ -90,6 +90,7 @@ class View:
 		self.seconds_sc 			= self.builder.get_object("seconds_sc")
 		self.minutes_sc 			= self.builder.get_object("minutes_sc")
 		self.hours_sc 				= self.builder.get_object("hours_sc")
+		self.sc_state 				= self.builder.get_object("sc_state")
 
 	def show_frame(self,*args):
 
@@ -113,6 +114,8 @@ class View:
 
 
 		return True
+
+	
 
 	def capture_image(self, index):
 		name_format="nav_camera_capture%d.jpeg" % (index)
