@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 '''
-@file Controller.py
+@file Application.py
 
 @breif MVC Template
   This file initializes the Application, defines I/O behaviours.
@@ -72,12 +72,14 @@ class App(Gtk.Application):
     self.view.SCIENCE.connect("delete-event", self.on_quit)
     self.view.AV.connect("delete-event", self.on_quit)
     self.view.builder.connect_signals(self.controller)
-    # GLib.idle_add(self.view.show_frame)
-    # GLib.idle_add(self.view.show_time)
-    # GLib.idle_add(self.view.display_avionics)
-    # GLib.idle_add(self.view.display_science)
-    # GLib.idle_add(self.view.display_handling_device)
-    # GLib.idle_add(self.view.display_navigation)
+    self.view.camera_process_1.start()
+    self.view.camera_process_2.start()
+    GLib.idle_add(self.view.show)
+    GLib.idle_add(self.view.show_time)
+    GLib.idle_add(self.view.display_avionics)
+    GLib.idle_add(self.view.display_science)
+    GLib.idle_add(self.view.display_handling_device)
+    GLib.idle_add(self.view.display_navigation)
     self.stopwatch.start()
 
     #=========================================================================================================

@@ -1,12 +1,14 @@
 '''
 View.py
-	@Author: Emile Janho Dit Hreich
+	@Author: Emile Hreich
 '''
 import gi
 import cv2
 from model 		   import Model
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk, GdkPixbuf
+
+import multiprocessing as mp
 #=========================================================
 
 NAV_CAMERA_1_ADDRESS 	= "rtsp://xplore1:xplore@192.168.1.50:554/s1"
@@ -37,12 +39,17 @@ class View:
 		style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 		#provider.load_from_data('/src/style.css')
 		provider.load_from_path('style.css')
-		
-		
 
-		# self.capture = cv2.VideoCapture(NAV_CAMERA_1_ADDRESS)
-		# self.capture2 = cv2.VideoCapture(SCIENCE_CAMERA_ADDRESS)
-		# self.frame = 0
+		#==================================================================================
+		#streams processes
+		self.parent_conn_1, self.child_conn_1 = mp.Pipe()
+		self.parent_conn_2, self.child_conn_2 = mp.Pipe()
+
+		self.camera_process_1 = mp.Process(target=View.get_frame_1, args=(self.child_conn_1))
+		self.camera_process_2 = mp.Process(target=View.get_frame_2, args=(self.child_conn_2))
+		
+		#==================================================================================
+
 
 		#Video capture
 		# fourcc 						= cv2.VideoWriter_fourcc(*'XVID')
@@ -92,36 +99,54 @@ class View:
 		self.hours_sc 				= self.builder.get_object("hours_sc")
 		self.sc_state 				= self.builder.get_object("sc_state")
 
-	def show_frame(self,*args):
+	def show(self, *args):
+		framecp = self.parent_conn_1.recv()
+		framecp2 = self.parent_conn_2.recv()
 
-		#ret, self.frame = self.capture.read()
-		ret2, frame2 = self.capture2.read()
-		ims2 		 = cv2.resize(frame2, (640, 360))
-		framecp2 	 = cv2.cvtColor(ims2, cv2.COLOR_BGR2RGB)
-
-		#ims = cv2.resize(self.frame, (640, 360))
-		#framecp = cv2.cvtColor(ims, cv2.COLOR_BGR2RGB)
-		
-		#if(ret == True):
-			#self.out.write(self.frame)
-
-		#pb=GdkPixbuf.Pixbuf.new_from_data(framecp.tobytes(), GdkPixbuf.Colorspace.RGB, False, 8, framecp.shape[1], framecp.shape[0], framecp.shape[2]*framecp.shape[1])
+		pb=GdkPixbuf.Pixbuf.new_from_data(framecp.tobytes(), GdkPixbuf.Colorspace.RGB, False, 8, framecp.shape[1], framecp.shape[0], framecp.shape[2]*framecp.shape[1])
 		pb2=GdkPixbuf.Pixbuf.new_from_data(framecp2.tobytes(), GdkPixbuf.Colorspace.RGB, False, 8, framecp2.shape[1], framecp2.shape[0], framecp2.shape[2]*framecp2.shape[1])
 
-		#self.image1.set_from_pixbuf(pb.copy())
-		self.image3.set_from_pixbuf(pb2.copy())
-		
-
+		self.image1.set_from_pixbuf(pb.copy())
+		self.image2.set_from_pixbuf(pb2.copy())
 
 		return True
 
+	def get_frame_1(conn):
+
+		capture = cv2.VideoCapture(NAV_CAMERA_1_ADDRESS)
+		while True:
+			ret, frame = capture.read()
+			ims = cv2.resize(frame, (640, 360))
+			framecp = cv2.cvtColor(ims, cv2.COLOR_BGR2RGB)
+			
+			# if(ret == True):
+			# 	self.out.write(self.frame)
+			conn.send(framecp)
+
+			
+	def get_frame_1(conn):
+
+		capture2 = cv2.VideoCapture(NAV_CAMERA_2_ADDRESS)
+
+		while True:
+
+			ret2, frame2 = capture2.read()
+			ims2 		 = cv2.resize(frame2, (640, 360))
+			framecp2 	 = cv2.cvtColor(ims2, cv2.COLOR_BGR2RGB)
+			conn.send(framecp2)
+			
+			
+			
+
+	def show_handling_device_cam(self, *args):
+
+		return True
 	
 
 	def capture_image(self, index):
 		name_format="nav_camera_capture%d.jpeg" % (index)
 		print(name_format)
-		cv2.imwrite(name_format, self.frame) 
-		
+		cv2.imwrite(name_format, self.frame) 	
 	
 	def show_time(self, *args):
 		seconds ='{:02d}'.format(Model.time_array[2])
@@ -145,9 +170,6 @@ class View:
 		self.temperature_av.set_text(str(temperature))
 		#TODO
 		return True
-		
-		
-		
 		
 
 	def display_navigation(self, *args):
