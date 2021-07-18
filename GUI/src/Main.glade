@@ -4960,7 +4960,7 @@ SIZE</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkButton" id="Tube1_button">
+                                  <object class="GtkButton" id="tube_1_button">
                                     <property name="label" translatable="yes">T1</property>
                                     <property name="name">TUBE_BUTTON</property>
                                     <property name="width_request">60</property>
@@ -5089,7 +5089,7 @@ SIZE</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkButton">
+                                  <object class="GtkButton" id="tube_2_button">
                                     <property name="label" translatable="yes">T2</property>
                                     <property name="name">TUBE_BUTTON</property>
                                     <property name="width_request">60</property>
@@ -5104,7 +5104,7 @@ SIZE</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkButton">
+                                  <object class="GtkButton" id="tube_3_button">
                                     <property name="label" translatable="yes">T3</property>
                                     <property name="name">TUBE_BUTTON</property>
                                     <property name="width_request">60</property>
