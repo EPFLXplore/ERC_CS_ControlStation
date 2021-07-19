@@ -72,3 +72,32 @@ def compute_particle_volume(name):
       average+= (y1+y2)/2.0
 
   print(average/len(lines))
+
+def compute_mean_color(name):
+  A = cv.imread(name)
+  size_image = A.shape
+  R = A[:, :, 0]
+  G = A[:, :, 0]
+  B = A[:, :, 0]
+
+  black_index = 0
+  maxy = size_image[0]
+  maxx = size_image[1]
+
+  increment = [0, 0, 0]
+
+  for x in range(maxx):
+    for y in range(maxy):
+      color_vector = np.array([R(y, x), G(y, x), B(y, x)], dtype=np.int)
+      color_vector_float = np.array(color_vector, dtype=np.float)
+      if (color_vector[0] <= 60 & color_vector[1] <= 60 & color_vector[2] < 60):
+        black_index += 1
+      else:
+        increment = increment + color_vector_float
+
+  mean = increment / (maxx*maxy - black_index)
+  print(round(mean))
+
+
+
+
