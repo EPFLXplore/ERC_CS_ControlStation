@@ -6,7 +6,7 @@ import rospy
 import gi
 from enum import IntEnum
 import time
-from std_msgs.msg           import Int32MultiArray
+from std_msgs.msg           import UInt8MultiArray
 from Globals import *
 
 gi.require_version('Gtk', '3.0')
@@ -31,6 +31,7 @@ class Controller():
     INSTRUCTION    = instruction.WORK
     TASK_COMPLETED = False
     CONFIRMATION   = 0
+    PREVIOUS       = task.IDLE
     #=======================================================
 
     def __init__(self, Application):
@@ -46,8 +47,9 @@ class Controller():
         3: "probing_label",
         4: "navigation_label",
         5: "manual_label",
+        6: "waiting_label"
       }
-      self.sc_state_switch = {
+      self.av_state_switch = {
         0: "idle_label1",
         1: "maintenance_label1",
         2: "science_label1",
@@ -55,7 +57,7 @@ class Controller():
         4: "navigation_label1",
         5: "manual_label1",
       }
-      self.av_state_switch = {
+      self.sc_state_switch = {
         0: "idle_label2",
         1: "maintenance_label2",
         2: "science_label2",
@@ -122,14 +124,36 @@ class Controller():
       self.app.view.control_mode.set_text(self.controls)
 
     def on_nav_state_changed(self, *args):
-      try:
-        self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(0.3)
-        
-        self.state = self.app.view.nav_state.get_active() +1
-        Controller.ROVER_STATE = self.state +1
-        self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(1.0)
-      except:
-        self.state = 0
+
+        try:
+          self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(0.3)
+          self.app.view.builder.get_object(self.sc_state_switch.get(self.state)).set_opacity(0.3)
+          self.app.view.builder.get_object(self.av_state_switch.get(self.state)).set_opacity(0.3)
+
+          self.state = self.app.view.nav_state.get_active() +1
+          Controller.PREVIOUS = Controller.ROVER_STATE
+          Controller.ROVER_STATE = self.state +1
+          self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(1.0)
+          self.app.view.builder.get_object(self.sc_state_switch.get(self.state)).set_opacity(1.0)
+          self.app.view.builder.get_object(self.av_state_switch.get(self.state)).set_opacity(1.0)
+        except:
+          self.state = 0
+
+    def on_sc_state_changed(self, *args):
+        try:
+          self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(0.3)
+          self.app.view.builder.get_object(self.sc_state_switch.get(self.state)).set_opacity(0.3)
+          self.app.view.builder.get_object(self.av_state_switch.get(self.state)).set_opacity(0.3)
+
+          self.state = self.app.view.sc_state.get_active() +1
+          
+          Controller.PREVIOUS = Controller.ROVER_STATE
+          Controller.ROVER_STATE = self.state +1
+          self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(1.0)
+          self.app.view.builder.get_object(self.sc_state_switch.get(self.state)).set_opacity(1.0)
+          self.app.view.builder.get_object(self.av_state_switch.get(self.state)).set_opacity(1.0)
+        except:
+          self.state = 0
         
     def on_capture_image_button_nav_clicked(self, *args):
       self.nav_image_index+=1
@@ -155,13 +179,19 @@ class Controller():
         Controller.ROVER_STATE = task.IDLE
         Controller.INSTRUCTION = instruction.WORK
         state = [Controller.ROVER_STATE, Controller.INSTRUCTION]
-        state = Int32MultiArray(data = state)
+        state = UInt8MultiArray(data = state)
         self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(0.3)
+        self.app.view.builder.get_object(self.sc_state_switch.get(self.state)).set_opacity(0.3)
+        self.app.view.builder.get_object(self.av_state_switch.get(self.state)).set_opacity(0.3)
         self.state = 0
         self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(1.0)
-        # self.nav_state_switch.set_active_id(0)
+        self.app.view.builder.get_object(self.sc_state_switch.get(self.state)).set_opacity(1.0)
+        self.app.view.builder.get_object(self.av_state_switch.get(self.state)).set_opacity(1.0)
         
         self.app.state_pub.publish(state)
+        
+      else:
+        Controller.CONFIRMATION = 0
 
 
     def on_start_clicked(self, *args):
@@ -171,7 +201,7 @@ class Controller():
         self.app.view.ok_icon.set_opacity(1.0)
         Controller.INSTRUCTION = instruction.WORK.value
         array = [Controller.ROVER_STATE, Controller.INSTRUCTION]
-        state = Int32MultiArray(data=array)
+        state = UInt8MultiArray(data=array)
         self.app.state_pub.publish(state)
         Controller.wait_confirmation()
         self.check_reception_error()
@@ -179,18 +209,35 @@ class Controller():
     def on_wait_clicked(self, *args):
 
       if(Controller.ROVER_STATE != task.IDLE and Controller.ROVER_STATE != task.MANUAL):
-        Controller.INSTRUCTION = instruction.WAIT
-        state = [Controller.ROVER_STATE, Controller.INSTRUCTION]
-        self.app.state_pub.publish(state)
+        self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(0.3)
+        self.app.view.builder.get_object(self.sc_state_switch.get(self.state)).set_opacity(0.3)
+        self.app.view.builder.get_object(self.av_state_switch.get(self.state)).set_opacity(0.3)
+        self.app.view.builder.get_object("waiting_label").set_opacity(1)
+        self.app.view.builder.get_object("waiting_label1").set_opacity(1)
+        self.app.view.builder.get_object("waiting_label2").set_opacity(1)
+        Controller.INSTRUCTION = instruction.WAIT.value
+        Controller.PREVIOUS    = Controller.ROVER_STATE 
+        array = [Controller.ROVER_STATE, Controller.INSTRUCTION]
+        self.app.state_pub.publish(data=array)
+        Controller.ROVER_STATE = task.WAITING.value
         Controller.wait_confirmation()
         self.check_reception_error()
 
     def on_resume_clicked(self, *args):
+      
+      if(Controller.ROVER_STATE == task.WAITING.value):
+        print("debug resume")
+        Controller.INSTRUCTION = instruction.RESUME.value
 
-      if(Controller.ROVER_STATE == task.WAITING):
-        Controller.INSTRUCTION = instruction.RESUME
-        state = [Controller.ROVER_STATE, Controller.INSTRUCTION]
-        self.app.state_pub.publish(state)
+        Controller.ROVER_STATE = Controller.PREVIOUS
+        self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(1)
+        self.app.view.builder.get_object(self.sc_state_switch.get(self.state)).set_opacity(1)
+        self.app.view.builder.get_object(self.av_state_switch.get(self.state)).set_opacity(1)
+        self.app.view.builder.get_object("waiting_label").set_opacity(0.3)
+        self.app.view.builder.get_object("waiting_label1").set_opacity(0.3)
+        self.app.view.builder.get_object("waiting_label2").set_opacity(0.3)
+        array = [Controller.ROVER_STATE, Controller.INSTRUCTION]
+        self.app.state_pub.publish(data=array)
         Controller.wait_confirmation()
         self.check_reception_error()
 
@@ -199,12 +246,16 @@ class Controller():
       if(Controller.ROVER_STATE != task.MANUAL):
         Controller.INSTRUCTION = instruction.STOP
         state = [Controller.ROVER_STATE, Controller.INSTRUCTION]
-        state = Int32MultiArray(data = state)
+        state = UInt8MultiArray(data = state)
         self.app.state_pub.publish(state)
         Controller.ROVER_STATE = task.IDLE
         self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(0.3)
+        self.app.view.builder.get_object(self.av_state_switch.get(self.state)).set_opacity(0.3)
+        self.app.view.builder.get_object(self.sc_state_switch.get(self.state)).set_opacity(0.3)
         self.state = 0
         self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(1.0)
+        self.app.view.builder.get_object(self.av_state_switch.get(self.state)).set_opacity(1.0)
+        self.app.view.builder.get_object(self.sc_state_switch.get(self.state)).set_opacity(1.0)
         Controller.wait_confirmation()
         self.check_reception_error()
       
