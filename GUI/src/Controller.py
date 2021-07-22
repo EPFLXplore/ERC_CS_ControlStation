@@ -1,17 +1,15 @@
 from threading              import Thread
-from genpy.message import check_type
 from model                  import Model
 import Gamepad as gamepad
 import rospy
 import gi
-from enum import IntEnum
 import time
 from std_msgs.msg           import UInt8MultiArray
 from Globals import *
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-
+import numpy as np
 '''
 Class Controller
 
@@ -33,13 +31,15 @@ class Controller():
     CONFIRMATION   = 0
     PREVIOUS       = task.IDLE
     #=======================================================
-
+    #CONSTRUCTOR
     def __init__(self, Application):
       rospy.init_node('control_station', anonymous=True)
       self.rotation = 0.0
       self.nav_image_index=1
       self.app = Application
-      #NAV
+      self.cam = 1
+      self.cam_sc = 1
+      #FSM
       self.nav_state_switch = {
         0: "idle_label",
         1: "maintenance_label",
@@ -66,7 +66,20 @@ class Controller():
         5: "manual_label2",
       }
       self.state = 0
-
+      #Cameras
+      self.cameras = {
+        -1: "HANDLING DEVICE",
+        1 : "ROVER 1"
+      }
+      self.show_flag = True
+      self.flags = {
+        1: True,
+        -1 : False
+      }
+      self.sc_cam_flag = False
+      self.tube_filename = "" #name of the captured image
+      #SCIENCE
+      self.active_tube = 1
       #HD
       self.controls_hd_switch = {
         0: "Automatic",
@@ -81,15 +94,15 @@ class Controller():
       if self.gamepad.control != None:
         self.t_game = Thread(target = self.gamepad.run, daemon =True)
         self.t_game.start()
-
-
+    
+        #=======================================================
+    
+    #=======================================================
+    #TABBED NAVIGATION
     def on_navigation_clicked(self, *args):
       self.app.view.NAV.present()
       Gtk.Application.get_active_window(self.app).hide()
       self.gamepad.cmode('NAV')
-
-    def on_HD_clicked(self, *args):
-      self.gamepad.cmode('HD')
 
     def on_science_clicked(self, *args):
       self.app.view.SCIENCE.present()
@@ -99,11 +112,53 @@ class Controller():
     def on_avionics_clicked(self, *args):
       self.app.view.AV.present()
       Gtk.Application.get_active_window(self.app).hide()
+    
+    #=======================================================
+    #SCIENCE
+    def on_volume_evaluation_clicked(self, *args):
+      Model.compute_particle_volume()
+      #TODO
+      #Convert the resulting plot to an image
 
-    def on_SWITCH_clicked(self, *args):
-      self.rotation += 0.05
-      self.app.view.builder.get_object("compass").queue_draw()
-      print(self.app.model.time_array[2])
+    def on_particle_size_evaluation_clicked(self, *args):
+      #Convert the resulting plot to an image
+      pass
+
+    def on_color_analysis_clicked(self, *args):
+      #Convert the resulting plot to an image
+      pass
+
+    def on_sc_live_clicked(self, *args):
+      self.cam_sc = self.cam_sc * -1
+      self.sc_cam_flag = self.flags.get(self.cam_sc)
+
+    def on_sc_image_clicked(self, *args):
+      self.sc_cam_flag = False
+
+    def on_tube_1_button_clicked(self, *args):
+      self.tube_filename = "tube1.png"
+      self.active_tube = 1
+
+    def on_tube_2_button_clicked(self, *args):
+      self.tube_filename = "tube2.png"
+      self.active_tube = 2
+
+    def on_tube_3_button_clicked(self, *args):
+      self.tube_filename = "tube3.png"
+      self.active_tube = 3
+
+
+    def on_sc_capture_image_clicked(self, *args):
+      self.app.view.capture_image_sc(self.active_tube)
+
+    def on_sc_right_clicked(self, *args):
+      self.app.sc_controls_pub.publish(data=1)
+
+    def on_sc_left_clicked(self, *args):
+      self.app.sc_controls_pub.publish(data=-1)
+
+
+    #=======================================================
 
     def draw_compass(self, widget, ctx):
          ctx.set_line_width(3)
@@ -122,7 +177,8 @@ class Controller():
     def on_controls_hd_changed(self, *args):
       self.controls = self.controls_hd_switch.get(self.app.view.controls_hd.get_active(), "invalid index")
       self.app.view.control_mode.set_text(self.controls)
-
+    #=======================================================
+    #FSM
     def on_nav_state_changed(self, *args):
 
         try:
@@ -154,14 +210,7 @@ class Controller():
           self.app.view.builder.get_object(self.av_state_switch.get(self.state)).set_opacity(1.0)
         except:
           self.state = 0
-        
-    def on_capture_image_button_nav_clicked(self, *args):
-      self.nav_image_index+=1
-      self.app.view.capture_image(self.nav_image_index)
-
-    def on_switch_cam_clicked(self, *args):
-      pass
-
+    
     def wait_confirmation():
       s=0
       while(s < 1):
@@ -192,7 +241,6 @@ class Controller():
         
       else:
         Controller.CONFIRMATION = 0
-
 
     def on_start_clicked(self, *args):
       
@@ -258,6 +306,18 @@ class Controller():
         self.app.view.builder.get_object(self.sc_state_switch.get(self.state)).set_opacity(1.0)
         Controller.wait_confirmation()
         self.check_reception_error()
+    #=======================================================
+    #CAMERAS
+    def on_capture_image_button_nav_clicked(self, *args):
+      self.nav_image_index+=1
+      self.app.view.capture_image_nav(self.nav_image_index)
+
+    def on_switch_cam_clicked(self, *args):
+      self.cam = self.cam * -1
+      self.app.view.cam1.set_text(self.cameras.get(self.cam))
+      self.show_flag = self.flags.get(self.cam)
+    #=======================================================
+
       
       
 
@@ -273,6 +333,9 @@ class Controller():
     def callback_completed(self, msg):
       if(msg):
         Controller.ROVER_STATE = task.IDLE
+        
+        state = [Controller.ROVER_STATE, Controller.INSTRUCTION]
+        self.app.state_pub.publish(state)
         self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(0.3)
         self.state = 0
         self.app.view.builder.get_object(self.nav_state_switch.get(self.state)).set_opacity(1.0)
@@ -324,7 +387,13 @@ class Controller():
     def callback_current_position(msg):
       pass
     #SCIENCE
-
+    def callback_sc_mass(self, msg):
+      #TODO
+      pass
+    def callback_sc_image(self, msg):
+      self.app.view.capture_image_sc(self.active_tube)
+      
     #HANDLING DEVICE
-
+    def callback_hd_cam(self, msg):
+      Model.image = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, -1)
 

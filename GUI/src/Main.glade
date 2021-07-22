@@ -313,7 +313,7 @@
                                     <property name="label" translatable="yes">ACCELEROMETER</property>
                                   </object>
                                   <packing>
-                                    <property name="x">367</property>
+                                    <property name="x">310</property>
                                     <property name="y">45</property>
                                   </packing>
                                 </child>
@@ -325,7 +325,7 @@
                                     <property name="label" translatable="yes">MAGNETOMETER</property>
                                   </object>
                                   <packing>
-                                    <property name="x">367</property>
+                                    <property name="x">310</property>
                                     <property name="y">242</property>
                                   </packing>
                                 </child>
@@ -507,7 +507,7 @@
                                     <property name="orientation">vertical</property>
                                   </object>
                                   <packing>
-                                    <property name="x">394</property>
+                                    <property name="x">339</property>
                                     <property name="y">80</property>
                                   </packing>
                                 </child>
@@ -519,8 +519,7 @@
                                     <property name="can_focus">False</property>
                                   </object>
                                   <packing>
-                                    <property name="x">394</property>
-                                    <property name="y">130</property>
+                                    <property name="x">339</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -531,7 +530,7 @@
                                     <property name="can_focus">False</property>
                                   </object>
                                   <packing>
-                                    <property name="x">394</property>
+                                    <property name="x">339</property>
                                     <property name="y">170</property>
                                   </packing>
                                 </child>
@@ -543,7 +542,7 @@
                                     <property name="can_focus">False</property>
                                   </object>
                                   <packing>
-                                    <property name="x">394</property>
+                                    <property name="x">339</property>
                                     <property name="y">217</property>
                                   </packing>
                                 </child>
@@ -556,7 +555,7 @@
                                     <property name="orientation">vertical</property>
                                   </object>
                                   <packing>
-                                    <property name="x">394</property>
+                                    <property name="x">339</property>
                                     <property name="y">284</property>
                                   </packing>
                                 </child>
@@ -569,7 +568,7 @@
                                     <property name="orientation">vertical</property>
                                   </object>
                                   <packing>
-                                    <property name="x">394</property>
+                                    <property name="x">339</property>
                                     <property name="y">335</property>
                                   </packing>
                                 </child>
@@ -582,7 +581,7 @@
                                     <property name="orientation">vertical</property>
                                   </object>
                                   <packing>
-                                    <property name="x">394</property>
+                                    <property name="x">339</property>
                                     <property name="y">377</property>
                                   </packing>
                                 </child>
@@ -595,7 +594,7 @@
                                     <property name="orientation">vertical</property>
                                   </object>
                                   <packing>
-                                    <property name="x">394</property>
+                                    <property name="x">339</property>
                                     <property name="y">420</property>
                                   </packing>
                                 </child>
@@ -806,10 +805,10 @@
                                     <property name="name">LABEL_SM</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">A1</property>
+                                    <property name="label" translatable="yes">x</property>
                                   </object>
                                   <packing>
-                                    <property name="x">438</property>
+                                    <property name="x">395</property>
                                     <property name="y">119</property>
                                   </packing>
                                 </child>
@@ -818,10 +817,10 @@
                                     <property name="name">LABEL_SM</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">A2</property>
+                                    <property name="label" translatable="yes">y</property>
                                   </object>
                                   <packing>
-                                    <property name="x">438</property>
+                                    <property name="x">395</property>
                                     <property name="y">158</property>
                                   </packing>
                                 </child>
@@ -830,10 +829,10 @@
                                     <property name="name">LABEL_SM</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">A3</property>
+                                    <property name="label" translatable="yes">z</property>
                                   </object>
                                   <packing>
-                                    <property name="x">438</property>
+                                    <property name="x">395</property>
                                     <property name="y">205</property>
                                   </packing>
                                 </child>
@@ -845,7 +844,7 @@
                                     <property name="label" translatable="yes">M1</property>
                                   </object>
                                   <packing>
-                                    <property name="x">438</property>
+                                    <property name="x">395</property>
                                     <property name="y">323</property>
                                   </packing>
                                 </child>
@@ -857,7 +856,7 @@
                                     <property name="label" translatable="yes">M2</property>
                                   </object>
                                   <packing>
-                                    <property name="x">438</property>
+                                    <property name="x">395</property>
                                     <property name="y">367</property>
                                   </packing>
                                 </child>
@@ -869,7 +868,7 @@
                                     <property name="label" translatable="yes">M3</property>
                                   </object>
                                   <packing>
-                                    <property name="x">438</property>
+                                    <property name="x">395</property>
                                     <property name="y">409</property>
                                   </packing>
                                 </child>
@@ -881,7 +880,7 @@
                                     <property name="label" translatable="yes">00.0</property>
                                   </object>
                                   <packing>
-                                    <property name="x">483</property>
+                                    <property name="x">432</property>
                                     <property name="y">118</property>
                                   </packing>
                                 </child>
@@ -893,7 +892,7 @@
                                     <property name="label" translatable="yes">00.0</property>
                                   </object>
                                   <packing>
-                                    <property name="x">483</property>
+                                    <property name="x">432</property>
                                     <property name="y">160</property>
                                   </packing>
                                 </child>
@@ -905,7 +904,7 @@
                                     <property name="label" translatable="yes">00.0</property>
                                   </object>
                                   <packing>
-                                    <property name="x">483</property>
+                                    <property name="x">432</property>
                                     <property name="y">204</property>
                                   </packing>
                                 </child>
@@ -917,7 +916,7 @@
                                     <property name="label" translatable="yes">00.0</property>
                                   </object>
                                   <packing>
-                                    <property name="x">483</property>
+                                    <property name="x">432</property>
                                     <property name="y">322</property>
                                   </packing>
                                 </child>
@@ -929,7 +928,7 @@
                                     <property name="label" translatable="yes">00.0</property>
                                   </object>
                                   <packing>
-                                    <property name="x">483</property>
+                                    <property name="x">432</property>
                                     <property name="y">366</property>
                                   </packing>
                                 </child>
@@ -941,7 +940,7 @@
                                     <property name="label" translatable="yes">00.0</property>
                                   </object>
                                   <packing>
-                                    <property name="x">483</property>
+                                    <property name="x">432</property>
                                     <property name="y">408</property>
                                   </packing>
                                 </child>
@@ -1300,6 +1299,187 @@
                                   <packing>
                                     <property name="x">885</property>
                                     <property name="y">408</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="name">LABEL_SM</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">POTENTIOMETER</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">494</property>
+                                    <property name="y">45</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSeparator">
+                                    <property name="name">av_separator</property>
+                                    <property name="height_request">136</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">521</property>
+                                    <property name="y">81</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSeparator">
+                                    <property name="name">av_separator</property>
+                                    <property name="width_request">42</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">522</property>
+                                    <property name="y">129</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSeparator">
+                                    <property name="name">av_separator</property>
+                                    <property name="width_request">38</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">341</property>
+                                    <property name="y">129</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSeparator">
+                                    <property name="name">av_separator</property>
+                                    <property name="width_request">39</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">523</property>
+                                    <property name="y">157</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSeparator">
+                                    <property name="name">av_separator</property>
+                                    <property name="width_request">39</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">523</property>
+                                    <property name="y">186</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSeparator">
+                                    <property name="name">av_separator</property>
+                                    <property name="width_request">39</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">521</property>
+                                    <property name="y">215</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="name">LABEL_SM</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">P1</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">571</property>
+                                    <property name="y">120</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="name">LABEL_SM</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">P2</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">571</property>
+                                    <property name="y">149</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="name">LABEL_SM</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">P3</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">571</property>
+                                    <property name="y">176</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="name">LABEL_SM</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">P4</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">571</property>
+                                    <property name="y">202</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="name">DATA_LABEL_SM</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">00.0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">598</property>
+                                    <property name="y">119</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="name">DATA_LABEL_SM</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">00.0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">598</property>
+                                    <property name="y">149</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="name">DATA_LABEL_SM</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">00.0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">598</property>
+                                    <property name="y">178</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="name">DATA_LABEL_SM</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">00.0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">598</property>
+                                    <property name="y">202</property>
                                   </packing>
                                 </child>
                               </object>
@@ -1926,19 +2106,6 @@
                                   </object>
                                   <packing>
                                     <property name="x">410</property>
-                                    <property name="y">124</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkSwitch">
-                                    <property name="width_request">54</property>
-                                    <property name="height_request">25</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="active">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="x">410</property>
                                     <property name="y">62</property>
                                   </packing>
                                 </child>
@@ -2002,18 +2169,6 @@
                                   <packing>
                                     <property name="x">283</property>
                                     <property name="y">74</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkLabel">
-                                    <property name="name">switch</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">RAMAN</property>
-                                  </object>
-                                  <packing>
-                                    <property name="x">283</property>
-                                    <property name="y">137</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -4082,19 +4237,6 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkButton">
-                                    <property name="label" translatable="yes">OPEN PLIER</property>
-                                    <property name="name">imageCapture</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="x">192</property>
-                                    <property name="y">226</property>
-                                  </packing>
-                                </child>
-                                <child>
                                   <object class="GtkLabel">
                                     <property name="name">LABEL_SM2</property>
                                     <property name="visible">True</property>
@@ -4189,7 +4331,7 @@
                         <property name="height_request">25</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">ELEVATION MAP/TRAJECTORY</property>
+                        <property name="label" translatable="yes">ELEVATION MAP</property>
                       </object>
                       <packing>
                         <property name="x">530</property>
@@ -4224,15 +4366,14 @@
                     </child>
                     <child>
                       <object class="GtkLabel">
-                        <property name="width_request">100</property>
-                        <property name="height_request">80</property>
+                        <property name="name">LABEL_SM</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">MODE</property>
+                        <property name="label" translatable="yes">NAV</property>
                       </object>
                       <packing>
-                        <property name="x">1196</property>
-                        <property name="y">784</property>
+                        <property name="x">1207</property>
+                        <property name="y">792</property>
                       </packing>
                     </child>
                   </object>
@@ -4344,7 +4485,8 @@
                         <property name="stock">gtk-missing-image</property>
                       </object>
                       <packing>
-                        <property name="x">1208</property>
+                        <property name="x">1215</property>
+                        <property name="y">61</property>
                       </packing>
                     </child>
                     <child>
@@ -4358,7 +4500,7 @@
                       </object>
                       <packing>
                         <property name="x">1250</property>
-                        <property name="y">804</property>
+                        <property name="y">841</property>
                       </packing>
                     </child>
                     <child>
@@ -4536,6 +4678,7 @@
                                   <object class="GtkImage" id="error_icon_sc">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="opacity">0.29999999999999999</property>
                                     <property name="pixbuf">../resources/SMERR.png</property>
                                   </object>
                                   <packing>
@@ -4663,43 +4806,27 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkLabel" id="auto_sc">
-                                    <property name="name">AUTO_2</property>
-                                    <property name="width_request">71</property>
-                                    <property name="height_request">37</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">AUTO</property>
-                                  </object>
-                                  <packing>
-                                    <property name="x">1</property>
-                                    <property name="y">304</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkLabel" id="manual_sc">
-                                    <property name="name">MANUAL_2</property>
-                                    <property name="width_request">71</property>
-                                    <property name="height_request">37</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="opacity">0.30196078431372547</property>
-                                    <property name="label" translatable="yes">MANUAL</property>
-                                  </object>
-                                  <packing>
-                                    <property name="x">76</property>
-                                    <property name="y">303</property>
-                                  </packing>
-                                </child>
-                                <child>
                                   <object class="GtkImage">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="opacity">0.29999999999999999</property>
                                     <property name="pixbuf">../resources/warningS.png</property>
                                   </object>
                                   <packing>
                                     <property name="x">61</property>
                                     <property name="y">237</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="name">LABEL_SM</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">NAV</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">54</property>
+                                    <property name="y">188</property>
                                   </packing>
                                 </child>
                               </object>
@@ -4732,6 +4859,8 @@
                             <property name="left_padding">12</property>
                             <child>
                               <object class="GtkLayout">
+                                <property name="width_request">100</property>
+                                <property name="height_request">80</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <child>
@@ -4902,7 +5031,8 @@ SIZE</property>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="y">5</property>
+                                    <property name="x">792</property>
+                                    <property name="y">2</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -4924,23 +5054,8 @@ SIZE</property>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="x">439</property>
+                                    <property name="x">10</property>
                                     <property name="y">316</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkButton">
-                                    <property name="label" translatable="yes">CALIBRATE</property>
-                                    <property name="name">Calibrate</property>
-                                    <property name="width_request">100</property>
-                                    <property name="height_request">44</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="x">270</property>
-                                    <property name="y">320</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -4955,8 +5070,8 @@ SIZE</property>
                                     <signal name="clicked" handler="on_stop_clicked" swapped="no"/>
                                   </object>
                                   <packing>
-                                    <property name="x">696</property>
-                                    <property name="y">94</property>
+                                    <property name="x">278</property>
+                                    <property name="y">93</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -4968,9 +5083,10 @@ SIZE</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
+                                    <signal name="clicked" handler="on_tube_1_button_clicked" swapped="no"/>
                                   </object>
                                   <packing>
-                                    <property name="x">157</property>
+                                    <property name="x">699</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -5084,9 +5200,6 @@ SIZE</property>
                                       </packing>
                                     </child>
                                   </object>
-                                  <packing>
-                                    <property name="x">431</property>
-                                  </packing>
                                 </child>
                                 <child>
                                   <object class="GtkButton" id="tube_2_button">
@@ -5097,9 +5210,10 @@ SIZE</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
+                                    <signal name="clicked" handler="on_tube_2_button_clicked" swapped="no"/>
                                   </object>
                                   <packing>
-                                    <property name="x">157</property>
+                                    <property name="x">699</property>
                                     <property name="y">140</property>
                                   </packing>
                                 </child>
@@ -5112,94 +5226,11 @@ SIZE</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
+                                    <signal name="clicked" handler="on_tube_3_button_clicked" swapped="no"/>
                                   </object>
                                   <packing>
-                                    <property name="x">157</property>
+                                    <property name="x">699</property>
                                     <property name="y">295</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkGrid">
-                                    <property name="width_request">100</property>
-                                    <property name="height_request">80</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="margin_top">5</property>
-                                    <child>
-                                      <object class="GtkLabel" id="subsampling_label">
-                                        <property name="name">SC</property>
-                                        <property name="width_request">150</property>
-                                        <property name="height_request">61</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">S.Collect.
-SubSampling
-</property>
-                                      </object>
-                                      <packing>
-                                        <property name="left_attach">0</property>
-                                        <property name="top_attach">0</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel" id="weighting_label">
-                                        <property name="name">WE</property>
-                                        <property name="height_request">61</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="opacity">0.30196078431372547</property>
-                                        <property name="label" translatable="yes">Weighting</property>
-                                      </object>
-                                      <packing>
-                                        <property name="left_attach">0</property>
-                                        <property name="top_attach">1</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel" id="capture_label">
-                                        <property name="name">CI</property>
-                                        <property name="height_request">61</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="opacity">0.30196078431372547</property>
-                                        <property name="label" translatable="yes">Capture Image</property>
-                                      </object>
-                                      <packing>
-                                        <property name="left_attach">0</property>
-                                        <property name="top_attach">2</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel" id="spectrometry_label">
-                                        <property name="name">SP</property>
-                                        <property name="height_request">61</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="opacity">0.30196078431372547</property>
-                                        <property name="label" translatable="yes">Spectrometry</property>
-                                      </object>
-                                      <packing>
-                                        <property name="left_attach">0</property>
-                                        <property name="top_attach">3</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel" id="caching_label">
-                                        <property name="name">CA</property>
-                                        <property name="height_request">61</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="opacity">0.30196078431372547</property>
-                                        <property name="label" translatable="yes">Caching</property>
-                                      </object>
-                                      <packing>
-                                        <property name="left_attach">0</property>
-                                        <property name="top_attach">4</property>
-                                      </packing>
-                                    </child>
-                                  </object>
-                                  <packing>
-                                    <property name="x">249</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -5214,7 +5245,7 @@ SubSampling
                                     <signal name="clicked" handler="on_start_clicked" swapped="no"/>
                                   </object>
                                   <packing>
-                                    <property name="x">595</property>
+                                    <property name="x">170</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -5229,7 +5260,7 @@ SubSampling
                                     <signal name="clicked" handler="on_wait_clicked" swapped="no"/>
                                   </object>
                                   <packing>
-                                    <property name="x">694</property>
+                                    <property name="x">279</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -5244,8 +5275,201 @@ SubSampling
                                     <signal name="clicked" handler="on_resume_clicked" swapped="no"/>
                                   </object>
                                   <packing>
-                                    <property name="x">595</property>
+                                    <property name="x">170</property>
                                     <property name="y">92</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="volume_evaluation">
+                                    <property name="label" translatable="yes">Volume Evaluation</property>
+                                    <property name="name">imageCapture</property>
+                                    <property name="width_request">283</property>
+                                    <property name="height_request">42</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <signal name="clicked" handler="on_volume_evaluation_clicked" swapped="no"/>
+                                  </object>
+                                  <packing>
+                                    <property name="x">379</property>
+                                    <property name="y">5</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="particle_size_evaluation">
+                                    <property name="label" translatable="yes">Particle size Evaluation</property>
+                                    <property name="name">imageCapture</property>
+                                    <property name="width_request">283</property>
+                                    <property name="height_request">42</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <signal name="clicked" handler="on_particle_size_evaluation_clicked" swapped="no"/>
+                                  </object>
+                                  <packing>
+                                    <property name="x">379</property>
+                                    <property name="y">57</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="color_analysis">
+                                    <property name="label" translatable="yes">Color Analysis</property>
+                                    <property name="name">imageCapture</property>
+                                    <property name="width_request">283</property>
+                                    <property name="height_request">42</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <signal name="clicked" handler="on_color_analysis_clicked" swapped="no"/>
+                                  </object>
+                                  <packing>
+                                    <property name="x">379</property>
+                                    <property name="y">110</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkFrame">
+                                    <property name="name">DATA_FRAME_SC</property>
+                                    <property name="width_request">205</property>
+                                    <property name="height_request">453</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label_xalign">0</property>
+                                    <property name="shadow_type">none</property>
+                                    <child>
+                                      <object class="GtkAlignment">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="left_padding">12</property>
+                                        <child>
+                                          <object class="GtkLayout">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <child>
+                                              <object class="GtkButton" id="sc_capture_image">
+                                                <property name="label" translatable="yes">Capture Image</property>
+                                                <property name="name">wait_button</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <signal name="clicked" handler="on_sc_capture_image_clicked" swapped="no"/>
+                                              </object>
+                                              <packing>
+                                                <property name="x">23</property>
+                                                <property name="y">50</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="name">LABEL_MD</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="label" translatable="yes">LED</property>
+                                              </object>
+                                              <packing>
+                                                <property name="x">20</property>
+                                                <property name="y">123</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkSwitch">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="active">True</property>
+                                              </object>
+                                              <packing>
+                                                <property name="x">91</property>
+                                                <property name="y">124</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkButton" id="sc_right">
+                                                <property name="label" translatable="yes">&gt;</property>
+                                                <property name="name">TUBE_BUTTON</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <signal name="clicked" handler="on_sc_right_clicked" swapped="no"/>
+                                              </object>
+                                              <packing>
+                                                <property name="x">121</property>
+                                                <property name="y">318</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkButton" id="sc_left">
+                                                <property name="label" translatable="yes">&lt;</property>
+                                                <property name="name">TUBE_BUTTON</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <signal name="clicked" handler="on_sc_left_clicked" swapped="no"/>
+                                              </object>
+                                              <packing>
+                                                <property name="x">7</property>
+                                                <property name="y">319</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="name">LABEL_MD</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="label" translatable="yes">MANUAL</property>
+                                              </object>
+                                              <packing>
+                                                <property name="x">35</property>
+                                                <property name="y">5</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="name">TUBE_BUTTON</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="label" translatable="yes">M</property>
+                                              </object>
+                                              <packing>
+                                                <property name="x">85</property>
+                                                <property name="y">326</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child type="label">
+                                      <object class="GtkLabel">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="x">5</property>
+                                    <property name="y">391</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkImage">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="stock">gtk-missing-image</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">221</property>
+                                    <property name="y">433</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkImage">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="stock">gtk-missing-image</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">678</property>
+                                    <property name="y">433</property>
                                   </packing>
                                 </child>
                               </object>
@@ -5456,6 +5680,34 @@ SubSampling
                       </object>
                       <packing>
                         <property name="y">523</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="sc_live">
+                        <property name="label" translatable="yes">Live</property>
+                        <property name="name">start_button</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="clicked" handler="on_sc_live_clicked" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="x">1212</property>
+                        <property name="y">9</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="sc_image">
+                        <property name="label" translatable="yes">images</property>
+                        <property name="name">start_button</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="clicked" handler="on_sc_image_clicked" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="x">1289</property>
+                        <property name="y">9</property>
                       </packing>
                     </child>
                   </object>

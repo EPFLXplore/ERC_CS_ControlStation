@@ -388,6 +388,10 @@
         	border: 2px solid #2379fa;
         	border-radius : 10px;
         }
+        #DATA_FRAME_SC {
+         border: 2px solid #fa9d23;
+         border-radius : 10px;
+      }
 
 		#DATA_FRAME_4{
 			border: 2px solid #616161;
@@ -403,6 +407,18 @@
 			color: white;
          font-weight: bold;
          background: #1f1f1f;
+		}
+      #TUBE_BUTTON:hover{
+			border-radius: 360px;
+			color: white;
+         font-weight: bold;
+         background: #5f5a5a;
+		}
+      #TUBE_BUTTON:active{
+			border-radius: 360px;
+			color: white;
+         font-weight: bold;
+         background: #252525;
 		}
         #DATA_FRAME_BG {
 

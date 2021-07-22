@@ -6,7 +6,6 @@
   This file initializes the Application, defines I/O behaviours.
   It also initializes the ROS Control Station nodes along with the
   publisher and the subscribers.
-  It contains a class to read inputs from a PS4 like controller.
 
 @Author: Emile Hreich
          
@@ -20,13 +19,13 @@ import logging
 from Controller import Controller
 from Stopwatch              import Stopwatch as stp
 from model                  import Model
-from rospy.impl.tcpros_base import DEFAULT_BUFF_SIZE
 from view                   import View
-from std_msgs.msg           import String, Float32, Float32MultiArray, Bool, Int32, UInt8MultiArray
+from std_msgs.msg           import String, Float32, Float32MultiArray, Bool, Int32, UInt8MultiArray, UInt8
 from nav_msgs.msg           import Odometry
 import sys
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GLib
+from sensor_msgs.msg import Image
 #================================================================
 
 '''
@@ -43,6 +42,7 @@ Class: App
 '''
 class App(Gtk.Application):
 
+  #CONSTRUCTOR
   def __init__(self):
     
     Gtk.Application.__init__(self)
@@ -64,7 +64,7 @@ class App(Gtk.Application):
 
     return logger
 
-
+  #ON STARTUP
   def do_startup(self):
     
     Gtk.Application.do_startup(self)
@@ -72,14 +72,15 @@ class App(Gtk.Application):
     self.view.SCIENCE.connect("delete-event", self.on_quit)
     self.view.AV.connect("delete-event", self.on_quit)
     self.view.builder.connect_signals(self.controller)
-    self.view.camera_process_1.start()
-    self.view.camera_process_2.start()
-    GLib.idle_add(self.view.show)
-    GLib.idle_add(self.view.show_time)
-    GLib.idle_add(self.view.display_avionics)
-    GLib.idle_add(self.view.display_science)
-    GLib.idle_add(self.view.display_handling_device)
-    GLib.idle_add(self.view.display_navigation)
+    # self.view.camera_process_1.start()
+    # self.view.camera_process_2.start()
+    # self.view.camera_process_3.start()
+    # GLib.idle_add(self.view.show, self.controller.show_flag, self.controller.sc_cam_flag)
+    # GLib.idle_add(self.view.show_time)
+    # GLib.idle_add(self.view.display_avionics)
+    # GLib.idle_add(self.view.display_science)
+    # GLib.idle_add(self.view.display_handling_device)
+    # GLib.idle_add(self.view.display_navigation)
     self.stopwatch.start()
 
     #=========================================================================================================
@@ -115,9 +116,13 @@ class App(Gtk.Application):
     rospy.Subscriber('mission_state_d1', Int32,             self.controller.callback_mission_state_d1)
     rospy.Subscriber('current_position', Odometry,          self.controller.callback_current_position)
     #SCIENCE
-    #TODO: Controls for science
-    #HANDLING DEVICE
+    self.sc_controls_pub  = rospy.Publisher('sc_controls',      UInt8,    queue_size=1)
+    self.sc_led           = rospy.Publisher('sc_led',           UInt8,    queue_size=1)
+    rospy.Subscriber('sc_mass',         Float32,          self.controller.callback_sc_mass            )
+    rospy.Subscriber('sc_image',        UInt8,            self.controller.callback_sc_image           )
 
+    #HANDLING DEVICE
+    rospy.Subscriber('/HD_camera/image_raw', Image, self.controller.callback_hd_cam                   )
     #==========================================================================================================
     #LOGGERS
     avionics_logger       = App.setup_logger('avlogger', "../Logs/avionics.log",    logging.INFO)
@@ -126,18 +131,24 @@ class App(Gtk.Application):
     science_logger        = App.setup_logger('sclogger', "../Logs/science.log",     logging.INFO)
 
 
- 
+ #ON ACTIVATION
   def do_activate(self):
     self.view.NAV.set_application(self.controller.app)
     self.view.SCIENCE.set_application(self.controller.app)
     self.view.AV.set_application(self.controller.app)
     self.view.NAV.present()
 
+  #ON QUIT
   def on_quit(self, action, param):
     Model.run_thread = False
     self.stopwatch.join()
     # self.view.capture.release()
     # self.view.out.release()
+
+    #Stopping running threads for a proper termination
+    self.view.camera_process_1.kill()
+    self.view.camera_process_2.kill()
+    self.view.camera_process_3.kill()
     self.quit()
 
 '''
