@@ -22,13 +22,11 @@ class Model:
 
 	#AVIONICS DATA
 	barotemp 		= [-1,-1]
-	accelmag 		= [-1, -1, -1]
-	gripper 		= 0.0
-	system 			= []
+	accelmag 		= [-1, -1, -1, -1, -1, -1, -1, -1, -1] #(x,y,z) -> accel/giro/mag
+	adc 			= 0
+	#POWER
 	voltages 		= [-1,-1,-1,-1]
 	currents 		= [-1, -1, -1, -1]
-	measures 		= 0.0
-
 	#NAVIGATION DATA
 	waypoint 		= [-1, -1, -1]
 	tags 			= []
