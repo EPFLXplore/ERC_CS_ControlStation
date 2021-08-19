@@ -10,6 +10,7 @@ from Globals import *
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 import numpy as np
+from utils import *
 '''
 Class Controller
 
@@ -116,9 +117,8 @@ class Controller():
     #=======================================================
     #SCIENCE
     def on_volume_evaluation_clicked(self, *args):
-      Model.compute_particle_volume()
-      #TODO
-      #Convert the resulting plot to an image
+      Model.compute_particle_volume(self.tube_filename)
+
 
     def on_particle_size_evaluation_clicked(self, *args):
       #Convert the resulting plot to an image
@@ -136,15 +136,15 @@ class Controller():
       self.sc_cam_flag = False
 
     def on_tube_1_button_clicked(self, *args):
-      self.tube_filename = "tube1.png"
+      self.tube_filename = "tube_1.png"
       self.active_tube = 1
 
     def on_tube_2_button_clicked(self, *args):
-      self.tube_filename = "tube2.png"
+      self.tube_filename = "tube_2.png"
       self.active_tube = 2
 
     def on_tube_3_button_clicked(self, *args):
-      self.tube_filename = "tube3.png"
+      self.tube_filename = "tube_3.png"
       self.active_tube = 3
 
 

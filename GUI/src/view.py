@@ -11,13 +11,14 @@ from gi.repository import Gtk, Gdk, GdkPixbuf
 import numpy as np
 import cv2 as cv
 import os
+from utils import *
 #=========================================================
 
 NAV_CAMERA_1_ADDRESS 	  = "rtsp://xplore1:xplore@192.168.1.50:554/s1"
 NAV_CAMERA_2_ADDRESS 	  = "rtsp://xplore1:xplore@192.168.1.51:554/s1"
 SCIENCE_CAMERA_ADDRESS 	  = "rtsp://root:Plokmijn123!@192.168.1.57/axis-media/media.amp"
-NAV_CAPTURE_DIRECTORY 	  = ""
-SCIENCE_CAPTURE_DIRECTORY = ""#to be determined on the raspberry
+# NAV_CAPTURE_DIRECTORY 	  = ""
+# SCIENCE_CAPTURE_DIRECTORY = ""#to be determined on the raspberry
 #=========================================================
 
 '''

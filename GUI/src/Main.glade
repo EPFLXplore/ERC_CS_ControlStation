@@ -2102,7 +2102,6 @@
                                     <property name="height_request">25</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="active">True</property>
                                   </object>
                                   <packing>
                                     <property name="x">410</property>
@@ -2115,7 +2114,6 @@
                                     <property name="height_request">25</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="active">True</property>
                                   </object>
                                   <packing>
                                     <property name="x">410</property>
@@ -2128,7 +2126,6 @@
                                     <property name="height_request">25</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="active">True</property>
                                   </object>
                                   <packing>
                                     <property name="x">410</property>
@@ -2140,7 +2137,6 @@
                                     <property name="height_request">25</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="active">True</property>
                                   </object>
                                   <packing>
                                     <property name="x">410</property>
@@ -5330,8 +5326,8 @@ SIZE</property>
                                 <child>
                                   <object class="GtkFrame">
                                     <property name="name">DATA_FRAME_SC</property>
-                                    <property name="width_request">205</property>
-                                    <property name="height_request">453</property>
+                                    <property name="width_request">507</property>
+                                    <property name="height_request">225</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="label_xalign">0</property>
@@ -5355,8 +5351,8 @@ SIZE</property>
                                                 <signal name="clicked" handler="on_sc_capture_image_clicked" swapped="no"/>
                                               </object>
                                               <packing>
-                                                <property name="x">23</property>
-                                                <property name="y">50</property>
+                                                <property name="x">248</property>
+                                                <property name="y">60</property>
                                               </packing>
                                             </child>
                                             <child>
@@ -5368,18 +5364,17 @@ SIZE</property>
                                               </object>
                                               <packing>
                                                 <property name="x">20</property>
-                                                <property name="y">123</property>
+                                                <property name="y">58</property>
                                               </packing>
                                             </child>
                                             <child>
                                               <object class="GtkSwitch">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
-                                                <property name="active">True</property>
                                               </object>
                                               <packing>
                                                 <property name="x">91</property>
-                                                <property name="y">124</property>
+                                                <property name="y">55</property>
                                               </packing>
                                             </child>
                                             <child>
@@ -5393,7 +5388,7 @@ SIZE</property>
                                               </object>
                                               <packing>
                                                 <property name="x">121</property>
-                                                <property name="y">318</property>
+                                                <property name="y">122</property>
                                               </packing>
                                             </child>
                                             <child>
@@ -5407,7 +5402,7 @@ SIZE</property>
                                               </object>
                                               <packing>
                                                 <property name="x">7</property>
-                                                <property name="y">319</property>
+                                                <property name="y">122</property>
                                               </packing>
                                             </child>
                                             <child>
@@ -5431,7 +5426,7 @@ SIZE</property>
                                               </object>
                                               <packing>
                                                 <property name="x">85</property>
-                                                <property name="y">326</property>
+                                                <property name="y">131</property>
                                               </packing>
                                             </child>
                                           </object>
@@ -5446,8 +5441,19 @@ SIZE</property>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="x">5</property>
-                                    <property name="y">391</property>
+                                    <property name="x">171</property>
+                                    <property name="y">184</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkImage">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="pixbuf">../science_captures/default.png</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">37</property>
+                                    <property name="y">491</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -5457,18 +5463,7 @@ SIZE</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </object>
                                   <packing>
-                                    <property name="x">221</property>
-                                    <property name="y">433</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkImage">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="stock">gtk-missing-image</property>
-                                  </object>
-                                  <packing>
-                                    <property name="x">678</property>
+                                    <property name="x">744</property>
                                     <property name="y">433</property>
                                   </packing>
                                 </child>
