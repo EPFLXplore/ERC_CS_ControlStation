@@ -15,10 +15,11 @@
 import rospy
 
 
+
 #================================================================================
 '''
 '''
-class Conrroller:
+class Controller:
 
     def __init__(self, CS_node):
         #the controller is aware of the CS node it is linked to.

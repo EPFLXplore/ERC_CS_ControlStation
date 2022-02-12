@@ -18,6 +18,8 @@ from threading import Thread
 import rospy
 import Controller
 
+from models import *
+
 from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray
 from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
 from geometry_msgs.msg import Twist 
@@ -121,16 +123,26 @@ class Application(Thread):
 '''
 
 def rover_confirmation(val):
-    if (val) : return
+    confirm = RoverConfirmation.objects.create(received=True)
+    confirm.save()
 
 def task_progress(val):
-    return val
+    if (0 <= val and val < 3):
+        state = TaskProgress.objects.create(state = val)
+        state.save()
+    else:
+        exception("unacceptable number received: " + val)
+        #TODO how to handle this exception?
 
 def science_progress(val):
-    return val
+    if (val == 0 or val == 1):
+        state = ScienceProgress.objects.create(state = val)
+    else:
+        exception("unacceptable number received: " + val)
 
 def exception(val):
-    return val
+    exception = Exception.objects.create(string = val)
+    exception.save() 
 
 
 
