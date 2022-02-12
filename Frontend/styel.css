@@ -1,0 +1,292 @@
+:root{
+    --navigation-background-color : #202020;
+    --logo-height : 45px;
+    --font : 'Bahnschrift', sans-serif;
+
+}
+
+html, body {
+    margin:0px;
+    height:100%;
+  }
+
+/* ================================================================= */
+/* HEADER BAR */
+#body{
+    min-width: 600px;
+    font-family: var(--font);
+    background-color: #363636;
+}
+#navigation{
+    background-color: var(--navigation-background-color);
+    position: fixed;
+    width: 100%;
+    border-bottom: 2px solid #305CD4;
+}
+
+#logo{
+    height : var(--logo-height);
+    margin-left  : 8px;
+    padding-bottom: 4px;
+    margin-bottom: 5px;
+}
+
+#status{
+    font-size: 15px;
+    margin-top: 15px;
+    font-weight:bolder;
+    margin-right: 200px;
+}
+
+.nav-item{
+    margin-left: 20px ;
+    border-left: solid 6px transparent;
+    padding-left: 6px;
+
+}
+
+.nav-item.bluebar:hover {
+  border-left-color: #305CD4;
+  padding-left: 26px;
+  margin-left: 0px;
+}
+
+a:active{
+      border-left-color: #305CD4;
+}
+
+ul::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 2px rgba(0,0,0,0.3);
+  background-color: #F5F5F5;
+}
+
+ul::-webkit-scrollbar
+{
+  width: 10px;
+  background-color: #F5F5F5;
+}
+
+ul::-webkit-scrollbar-thumb
+{
+  background-image: -webkit-gradient(linear,
+                     left bottom,
+                     left top,
+                     color-stop(0.44, rgb(121, 121, 121)),
+                     color-stop(0.72, rgb(119, 123, 128)),
+                     color-stop(0.86, rgb(119, 122, 129)));
+}
+
+ul {
+        overflow-y: 'hidden'
+     }
+     ul:hover {
+         overflow-y: 'auto'
+     }
+
+
+a.nav-link{
+    float: left;
+    text-decoration: none;
+    color: inherit;
+}
+
+span img{
+    margin-right: 15px ;
+}
+
+li#YourJukebox{
+    margin-left: 20px;
+    font-size: 16px;
+   color:#d1d2d8;
+}
+
+ul#ScrollBar{
+    height: 200px;
+    overflow-y: hidden;
+    list-style-type: None;
+    padding-right:20px
+}
+
+#submenu{
+    margin-left: 185px;
+    margin-right: 185px;
+    position:fixed;
+    margin-top:70px;
+    width:100%;
+}
+
+#title{
+    margin: 15px;
+    font-weight: bolder;
+    font-size: 35px;
+    transition: 0.4s;
+    color: white;
+}
+
+.content{
+    padding-left: 225px;
+    padding-top:70px;
+    width:100%;
+    color: white;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color:white;
+    opacity: 0.65; /* Firefox */
+  }
+
+input[type=text] {
+  width: 300px;
+  height: 28px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  background-color: #363636;
+  background-image: url("resources/search.png");
+  background-repeat: no-repeat;
+  display: inline-block;
+  overflow: hidden;
+  background-position: 10px;
+  padding: 3px 20px 3px 40px;
+  -webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
+  color:white;
+}
+
+input[type=text]:focus {
+    border: 2px solid #305CD4;
+    outline: none;
+
+}
+
+
+   /* Hide short text by default (resolution > 1200px) */
+.short-text { display: none; }
+
+/* // When resolution <= 1200px, hide full text and show short text */
+@media screen and (max-width: 1200px) {
+    .short-text { display: inline-block; }
+    .full-text { display: none; }
+}
+
+#vertical-nav{
+    background-color: var(--navigation-background-color);
+    margin-top: 60px;
+    height:100%;
+    width:220px;
+    top: 0;
+    position:fixed;
+    color:white;
+}
+@media screen and (max-width: 1200px){
+    #vertical-nav{
+        top: 0;
+        background-color: #F8F9FA;
+        height:100%;
+        width:60px;
+        position:fixed;
+    }
+
+}
+
+.Row {
+    display: table;
+    width: 100%; /*Optional*/
+    table-layout: fixed;
+    height:100%;
+    margin-top:73px;
+}
+
+.Column {
+
+    display: table-cell;
+    height:100%;
+}
+
+
+#submenu{
+    height: 70px;
+    background-color: var(--navigation-background-color);
+    box-shadow: 2px 10px 15px -21px  #111;
+    overflow: hidden;
+    transition: 0.4s; /* Adds a transition effect when the padding is decreased */
+    width: 100%;
+
+}
+
+@media screen and (max-width: 1200px){
+    #submenu{
+        margin-left: 60px;
+    }
+
+@media screen and (max-width: 791px){
+    ul.list-group.list-group-horizontal{
+        display:none;
+    }
+
+    input[type=text]{
+
+          width: 200px;
+          height: 33px;
+          box-sizing: border-box;
+          border: none;
+          border-radius: 50px;
+          font-size: 16px;
+          background-color: white;
+          background-image: url("resources/search.png");
+          background-repeat: no-repeat;
+          display: inline-block;
+          overflow: hidden;
+          background-position: 10px;
+          padding: 3px 20px 3px 40px;
+          -webkit-transition: width 0.4s ease-in-out;
+          transition: width 0.4s ease-in-out;
+          margin-left: 0px;
+    }
+
+    .container-fluid{
+        width:200px;
+    }
+}
+
+.toggle-button{
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width:30px;
+    height:21px;
+}
+
+.toggle-button .bar{
+    height: 3px;
+    width:100%;
+    background-color: black;
+    border-radius: 10px;
+}
+
+@media (max-width: 791px) {
+    .toggle-button{
+        display: flex;
+    }
+
+    .navbar-links{
+        display: none;
+    }
+
+    .navbar-links ul {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .navbar-links li {
+        text-align: center;
+    }
+}
+
+.tab-content > .tab-pane {
+  display: none; }
+
+.tab-content > .active {
+  display: block; }
