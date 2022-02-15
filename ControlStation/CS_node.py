@@ -1,3 +1,15 @@
+
+# import django
+# django.setup()
+
+import os
+import django
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
+django.setup()
+
+from Xplore_CS_2022.models import *
+
 #
 # 27/11/2021
 #
@@ -14,11 +26,19 @@
 #
 #================================================================================
 #!/usr/bin/env python
+
+
+
+
 from threading import Thread
 import rospy
-import Controller
+from Xplore_CS_2022.Controller import *
+#from Xplore_CS_2022.models import *
 
-from models import *
+#from Xplore_CS_2022.Controller import *
+
+#from models import *
+#from Xplore_CS_2022.models import RoverConfirmation
 
 from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray
 from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
@@ -33,13 +53,14 @@ from actionlib_msgs.msg import GoalID
     This class creates a listening thread, initializes all ROS publishers and subscribes
     to all the needed topics
 '''
-class Application(Thread):
 
-    def __init__(self, threadID, name):
+class Application():
 
-        Thread.__init__(self)
-        self.threadID = threadID
-        self.name     = name
+    def __init__(self): #, threadID, name):
+
+        # Thread.__init__(self)
+        # self.threadID = threadID
+        # self.name     = name
         
         self.controller = Controller(self)
         rospy.init_node('CONTROL_STATION', anonymous=True)
@@ -94,7 +115,7 @@ class Application(Thread):
 
         # receive confirmation that rover received instruction
         rospy.Subscriber('RoverConfirm', Bool, rover_confirmation)
-
+        
         # receive info if an exception was thrown
         rospy.Subscriber('Exception', String, exception)
 
@@ -111,7 +132,6 @@ class Application(Thread):
         rospy.Subscriber('ScienceProgress', Int8, science_progress)
         
 
-
     def run(self):
         print("Listening")
         rospy.spin() 
@@ -122,26 +142,37 @@ class Application(Thread):
     and store it into the data base using django commands
 '''
 
+#Initialise database objects
+confirm = RoverConfirmation.objects.create(received = False) 
+task_state = TaskProgress.objects.create(state = 0)
+science_state = ScienceProgress.objects.create(state = 0)
+exception = Exception.objects.create(string = 'All good.')
+
+#The following callback functions update the db objects' values
+
 def rover_confirmation(val):
-    confirm = RoverConfirmation.objects.create(received=True)
+    confirm.received = val 
     confirm.save()
 
 def task_progress(val):
-    if (0 <= val and val < 3):
-        state = TaskProgress.objects.create(state = val)
-        state.save()
-    else:
-        exception("unacceptable number received: " + val)
-        #TODO how to handle this exception?
+        if (0 <= val and val < 3):
+            task_state.state = val
+            task_state.save()
+        else:
+            #TODO how to handle this exception?
+            exception("unacceptable number received: " + val)
+        
 
 def science_progress(val):
     if (val == 0 or val == 1):
-        state = ScienceProgress.objects.create(state = val)
+        science_state.state = val
+        science_state.save()
     else:
         exception("unacceptable number received: " + val)
 
-def exception(val):
-    exception = Exception.objects.create(string = val)
+#TODO on pourrait faire une liste d'exceptions comme ca on a un historique des problèmes qui ont eu lieu
+def exception(val): 
+    exception.string = val
     exception.save() 
 
 
@@ -149,13 +180,6 @@ def exception(val):
 #================================================================================
 #MAIN
 if __name__ == '__main__':
-
-  
-  
-  # Create The reception thread
-  listener  = Application(1, "Reception loop")
-  # Start the reception thread
-  listener.start()
-
-
+    listener = Application()
+    listener.run()
   
