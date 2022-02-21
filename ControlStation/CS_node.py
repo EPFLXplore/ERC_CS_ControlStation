@@ -3,6 +3,7 @@
 # django.setup()
 
 import os
+from pickletools import uint8
 import django
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
@@ -32,7 +33,7 @@ from Xplore_CS_2022.models import *
 
 from threading import Thread
 import rospy
-from Xplore_CS_2022.Controller import *
+from ControlStation.Controller import *
 #from Xplore_CS_2022.models import *
 
 #from Xplore_CS_2022.Controller import *
@@ -40,146 +41,112 @@ from Xplore_CS_2022.Controller import *
 #from models import *
 #from Xplore_CS_2022.models import RoverConfirmation
 
-from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray
+from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray, UInt8
 from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
 from geometry_msgs.msg import Twist 
 from actionlib_msgs.msg import GoalID
+from sensor_msgs.msg import Image 
 
-
+from callbacks import *
 
 
 #================================================================================
+
 '''
-    This class creates a listening thread, initializes all ROS publishers and subscribes
-    to all the needed topics
-'''
-
-class Application():
-
-    def __init__(self): #, threadID, name):
-
-        # Thread.__init__(self)
-        # self.threadID = threadID
-        # self.name     = name
-        
-        self.controller = Controller(self)
-        rospy.init_node('CONTROL_STATION', anonymous=True)
-
+Define the ROS topics: subscriptions and publishers
         '''
-        Define the ROS topics: subscriptions and publishers
-        '''
-        # --------------------- PUBLISHERS ---------------------
+class CS():
 
-            ###### CS_node --> Rover node ######
+        def __init__(self):
+                rospy.init_node("CONTROL_STATION", anonymous=True)
+                        # --------------------- PUBLISHERS ---------------------
 
-        # publish array: [task, instruction] 
-        Task_pub = rospy.Publisher('Task', Int8MultiArray, queue_size=1)
+                        ###### CS_node --> Rover node ######
 
-
-            ###### CS_node --> Handling Device node ######
-
-        # publish HD_mode => Autonomous (0), Semi-Autonomous (1), Inverse Manual (2), Direct Manual (3)
-        HD_mode_pub = rospy.Publisher('HD_mode', Int8, queue_size=1)
-
-        # publish id of element we want to manipulate in Semi-Autonomous mode
-        HD_SemiAuto_Id_pub = rospy.Publisher('HD_SemiAuto_Id', Int8, queue_size=1)
-
-        # publish angles for Direct Manual or Inverse Manual
-        HD_Angles_pub = rospy.Publisher('HD_Angles', Int8MultiArray, queue_size=1)
-
-        # publish speed depending on pressure applied on buttons of joystick
-        HD_ManualVelocity_pub = rospy.Publisher('HD_ManualVelocity', Float32, queue_size=1)
-
-        # publish movement along x, y or z axis in Inverse Manual
-        HD_InvManual_Coord_pub = rospy.Publisher('HD_InvManual_Coord', Int8MultiArray, queue_size=1)
+                # publish array: [task, instruction] 
+                self.Task_pub = rospy.Publisher('Task', Int8MultiArray, queue_size=1)
 
 
-            ###### CS_node --> Navigation node ######
+                        ###### CS_node --> Handling Device node ######
 
-        # publish goal the rover must reach
-        Nav_Goal_pub = rospy.Publisher('/move_base/goal', MoveBaseActionGoal, queue_size=1)
+                # publish HD_mode => Autonomous (0), Semi-Autonomous (1), Inverse Manual (2), Direct Manual (3)
+                self.HD_mode_pub = rospy.Publisher('HD_mode', Int8, queue_size=1)
 
-        # publish request to cancel a specific goal
-        Nav_CancelGoal_pub = rospy.Publisher('/move_base/cancel', GoalID, queue_size=1)
+                # publish id of element we want to manipulate in Semi-Autonomous mode
+                self.HD_SemiAuto_Id_pub = rospy.Publisher('HD_SemiAuto_Id', Int8, queue_size=1)
 
-        # publish info from the joystick in the form of a Twist object
-        Nav_Joystick_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
+                # publish angles for Direct Manual or Inverse Manual
+                self.HD_Angles_pub = rospy.Publisher('HD_Angles', Int8MultiArray, queue_size=1)
 
-        # publish debugging commands to individual wheels
-        Nav_DebugWheels_pub = rospy.Publisher('/debug/wheel_cmds', Int16MultiArray, queue_size=1)
+                # publish speed depending on pressure applied on buttons of joystick
+                self.HD_ManualVelocity_pub = rospy.Publisher('HD_ManualVelocity', Float32, queue_size=1)
 
-
-        # --------------------- SUBSCRIPTIONS ---------------------
-
-            ###### Rover node --> CS_node ######
-
-        # receive confirmation that rover received instruction
-        rospy.Subscriber('RoverConfirm', Bool, rover_confirmation)
-        
-        # receive info if an exception was thrown
-        rospy.Subscriber('Exception', String, exception)
+                # publish movement along x, y or z axis in Inverse Manual
+                self.HD_InvManual_Coord_pub = rospy.Publisher('HD_InvManual_Coord', Int8MultiArray, queue_size=1)
 
 
-            ###### [Task node] --> CS_node ######
+                        ###### CS_node --> Navigation node ######
 
-        # receive info on task progress: failure(0), success(1), checkpoint(2)
-        rospy.Subscriber('TaskProgress', Int8, task_progress)
+                # publish goal the rover must reach
+                self.Nav_Goal_pub = rospy.Publisher('/move_base/goal', MoveBaseActionGoal, queue_size=1)
 
+                # publish request to cancel a specific goal
+                self.Nav_CancelGoal_pub = rospy.Publisher('/move_base/cancel', GoalID, queue_size=1)
 
-            ###### Science node --> CS_node  ######
+                # publish info from the joystick in the form of a Twist object
+                self.Nav_Joystick_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
 
-        # receive info on sample analysis progress: failure(0), success(1)
-        rospy.Subscriber('ScienceProgress', Int8, science_progress)
-        
-
-    def run(self):
-        print("Listening")
-        rospy.spin() 
-
-#================================================================================
-'''
-    Here you should create all the ROS callback functions that will receive the data
-    and store it into the data base using django commands
-'''
-
-#Initialise database objects
-confirm = RoverConfirmation.objects.create(received = False) 
-task_state = TaskProgress.objects.create(state = 0)
-science_state = ScienceProgress.objects.create(state = 0)
-exception = Exception.objects.create(string = 'All good.')
-
-#The following callback functions update the db objects' values
-
-def rover_confirmation(val):
-    confirm.received = val 
-    confirm.save()
-
-def task_progress(val):
-        if (0 <= val and val < 3):
-            task_state.state = val
-            task_state.save()
-        else:
-            #TODO how to handle this exception?
-            exception("unacceptable number received: " + val)
-        
-
-def science_progress(val):
-    if (val == 0 or val == 1):
-        science_state.state = val
-        science_state.save()
-    else:
-        exception("unacceptable number received: " + val)
-
-#TODO on pourrait faire une liste d'exceptions comme ca on a un historique des problèmes qui ont eu lieu
-def exception(val): 
-    exception.string = val
-    exception.save() 
+                # publish debugging commands to individual wheels
+                self.Nav_DebugWheels_pub = rospy.Publisher('/debug/wheel_cmds', Int16MultiArray, queue_size=1)
 
 
+                        # --------------------- SUBSCRIPTIONS ---------------------
 
+                        ###### Rover node --> CS_node ######
+
+                # receive confirmation that rover received instruction
+                rospy.Subscriber('RoverConfirm', Bool, rover_confirmation)
+                        
+                # receive info if an exception was thrown
+                rospy.Subscriber('Exception', String, exception)
+
+
+                        ###### [Task node] --> CS_node ######
+
+                # receive info on task progress: failure(0), success(1), checkpoint(2)
+                rospy.Subscriber('TaskProgress', Int8, task_progress)
+
+
+                        ###### Science node --> CS_node  ######
+
+                # receive info on sample analysis progress: failure(0), success(1)
+                rospy.Subscriber('ScienceProgress', Int8, science_progress)
+
+                        ###### Handling Device --> CS_node ######
+                
+                ''' 
+                rospy.Subscriber('detection/state', UInt8, detection_state)
+
+                rospy.Subscriber('detection/bounding_boxes', Image, ...)
+
+                rospy.Subscriber('detection/RGB_intel', Image, ...)
+
+                rospy.Subscriber('detection/RGB_webcam_1', Image, ...)
+
+                rospy.Subscriber('detection/RGB_webcam_2', Image, ...)
+                '''
+                
+        def run(self):
+                print("Listening")
+                rospy.spin()
+
+
+ControlStation = CS()
 #================================================================================
 #MAIN
 if __name__ == '__main__':
-    listener = Application()
-    listener.run()
+    #rospy.init_node('CONTROL_STATION', anonymous=True)
+    #print("Listening")
+    ControlStation.run()
+    #rospy.spin()
   
