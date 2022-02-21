@@ -30,16 +30,8 @@ from Xplore_CS_2022.models import *
 
 
 
-
-from threading import Thread
 import rospy
 from ControlStation.Controller import *
-#from Xplore_CS_2022.models import *
-
-#from Xplore_CS_2022.Controller import *
-
-#from models import *
-#from Xplore_CS_2022.models import RoverConfirmation
 
 from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray, UInt8
 from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
@@ -55,7 +47,7 @@ from callbacks import *
 '''
 Define the ROS topics: subscriptions and publishers
         '''
-class CS():
+class CS:
 
         def __init__(self):
                 rospy.init_node("CONTROL_STATION", anonymous=True)
@@ -108,7 +100,7 @@ class CS():
                 rospy.Subscriber('RoverConfirm', Bool, rover_confirmation)
                         
                 # receive info if an exception was thrown
-                rospy.Subscriber('Exception', String, exception)
+                rospy.Subscriber('Exception', String, exception_clbk)
 
 
                         ###### [Task node] --> CS_node ######

@@ -1,12 +1,6 @@
 from threading import Thread
 import rospy
-from Xplore_CS_2022.Controller import *
-#from Xplore_CS_2022.models import *
-
-#from Xplore_CS_2022.Controller import *
-
-#from models import *
-#from Xplore_CS_2022.models import RoverConfirmation
+from ControlStation.Controller import *
 
 from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray
 from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
@@ -45,7 +39,7 @@ def science_progress(num):
 
 #TODO on pourrait faire une liste d'exceptions comme ca on a un historique des problèmes qui ont eu lieu
 #General topic on which subsystems can publish if an unexpected exception was thrown
-def exception(str): 
+def exception_clbk(str): 
     val = str.data
     exception.string = val
     exception.save() 
