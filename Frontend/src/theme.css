@@ -478,7 +478,7 @@ pre {
 .row {
   display: flex;
   flex-wrap: wrap;
-  margin-right: -15px; 
+  margin-right: -15px; */
   margin-left: -15px;
 
 }
@@ -2968,8 +2968,11 @@ input[type="button"].btn-block {
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #002b80; }
+  /* border-left-color: #305CD4;
+  padding-left: 26px;
+  margin-left: 0px; */
+  /* color: #fff; */
+  /* background-color: #002b80; } */
 
 .nav-fill .nav-item {
   flex: 1 1 auto;
