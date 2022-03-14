@@ -31,13 +31,16 @@ from Xplore_CS_2022.models import *
 
 
 import rospy
-from ControlStation.Controller import *
+#from Controller import *
 
 from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray, UInt8
 from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
 from geometry_msgs.msg import Twist 
 from actionlib_msgs.msg import GoalID
 from sensor_msgs.msg import Image 
+from nav_msgs.msg import Odometry
+
+from threading import Thread
 
 from callbacks import *
 
@@ -50,7 +53,10 @@ Define the ROS topics: subscriptions and publishers
 class CS:
 
         def __init__(self):
+
                 rospy.init_node("CONTROL_STATION", anonymous=True)
+                #Thread.__init__(self, target=rover_confirmation)
+
                         # --------------------- PUBLISHERS ---------------------
 
                         ###### CS_node --> Rover node ######
@@ -114,6 +120,15 @@ class CS:
                 # receive info on sample analysis progress: failure(0), success(1)
                 rospy.Subscriber('ScienceProgress', Int8, science_progress)
 
+                # receive info on the executing state (if the motor pos is correct, if the LED is on/off) (if it's a verbose ??) 
+                #TODO callback func
+                rospy.Subscriber('science_current_info', String, ...)
+                
+                # receive the measurments 
+                #TODO callback func
+                rospy.Subscriber('sc_measurments', String, ...)
+
+
                         ###### Handling Device --> CS_node ######
                 
                 ''' 
@@ -127,18 +142,22 @@ class CS:
 
                 rospy.Subscriber('detection/RGB_webcam_2', Image, ...)
                 '''
+                        ###### Navigation --> CS_node ######
+
+                #TODO callback func
+                rospy.Subscriber('/odometry/filtered', Odometry, ...)
+
                 
         def run(self):
                 print("Listening")
                 rospy.spin()
 
 
-ControlStation = CS()
+CStation = CS()
+
 #================================================================================
 #MAIN
 if __name__ == '__main__':
-    #rospy.init_node('CONTROL_STATION', anonymous=True)
-    #print("Listening")
-    ControlStation.run()
-    #rospy.spin()
+        #rospy.init_node("CONTROL_STATION", anonymous=True)
+        CStation.run()
   

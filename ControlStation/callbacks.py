@@ -1,6 +1,6 @@
 from threading import Thread
 import rospy
-from ControlStation.Controller import *
+
 
 from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray
 from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
@@ -9,14 +9,14 @@ from actionlib_msgs.msg import GoalID
 
 from DB_objects import *
 
-
+from Controller import *
 #The following callback functions update the db objects' values
 
 #Rover sends a confirmation that it received an instruction
 def rover_confirmation(boolean):
-    rospy.loginfo("Rover Confirmation: " + str(boolean.data))
-    confirm.received = boolean.data
-    confirm.save(force_update=True)
+     rospy.loginfo("Rover Confirmation: " + str(boolean.data))
+     confirm.received = boolean.data
+     confirm.save(force_update=True)
 
 #Notified on whether task is a failure (0), success (1) or we reached a checkpoint (2)
 def task_progress(num):

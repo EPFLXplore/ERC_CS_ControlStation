@@ -11,3 +11,4 @@ confirm = RoverConfirmation.objects.create(received = False)
 task_state = TaskProgress.objects.create(state = 0)
 science_state = ScienceProgress.objects.create(state = 0)
 exception = Exception.objects.create(string = 'All good.')
+

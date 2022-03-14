@@ -32,7 +32,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'Xplore_CS_2022.apps.XploreCs2022Config',
-    #'Xplore_CS_2022',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

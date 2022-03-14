@@ -17,6 +17,7 @@ from Globals import *
 '''
     This class initializes all ROS publishers and subscribes to all the needed topics
 '''
+
 class Rover:
 
     def __init__(self):
@@ -77,20 +78,12 @@ class Rover:
             self.ROVER_STATE = Task.SCIENCE
             print("AHHHHH")
             self.SC_pub.publish(instr)
-
+        
 
     def run(self):
         print("Listening")
         rospy.spin() ##listens to the 'state' topic
-        # self.rate.sleep()
-        ##rate = rospy.Rate(1) # 1 hz
-        # while not rospy.is_shutdown():
-        #     self.send()
-        #     rate.sleep()
-
-    def send(self):
-        self.RoverConfirm_pub.publish(Bool(True))
-
+ 
 
 #==========================================================================
 #MAIN

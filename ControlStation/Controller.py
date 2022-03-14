@@ -14,30 +14,27 @@
 #================================================================================
 import rospy
 
+from CS_node import *
+from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray
 
 
 #================================================================================
 '''
 '''
-'''class Controller:
+# class Controller:
 
-    def __init__(self, CS_node):
-        #the controller is aware of the CS node it is linked to.
-        self.application = CS_node
+#     def __init__(self, CS_node):
+#         #the controller is aware of the CS node it is linked to.
+#         self.application = CS_node
 
-    ''' ''' 
-        Here you should define methods that will be called from javascript. They will
-        use the publishers defined in CS_node.py to publish data
-    ''' '''
-'''
+#     ''' 
+#         Here you should define methods that will be called from javascript. They will
+#         use the publishers defined in CS_node.py to publish data
+#     ''' 
 
-
-from CS_node import *
-from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray
-
-def pubTask(arr): 
-    ControlStation.Task_pub.publish(Int8MultiArray(data = arr))
 
 
 
-   
+def pubTask(arr): 
+    CStation.Task_pub.publish(Int8MultiArray(data = arr))
+
