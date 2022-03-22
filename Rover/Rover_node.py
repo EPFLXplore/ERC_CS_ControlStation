@@ -99,6 +99,6 @@ class Rover:
 #==========================================================================
 #MAIN
 if __name__ == '__main__':
-    listener = Rover()
+    rover = Rover()
     #listener.send() #ne marche pas
-    listener.run()
+    rover.run()
