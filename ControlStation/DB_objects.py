@@ -15,6 +15,6 @@ db_science = Science.objects.create(sc_text="", t1_hum=0, t2_hum=0, t3_hum=0, ma
 
 db_navigation = Navigation.objects.create(posX=0, posY=0, posZ=0,
                                        linVelX=0, linVelY=0, linVelZ=0,
-                                       linAngX=0, linAngY=0, linAngZ=0)
+                                       angVelX=0, angVelY=0, angVelZ=0)
 
 

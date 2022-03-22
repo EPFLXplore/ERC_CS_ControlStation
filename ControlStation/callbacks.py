@@ -7,11 +7,11 @@ from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
 from geometry_msgs.msg import Twist 
 from actionlib_msgs.msg import GoalID
 
-from nav_msgs import Odometry
+from nav_msgs.msg import Odometry
 
 from DB_objects import *
 
-from Controller import *
+#from Controller import *
 #The following callback functions update the db objects' values
 
 #Rover sends a confirmation that it received an instruction
@@ -44,6 +44,7 @@ def sc_text_info(info):
     str = info.data
     db_science.sc_text = str
     db_science.save()
+    rospy.loginfo("Science: text_info: " + str)
 
 def sc_humidity(hums):
     arr = hums.data
@@ -51,18 +52,22 @@ def sc_humidity(hums):
     val = arr[1]
 
     if(tNum == 0):
+        rospy.loginfo("Science: humidity tube 1: " + str(val))
         db_science.t1_hum = val
         db_science.save()
     elif(tNum == 1):
+        rospy.loginfo("Science: humidity tube 2: " + str(val))
         db_science.t2_hum = val
         db_science.save()
     else:
+        rospy.loginfo("Science: humidity tube 3: " + str(val))
         db_science.t3_hum = val
         db_science.save()
 
 
 def sc_mass(mass):
     val = mass.data
+    rospy.loginfo("Science: mass: " + str(val) + "[g]")
     db_science.mass = val
     db_science.save()
 
@@ -88,7 +93,7 @@ def nav_data(odometry):
     twistAng = data.twist.twist.angular
     angArr = [twistAng.x, twistAng.y, twistAng.z]
 
-    db_navigation.angVellX = angArr[0]
+    db_navigation.angVelX = angArr[0]
     db_navigation.angVelY = angArr[1]
     db_navigation.angVelZ = angArr[2]
 
