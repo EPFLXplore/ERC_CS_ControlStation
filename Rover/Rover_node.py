@@ -39,7 +39,7 @@ class Rover:
         self.Nav_pub = rospy.Publisher('Navigation', Int8, queue_size=1)
 
         # publish instruction concerning the Science Bay (Rover node --> Science node)
-        self.SC_pub = rospy.Publisher('Science', Int8, queue_size=1)
+        self.SC_pub = rospy.Publisher('science_cmd', Int8, queue_size=1)
 
 
         # --------------------- SUBSCRIPTIONS ---------------------
@@ -76,7 +76,6 @@ class Rover:
 
         else:  #task == 4, Science
             self.ROVER_STATE = Task.SCIENCE
-            print("AHHHHH")
             self.SC_pub.publish(instr)
         
 

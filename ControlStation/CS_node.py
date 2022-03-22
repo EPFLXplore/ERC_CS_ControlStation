@@ -33,7 +33,7 @@ from Xplore_CS_2022.models import *
 import rospy
 #from Controller import *
 
-from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray, UInt8
+from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray, Int16
 from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
 from geometry_msgs.msg import Twist 
 from actionlib_msgs.msg import GoalID
@@ -57,7 +57,7 @@ class CS:
                 rospy.init_node("CONTROL_STATION", anonymous=True)
                 #Thread.__init__(self, target=rover_confirmation)
 
-                        # --------------------- PUBLISHERS ---------------------
+                # --------------------------------------------- PUBLISHERS ---------------------------------------------
 
                         ###### CS_node --> Rover node ######
 
@@ -98,7 +98,7 @@ class CS:
                 self.Nav_DebugWheels_pub = rospy.Publisher('/debug/wheel_cmds', Int16MultiArray, queue_size=1)
 
 
-                        # --------------------- SUBSCRIPTIONS ---------------------
+                # --------------------------------------------- SUBSCRIPTIONS ---------------------------------------------
 
                         ###### Rover node --> CS_node ######
 
@@ -118,15 +118,15 @@ class CS:
                         ###### Science node --> CS_node  ######
 
                 # receive info on sample analysis progress: failure(0), success(1)
-                rospy.Subscriber('ScienceProgress', Int8, science_progress)
+                #rospy.Subscriber('ScienceProgress', Int8, sc_progress)
 
                 # receive info on the executing state (if the motor pos is correct, if the LED is on/off) (if it's a verbose ??) 
-                #TODO callback func
-                rospy.Subscriber('science_current_info', String, ...)
+                rospy.Subscriber('science_current_info', String, sc_text_info)
                 
                 # receive the measurments 
-                #TODO callback func
-                rospy.Subscriber('sc_measurments', String, ...)
+                rospy.Subscriber('sc_measurments_humidity', Int16MultiArray, sc_humidity)
+
+                rospy.Subscriber('sc_measurments_mass', Int16, sc_mass)
 
 
                         ###### Handling Device --> CS_node ######
@@ -145,7 +145,7 @@ class CS:
                         ###### Navigation --> CS_node ######
 
                 #TODO callback func
-                rospy.Subscriber('/odometry/filtered', Odometry, ...)
+                rospy.Subscriber('/odometry/filtered', Odometry, nav_data)
 
                 
         def run(self):

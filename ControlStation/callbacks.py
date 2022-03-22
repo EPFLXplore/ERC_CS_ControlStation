@@ -7,6 +7,8 @@ from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
 from geometry_msgs.msg import Twist 
 from actionlib_msgs.msg import GoalID
 
+from nav_msgs import Odometry
+
 from DB_objects import *
 
 from Controller import *
@@ -15,31 +17,85 @@ from Controller import *
 #Rover sends a confirmation that it received an instruction
 def rover_confirmation(boolean):
      rospy.loginfo("Rover Confirmation: " + str(boolean.data))
-     confirm.received = boolean.data
-     confirm.save(force_update=True)
+     db_confirm.received = boolean.data
+     db_confirm.save(force_update=True)
 
 #Notified on whether task is a failure (0), success (1) or we reached a checkpoint (2)
 def task_progress(num):
     val = num.data
     if (0 <= val and val < 3):
-        task_state.state = val
-        task_state.save()
+        db_task_state.state = val
+        db_task_state.save()
     else:
         #TODO how to handle this exception?
-        exception("unacceptable number received: ", val)
+        exception_clbk("unacceptable number received: ", val)
         
 #Science analysis failure (0) or success (1)
-def science_progress(num):
+'''def sc_progress(num):
     val = num.data
     if (val == 0 or val == 1):
-        science_state.state = val
-        science_state.save()
+        db_science.state = val
+        db_science.save()
     else:
-        exception("unacceptable number received: " + val)
+        db_exception("unacceptable number received: " + val)
+'''
+
+def sc_text_info(info):
+    str = info.data
+    db_science.sc_text = str
+    db_science.save()
+
+def sc_humidity(hums):
+    arr = hums.data
+    tNum = arr[0]
+    val = arr[1]
+
+    if(tNum == 0):
+        db_science.t1_hum = val
+        db_science.save()
+    elif(tNum == 1):
+        db_science.t2_hum = val
+        db_science.save()
+    else:
+        db_science.t3_hum = val
+        db_science.save()
+
+
+def sc_mass(mass):
+    val = mass.data
+    db_science.mass = val
+    db_science.save()
+
+
+# TODO update the database everytime dist(pos1, pos2) > eps
+# TODO IL FAUT PASSER A POSTGRESQL POUR LES ARRAYFIELD STP
+def nav_data(odometry):
+    data = odometry.data
+    pos = data.pose.pose.position
+    posArr = [pos.x, pos.y, pos.z]
+
+    db_navigation.posX = posArr[0]
+    db_navigation.posY = posArr[1]
+    db_navigation.posZ = posArr[2]
+
+    twistLin = data.twist.twist.linear
+    linArr = [twistLin.x, twistLin.y, twistLin.z]
+
+    db_navigation.linVelX = linArr[0]
+    db_navigation.linVelY = linArr[1]
+    db_navigation.linVelZ = linArr[2]
+
+    twistAng = data.twist.twist.angular
+    angArr = [twistAng.x, twistAng.y, twistAng.z]
+
+    db_navigation.angVellX = angArr[0]
+    db_navigation.angVelY = angArr[1]
+    db_navigation.angVelZ = angArr[2]
+
 
 #TODO on pourrait faire une liste d'exceptions comme ca on a un historique des problèmes qui ont eu lieu
 #General topic on which subsystems can publish if an unexpected exception was thrown
 def exception_clbk(str): 
     val = str.data
-    exception.string = val
-    exception.save() 
+    db_exception.string = val
+    db_exception.save() 
