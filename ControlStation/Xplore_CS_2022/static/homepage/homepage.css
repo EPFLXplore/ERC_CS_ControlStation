@@ -1,0 +1,175 @@
+/*==========================================================================
+=====================| VARS  |============================================*/
+:root{
+	--clr-neon: #0000ff;
+}
+
+
+/*==========================================================================
+=====================| DIVS  |============================================*/
+.body{
+  
+}
+
+#container{
+	margin-left: -8px;
+	margin-top: -8px;
+}
+
+.box{
+	position: fixed;
+	float: left;
+	height: 100%;
+}
+
+#sidebar{
+	width: 250px;
+	background-color: #000000;
+	text-align: center;
+}
+
+#right-side{
+	margin-left: 250px;
+	width: 87%;
+}
+
+.page-button-container{
+	margin-top: 30px;
+	position: fixed;
+}
+
+.state-button-container{
+	position: fixed;
+	height: 210px;
+	width: 230px;
+	margin-top: 300px;
+	margin-left: 5px;
+	border-radius: 5px;
+	border: 4px double #4f4f4f;
+	background-color: black;
+	
+	padding-top: 10px;
+}
+
+.top-bar{
+	width: 100%;
+	height: 57px;
+	padding-top: 15px;
+	background-color: black;
+}
+
+.page{
+	background-color: #121212;
+	width: 100%;
+	height: 100%;
+}
+
+
+/*==========================================================================
+=====================| BUTTONS |==========================================*/
+.page-button{
+	text-align: center;
+	background-color: #000000;
+	color: #eeeeee;
+  border-radius: 10px;
+  border: 0px;
+  font-size: 22px;
+  width: 230px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 5px;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
+.page-button:hover {
+	background-color: #07142d;
+	font-size: 23px;
+}
+
+.state-button{
+	background-color: #767679;
+	border-radius: 10px;
+  border: 5px double #cccccc;
+  width: 95px;
+  height: 80px;
+  
+  font-size: 18px;
+  color: black;
+  margin-right: 8px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
+.state-button:hover {
+	background-color: #e9e9ed;
+}
+
+#launch{border-color: green; }	#launch:hover{background-color:lightgreen; }
+#abort {border-color: red;   }	#abort:hover {background-color:red;   }
+#resume{border-color: blue;  }	#resume:hover{background-color:lightblue;  }
+#wait  {border-color: yellow;}	#wait:hover  {background-color:lightyellow;}
+
+
+/*==========================================================================
+=====================| IMAGES  |==========================================*/
+#imagelogo{
+	width: 70%;
+	margin-top: 10px;
+}
+
+/*==========================================================================
+=====================| LABELS  |==========================================*/
+.page-title{
+	color: white;
+}
+
+.top-label{
+	text-align: center;
+	color: white;
+	padding-top: 3px;
+	
+	float: left;
+	margin-left: 2%;
+	width: 15%;
+	height: 23px;
+	border: 4px double #0000ff;
+}
+
+.neon-label{
+	float: left;
+	text-align: center;
+	margin-left: 2%;
+	padding-top: 3px;
+	width: 12%;
+	height: 23px;
+	font-size: 1.2rem;
+	
+	cursor: pointer;
+	text-decoration: none;
+	color: var(--clr-neon);
+	border: var(--clr-neon) 0.125em solid;
+	padding: 0.25em 1em;
+	border-radius: 0.25em;
+	
+	text-shadow:
+		0 0 0.125em hsl(0 0% 100% / 0.3),
+		0 0 0.25em currentColor;
+		
+	box-shadow: inset
+		0 0 0.5em 0 var(--clr-neon),
+		0 0 0.5em 0 var(--clr-neon);
+		
+	position: relative;
+}
+
+.neon-label:hover{
+	background: var(--clr-neon);
+	color: black;
+	text-shadow: none;
+	box-shadow: 0 0 2em 0.3em var(--clr-neon);
+}
+
+#idle{margin-left: 7%;}

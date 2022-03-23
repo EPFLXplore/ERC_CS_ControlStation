@@ -5,7 +5,8 @@ function createWindow () {
   const win = new BrowserWindow({
     width: 1200,
     height: 900,
-    icon: '/home/xplore/Desktop/Xplore/Icons/Xplore-logo.icns',
+    fullscreen: false,
+    icon: 'Xplore-icon.ico',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
@@ -23,6 +24,7 @@ app.whenReady().then(() => {
       createWindow()
     }
   })
+  
 })
 
 app.on('window-all-closed', () => {
@@ -30,3 +32,4 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
+

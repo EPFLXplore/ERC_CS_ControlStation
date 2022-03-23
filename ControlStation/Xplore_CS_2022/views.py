@@ -7,7 +7,7 @@ def handlingdevice(request):
     return render(request, 'pages/handlingdevice.html')
 
 def homepage(request):
-    return render(request, 'pages/homepage/homepage.html')
+    return render(request, 'pages/homepage.html')
 
 def manualcontrol(request):
     return render(request, 'pages/manualcontrol.html')
