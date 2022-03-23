@@ -100,5 +100,4 @@ class Rover:
 #MAIN
 if __name__ == '__main__':
     rover = Rover()
-    #listener.send() #ne marche pas
     rover.run()
