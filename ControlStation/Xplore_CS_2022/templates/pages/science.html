@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Xplore_CS_2022</title>
+  <link href="{% static 'homepage/homepage.css' %}" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="{% static 'homepage/Xplore-icon.ico' %}">
+</head>
+
+<body>
+	<div id="container">
+  	<div id="sidebar" class="box">
+  	  <div class="logo">
+  	  	<img id="imagelogo" src="{% static 'homepage/Xplore-logo.png' %}" alt="My image">
+  	  </div>
+  	  
+  	  <div class="page-button-container">
+  	  	<form id="navigation" action="http://127.0.0.1:8000/Xplore_CS_2022/navigation">
+					<button class="page-button">
+						<span>NAVIGATION</span>
+					</button>
+				</form>
+				
+				<form id="handlingdevice" action="http://127.0.0.1:8000/Xplore_CS_2022/handlingdevice">
+					<button class="page-button">
+						<span>HANDLING DEVICE</span>
+					</button>
+				</form>
+				
+				<form id="science" action="http://127.0.0.1:8000/Xplore_CS_2022/science">
+					<button class="page-button">
+						<span>SCIENCE</span>
+					</button>
+				</form>
+				
+				<form id="manualcontrol" action="http://127.0.0.1:8000/Xplore_CS_2022/manualcontrol">
+					<button class="page-button">
+						<span>MANUAL CONTROL</span>
+					</button>
+				</form>
+  	  </div>
+  	  
+  	  <div class="state-button-container">
+  	  	<button id="launch" class="state-button">
+  	  	<span>LAUNCH<span>
+  	  	</button>
+  	  	
+  	  	<button id="abort" class="state-button">
+  	  	<span>ABORT<span>
+  	  	</button>
+  	  	
+  	  	<button id="resume" class="state-button">
+  	  	<span>RESUME<span>
+  	  	</button>
+  	  	
+  	  	<button id="wait" class="state-button">
+  	  	<span>WAIT<span>
+  	  	</button>
+  	  </div>
+  	  
+  	</div>
+	
+  	<div id="right-side" class="box">
+  		<div class="top-bar">
+  			<label id="idle" class="neon-label">IDLE</label>
+  			<label id="navigation" class="neon-label">NAVIGATION</label>
+  			<label id="science" class="neon-label">SCIENCE</label>
+  			<label id="manual" class="neon-label">MANUAL</label>
+  			<label id="waiting" class="neon-label">WAITING</label>		
+  		</div>
+  		
+  		<div id="page" class="page">
+  			<label class="page-title">SCIENCE</label>
+  		</div>
+  	</div>
+  	
+  </div>
+</body>
+
+</html>
