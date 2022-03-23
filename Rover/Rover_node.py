@@ -24,9 +24,7 @@ class Rover:
         rospy.init_node('ROVER', anonymous=True)
         self.ROVER_STATE = Task.IDLE
 
-        # =====================================================================================================
-        # =                                             PUBLISHERS                                            =
-        # =====================================================================================================
+        # --------------------- PUBLISHERS ---------------------
 
         # publish True if instruction receivd from CS (Rover node --> CS_node)
         self.RoverConfirm_pub = rospy.Publisher('RoverConfirm', Bool, queue_size=1)
@@ -44,26 +42,17 @@ class Rover:
         self.SC_pub = rospy.Publisher('science_cmd', Int8, queue_size=1)
 
 
-        # +---------------------------------------------------------------------------------------------------+
-        # |                                             SUBSCRIBERS                                           |
-        # +---------------------------------------------------------------------------------------------------+
+        # --------------------- SUBSCRIPTIONS ---------------------
 
         # receive an array = [task, instruction] (CS_node --> Rover node)
         rospy.Subscriber('Task', Int8MultiArray, self.task_instr)
 
 
-# =========================================================================================================================
-
-
-    # receive an array: [task, instruction]
-    #   - task: Manual = 1 | Navigation = 2 | Maintenance = 3 | Science = 4
-    #   - instr: Launch = 1 | Abort = 2 | Wait = 3 | Resume = 4 | Retry = 5
     def task_instr(self, array):
 
         task = array.data[0]
         instr = array.data[1]
 
-        # basic checking whether received task and instr numbers are among those stated above
         if not(1 <= task <= 4):
             self.Exception_pub.publish("Task number denied, received:", task) 
             pass
@@ -71,7 +60,6 @@ class Rover:
             self.Exception_pub.publish("Instr number denied, received:", instr) 
             pass
         
-        # notify the CS that the instruction was received
         rospy.loginfo("Rover: [task, instr] received")
         self.RoverConfirm_pub.publish(Bool(True))
 

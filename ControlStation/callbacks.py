@@ -14,13 +14,13 @@ from DB_objects import *
 #from Controller import *
 #The following callback functions update the db objects' values
 
-# Rover sends a confirmation that it received an instruction
+#Rover sends a confirmation that it received an instruction
 def rover_confirmation(boolean):
      rospy.loginfo("Rover Confirmation: " + str(boolean.data))
      db_confirm.received = boolean.data
      db_confirm.save(force_update=True)
 
-# Notified on whether task is a failure (0), success (1) or we reached a checkpoint (2)
+#Notified on whether task is a failure (0), success (1) or we reached a checkpoint (2)
 def task_progress(num):
     val = num.data
     if (0 <= val and val < 3):
@@ -40,21 +40,17 @@ def task_progress(num):
         db_exception("unacceptable number received: " + val)
 '''
 
-# receive info on what is being done in the Science bay
-# info is a String
 def sc_text_info(info):
     str = info.data
     db_science.sc_text = str
     db_science.save()
     rospy.loginfo("Science: text_info: " + str)
 
-# receive an array: [tube n°, its humidity (%)]
 def sc_humidity(hums):
     arr = hums.data
-    tNum = arr[0] # tube number
-    val = arr[1] # tube's humidity
+    tNum = arr[0]
+    val = arr[1]
 
-    # update the tube number's corresponding field in the database
     if(tNum == 0):
         rospy.loginfo("Science: humidity tube 1: " + str(val))
         db_science.t1_hum = val
@@ -68,7 +64,7 @@ def sc_humidity(hums):
         db_science.t3_hum = val
         db_science.save()
 
-# receive total mass inside the science bay
+
 def sc_mass(mass):
     val = mass.data
     rospy.loginfo("Science: mass: " + str(val) + "[g]")
@@ -77,7 +73,7 @@ def sc_mass(mass):
 
 
 # TODO update the database everytime dist(pos1, pos2) > eps
-# TODO IL FAUT PASSER A POSTGRESQL POUR LES ARRAYFIELD STP OU UTILISER DES BLOBS
+# TODO IL FAUT PASSER A POSTGRESQL POUR LES ARRAYFIELD STP
 def nav_data(odometry):
     data = odometry.data
     pos = data.pose.pose.position

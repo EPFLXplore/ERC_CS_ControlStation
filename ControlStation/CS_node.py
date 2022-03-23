@@ -16,9 +16,8 @@ from Xplore_CS_2022.models import *
 #
 # @authors: Emile Hreich
 #           emile.janhodithreich@epfl.ch
-#           
-#           Roman Danylovych
-#           roman.danylovych@epfl.ch
+#
+#           ...
 #
 # @brief: This file contains the Application class of the backend. It will
 #         create the ROS node for the Control Station and take care of creating
@@ -58,9 +57,7 @@ class CS:
                 rospy.init_node("CONTROL_STATION", anonymous=True)
                 #Thread.__init__(self, target=rover_confirmation)
 
-                # =====================================================================================================
-                # =                                             PUBLISHERS                                            =
-                # =====================================================================================================
+                # --------------------------------------------- PUBLISHERS ---------------------------------------------
 
                         ###### CS_node --> Rover node ######
 
@@ -101,9 +98,7 @@ class CS:
                 self.Nav_DebugWheels_pub = rospy.Publisher('/debug/wheel_cmds', Int16MultiArray, queue_size=1)
 
 
-                # +---------------------------------------------------------------------------------------------------+
-                # |                                             SUBSCRIBERS                                           |
-                # +---------------------------------------------------------------------------------------------------+
+                # --------------------------------------------- SUBSCRIPTIONS ---------------------------------------------
 
                         ###### Rover node --> CS_node ######
 
@@ -125,17 +120,17 @@ class CS:
                 # receive info on sample analysis progress: failure(0), success(1)
                 #rospy.Subscriber('ScienceProgress', Int8, sc_progress)
 
-                # receive info on the executing state (if the motor pos is correct, if the LED is on/off)
+                # receive info on the executing state (if the motor pos is correct, if the LED is on/off) (if it's a verbose ??) 
                 rospy.Subscriber('science_current_info', String, sc_text_info)
                 
-                # receive measurements on the humidity of a specific tube in the science bay
+                # receive the measurments 
                 rospy.Subscriber('sc_measurments_humidity', Int16MultiArray, sc_humidity)
 
-                # receive information on the total mass in the science bay
                 rospy.Subscriber('sc_measurments_mass', Int16, sc_mass)
 
 
                         ###### Handling Device --> CS_node ######
+                
                 ''' 
                 rospy.Subscriber('detection/state', UInt8, detection_state)
 
@@ -149,10 +144,7 @@ class CS:
                 '''
                         ###### Navigation --> CS_node ######
 
-                # receive Odometry object containing rover's:
-                #       - position (x,y,z) 
-                #       - linear velocity
-                #       - angular velocity
+                #TODO callback func
                 rospy.Subscriber('/odometry/filtered', Odometry, nav_data)
 
                 
