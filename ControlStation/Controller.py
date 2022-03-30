@@ -13,7 +13,8 @@
 #
 #================================================================================
 import rospy
-
+import sys
+from time import sleep
 from CS_node import *
 from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray
 
@@ -37,6 +38,7 @@ from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16Multi
 
 
 def pubTask(task, instr): 
+	#sleep(1)
     arr = [task, instr]
     CStation.Task_pub.publish(Int8MultiArray(data = arr))
 

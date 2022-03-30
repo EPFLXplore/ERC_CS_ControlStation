@@ -12,7 +12,7 @@ def s(out):
 	return str(out)[2:-3]
 
 def simple_function(request):
-	out_a = run([sys.executable,'//home//xplore//Desktop//functions.py', 'pubTask','4','1'], shell=False, stdout=PIPE)
+	out_a = run([sys.executable,'//home//rocknd79//Xplore//CS_workspace//ControlStation//Controller.py', 'pubTask','4','1'], shell=False, stdout=PIPE)
 	
 	context = {
 		"output"			: s(out_a.stdout)
