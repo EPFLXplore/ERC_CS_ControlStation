@@ -12,3 +12,9 @@
 #         for various applications
 #
 #================================================================================
+
+mask = 1
+
+def extract_bit(index, num):
+    mask = mask << index
+    return num and mask

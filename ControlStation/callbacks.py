@@ -11,6 +11,8 @@ from nav_msgs.msg import Odometry
 
 from DB_objects import *
 
+from Model import *
+
 #from Controller import *
 #The following callback functions update the db objects' values
 
@@ -70,6 +72,18 @@ def sc_mass(mass):
     rospy.loginfo("Science: mass: " + str(val) + "[g]")
     db_science.mass = val
     db_science.save()
+
+
+def hd_data(matrix):
+    el1 = matrix[0]
+    el2 = matrix[1]
+    el3 = matrix[2]
+    el4 = matrix[3]
+    el5 = matrix[4]
+    el6 = matrix[5]
+    el7 = matrix[6]
+
+    
 
 
 # TODO update the database everytime dist(pos1, pos2) > eps

@@ -33,8 +33,11 @@ from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16Multi
 #     ''' 
 
 
+#cstation = CS()
 
 
-def pubTask(arr): 
+def pubTask(task, instr): 
+    arr = [task, instr]
     CStation.Task_pub.publish(Int8MultiArray(data = arr))
+
 
