@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('launcher/', views.launcher, name='launcher'),
     path('Xplore_CS_2022/', include('Xplore_CS_2022.urls')),
+    path('testing/', include('testing.urls')),
 ]

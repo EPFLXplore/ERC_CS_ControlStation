@@ -41,3 +41,10 @@ def pubTask(task, instr):
     CStation.Task_pub.publish(Int8MultiArray(data = arr))
 
 
+if __name__ == '__main__' and len(sys.argv)>1:
+	arg = sys.argv
+	l = len(arg)
+	name = arg[1]
+	
+	if l==4 and name=="pubTask":
+		globals()[name](int(arg[2]), int(arg[3]))
