@@ -19,15 +19,17 @@ from Model import *
 #Rover sends a confirmation that it received an instruction
 def rover_confirmation(boolean):
      rospy.loginfo("Rover Confirmation: " + str(boolean.data))
-     db_confirm.received = boolean.data
-     db_confirm.save(force_update=True)
+     #db_confirm.received = boolean.data
+     #db_confirm.save(force_update=True)
+     RoverConfirmation.objects.update_or_create(name="RoverConfirm", defaults={'received': boolean.data})
 
 #Notified on whether task is a failure (0), success (1) or we reached a checkpoint (2)
 def task_progress(num):
     val = num.data
     if (0 <= val and val < 3):
-        db_task_state.state = val
-        db_task_state.save()
+        #db_task_state.state = val
+        #db_task_state.save()
+        TaskProgress.objects.update_or_create(name="TaskProgress", defaults={'state': val})
     else:
         #TODO how to handle this exception?
         exception_clbk("unacceptable number received: ", val)
@@ -44,14 +46,20 @@ def task_progress(num):
 
 def sc_text_info(info):
     str = info.data
-    db_science.sc_text = str
-    db_science.save()
+    ##db_science = Science.objects.update_or_create(name="Science", defaults = {})
+    Science.objects.update_or_create(name="Science", defaults = {'sc_text': str})
+    #db_science.sc_text = str
+    #db_science.save()
+    #Science.objects.update_or_create(name="Science", defaults = {'sc_text': str})
     rospy.loginfo("Science: text_info: " + str)
 
 def sc_humidity(hums):
     arr = hums.data
     tNum = arr[0]
     val = arr[1]
+
+    #db_science = Science.objects.update_or_create(name="Science", defaults={})[0]
+    db_science = Science.objects.create(name="Science")
 
     if(tNum == 0):
         rospy.loginfo("Science: humidity tube 1: " + str(val))
@@ -69,9 +77,12 @@ def sc_humidity(hums):
 
 def sc_mass(mass):
     val = mass.data
+    #Science.objects.update_or_create(name="Science", defaults = {'mass': val})
+    Science.objects.get_or_create(name="Science")
+    #db_science = Science.objects.get(name="Science")
     rospy.loginfo("Science: mass: " + str(val) + "[g]")
-    db_science.mass = val
-    db_science.save()
+    #db_science.mass = val
+    #db_science.save()
 
 
 def hd_data(matrix):
@@ -92,6 +103,8 @@ def nav_data(odometry):
     data = odometry.data
     pos = data.pose.pose.position
     posArr = [pos.x, pos.y, pos.z]
+
+    #db_navigation = Navigation.objects.update_or_create(name="Navigation", defaults = )
 
     db_navigation.posX = posArr[0]
     db_navigation.posY = posArr[1]

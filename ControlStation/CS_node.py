@@ -31,6 +31,7 @@ from Xplore_CS_2022.models import *
 
 
 import rospy
+import sys
 #from Controller import *
 
 from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray, Int16
@@ -55,6 +56,9 @@ class CS:
         def __init__(self):
 
                 rospy.init_node("CONTROL_STATION", anonymous=True)
+
+                self.navID = [0]
+
                 #Thread.__init__(self, target=rover_confirmation)
 
                 # --------------------------------------------- PUBLISHERS ---------------------------------------------
@@ -159,6 +163,8 @@ CStation = CS()
 #================================================================================
 #MAIN
 if __name__ == '__main__':
+        #print("reset")
+        #sys.stdout.flush()  
         #rospy.init_node("CONTROL_STATION", anonymous=True)
         CStation.run()
   

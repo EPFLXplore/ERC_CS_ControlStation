@@ -2,48 +2,58 @@ from django.db import models
 
 # Create your models here.
 class RoverConfirmation(models.Model):
-    received = models.BooleanField()
+    name = models.TextField(default="RoverConfirm")
+
+    received = models.BooleanField(default = False)
 
     def __str__(self):
         return str(self.received)
 
 class TaskProgress(models.Model):
-    state = models.PositiveSmallIntegerField()
+    name = models.TextField(default = "TaskProgress")
+
+    state = models.PositiveSmallIntegerField(default = -1)
 
     def __str__(self):
         return str(self.state)
 
 class Science(models.Model):
-    sc_text = models.TextField()
+    name = models.TextField(default="Science")
 
-    t1_hum = models.PositiveSmallIntegerField()
-    t2_hum = models.PositiveSmallIntegerField()
-    t3_hum = models.PositiveSmallIntegerField()
+    sc_text = models.TextField(default = "Nothing yet.")
 
-    mass = models.PositiveSmallIntegerField()
+    t1_hum = models.PositiveSmallIntegerField(default = -1)
+    t2_hum = models.PositiveSmallIntegerField(default = -1)
+    t3_hum = models.PositiveSmallIntegerField(default = -1)
+
+    mass = models.PositiveSmallIntegerField(default = 0)
 
     def __str__(self):
         return str(self.sc_text)
 
 class Navigation(models.Model):
+    name = models.TextField(default="Navigation")
+
     # fields for rover's position coordinates
-    posX = models.FloatField()
-    posY = models.FloatField()
-    posZ = models.FloatField()
+    posX = models.FloatField(default = 0.0)
+    posY = models.FloatField(default = 0.0)
+    posZ = models.FloatField(default = 0.0)
 
     # fields for rover's linear velocity coordinates
-    linVelX = models.FloatField()
-    linVelY = models.FloatField()
-    linVelZ = models.FloatField()
+    linVelX = models.FloatField(default = 0.0)
+    linVelY = models.FloatField(default = 0.0)
+    linVelZ = models.FloatField(default = 0.0)
 
     # fields for rover's angular velocity coordinates
-    angVelX = models.FloatField()
-    angVelY = models.FloatField()
-    angVelZ = models.FloatField()
+    angVelX = models.FloatField(default = 0.0)
+    angVelY = models.FloatField(default = 0.0)
+    angVelZ = models.FloatField(default = 0.0)
 
 
 class Exception(models.Model):
-    string = models.TextField()
+    name = models.TextField(default = "Exception")
+
+    string = models.TextField(default = "No exception yet")
 
     def __str__(self):
         return str(self.string)
