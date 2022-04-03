@@ -9,7 +9,7 @@ from actionlib_msgs.msg import GoalID
 
 from nav_msgs.msg import Odometry
 
-from DB_objects import *
+from Xplore_CS_2022.models import *
 
 from Model import *
 
