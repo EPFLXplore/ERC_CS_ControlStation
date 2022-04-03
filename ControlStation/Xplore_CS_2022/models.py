@@ -1,3 +1,17 @@
+#
+# 02/2021
+#
+# @author:  Roman Danylovych
+#           roman.danylovych@epfl.ch
+#
+# @brief: This file contains the Django models describing our database
+#
+#         These models will be used to store information coming from the Rover
+#
+#================================================================================
+
+
+
 from django.db import models
 
 # Create your models here.

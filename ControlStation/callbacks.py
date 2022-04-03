@@ -1,3 +1,16 @@
+#
+# 02/2021
+#
+# @author:  Roman Danylovych
+#           roman.danylovych@epfl.ch
+#
+# @brief: This file contains all the callback functions used by the CS
+#
+#         The callback functions are called when the CS receives an info
+#         on a topic it is subcribed to
+#
+#================================================================================
+
 from threading import Thread
 import rospy
 
@@ -13,9 +26,8 @@ from Xplore_CS_2022.models import *
 
 from Model import *
 
-#from Controller import *
-#The following callback functions update the db objects' values
 
+#The following callback functions update the db objects' values
 
 #Rover sends a confirmation that it received an instruction
 def rover_confirmation(boolean):

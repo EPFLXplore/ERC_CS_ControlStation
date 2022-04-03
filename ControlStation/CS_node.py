@@ -1,23 +1,11 @@
-
-# import django
-# django.setup()
-
-import os
-from pickletools import uint8
-import django
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
-django.setup()
-
-from Xplore_CS_2022.models import *
-
 #
 # 27/11/2021
 #
 # @authors: Emile Hreich
 #           emile.janhodithreich@epfl.ch
 #
-#           ...
+#           Roman Danylovych
+#           roman.danylovych@epfl.ch
 #
 # @brief: This file contains the Application class of the backend. It will
 #         create the ROS node for the Control Station and take care of creating
@@ -28,7 +16,14 @@ from Xplore_CS_2022.models import *
 #================================================================================
 #!/usr/bin/env python
 
+import os
+from pickletools import uint8
+import django
 
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
+django.setup()
+
+from Xplore_CS_2022.models import *
 
 import rospy
 import sys
