@@ -24,7 +24,7 @@ def rover_confirmation(boolean):
 
 
 ###############################
-#        TASK PROGRESS        # 
+#        TASK PROGRESS        #
 ###############################
 
 #Notified on whether task is a:

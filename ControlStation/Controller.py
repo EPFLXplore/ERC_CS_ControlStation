@@ -22,6 +22,8 @@ from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
 
 from geometry_msgs.msg import Pose, Point
 
+from actionlib_msgs.msg import GoalID
+
 
 #================================================================================
 '''
@@ -40,13 +42,11 @@ from geometry_msgs.msg import Pose, Point
 
 #cstation = CS()
 
-def print_GFG():
-    for i in range(5):
-        # suspend the current thread.
-        sleep(1)
-        print("GFG")
+###############################
+#             TASK            #
+###############################
 
-def pubTask(task, instr): 
+def pub_Task(task, instr): 
 	#rospy.sleep(1)
     arr = [task, instr]
     CStation.Task_pub.publish(Int8MultiArray(data = arr))
@@ -57,7 +57,11 @@ def pubTask(task, instr):
     print("\n")
 
 
-def set_hd_mode(mode) :
+###############################
+#       HANDLING DEVICE       #
+###############################
+
+def pub_hd_mode(mode) :
     if(mode == 0 or mode == 1):
         CStation.HD_mode_pub.publish(data = mode)
     else:
@@ -65,7 +69,12 @@ def set_hd_mode(mode) :
         print("Error: HD mode can be either 0 or 1 not ", mode)
 
 
-def set_nav_goal(x, y, z):
+###############################
+#          NAVIGATION         #
+###############################
+
+# 
+def pub_nav_goal(x, y, z):
     '''
     actionlib_msgs/GoalID goal_id
         time stamp
@@ -79,19 +88,43 @@ def set_nav_goal(x, y, z):
                     float64 z
     '''
 
-    #g_id = GoalID(stamp = rospy.get_time(), id = )
+    g_id = GoalID(stamp = rospy.get_time(), id = 1)
     moveBaseGoal = MoveBaseGoal(target_pose = Pose(position = Point(x, y, z)))
 
-    #CStation.Nav_Goal_pub.publish(MoveBaseActionGoal(goal_id = g_id, goal = moveBaseGoal))
+    CStation.Nav_Goal_pub.publish(MoveBaseActionGoal(goal_id = g_id, goal = moveBaseGoal))
 
 
-#rospy.loginfo("redis wallah")
+# cancel a Navigation goal by giving the goal's id
+def pub_cancel_nav_goal(given_id):
+    CStation.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = given_id))
 
+
+# Debugging commands to individual wheels. Only use in "emergencies".
+ 
+#  Message : 
+#  [ [wheel_ID] [rotation_velocity] [steering_angle] ]
+ 
+#  Wheel_ID : 
+#  1 : FL | 2 : FR | 3 : HR | 4 : HL
+ 
+#  rotation_veloctiy (in RPM):
+#  range: -60 and +60
+ 
+#  steering_angle (in degrees) : 
+#  range: -180 and +180
+
+def pub_debug_wheels(wheel_id, rot_vel, range):
+    CStation.Nav_DebugWheels_pub(Int16MultiArray(data = [wheel_id, rot_vel, range]))
+
+
+
+
+# ----------------- MAIN -----------------
 
 if __name__ == '__main__' and len(sys.argv)>1:
 	arg = sys.argv
 	l = len(arg)
 	name = arg[1]
 	
-	if l==4 and name=="pubTask":
+	if l==4 and name=="pub_Task":
 		globals()[name](int(arg[2]), int(arg[3]))

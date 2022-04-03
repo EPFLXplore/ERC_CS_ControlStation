@@ -24,7 +24,9 @@ class Rover:
         rospy.init_node('ROVER', anonymous=True)
         self.ROVER_STATE = Task.IDLE
 
-        # --------------------- PUBLISHERS ---------------------
+        # +--------------------------------------------------------+
+        # |                       PUBLISHERS                       |
+        # +--------------------------------------------------------+
 
         # publish True if instruction receivd from CS (Rover node --> CS_node)
         self.RoverConfirm_pub = rospy.Publisher('RoverConfirm', Bool, queue_size=1)
@@ -42,11 +44,28 @@ class Rover:
         self.SC_pub = rospy.Publisher('science_cmd', Int8, queue_size=1)
 
 
-        # --------------------- SUBSCRIPTIONS ---------------------
+        # +--------------------------------------------------------+
+        # |                     SUBSCRIPTIONS                      |
+        # +--------------------------------------------------------+
 
         # receive an array = [task, instruction] (CS_node --> Rover node)
         rospy.Subscriber('Task', Int8MultiArray, self.task_instr)
 
+
+    # receives array: [task, instr]:
+    #
+    # TASK: 
+    #       - Manual      = 1 
+    #       - Navigation  = 2 
+    #       - Maintenance = 3
+    #       - Science     = 4
+    #
+    # INSTR:  
+    #       - Launch = 1 
+    #       - Abort  = 2 
+    #       - Wait   = 3 
+    #       - Resume = 4 
+    #       - Retry  = 5
 
     def task_instr(self, array):
 

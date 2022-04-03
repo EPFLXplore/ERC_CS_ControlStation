@@ -61,15 +61,21 @@ class CS:
 
                 #Thread.__init__(self, target=rover_confirmation)
 
-                # --------------------------------------------- PUBLISHERS ---------------------------------------------
+                ############################################################################
+                #                                PUBLISHERS                                #
+                ############################################################################
 
-                        ###### CS_node --> Rover node ######
+                        # +--------------------------------------+
+                        # |         CS_node --> Rover node       |
+                        # +--------------------------------------+
 
                 # publish array: [task, instruction] 
                 self.Task_pub = rospy.Publisher('Task', Int8MultiArray, queue_size=1)
 
 
-                        ###### CS_node --> Handling Device node ######
+                        # +--------------------------------------+
+                        # |   CS_node --> Handling Device node   |
+                        # +--------------------------------------+
 
                 # publish HD_mode => Autonomous (0), Semi-Autonomous (1), Inverse Manual (2), Direct Manual (3)
                 self.HD_mode_pub = rospy.Publisher('HD_mode', Int8, queue_size=1)
@@ -87,7 +93,9 @@ class CS:
                 self.HD_InvManual_Coord_pub = rospy.Publisher('HD_InvManual_Coord', Int8MultiArray, queue_size=1)
 
 
-                        ###### CS_node --> Navigation node ######
+                        # +--------------------------------------+
+                        # |      CS_node --> Navigation node     |
+                        # +--------------------------------------+
 
                 # publish goal the rover must reach
                 self.Nav_Goal_pub = rospy.Publisher('/move_base/goal', MoveBaseActionGoal, queue_size=1)
@@ -102,9 +110,13 @@ class CS:
                 self.Nav_DebugWheels_pub = rospy.Publisher('/debug/wheel_cmds', Int16MultiArray, queue_size=1)
 
 
-                # --------------------------------------------- SUBSCRIPTIONS ---------------------------------------------
+                ############################################################################
+                #                                SUBSCRIBERS                               #
+                ############################################################################
 
-                        ###### Rover node --> CS_node ######
+                        # +--------------------------------------+
+                        # |         Rover node --> CS_node       |
+                        # +--------------------------------------+
 
                 # receive confirmation that rover received instruction
                 rospy.Subscriber('RoverConfirm', Bool, rover_confirmation)
@@ -113,13 +125,17 @@ class CS:
                 rospy.Subscriber('Exception', String, exception_clbk)
 
 
-                        ###### [Task node] --> CS_node ######
+                        # +--------------------------------------+
+                        # |       [Task node] --> CS_node        |
+                        # +--------------------------------------+
 
                 # receive info on task progress: failure(0), success(1), checkpoint(2)
                 rospy.Subscriber('TaskProgress', Int8, task_progress)
 
 
-                        ###### Science node --> CS_node  ######
+                        # +--------------------------------------+
+                        # |          Science --> CS_node         |
+                        # +--------------------------------------+
 
                 # receive info on sample analysis progress: failure(0), success(1)
                 #rospy.Subscriber('ScienceProgress', Int8, sc_progress)
@@ -133,8 +149,10 @@ class CS:
                 rospy.Subscriber('sc_measurments_mass', Int16, sc_mass)
 
 
-                        ###### Handling Device --> CS_node ######
-                
+                        # +--------------------------------------+
+                        # |      Handling Device --> CS_node     |
+                        # +--------------------------------------+
+
                 ''' 
                 rospy.Subscriber('detection/state', UInt8, detection_state)
 
@@ -146,7 +164,9 @@ class CS:
 
                 rospy.Subscriber('detection/RGB_webcam_2', Image, ...)
                 '''
-                        ###### Navigation --> CS_node ######
+                        # +--------------------------------------+
+                        # |         Navigation --> CS_node       |
+                        # +--------------------------------------+
 
                 #TODO callback func
                 rospy.Subscriber('/odometry/filtered', Odometry, nav_data)
