@@ -13,6 +13,7 @@
 #         user.
 #
 #================================================================================
+
 import rospy
 import sys
 from time import sleep
@@ -27,43 +28,51 @@ from actionlib_msgs.msg import GoalID
 
 from Gamepad.GamepadTest import Gamepad
 
-
 #================================================================================
-'''
-'''
-# class Controller:
-
-#     def __init__(self, CS_node):
-#         #the controller is aware of the CS node it is linked to.
-#         self.application = CS_node
-
-#     ''' 
-#         Here you should define methods that will be called from javascript. They will
-#         use the publishers defined in CS_node.py to publish data
-#     ''' 
 
 
-#cstation = CS()
 
 ###############################
 #             TASK            #
 ###############################
 
+# send array: [task, instr]:
+    #
+    # TASK: 
+    #       - Manual      = 1 
+    #       - Navigation  = 2 
+    #       - Maintenance = 3
+    #       - Science     = 4
+    #
+    # INSTR:  
+    #       - Launch = 1 
+    #       - Abort  = 2 
+    #       - Wait   = 3 
+    #       - Resume = 4 
+    #       - Retry  = 5
+
 def pub_Task(task, instr): 
 	#rospy.sleep(1)
     arr = [task, instr]
     CStation.Task_pub.publish(Int8MultiArray(data = arr))
+
     lastId = CStation.navID[-1]
     CStation.navID.append(lastId+1)
     rospy.loginfo(CStation.navID[-1])
     print(CStation.navID)
     print("\n")
+    if(arr[0] == 1) : launch_Manual()
 
 
 ###############################
 #       HANDLING DEVICE       #
 ###############################
 
+# Set HD mode:
+#  - 0 Autonomous
+#  - 1 SemiAutonomous
+#  - 2 Inverse Manual
+#  - 3 Direct Manual
 def pub_hd_mode(mode) :
     if(mode == 0 or mode == 1):
         CStation.HD_mode_pub.publish(data = mode)
@@ -71,6 +80,8 @@ def pub_hd_mode(mode) :
         #rospy.loginfo("Error: HD mode can either 0 or 1 not ")
         print("Error: HD mode can be either 0 or 1 not ", mode)
 
+# Send the id of the element the HD must reach 
+# when in Autonomous or SemiAutonomous mode
 def pub_hd_elemId(id) :
     CStation.HD_SemiAuto_Id_pub.publish(data = Int8(id))
 
@@ -100,7 +111,7 @@ def pub_nav_goal(x, y, z):
     CStation.Nav_Goal_pub.publish(MoveBaseActionGoal(goal_id = g_id, goal = moveBaseGoal))
 
 
-# cancel a Navigation goal by giving the goal's id
+# cancel a specific Navigation goal by giving the goal's id
 def pub_cancel_nav_goal(given_id):
     CStation.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = given_id))
 
@@ -128,6 +139,7 @@ def pub_debug_wheels(wheel_id, rot_vel, range):
 ###############################
 
 # launches Gamepad => enables Manual controls
+# is automatically launched from pub_Task when publishing Manual
 def launch_Manual():
     Gamepad(CStation).run() 
 

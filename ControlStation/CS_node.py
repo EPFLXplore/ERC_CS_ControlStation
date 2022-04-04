@@ -27,7 +27,6 @@ from Xplore_CS_2022.models import *
 
 import rospy
 import sys
-#from Controller import *
 
 from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray, Int16
 from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
@@ -173,13 +172,9 @@ class CS:
 
 
 CStation = CS()
-#c = Controller(CStation)
 
 #================================================================================
 #MAIN
 if __name__ == '__main__':
-        #print("reset")
-        #sys.stdout.flush()  
-        #rospy.init_node("CONTROL_STATION", anonymous=True)
         CStation.run()
   
