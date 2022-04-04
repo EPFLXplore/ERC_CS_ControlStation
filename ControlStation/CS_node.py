@@ -135,7 +135,7 @@ class CS:
                 #rospy.Subscriber('ScienceProgress', Int8, sc_progress)
 
                 # receive info on the executing state (if the motor pos is correct, if the LED is on/off) (if it's a verbose ??) 
-                rospy.Subscriber('science_current_info', String, sc_text_info)
+                rospy.Subscriber('sc_state', String, sc_text_info)
                 
                 # receive the measurments 
                 rospy.Subscriber('sc_measurments_humidity', Int16MultiArray, sc_humidity)
