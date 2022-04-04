@@ -71,12 +71,15 @@ def pub_hd_mode(mode) :
         #rospy.loginfo("Error: HD mode can either 0 or 1 not ")
         print("Error: HD mode can be either 0 or 1 not ", mode)
 
+def pub_hd_elemId(id) :
+    CStation.HD_SemiAuto_Id_pub.publish(data = Int8(id))
+
 
 ###############################
 #          NAVIGATION         #
 ###############################
 
-# 
+# give the coordinates the rover must reach
 def pub_nav_goal(x, y, z):
     '''
     actionlib_msgs/GoalID goal_id
@@ -91,7 +94,7 @@ def pub_nav_goal(x, y, z):
                     float64 z
     '''
 
-    g_id = GoalID(stamp = rospy.get_time(), id = 1)
+    g_id = GoalID(stamp = rospy.get_time(), id = 1) # TODO UNE FACON D'INCRÉMENTER L'ID À CHAQUE FOIS
     moveBaseGoal = MoveBaseGoal(target_pose = Pose(position = Point(x, y, z)))
 
     CStation.Nav_Goal_pub.publish(MoveBaseActionGoal(goal_id = g_id, goal = moveBaseGoal))
@@ -124,8 +127,9 @@ def pub_debug_wheels(wheel_id, rot_vel, range):
 #             MANUAL          #
 ###############################
 
+# launches Gamepad => enables Manual controls
 def launch_Manual():
-    Gamepad().run() #TODO émet un bug + à voir si on initialiserait pas ca dans CS_node
+    Gamepad(CStation).run() 
 
 
 # ----------------- MAIN -----------------

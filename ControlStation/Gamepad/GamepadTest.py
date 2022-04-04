@@ -7,13 +7,14 @@ import evdev
 import rospy
 from evdev             import*
 from threading         import Thread
-from keyMap            import Keymap
+
 # from xplore_msg.msg    import HandlingControl
 from geometry_msgs.msg import Twist
 
 import sys
 
 from CS_node import CS
+from Gamepad.keyMap            import Keymap
 from std_msgs.msg import Int8MultiArray, Int8
 
 
@@ -409,6 +410,8 @@ def switchDIR_INV(self):  # NOT IDEAL TO PASS SELF !!!!!!
 
   self.cs.HD_mode_pub.publish(Int8(data=self.HD_control_msg.mode))
   self.cs.HD_Angles_pub.publish(Int8MultiArray(data = self.axe_HD_new))
+
+
 
 def eval_axe(axe_value): #Donne le sens de rotation bras robot 32768 est la valeur max renvoyé par la manette
   if axe_value <= -32700:
