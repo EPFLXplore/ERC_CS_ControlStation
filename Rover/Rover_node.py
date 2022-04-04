@@ -41,7 +41,7 @@ class Rover:
         self.Nav_pub = rospy.Publisher('Navigation', Int8, queue_size=1)
 
         # publish instruction concerning the Science Bay (Rover node --> Science node)
-        self.SC_pub = rospy.Publisher('science_cmd', Int8, queue_size=1)
+        self.SC_pub = rospy.Publisher('sc_cmd', Int8, queue_size=1)
 
 
         # +--------------------------------------------------------+
@@ -97,10 +97,11 @@ class Rover:
             self.ROVER_STATE = Task.SCIENCE
             self.SC_pub.publish(instr)
         
-
+    # ros starts spinning and the node starts listening to info 
+    # coming from topics it's subscribed to
     def run(self):
         print("Listening")
-        rospy.spin() ##listens to the 'state' topic
+        rospy.spin() 
  
 
 #==========================================================================
