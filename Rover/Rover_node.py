@@ -73,10 +73,10 @@ class Rover:
         instr = array.data[1]
 
         if not(1 <= task <= 4):
-            self.Exception_pub.publish("Task number denied, received:", task) 
+            self.Exception_pub.publish("Task number denied (allowed only 1-4), received:", task) 
             pass
         if not(1 <= instr <= 5):
-            self.Exception_pub.publish("Instr number denied, received:", instr) 
+            self.Exception_pub.publish("Instr number denied (allowed only 1-5), received:", instr) 
             pass
         
         rospy.loginfo("Rover: [task, instr] received")
