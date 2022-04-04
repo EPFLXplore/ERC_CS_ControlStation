@@ -25,6 +25,8 @@ from geometry_msgs.msg import Pose, Point
 
 from actionlib_msgs.msg import GoalID
 
+from Gamepad.GamepadTest import Gamepad
+
 
 #================================================================================
 '''
@@ -118,6 +120,12 @@ def pub_debug_wheels(wheel_id, rot_vel, range):
     CStation.Nav_DebugWheels_pub(Int16MultiArray(data = [wheel_id, rot_vel, range]))
 
 
+###############################
+#             MANUAL          #
+###############################
+
+def launch_Manual():
+    Gamepad().run() #TODO émet un bug + à voir si on initialiserait pas ca dans CS_node
 
 
 # ----------------- MAIN -----------------
