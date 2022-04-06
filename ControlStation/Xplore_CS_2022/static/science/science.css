@@ -1,0 +1,47 @@
+/*==========================================================================
+=====================| STATE BUTTONS |====================================*/
+
+.state-button-container{
+	position: fixed;
+	height: 300px;
+	width: 230px;
+	margin-top: 330px;
+	margin-left: 5px;
+	border-radius: 5px;
+	border: 4px double #4f4f4f;
+	background-color: black;
+}
+
+/*==========================================================================
+=====================| BUTTONS |==========================================*/
+.state-button{
+	background-color: #767679;
+	border-radius: 10px;
+	border: 5px solid;
+	width: 95px;
+	height: 80px;
+  
+	font-size: 18px;
+	color: black;
+	transition: all 0.5s;
+	cursor: pointer;
+}
+
+.state-button-form{
+	float: left;
+	width: 95px;
+	height: 80px;
+	padding: 10px;
+}
+
+.state-button:hover {
+	background-color: #e9e9ed;
+}
+
+#launch-form{width: 210px; height: 80px;}
+#launch{width: 210px; height: 80px;}
+#launch{border-color: #1ccf00;}	#launch:hover{background-color:#1ccf00;}
+#abort {border-color: #ff0000;}	#abort:hover {background-color:#ff0000;}
+#resume{border-color: blue;   }	#resume:hover{background-color:blue;   }
+#wait  {border-color: #feff1e;}	#wait:hover  {background-color:#feff1e;}
+#retry {border-color: #ae00ff;}	#retry:hover {background-color:#d375ff;}

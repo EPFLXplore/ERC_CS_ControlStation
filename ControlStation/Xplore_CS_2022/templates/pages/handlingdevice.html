@@ -13,77 +13,75 @@
 <body>
 <div id="container">
   	<div id="sidebar" class="box">
-  	  <div class="logo">
-		<form action="http://127.0.0.1:8000/Xplore_CS_2022/homepage">
-			<input id="imagelogo" type="image" src="{% static 'common/Xplore-logo-white.png' %}" alt="My image">
-		</form>
-  	  </div>
+  		<div class="logo">
+			<form action="http://127.0.0.1:8000/Xplore_CS_2022/homepage">
+				<input id="imagelogo" type="image" src="{% static 'common/Xplore-logo-white.png' %}" alt="My image">
+			</form>
+  		</div>
   	  
-  	  <div class="page-button-container">
-  	  	<form action="http://127.0.0.1:8000/Xplore_CS_2022/navigation">
-					<button id="navigation" class="page-button">
-						<span>NAVIGATION</span>
-					</button>
-				</form>
+  		<div class="page-button-container">
+  			<form action="http://127.0.0.1:8000/Xplore_CS_2022/navigation">
+				<button id="navigation" class="page-button">
+					<span>NAVIGATION</span>
+				</button>
+			</form>
 				
-				<form action="http://127.0.0.1:8000/Xplore_CS_2022/handlingdevice">
-					<button id="handlingdevice" class="current-page-button">
-						<span>HANDLING DEVICE</span>
-					</button>
-				</form>
+			<form action="http://127.0.0.1:8000/Xplore_CS_2022/handlingdevice">
+				<button id="handlingdevice" class="current-page-button">
+					<span>HANDLING DEVICE</span>
+				</button>
+			</form>
 				
-				<form action="http://127.0.0.1:8000/Xplore_CS_2022/science">
-					<button id="science" class="page-button">
-						<span>SCIENCE</span>
-					</button>
-				</form>
+			<form action="http://127.0.0.1:8000/Xplore_CS_2022/science">
+				<button id="science" class="page-button">
+					<span>SCIENCE</span>
+				</button>
+			</form>
 				
-				<form action="http://127.0.0.1:8000/Xplore_CS_2022/manualcontrol">
-					<button id="manualcontrol" class="page-button">
-						<span>MANUAL CONTROL</span>
-					</button>
-				</form>
+			<form action="http://127.0.0.1:8000/Xplore_CS_2022/manualcontrol">
+				<button id="manualcontrol" class="page-button">
+					<span>MANUAL CONTROL</span>
+				</button>
+			</form>
 				
-				<form action="http://127.0.0.1:8000/Xplore_CS_2022/avionics">
-					<button id="avionics" class="page-button">
-						<span>AVIONICS</span>
-					</button>
-				</form>
-  	  </div>
+			<form action="http://127.0.0.1:8000/Xplore_CS_2022/avionics">
+				<button id="avionics" class="page-button">
+					<span>AVIONICS</span>
+				</button>
+			</form>
+  		</div>
   	  
-  	  <div class="state-button-container">
-		<form id="launch-form" class="state-button-form" action="/Xplore_CS_2022/action/launch">
-			<button id="launch" class="state-button">
-				<span>LAUNCH<span>
-			</button>
-		</form>
+  		<div class="state-button-container">
+			<form id="launch-form" class="state-button-form" action="/Xplore_CS_2022/handlingdevice/launch">
+				<button id="launch" class="state-button">
+					<span>LAUNCH<span>
+				</button>
+			</form>
 
-		<form id="wait-form" class="state-button-form" action="/Xplore_CS_2022/action/wait">
-			<button id="wait" class="state-button">
-				<span>WAIT<span>
-			</button>
-		</form>
+			<form id="wait-form" class="state-button-form" action="/Xplore_CS_2022/handlingdevice/wait">
+				<button id="wait" class="state-button">
+					<span>WAIT<span>
+				</button>
+			</form>
 
-		<form id="abort-form" class="state-button-form" action="/Xplore_CS_2022/action/abort">
-			<button id="abort" class="state-button">
-				<span>ABORT<span>
-			</button>
-		</form>
+			<form id="abort-form" class="state-button-form" action="/Xplore_CS_2022/handlingdevice/abort">
+				<button id="abort" class="state-button">
+					<span>ABORT<span>
+				</button>
+			</form>
 
-		<form id="resume-form" class="state-button-form" action="/Xplore_CS_2022/action/resume">
-			<button id="resume" class="state-button">
-				<span>RESUME<span>
-			</button>
-		</form>
+			<form id="resume-form" class="state-button-form" action="/Xplore_CS_2022/handlingdevice/resume">
+				<button id="resume" class="state-button">
+					<span>RESUME<span>
+				</button>
+			</form>
 
-		<form id="retry-form" class="state-button-form" action="/Xplore_CS_2022/action/retry">
-			<button id="retry" class="state-button">
-				<span>RETRY<span>
-			</button>
-		</form>		
-		
-  	  </div>
-  	  
+			<form id="retry-form" class="state-button-form" action="/Xplore_CS_2022/handlingdevice/retry">
+				<button id="retry" class="state-button">
+					<span>RETRY<span>
+				</button>
+			</form>
+  		</div>
   	</div>
 	
   	<div id="right-side" class="box">

@@ -6,6 +6,7 @@
   <meta charset="UTF-8">
   <title>Xplore_CS_2022</title>
   <link href="{% static 'common/border.css' %}" rel="stylesheet">
+  <link href="{% static 'avionics/avionics.css' %}" rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="{% static 'homepage/Xplore-icon.ico' %}">
 </head>
 
@@ -14,8 +15,9 @@
   	<div id="sidebar" class="box">
   	  <div class="logo">
 		<form action="http://127.0.0.1:8000/Xplore_CS_2022/homepage">
-			<input id="imagelogo" type="image" src="{% static 'common/Xplore-logo-white.png' %}" alt="My image">
+  	  		<input id="imagelogo" type="image" src="{% static 'common/Xplore-logo-white.png' %}" alt="My image">
 		</form>
+
   	  </div>
   	  
   	  <div class="page-button-container">
@@ -44,29 +46,12 @@
 				</form>
 				
 				<form action="http://127.0.0.1:8000/Xplore_CS_2022/avionics">
-					<button id="avionics" class="current-page-button">
+					<button id="avionics" class="page-button">
 						<span>AVIONICS</span>
 					</button>
 				</form>
   	  </div>
   	  
-  	  <div class="state-button-container">
-  	  	<button id="launch" class="state-button">
-  	  	<span>LAUNCH<span>
-  	  	</button>
-  	  	
-  	  	<button id="abort" class="state-button">
-  	  	<span>ABORT<span>
-  	  	</button>
-  	  	
-  	  	<button id="resume" class="state-button">
-  	  	<span>RESUME<span>
-  	  	</button>
-  	  	
-  	  	<button id="wait" class="state-button">
-  	  	<span>WAIT<span>
-  	  	</button>
-  	  </div>
   	  
   	</div>
 	
@@ -81,7 +66,6 @@
   		</div>
   		
   		<div id="page" class="page">
-  			<img id="imagerover" src="{% static 'common/Xplore-rover.png' %}" alt="ROVER">
   		</div>
   	</div>
   	
