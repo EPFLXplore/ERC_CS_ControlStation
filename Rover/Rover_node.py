@@ -24,7 +24,9 @@ class Rover:
         rospy.init_node('ROVER', anonymous=True)
         self.ROVER_STATE = Task.IDLE
 
-        # --------------------- PUBLISHERS ---------------------
+        # +--------------------------------------------------------+
+        # |                       PUBLISHERS                       |
+        # +--------------------------------------------------------+
 
         # publish True if instruction receivd from CS (Rover node --> CS_node)
         self.RoverConfirm_pub = rospy.Publisher('RoverConfirm', Bool, queue_size=1)
@@ -39,14 +41,31 @@ class Rover:
         self.Nav_pub = rospy.Publisher('Navigation', Int8, queue_size=1)
 
         # publish instruction concerning the Science Bay (Rover node --> Science node)
-        self.SC_pub = rospy.Publisher('science_cmd', Int8, queue_size=1)
+        self.SC_pub = rospy.Publisher('sc_cmd', Int8, queue_size=1)
 
 
-        # --------------------- SUBSCRIPTIONS ---------------------
+        # +--------------------------------------------------------+
+        # |                     SUBSCRIPTIONS                      |
+        # +--------------------------------------------------------+
 
         # receive an array = [task, instruction] (CS_node --> Rover node)
         rospy.Subscriber('Task', Int8MultiArray, self.task_instr)
 
+
+    # receives array: [task, instr]:
+    #
+    # TASK: 
+    #       - Manual      = 1 
+    #       - Navigation  = 2 
+    #       - Maintenance = 3
+    #       - Science     = 4
+    #
+    # INSTR:  
+    #       - Launch = 1 
+    #       - Abort  = 2 
+    #       - Wait   = 3 
+    #       - Resume = 4 
+    #       - Retry  = 5
 
     def task_instr(self, array):
 
@@ -54,10 +73,10 @@ class Rover:
         instr = array.data[1]
 
         if not(1 <= task <= 4):
-            self.Exception_pub.publish("Task number denied, received:", task) 
+            self.Exception_pub.publish("Task number denied (allowed only 1-4), received:", task) 
             pass
         if not(1 <= instr <= 5):
-            self.Exception_pub.publish("Instr number denied, received:", instr) 
+            self.Exception_pub.publish("Instr number denied (allowed only 1-5), received:", instr) 
             pass
         
         rospy.loginfo("Rover: [task, instr] received")
@@ -78,10 +97,11 @@ class Rover:
             self.ROVER_STATE = Task.SCIENCE
             self.SC_pub.publish(instr)
         
-
+    # ros starts spinning and the node starts listening to info 
+    # coming from topics it's subscribed to
     def run(self):
         print("Listening")
-        rospy.spin() ##listens to the 'state' topic
+        rospy.spin() 
  
 
 #==========================================================================

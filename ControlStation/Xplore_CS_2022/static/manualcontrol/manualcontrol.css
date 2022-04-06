@@ -1,0 +1,302 @@
+/*==========================================================================
+														SCIENCE
+==========================================================================*/
+.left{
+	float: left;
+	width: 49.9%;
+	height: 90%;
+}
+
+.top-left{
+	background-color: var(--clr-gb);
+	width: 100%;
+	height: 49.8%;
+}
+
+.bottom-left{
+	background-color: var(--clr-gb);
+	width: 100%;
+	height: 49.8%;	
+}
+
+.right{
+	float: left;
+	background-color: var(--clr-gb);
+	width: 49.9%;
+	height: 100%;
+}
+
+.camera-container{
+	float: left;
+	width: 40%;
+	height: 100%;
+}
+
+.camera-box{
+	float: left;
+	width: 49%;
+	height: 100%;
+}
+
+#left-camera-box{
+	margin-left: 1%;
+	margin-right: 1%;
+}
+
+.hd{
+	float: left;
+	width: 60%;
+	height: 100%;
+}
+
+
+.v-separator-s{
+	float: left;
+	background-color: var(--clr-sep);
+	height: 100%;
+	width: 10px;
+}
+
+.v-separator{
+	float: left;
+	background-color: var(--clr-sep);
+	height: 100%;
+	width: 0.2%;
+}
+
+.h-separator{
+	background-color: var(--clr-sep);
+	height:0.4%;
+	width: 100%;
+}
+
+.h-separator-s{
+	float: left;
+	background-color: var(--clr-sep);
+	height: 5px;
+	width: 100%;
+}
+
+.hd-container{
+	text-align: center;
+	height: 70%;
+	width: 100%;
+}
+
+.joint-option-container{
+	width: 100%;
+	height: 30%;
+}
+
+.rover{
+	text-align: center;
+	width: 100%;
+	height: 55.5%;
+}
+
+.settings-container{
+	width: 100%;
+	height: 44.5%;
+}
+
+
+.settings-top-bar .settings-bottom{width: 100%;}
+.settings-top-bar{height: 12%;}
+.settings-bottom {height: 88%;}
+
+.currentpos-container{
+	float: left;
+	height: 100%;
+	width: 45%;
+}
+
+.velocity-container{
+	float: left;
+	height: 100%;
+	width: 55%;
+}
+
+.pos-title-c{
+	float: left;
+	width: 50%;
+	height: 100%;
+}
+
+.pos-coord{
+	float: left;
+	width: 50%;
+	height: 100%;
+	text-align: center;
+}
+
+.coord-c{
+	float: left;
+	width: 33.33%;
+	height: 100%;
+}
+
+.velocity-title-c{
+	width: 100%;
+	height: 50%;
+}
+
+.velocity-type-container{
+	width: 100%;
+	height: 50%;
+}
+
+.velocity-type-c{
+	float: left;
+	height: 100%;
+	width: 50%;
+}
+
+.settings{
+	float: left;
+	width: 50%;
+	height: 100%;
+}
+
+.widgets{
+	float: left;
+	width: 50%;
+	height: 100%;
+	
+}
+
+.circle-led-container{
+	float: left;
+	text-align: center;
+	width: 25%;
+	height: 100%;
+}
+
+.velocity-dashboard-container{
+	float: left;
+	width: 75%;
+	height: 100%;
+	text-align: center;
+}
+
+/*==========================================================================
+==========================================================================*/
+
+/*==========================================================================
+=====================|    SVG   |==========================================*/
+.circle-led{
+	text-align: center;
+	width: 60%;
+	margin-top: 30%;
+}
+
+
+/*==========================================================================
+=====================|    P    |==========================================*/
+#envmap-title{
+	text-align: center;
+	color: white;
+	font-size: 15px;
+	font-family: sans-serif;
+	margin-top:-4%;
+}
+
+.pos-title{
+	color: white;
+	font-family: sans-serif;
+	padding-left: 9%;
+}
+
+.coord-type{
+	color: white;
+	width: 100%;
+	font-family: sans-serif;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.coordinate{
+	width: 100%;
+	color: #b5a91e;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.velocity-title{
+	text-align: center;
+	color: white;
+	font-family: sans-serif;
+	margin: 0px;
+}
+
+.velocity-type{
+	float:left;
+	width: 20%;
+	color: white;
+	font-family: sans-serif;
+	margin: 0px;
+	padding-left: 30%;
+}
+
+.velocity{
+	float:left;
+	width: 50%;
+	color: #b5a91e;
+	margin: 0px;
+	text-align: center;
+}
+
+/*==========================================================================
+=====================| IMAGES  |==========================================*/
+#imagerover{
+	height: 100%;
+}
+
+#imagehd{
+	text-align: center;
+	height: 100%;
+}
+
+#imagevelocity{
+	margin-top: 15%;
+	width: 60%;
+}
+
+/*==========================================================================
+=====================| VIDEOS  |==========================================*/
+.envmap{
+	width: 100%;
+	height: 100%;
+}
+
+.camera{
+	width:100%;
+	height: 20%;
+	background-color: black;
+}
+
+.hd-animation{
+	width: 100%;
+	height: 60%;
+}
+
+/*==========================================================================
+=====================| BUTTONS  |==========================================*/
+#choose-joint{
+	text-align: center;
+	background-color: var(--clr-gb);
+	border: 5px solid #07ae1d;
+	border-radius: 5px;
+	
+	color: white;
+	font-size: 15px;
+	font-family: sans-serif;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	
+	margin: 10%;
+	transition: all 0.5s;
+	cursor: pointer;
+}
+

@@ -1,0 +1,172 @@
+/*==========================================================================
+=====================| LOCAL VARS  |============================================*/
+:root{
+	--height: 92%;
+
+	--left-width : 59.9%;
+	--right-width: 39.9%;
+	
+	--top-left-height: 85.8%;
+	--bottom-left-height: 14.8%;
+
+	--top-right-height: 49.8%;
+	--bottom-right-height: 49.8%;
+
+	--xplore-blue: #07142d;
+}
+/*==========================================================================
+														NAVIGATION
+==========================================================================*/
+.left{
+	float: left;
+	width: var(--left-width);
+	height: var(--height);
+}
+
+.top-left{
+	background-color: var(--clr-gb);
+	width: 100%;
+	height: var(--top-left-height);
+}
+
+.bottom-left{
+	background-color: var(--clr-gb);
+	width: 100%;
+	height: var(--bottom-left-height);	
+}
+
+.right{
+	float: left;
+	background-color: var(--clr-gb);
+	width: var(--right-width);
+	height: var(--height);
+}
+
+.top-right{
+	background-color: var(--clr-gb);
+	width: 100%;
+	height: var(--top-right-height);
+}
+
+.bottom-right{
+	background-color: var(--clr-gb);
+	width: 100%;
+	height: var(--bottom-right-height);
+}
+
+.widgets{
+	float: left;
+	width: 50%;
+	height: 100%;
+	
+}
+
+.circle-led-container{
+	text-align: center;
+	width: 100%;
+	height: 100%;
+}
+
+/*==========================================================================
+=====================|    DATA   |==========================================*/
+.left-panel{
+	float: left;
+	width:40%;
+	height: 95%;
+	margin-top: 7px;
+	margin-left: 3.33%;
+	border: var(--xplore-blue) 0.125em solid;
+	border-radius: 30px;
+}
+
+.right-panel{
+	float: left;
+	width:50%;
+	height: 95%;
+	margin-top: 7px;
+	margin-left: 3.33%;
+	border: var(--xplore-blue) 0.125em solid;
+	border-radius: 30px;
+}
+
+.subject-container{
+	width: 100%;
+	height: 50%;
+	margin-top: -4%;
+}
+
+.title-container{
+	width: 100%;
+	height: 10%;
+}
+
+.data-container{
+	height: 90%;
+	width: 100%;
+}
+
+.data-line-container{
+	width: 100%;
+	height: 33.33%;
+}
+/*==========================================================================
+=====================|    SVG   |==========================================*/
+.circle-led{
+	float: left;
+	text-align: center;
+	width: 8%;
+	margin-left: 19%;
+	margin-top: 2.5%;
+}
+
+
+/*==========================================================================
+=====================|    P    |==========================================*/
+#envmap-title{
+	text-align: center;
+	color: white;
+	font-size: 15px;
+	font-family: sans-serif;
+	margin-top:-4%;
+}
+
+.title{
+	text-align: center;
+	color: rgb(196, 196, 196);
+	font-size: 20px;
+	font-family: sans-serif;
+}
+
+.data-title{
+	float: left;
+	text-align: right;
+	color: rgb(196, 196, 196);
+	font-size: 15px;
+	font-family: sans-serif;
+	width: 50%;
+}
+
+.data{
+	float: left;
+	padding-left: 10%;
+	color: rgb(252, 255, 72);
+	font-size: 15px;
+	font-family: sans-serif;
+}
+
+/*==========================================================================
+=====================| IMAGES  |==========================================*/
+#imagerover{
+	height: 100%;
+}
+
+/*==========================================================================
+=====================| VIDEOS  |==========================================*/
+.envmap{
+	width: 100%;
+	height: 100%;
+}
+
+/*==========================================================================
+=====================| BUTTONS  |==========================================*/
+

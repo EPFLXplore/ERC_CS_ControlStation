@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Xplore_CS_2022</title>
-  <link href="{% static 'homepage/homepage.css' %}" rel="stylesheet">
+  <link href="{% static 'common/border.css' %}" rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="{% static 'homepage/Xplore-icon.ico' %}">
 </head>
 
@@ -13,31 +13,39 @@
 	<div id="container">
   	<div id="sidebar" class="box">
   	  <div class="logo">
-  	  	<img id="imagelogo" src="{% static 'homepage/Xplore-logo.png' %}" alt="My image">
+		<form action="http://127.0.0.1:8000/Xplore_CS_2022/homepage">
+			<input id="imagelogo" type="image" src="{% static 'common/Xplore-logo-white.png' %}" alt="My image">
+		</form>
   	  </div>
   	  
   	  <div class="page-button-container">
-  	  	<form id="navigation" action="http://127.0.0.1:8000/Xplore_CS_2022/navigation">
-					<button class="page-button">
+  	  	<form action="http://127.0.0.1:8000/Xplore_CS_2022/navigation">
+					<button id="navigation" class="page-button">
 						<span>NAVIGATION</span>
 					</button>
 				</form>
 				
-				<form id="handlingdevice" action="http://127.0.0.1:8000/Xplore_CS_2022/handlingdevice">
-					<button class="page-button">
+				<form action="http://127.0.0.1:8000/Xplore_CS_2022/handlingdevice">
+					<button id="handlingdevice" class="page-button">
 						<span>HANDLING DEVICE</span>
 					</button>
 				</form>
 				
-				<form id="science" action="http://127.0.0.1:8000/Xplore_CS_2022/science">
-					<button class="page-button">
+				<form action="http://127.0.0.1:8000/Xplore_CS_2022/science">
+					<button id="science" class="current-page-button">
 						<span>SCIENCE</span>
 					</button>
 				</form>
 				
-				<form id="manualcontrol" action="http://127.0.0.1:8000/Xplore_CS_2022/manualcontrol">
-					<button class="page-button">
+				<form action="http://127.0.0.1:8000/Xplore_CS_2022/manualcontrol">
+					<button id="manualcontrol" class="page-button">
 						<span>MANUAL CONTROL</span>
+					</button>
+				</form>
+				
+				<form action="http://127.0.0.1:8000/Xplore_CS_2022/avionics">
+					<button id="avionics" class="page-button">
+						<span>AVIONICS</span>
 					</button>
 				</form>
   	  </div>
@@ -64,15 +72,16 @@
 	
   	<div id="right-side" class="box">
   		<div class="top-bar">
-  			<label id="idle" class="neon-label">IDLE</label>
-  			<label id="navigation" class="neon-label">NAVIGATION</label>
-  			<label id="science" class="neon-label">SCIENCE</label>
-  			<label id="manual" class="neon-label">MANUAL</label>
-  			<label id="waiting" class="neon-label">WAITING</label>		
+  			<label id="idle-state" class="neon-label">IDLE</label>
+  			<label id="navigation-state" class="neon-label">NAVIGATION</label>
+  			<label id="hd-state" class="neon-label">HANDLING DEVICE</label>
+  			<label id="science-state" class="neon-label">SCIENCE</label>
+  			<label id="manual-state" class="neon-label">MANUAL CONTROL</label>
+  			<label id="waiting-state" class="neon-label">WAITING</label>		
   		</div>
   		
   		<div id="page" class="page">
-  			<label class="page-title">SCIENCE</label>
+  			
   		</div>
   	</div>
   	

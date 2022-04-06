@@ -4,7 +4,8 @@
 # @authors: Emile Hreich
 #           emile.janhodithreich@epfl.ch
 #
-#           ...
+#           Roman Danylovych
+#           roman.danylovych@epfl.ch
 #
 # @brief: This file contains the Model (following the Model View Controller
 #         design pattern)
