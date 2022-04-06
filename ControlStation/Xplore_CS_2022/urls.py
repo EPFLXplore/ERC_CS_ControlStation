@@ -9,4 +9,9 @@ urlpatterns = [
     path('handlingdevice/', views.handlingdevice, name='handlingdevice'),
     path('science/', 		views.science,		  name='science'),
     
+    path('action/launch/',  views.launch,         name='launch'),
+    path('action/wait/',    views.wait,         name='wait'),
+    path('action/abort/',   views.abort,         name='abort'),
+    path('action/resume/',  views.resume,         name='resume'),
+    path('action/retry/',   views.retry,         name='retry')
 ]
