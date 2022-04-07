@@ -49,34 +49,6 @@
 	height: 100%;
 }
 
-
-.v-separator-s{
-	float: left;
-	background-color: var(--clr-sep);
-	height: 100%;
-	width: 10px;
-}
-
-.v-separator{
-	float: left;
-	background-color: var(--clr-sep);
-	height: 100%;
-	width: 0.2%;
-}
-
-.h-separator{
-	background-color: var(--clr-sep);
-	height:0.4%;
-	width: 100%;
-}
-
-.h-separator-s{
-	float: left;
-	background-color: var(--clr-sep);
-	height: 5px;
-	width: 100%;
-}
-
 .hd-container{
 	text-align: center;
 	height: 70%;
@@ -101,7 +73,7 @@
 
 
 .settings-top-bar .settings-bottom{width: 100%;}
-.settings-top-bar{height: 12%;}
+.settings-top-bar{height: 15%; margin-top: 2%;}
 .settings-bottom {height: 88%;}
 
 .currentpos-container{
@@ -114,6 +86,7 @@
 	float: left;
 	height: 100%;
 	width: 55%;
+	padding-left: 10%;
 }
 
 .pos-title-c{
@@ -143,6 +116,7 @@
 .velocity-type-container{
 	width: 100%;
 	height: 50%;
+	padding-top: 2%;
 }
 
 .velocity-type-c{
@@ -196,20 +170,21 @@
 	text-align: center;
 	color: white;
 	font-size: 15px;
-	font-family: sans-serif;
+	font-family: var(--font);
 	margin-top:-4%;
 }
 
 .pos-title{
 	color: white;
-	font-family: sans-serif;
+	font-family: var(--font);
 	padding-left: 9%;
+	padding-top: 10%;
 }
 
 .coord-type{
 	color: white;
 	width: 100%;
-	font-family: sans-serif;
+	font-family: var(--font);
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
@@ -224,17 +199,16 @@
 .velocity-title{
 	text-align: center;
 	color: white;
-	font-family: sans-serif;
+	font-family: var(--font);
 	margin: 0px;
 }
 
 .velocity-type{
 	float:left;
-	width: 20%;
+	width: 50%;
 	color: white;
-	font-family: sans-serif;
+	font-family: var(--font);
 	margin: 0px;
-	padding-left: 30%;
 }
 
 .velocity{
@@ -264,8 +238,10 @@
 /*==========================================================================
 =====================| VIDEOS  |==========================================*/
 .envmap{
-	width: 100%;
+	width: 99.5%;
 	height: 100%;
+	margin-left: 0.5%;
+	background-color: black;
 }
 
 .camera{
@@ -289,7 +265,7 @@
 	
 	color: white;
 	font-size: 15px;
-	font-family: sans-serif;
+	font-family: var(--font);
 	padding-top: 5px;
 	padding-bottom: 5px;
 	padding-left: 10px;
@@ -299,49 +275,3 @@
 	transition: all 0.5s;
 	cursor: pointer;
 }
-
-
-/*==========================================================================
-=====================| STATE-BUTTON  |=====================================*/
-
-.state-button-container{
-	position: fixed;
-	height: 210px;
-	width: 230px;
-	margin-top: 330px;
-	margin-left: 5px;
-	border-radius: 5px;
-	border: 4px double #4f4f4f;
-	background-color: black;
-}
-
-/*==========================================================================
-=====================| BUTTONS |==========================================*/
-.state-button{
-	background-color: #767679;
-	border-radius: 10px;
-  border: 5px solid;
-  width: 95px;
-  height: 80px;
-  
-  font-size: 18px;
-  color: black;
-  transition: all 0.5s;
-  cursor: pointer;
-}
-
-.state-button-form{
-	float: left;
-	width: 95px;
-	height: 80px;
-	padding: 10px;
-}
-
-.state-button:hover {
-	background-color: #e9e9ed;
-}
-
-#launch{border-color: #1ccf00;}	#launch:hover{background-color:#1ccf00;}
-#abort {border-color: #ff0000;}	#abort:hover {background-color:#ff0000;}
-#resume{border-color: blue;   }	#resume:hover{background-color:blue;   }
-#wait  {border-color: #feff1e;}	#wait:hover  {background-color:#feff1e;}
