@@ -3,25 +3,55 @@
 
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Xplore_CS_2022</title>
-  <link href="{% static 'common/border.css' %}" rel="stylesheet">
-  <link href="{% static 'navigation/navigation.css' %}" rel="stylesheet">
-  <link rel="icon" type="image/x-icon" href="{% static 'homepage/Xplore-icon.ico' %}">
+	<meta charset="UTF-8">
+	<title>Xplore_CS_2022</title>
+
+	<!-- STYLE -->
+	<link href="{% static 'common/border.css' %}" rel="stylesheet">
+	<link href="{% static 'navigation/navigation.css' %}" rel="stylesheet">
+	<link href="{% static 'common/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  
+	<!-- SCRIPT -->
+	<script src="{% static 'common/border.js' %}"></script> 
+	<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+
+	<script>
+		$(document).ready(function() {
+    		$(document).on('submit', '#launch-form', function() {
+				window.location.href ="/Xplore_CS_2022/navigation/launch";
+      			return false;
+    		 });
+    		$(document).on('submit', '#wait-form', function() {
+				window.location.href ="/Xplore_CS_2022/navigation/wait";
+      			return false;
+    		 });
+    		$(document).on('submit', '#abort-form', function() {
+				window.location.href ="/Xplore_CS_2022/navigation/abort";
+      			return false;
+    		 });
+    		$(document).on('submit', '#resume-form', function() {
+				window.location.href ="/Xplore_CS_2022/navigation/resume";
+      			return false;
+    		 });
+		});
+	</script>
+
+	<!-- ICON -->
+	<link rel="icon" type="image/x-icon" href="{% static 'common/Xplore-icon.ico' %}">
 </head>
 
 <body>
 <div id="container">
   	<div id="sidebar" class="box">
   		<div class="logo">
-			<form action="http://127.0.0.1:8000/Xplore_CS_2022/homepage">
+			<form class="logo-form" action="http://127.0.0.1:8000/Xplore_CS_2022/homepage">
 				<input id="imagelogo" type="image" src="{% static 'common/Xplore-logo-white.png' %}" alt="My image">
 			</form>
 		</div>
   	  
   		<div class="page-button-container">
   	  		<form action="http://127.0.0.1:8000/Xplore_CS_2022/navigation">
-				<button id="navigation" class="current-page-button">
+				<button id="navigation" class="current-page-button" disabled="true">
 					<span>NAVIGATION</span>
 				</button>
 			</form>
@@ -51,31 +81,40 @@
 			</form>
   		</div>
   	  
-  		<div class="state-button-container">
-			<form id="launch-form" class="state-button-form" action="/Xplore_CS_2022/navigation/launch">
-				<button id="launch" class="state-button">
-					<span>LAUNCH<span>
-				</button>
-			</form>
+  		<div class="square-state-button-box">
+			<div class="state-button-container">
+				<form id="launch-form" class="state-button-form">
+					<button id="launch-button" class="state-button" onclick="lit_navigation_state()">
+						<span>LAUNCH<span>
+					</button>
+				</form>
+			</div>
 
-			<form id="wait-form" class="state-button-form" action="/Xplore_CS_2022/navigation/wait">
-				<button id="wait" class="state-button">
-					<span>WAIT<span>
-				</button>
-			</form>
+			<div class="state-button-container">
+				<form id="wait-form" class="state-button-form">
+					<button id="wait-button" class="state-button" onclick="lit_waiting_state()">
+						<span>WAIT<span>
+					</button>
+				</form>
+			</div>
+			
+			<div class="state-button-container">
+				<form id="abort-form" class="state-button-form">
+					<button id="abort-button" class="state-button" onclick="unlit_navigation_state()">
+						<span>ABORT<span>
+					</button>
+				</form>
+			</div>
 
-			<form id="abort-form" class="state-button-form" action="/Xplore_CS_2022/navigation/abort">
-				<button id="abort" class="state-button">
-					<span>ABORT<span>
-				</button>
-			</form>
 
-			<form id="resume-form" class="state-button-form" action="/Xplore_CS_2022/navigation/resume">
-				<button id="resume" class="state-button">
-					<span>RESUME<span>
-				</button>
-			</form>
-  		</div>
+			<div class="state-button-container">
+				<form id="resume-form" class="state-button-form">
+					<button id="resume-button" class="state-button" onclick="unlit_waiting_state()">
+						<span>RESUME<span>
+					</button>
+				</form>
+			</div>
+		</div>
   	  
   	</div>
 	

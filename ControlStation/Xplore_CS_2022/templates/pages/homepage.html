@@ -3,54 +3,58 @@
 
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Xplore_CS_2022</title>
-  <link href="{% static 'common/border.css' %}" rel="stylesheet">
-  <link href="{% static 'homepage/homepage.css' %}" rel="stylesheet">
-  <link rel="icon" type="image/x-icon" href="{% static 'homepage/Xplore-icon.ico' %}">
+	<meta charset="UTF-8">
+	<title>Xplore_CS_2022</title>
+  
+	<!-- STYLE -->
+	<link href="{% static 'common/border.css' %}" rel="stylesheet">
+	<link href="{% static 'homepage/homepage.css' %}" rel="stylesheet">
+	<link href="{% static 'common/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  
+	<!-- ICON -->
+	<link rel="icon" type="image/x-icon" href="{% static 'common/Xplore-icon.ico' %}">
 </head>
 
 <body>
-	<div id="container">
+<div id="container">
   	<div id="sidebar" class="box">
-  	  <div class="logo">
-		<form action="http://127.0.0.1:8000/Xplore_CS_2022/homepage">
+	<div class="logo">
+		<form class="logo-form" action="http://127.0.0.1:8000/Xplore_CS_2022/homepage">
   	  		<input id="imagelogo" type="image" src="{% static 'common/Xplore-logo-white.png' %}" alt="My image">
 		</form>
-
-  	  </div>
+	</div>
   	  
-  	  <div class="page-button-container">
+  	<div class="page-button-container">
   	  	<form action="http://127.0.0.1:8000/Xplore_CS_2022/navigation">
-					<button id="navigation" class="page-button">
-						<span>NAVIGATION</span>
-					</button>
-				</form>
+			<button id="navigation" class="page-button">
+				<span>NAVIGATION</span>
+			</button>
+		</form>
 				
-				<form action="http://127.0.0.1:8000/Xplore_CS_2022/handlingdevice">
-					<button id="handlingdevice" class="page-button">
-						<span>HANDLING DEVICE</span>
-					</button>
-				</form>
-				
-				<form action="http://127.0.0.1:8000/Xplore_CS_2022/science">
-					<button id="science" class="page-button">
-						<span>SCIENCE</span>
-					</button>
-				</form>
-				
-				<form action="http://127.0.0.1:8000/Xplore_CS_2022/manualcontrol">
-					<button id="manualcontrol" class="page-button">
-						<span>MANUAL CONTROL</span>
-					</button>
-				</form>
-				
-				<form action="http://127.0.0.1:8000/Xplore_CS_2022/avionics">
-					<button id="avionics" class="page-button">
-						<span>AVIONICS</span>
-					</button>
-				</form>
-  	  </div>
+		<form action="http://127.0.0.1:8000/Xplore_CS_2022/handlingdevice">
+			<button id="handlingdevice" class="page-button">
+				<span>HANDLING DEVICE</span>
+			</button>
+		</form>
+		
+		<form action="http://127.0.0.1:8000/Xplore_CS_2022/science">
+			<button id="science" class="page-button">
+				<span>SCIENCE</span>
+			</button>
+		</form>
+		
+		<form action="http://127.0.0.1:8000/Xplore_CS_2022/manualcontrol">
+			<button id="manualcontrol" class="page-button">
+				<span>MANUAL CONTROL</span>
+			</button>
+		</form>
+		
+		<form action="http://127.0.0.1:8000/Xplore_CS_2022/avionics">
+			<button id="avionics" class="page-button">
+				<span>AVIONICS</span>
+			</button>
+		</form>
+  	</div>
   	  
   	  
   	</div>
@@ -66,7 +70,9 @@
   		</div>
   		
   		<div id="page" class="page">
-  			<img id="imagerover" src="{% static 'common/Xplore-rover.png' %}" alt="ROVER">
+			<div class="rover-animation-container">
+				<img id="imagerover" src="{% static 'common/Xplore-rover.png' %}" alt="ROVER">
+			</div>
   		</div>
   	</div>
   	
