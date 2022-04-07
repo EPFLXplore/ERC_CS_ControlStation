@@ -51,6 +51,7 @@ from Gamepad.GamepadTest import Gamepad
     #       - Resume = 4 
     #       - Retry  = 5
 
+# TODO STILL NEED TO ADAPT TO NEW SCIENCE COMMANDS
 def pub_Task(task, instr): 
 	#rospy.sleep(1)
     arr = [task, instr]
@@ -61,7 +62,7 @@ def pub_Task(task, instr):
     rospy.loginfo(CStation.navID[-1])
     print(CStation.navID)
     print("\n")
-    if(arr[0] == 1) : launch_Manual()
+    if(arr[0] == 1 and arr[1] == 1 ) : launch_Manual() # arr[0] == 1 et arr[1] == 1 
 
 
 ###############################
@@ -141,6 +142,7 @@ def pub_debug_wheels(wheel_id, rot_vel, range):
 # launches Gamepad => enables Manual controls
 # is automatically launched from pub_Task when publishing Manual
 def launch_Manual():
+    print("\nlaunching manual controls\n")
     Gamepad(CStation).run()
 
 #def abort_Manual():

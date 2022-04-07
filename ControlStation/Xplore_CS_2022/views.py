@@ -75,6 +75,7 @@ def retry_hd(request):
     return redirect('/Xplore_CS_2022/handlingdevice/')
 
 #Science
+# TODO STILL NEED TO ADAPT TO NEW SCIENCE COMMANDS
 def launch_science(request):
     print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','4','1'], shell=False, stdout=PIPE))
     return redirect('/Xplore_CS_2022/science/')
