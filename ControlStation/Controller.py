@@ -141,7 +141,10 @@ def pub_debug_wheels(wheel_id, rot_vel, range):
 # launches Gamepad => enables Manual controls
 # is automatically launched from pub_Task when publishing Manual
 def launch_Manual():
-    Gamepad(CStation).run() 
+    Gamepad(CStation).run()
+
+#def abort_Manual():
+
 
 
 # ----------------- MAIN -----------------

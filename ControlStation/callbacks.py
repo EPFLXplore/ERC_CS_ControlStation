@@ -27,6 +27,14 @@ from Xplore_CS_2022.models import *
 from Model import *
 
 
+
+def test_joystick(twist):
+    tl = twist.linear
+    ta = twist.angular
+    rospy.loginfo("Linear %d %d %d", tl.x, tl.y, tl.z)
+    rospy.loginfo("Angular %d %d %d", ta.x, ta.y, ta.z)
+
+
 #The following callback functions update the db objects' values
 
 #Rover sends a confirmation that it received an instruction

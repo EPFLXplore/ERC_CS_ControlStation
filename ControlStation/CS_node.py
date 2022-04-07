@@ -162,6 +162,8 @@ class CS:
                         # |         Navigation --> CS_node       |
                         # +--------------------------------------+
 
+                rospy.Subscriber('/cmd_vel', Twist, test_joystick)
+
                 #TODO callback func
                 rospy.Subscriber('/odometry/filtered', Odometry, nav_data)
 

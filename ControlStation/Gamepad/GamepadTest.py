@@ -76,8 +76,8 @@ class Gamepad(Thread):
     # HD :
     #self.hd_pub = rospy.Publisher('cmd_hd', HandlingControl, queue_size=1) #Object Roman #TODO
     # self.HD_control_msg = HandlingControl()
-    self.HD_control_msg.mode = 3  # 2='INV', 3='DIR' 
-    self.HD_control_msg.active = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  # intialize every joint to 0 
+    #self.HD_control_msg.mode = 3  # 2='INV', 3='DIR' 
+    #self.HD_control_msg.active = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  # intialize every joint to 0 
     self.axe_HD_old = [0, 0, 0, 0, 0, 0, 0]
     self.axe_HD_new = [0, 0, 0, 0, 0, 0, 0]
     self.gripper_old = [0, 0, 0]
