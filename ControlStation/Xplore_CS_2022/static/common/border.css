@@ -31,17 +31,11 @@
 	text-align: center;
 }
 
-<<<<<<< HEAD
-#right-side{
-	margin-left: 250px;
-	width: 90%;
-=======
 .logo{
 	height: 60px;
 	background-color: var(--xplore-blue);
 	margin-left: -2.5%;
 	cursor: pointer;
->>>>>>> 7baef00040a81933b02d090d687fc11a6210c691
 }
 
 .page-button-container{
