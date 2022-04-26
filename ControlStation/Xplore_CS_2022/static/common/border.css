@@ -197,13 +197,26 @@
 		
 	position: relative;
 }
-/*
-.neon-label:hover{
+
+.neon-label-lit{
+	float: left;
+	text-align: center;
+
+	margin-left: 1.45%;
+	width: 15%;
+
+	height: 35px;
+	font-size: 1.2rem;
+	
+	cursor: pointer;
+	text-decoration: none;
+	border-radius: 0.25em;
+
 	background: var(--clr-neon);
 	color: black;
 	text-shadow: none;
 	box-shadow: 0 0 2em 0.3em var(--clr-neon);
-}*/
+}
 
 #idle-state, #waiting-state{
 	color: white;
