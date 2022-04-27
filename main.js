@@ -6,6 +6,7 @@ function createWindow () {
     width: 1200,
     height: 900,
     icon: "/home/xplore/Desktop/CS_workspace/Xplore-icon.ico",
+    fullscreen: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
