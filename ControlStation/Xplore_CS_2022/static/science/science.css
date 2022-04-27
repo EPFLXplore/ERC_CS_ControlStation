@@ -19,7 +19,7 @@
     height: 500px;
     width: 100%;
     overflow: hidden;
-    overflow-y: scoll;
+    overflow-y: scroll;
 }
 .scroll-object{
     width: 50%;

@@ -56,7 +56,9 @@
 
 .table-container{
 	width: 100%; 
-	height: 89%;
+	height: 100%;
+	overflow: hidden;
+	overflow-y: scroll;
 }
 
 .table-title-container{
@@ -221,4 +223,5 @@
 /*==========================================================================
 =====================| BOOTSTRAP MODIFICATIONS |==========================*/
 #scroll-body{
+	margin-bottom: 0em;
 }
