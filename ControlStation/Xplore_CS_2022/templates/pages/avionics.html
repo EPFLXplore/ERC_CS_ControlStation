@@ -68,9 +68,207 @@
   			<label id="manual-state" class="neon-label">MANUAL CONTROL</label>
   			<label id="waiting-state" class="neon-label">WAITING</label>		
   		</div>
-  		
+		
   		<div id="page" class="page">
-			
+			<div class="top">
+				<div class="top-left">
+					<div id="column-1" class="column">
+						<div id="battery-box" class="data-box">
+							<div class="widget-title-container">
+								<div class="widget-title-c">
+									<p class="box-title">BATTERY LEVEL</p>
+								</div>
+								<div class="widget-title-data-c">
+									<p class="float">25</p>
+									<p class="unit">%</p>
+								</div>
+							</div>
+							<div class="progress">
+								<div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+							</div>
+						</div>
+
+						<div id="temperature-box" class="data-box">
+							<div class="widget-title-container">
+								<div class="widget-title-c">
+									<p class="box-title">TEMPERATURE</p>
+								</div>
+								<div class="widget-title-data-c">
+									<p class="float">00.0</p>
+									<p class="unit">°C</p>
+								</div>
+							</div>
+							<div class="progress">
+									<div class="progress-bar bg-danger" role="progressbar" style="width: 60%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+									<div class="progress-bar bg-warning" role="progressbar" style="width: 40%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+							</div>
+						</div>
+
+						<div id="pressure-box" class="data-box">
+							
+							<div class="simple-title-c">
+								<p class="box-title">PRESSURE</p>
+							</div>
+							<div class="simple-title-data-c">
+								<p class="float">00.0</p>
+								<p class="unit">P</p>
+							</div>
+						</div>
+
+						<div id="gyroscope-box" class="data-box">
+							<div class="values-title-container">
+								<p class="box-title">GYROSCOPE</p>
+							</div>
+							<div class="values-container">
+								<data-line>
+									<data-title>G1 : </data-title>
+									<data>00.00</data>
+								</data-line>
+								<data-line>
+									<data-title>G2 : </data-title>
+									<data>00.00</data>
+								</data-line>
+								<data-line>
+									<data-title>G3 : </data-title>
+									<data>00.00</data>
+								</data-line>
+							</div>
+						</div>
+					</div>
+					
+					<div id="column-2" class="column">
+						<div id="accelerometer-box" class="data-box">
+							<div class="values-title-container">
+								<p class="box-title">ACCELEROMETER</p>
+							</div>
+							<div class="values-container">
+								<data-line>
+									<data-title>A1 : </data-title>
+									<data>00.00</data>
+								</data-line>
+								<data-line>
+									<data-title>A2 : </data-title>
+									<data>00.00</data>
+								</data-line>
+								<data-line>
+									<data-title>A3 : </data-title>
+									<data>00.00</data>
+								</data-line>
+							</div>
+						</div>
+
+						<div id="magnometer-box" class="data-box">
+							<div class="values-title-container">
+								<p class="box-title">MAGNOMETER</p>
+							</div>
+							<div class="values-container">
+								<data-line>
+									<data-title>M1 : </data-title>
+									<data>00.00</data>
+								</data-line>
+								<data-line>
+									<data-title>M2 : </data-title>
+									<data>00.00</data>
+								</data-line>
+								<data-line>
+									<data-title>M3 : </data-title>
+									<data>00.00</data>
+								</data-line>
+							</div>
+						</div>
+					</div>
+					
+					<div id="column-3" class="column">
+						<div id="current-box" class="data-box">
+							<div class="values-title-container">
+								<p class="box-title">CURRENTS</p>
+							</div>
+							<div class="values-container">
+								<data-line>
+									<data-title>name</data-title>
+									<data>00.00</data>
+								</data-line>
+								<data-line>
+									<data-title>name</data-title>
+									<data>00.00</data>
+								</data-line>
+								<data-line>
+									<data-title>name</data-title>
+									<data>00.00</data>
+								</data-line>
+								<data-line>
+									<data-title>name</data-title>
+									<data>00.00</data>
+								</data-line>
+							</div>
+						</div>
+
+						<div id="voltage-box" class="data-box">
+							<div class="values-title-container">
+								<p class="box-title">VOLTAGES</p>
+							</div>
+							<div class="values-container">
+								<data-line>
+									<data-title>name</data-title>
+									<data>00.00</data>
+								</data-line>
+								<data-line>
+									<data-title>name</data-title>
+									<data>00.00</data>
+								</data-line>
+								<data-line>
+									<data-title>name</data-title>
+									<data>00.00</data>
+								</data-line>
+								<data-line>
+									<data-title>name</data-title>
+									<data>00.00</data>
+								</data-line>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="v-separator"></div>
+
+				<div class="top-right">
+					<div class="log-box">
+						<div class="log-title-container">
+							<p class="log-title">LOGS</p>
+						</div>
+	
+						<div class="log-container">
+	
+						</div>
+					</div>
+
+					<div class="h-separator"></div>
+					<div class="circle-led-container">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="green" class="circle-led" viewBox="0 0 16 16">
+							<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+							<path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+						</svg>
+						  
+						<svg xmlns="http://www.w3.org/2000/svg" fill="yellow" class="circle-led" viewBox="0 0 16 16">
+							<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+							<path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+						</svg>
+						  
+						<svg xmlns="http://www.w3.org/2000/svg" fill="red" class="circle-led" viewBox="0 0 16 16">
+							<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+							<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+					  	</svg>
+				  	</div>
+				</div>
+			</div>
+
+			<div class="h-separator"></div>
+
+			<div class="bottom">
+				<div class="controller-container">
+					<img id="imagecontroller" src="{% static 'avionics/Controller-image.png' %}" alt="Controller">
+				</div>
+			</div>
   		</div>
   	</div>
   	

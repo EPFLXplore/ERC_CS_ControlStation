@@ -115,6 +115,36 @@
 				</form>
 			</div>
 		</div>
+
+		<div class="controller-switch">
+			<div class="switch-title-container">
+				<p class="switch-title">CONTROLLER</p>
+			</div>
+			<div class="switch-container">
+				<div class="form-check form-switch">
+					<input id="switch-input" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+				</div>
+			</div>
+		</div>
+
+		<div class="control-mode-container">
+			<div class="control-container">
+				<form id="inverse-form" class="control-form">
+					<button id="inverse-button" class="control-button">
+						<span>INVERSE<span>
+					</button>
+				</form>
+			</div>
+			
+			<div class="control-container">
+				<form id="direct-form" class="control-form">
+					<button id="direct-button" class="control-button">
+						<span>DIRECT<span>
+					</button>
+				</form>
+			</div>
+			
+		</div>
   	</div>
 	
   	<div id="right-side" class="box">
@@ -230,6 +260,53 @@
   					<div class="settings-bottom">
   						<div class="settings">
   							<div class="manual-settings">
+								<div class="settings-title-box">
+									<p class="settings-title">MANUAL KINEMATICS</p>
+								</div>
+								<div class="settings-values-box">
+									<div class="data-line">
+										<div class="settings-value-container">
+											<input type="number" class="data-input" placeholder="X" name="x"/>
+											<p class="data-title">X</p>
+										</div>
+										<div class="settings-value-container">
+											<input type="number" class="data-input" placeholder="Y" name="y"/>
+											<p class="data-title">Y</p>
+										</div>
+										<div class="settings-value-container">
+											<input type="number" class="data-input" placeholder="Z" name="z"/>
+											<p class="data-title">Z</p>
+										</div>
+									</div>
+									<div class="data-line">
+										<div class="settings-value-container">
+											<input type="number" class="data-input" placeholder="a" name="alpha"/>
+											<p class="data-title">a</p>
+										</div>
+										<div class="settings-value-container">
+											<input type="number" class="data-input" placeholder="b" name="beta"/>
+											<p class="data-title">b</p>
+										</div>
+										<div class="settings-value-container">
+											<input type="number" class="data-input" placeholder="0" name="teta"/>
+											<p class="data-title">0</p>
+										</div>
+										<div class="settings-value-container">
+											<input type="number" class="data-input" placeholder="E" name="epsilon"/>
+											<p class="data-title">E</p>
+										</div>
+									</div>
+								</div>
+								<div class="settings-buttons-box">
+									<p class="joint-name">NAME OF SELECTED JOINT</p>
+									<div class="set-box">
+										<form class="set-form" action="">
+											<button class="set-button">
+												<span>SET</span>
+											</button>
+										</form>
+									</div>
+								</div>
   							</div>
   						</div>
   						<div class="widgets">

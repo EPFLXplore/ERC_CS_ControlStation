@@ -1,5 +1,10 @@
+
+:root{
+
+	--input-background: #d8d8d8;
+}
 /*==========================================================================
-							MANUALCONTROL
+							DIVS
 ==========================================================================*/
 .left{
 	float: left;
@@ -74,7 +79,7 @@
 
 .settings-top-bar .settings-bottom{width: 100%;}
 .settings-top-bar{height: 15%; margin-top: 2%;}
-.settings-bottom {height: 88%;}
+.settings-bottom {height: 63%;}
 
 .currentpos-container{
 	float: left;
@@ -152,6 +157,83 @@
 	text-align: center;
 }
 
+.controller-switch{
+	width: 100%;
+	height: 4%;
+	margin-top: 227%;
+}
+
+.switch-title-container{
+	float: left;
+	height: 100%;
+	padding-left: 5%;
+	padding-top: 2%;
+}
+
+.switch-container{
+	float: left;
+	width: 40%;
+	padding-left: 12%;
+}
+
+.control-mode-container{
+	width: 60%;
+	height: 40%;
+	margin-left: 20%;
+	margin-top:12%;
+}
+
+.control-container{
+	width: 100%;
+	height: 21%;
+	padding-bottom: 30%;
+}
+
+/*________SETTINGS________*/
+/*MODES*/
+.manual-settings{
+	width: 100%;
+	height: 100%;
+	padding-top: 5%;
+}
+
+.settings-title-box{
+	width: 100%;
+	height: 15%;
+	padding-left: 10%;
+}
+
+.settings-values-box{
+	width: 100%;
+	height: 65%;
+	padding-left: 10%;
+}
+
+.settings-buttons-box{
+	width: 100%;
+	height: 15%;
+	margin-top: 2%;
+}
+
+.data-line{
+	width: 100%;
+	height: 50%;
+}
+
+.settings-value-container{
+	float: left;
+	width: 13%;
+	height: 100%;
+	margin-right: 5%;
+}
+
+.set-box{
+	float: left;
+	height: 100%;
+	width: 20%;
+	margin-left: 8%;
+}
+
 /*==========================================================================
 ==========================================================================*/
 
@@ -219,6 +301,41 @@
 	text-align: center;
 }
 
+.switch-title{
+	color: white;
+	font-family: var(--font);
+	font-size: 17px;
+	font-weight: bold;
+}
+
+.settings-title{
+	color: white;
+	font-family: var(--font);
+	font-weight: bold;
+}
+
+.data-title{
+	text-align: center;
+	width: 100%;
+	height: 40%;
+	color: white;
+	font-family: var(--font);
+}
+
+.joint-name{
+	text-align: center;
+	float: left;
+	width: 50%;
+	height: 100%;
+	margin-left: 10%;
+	padding-top: 2%;
+	color: white;
+	font-family: var(--font);
+	font-size: 13px;
+	border: 2px solid grey;
+	border-radius: 10px;
+}
+
 /*==========================================================================
 =====================| IMAGES  |==========================================*/
 #imagerover{
@@ -256,7 +373,54 @@
 }
 
 /*==========================================================================
+=====================| FORMS  |==========================================*/
+.control-form{
+	width:100%;
+	height: 100%;
+}
+
+.set-form{
+	width: 100%;
+	height: 100%;
+}
+
+/*==========================================================================
+=====================| INPUTS  |==========================================*/
+#switch-input{
+	width: 3em;
+	height: 1.5em;
+}
+
+.data-input{
+	width: 100%;
+	height: 60%;
+	text-align: center;
+	border-radius: 10px;
+	background-color: var(--input-background);
+	font-size: 15px;
+}
+
+/*==========================================================================
 =====================| BUTTONS  |==========================================*/
+.control-button{
+	width: 100%;
+	height: 100%;
+	border: 5px solid;
+	border-radius: 10px;
+	background-color: inherit;
+	color: white;
+	font-size: 17px;
+	font-family: var(--font);
+	font-weight: bold;
+}
+
+#inverse-button{
+	border-color: rgb(90, 195, 255);
+}
+#direct-button{
+	border-color: rgb(60, 82, 211);
+}
+
 #choose-joint{
 	text-align: center;
 	background-color: var(--clr-gb);
@@ -274,4 +438,20 @@
 	margin: 10%;
 	transition: all 0.5s;
 	cursor: pointer;
+}
+
+.set-button{
+	width: 100%;
+	height: 100%;
+	color: white;
+	background-color: inherit;
+	font-family: var(--font);
+	border: 5px solid green;
+	border-radius: 10px;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.set-button:hover{
+	background-color: green;
 }
