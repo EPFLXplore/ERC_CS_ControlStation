@@ -13,8 +13,8 @@ from geometry_msgs.msg import Twist
 
 import sys
 
-from CS_node import CS
-from Gamepad.keyMap            import Keymap
+# from CS_node import CS
+from keyMap            import *
 from std_msgs.msg import Int8MultiArray, Int8
 
 
@@ -28,6 +28,7 @@ Class Gamepad
 
 '''
 class Gamepad(Thread):
+  print("coucou")
   
   devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
   #### print("#### debug(1): check list of devices connected") 
@@ -59,7 +60,7 @@ class Gamepad(Thread):
     # NAV : 
     #self.modeNAV = 'MAN' #or 'AUTO' 
 
-    #self.nav_pub = rospy.Publisher('cmd_vel', Twist, queue_size=1) # need to publish topic  #TODO
+    # self.nav_pub = rospy.Publisher('cmd_vel', Twist, queue_size=1) # need to publish topic  #TODO
     # declare and initialize msg_nav_dir
     self.msg_nav_dir = Twist()
     self.msg_nav_dir.linear.x  = 0
@@ -74,9 +75,9 @@ class Gamepad(Thread):
     self.axe_NAV_new = [0., 0.]
 
     # HD :
-    #self.hd_pub = rospy.Publisher('cmd_hd', HandlingControl, queue_size=1) #Object Roman #TODO
+    # self.hd_pub = rospy.Publisher('cmd_hd', Int8MultiArray, queue_size=1) #Object Roman #TODO
     # self.HD_control_msg = HandlingControl()
-    #self.HD_control_msg.mode = 3  # 2='INV', 3='DIR' 
+    # self.HD_control_msg.mode = 3  # 2='INV', 3='DIR' 
     #self.HD_control_msg.active = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  # intialize every joint to 0 
     self.axe_HD_old = [0, 0, 0, 0, 0, 0, 0]
     self.axe_HD_new = [0, 0, 0, 0, 0, 0, 0]
@@ -110,20 +111,26 @@ class Gamepad(Thread):
         # EV_KEY describes state changes of device
         if event.type == ecodes.EV_KEY:
           if event.value == 1:
-            if event.code == Keymap.BTN_SHARE: # Share Button => switch NAV <=> HD
-              switchNAV_HD(self)
+            print("before SHARE button") #TODO
+            print(event.code) #TODO
+            print(Keymap.BTN_SHARE.value) #TODO
+            if event.code == Keymap.BTN_SHARE.value: #Keymap.BTN_SHARE: # Share Button => switch NAV <=> HD
+              print("SHARE pressed") #TODO
+              self.switchNAV_HD()
 
             # switching  DIR <=> INV only when in HD     
-            if event.code == Keymap.BTN_OPTIONS:
+            if event.code == Keymap.BTN_OPTIONS.value:
               if self.mode == 'HD':
-                switchDIR_INV(self)
+                self.switchDIR_INV()
 
 
         if (self.mode) == 'NAV': # NAVIGATION--------------------
           if event.type == ecodes.EV_KEY:
             if event.value == 1:
               # R2 => advance: positive .linear.x
-              if event.code == Keymap.BTN_R2: 
+              print(event.code)
+              if event.code == Keymap.BTN_R2.value: 
+                print("Button R2") #TODO 
                 if event.type == ecodes.EV_ABS:
                   absevent = categorize(event)
                   if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_PRESSURE":  # is this correct? 
@@ -133,7 +140,7 @@ class Gamepad(Thread):
                     if absevent.event.value == 0:  # stay still
                       advance = 0
               # L2 => retreat: negative .linear.x
-              if event.code == Keymap.BTN_L2: 
+              if event.code == Keymap.BTN_L2.value: 
                 if event.type == ecodes.EV_ABS:
                   absevent = categorize(event)
                   if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_PRESSURE":
@@ -198,35 +205,35 @@ class Gamepad(Thread):
             if event.type == ecodes.EV_KEY:
               # Push
               if event.value == 1: 
-                if event.code == Keymap.BTN_R1 and self.axe_HD_new[4] == 0: # R1 joint 4 = 1
+                if event.code == Keymap.BTN_R1.value and self.axe_HD_new[4] == 0: # R1 joint 4 = 1
                   self.axe_HD_new[3] = 1
-                elif event.code == Keymap.BTN_L1 and self.axe_HD_new[4] == 0: # L1 joint 4 = -1
+                elif event.code == Keymap.BTN_L1.value and self.axe_HD_new[4] == 0: # L1 joint 4 = -1
                   self.axe_HD_new[3] = -1
-                elif event.code == Keymap.BTN_SQUARE and self.axe_HD_new[6] == 0: # Square button open the gripper
+                elif event.code == Keymap.BTN_SQUARE.value and self.axe_HD_new[6] == 0: # Square button open the gripper
                   self.axe_HD_new[6] = 1
-                elif event.code == Keymap.BTN_CROSS and self.axe_HD_new[6] == 0: # Cross button close the gripper
+                elif event.code == Keymap.BTN_CROSS.value and self.axe_HD_new[6] == 0: # Cross button close the gripper
                   self.axe_HD_new[6] = -1
                 # R2 => gripper rise: positive z
-                elif event.code == Keymap.BTN_R2: 
+                elif event.code == Keymap.BTN_R2.value: 
                   if event.type == ecodes.EV_ABS:
                     absevent = categorize(event)
                     if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_PRESSURE":  # is this correct? 
                       self.gripper_new[2] = eval_axe(absevent.event.value)
                 # L2 => gripper drop: negative z
-                elif event.code == Keymap.BTN_L2: 
+                elif event.code == Keymap.BTN_L2.value: 
                   if event.type == ecodes.EV_ABS:
                     absevent = categorize(event)
                     if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_PRESSURE":
                       self.gripper_new[2] = eval_axe(-absevent.event.value)
               # Release
               elif event.value == 0: 
-                if event.code == Keymap.BTN_R1: # R1 joint 4 = 1
+                if event.code == Keymap.BTN_R1.value: # R1 joint 4 = 1
                   self.axe_HD_new[3] = 0
-                elif event.code == Keymap.BTN_L1: # L1 joint 4 = -1
+                elif event.code == Keymap.BTN_L1.value: # L1 joint 4 = -1
                   self.axe_HD_new[3] = 0
-                elif event.code == Keymap.BTN_SQUARE: # Square button Stop the opening
+                elif event.code == Keymap.BTN_SQUARE.value: # Square button Stop the opening
                   self.axe_HD_new[6] = 0
-                elif event.code == Keymap.BTN_CROSS : # Triangle button Stop the closing
+                elif event.code == Keymap.BTN_CROSS.value: # Triangle button Stop the closing
                   self.axe_HD_new[6] = 0
             # AXE-------------------------
             elif event.type == ecodes.EV_ABS:
@@ -268,46 +275,47 @@ class Gamepad(Thread):
           elif self.modeHD == 'DIR': # Direct Kinematics
             if event.type == ecodes.EV_KEY:
               if event.value == 1:
-                joint = 7
-                if event.code == Keymap.BTN_R1: # joint 1
+                joint = 6
+                if event.code == Keymap.BTN_R1.value: # joint 1
                   joint = 0
-                elif event.code == Keymap.BTN_L1: # joint 2
+                elif event.code == Keymap.BTN_L1.value: # joint 2
                   joint = 1
-                elif event.code == Keymap.BTN_SQUARE: # joint 3
+                elif event.code == Keymap.BTN_SQUARE.value: # joint 3
                   joint = 2
-                elif event.code == Keymap.BTN_CROSS: # joint 4
+                elif event.code == Keymap.BTN_CROSS.value: # joint 4
                   joint = 3
-                elif event.code == Keymap.BTN_TRIANGLE: # joint 5
+                elif event.code == Keymap.BTN_TRIANGLE.value: # joint 5
                   joint = 4
-                elif event.code == Keymap.BTN_CIRCLE: # joint 6
+                elif event.code == Keymap.BTN_CIRCLE.value: # joint 6
                   joint = 5
-                elif event.code == Keymap.BTN_SQUARE and self.axe_HD_new[6] == 0: # Square button open the gripper
+                elif event.code == Keymap.BTN_SQUARE.value and self.axe_HD_new[6] == 0: # Square button open the gripper
                   self.axe_HD_new[6] = 1
-                elif event.code == Keymap.BTN_CROSS and self.axe_HD_new[6] == 0: # Cross button close the gripper
+                elif event.code == Keymap.BTN_CROSS.value and self.axe_HD_new[6] == 0: # Cross button close the gripper
                   self.axe_HD_new[6] = -1
                 # R2 => gripper rise: positive z
-                elif event.code == Keymap.BTN_R2: 
+                elif event.code == Keymap.BTN_R2.value: 
                   if event.type == ecodes.EV_ABS:
                     absevent = categorize(event)
                     if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_PRESSURE":  # is this correct? 
                       self.gripper_new[2] = eval_axe(absevent.event.value)
                 # L2 => gripper drop: negative z
-                elif event.code == Keymap.BTN_L2: 
+                elif event.code == Keymap.BTN_L2.value: 
                   if event.type == ecodes.EV_ABS:
                     absevent = categorize(event)
                     if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_PRESSURE":
                       self.gripper_new[2] = eval_axe(-absevent.event.value)
               # release gripper buttons
               elif event.value == 0: 
-                if event.code == Keymap.BTN_SQUARE: # Square button Stop the opening
+                if event.code == Keymap.BTN_SQUARE.value: # Square button Stop the opening
                   self.axe_HD_new[6] = 0
-                elif event.code == Keymap.BTN_CROSS : # Triangle button Stop the closing
+                elif event.code == Keymap.BTN_CROSS.value: # Triangle button Stop the closing
                   self.axe_HD_new[6] = 0
             # AXE-------------------------  
             if event.type == ecodes.EV_ABS:
               absevent = categorize(event)
               if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Y": # joint L3 up & down
-                self.axe_HD_new[joint] = eval_axe(absevent.event.value)
+                print(-eval_axe(absevent.event.value))
+                self.axe_HD_new[joint] = -eval_axe(absevent.event.value)
               elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RX": # gripper move along x-axis
                 self.gripper_new[0] = eval_axe(absevent.event.value)
               elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RY": # gripper move along y-axis
@@ -366,50 +374,47 @@ class Gamepad(Thread):
             # sends new values if and only if changed from previous
             newAxeVal(self)
 
-        # no need for 'SC' for us .....
-        # elif (self.mode) == 'SC':
-        #   if event.type == ecodes.EV_KEY:
-        #     # ~ print(categorize(event))
-        #     if event.value == 1:
-        #       if event.code == 304: #Touche A
-        #           print('SC')
+        
 
-# Set self.mode
-def cmode(self, mode):
-  self.mode = mode
+  # Set self.mode
+  def cmode(self, mode):
+    self.mode = mode
 
-# Switching NAV <=> HD
-def switchNAV_HD(self):
-  # switching mode  NAV <=> HD
-  if self.mode == 'NAV':
-    cmode('HD')
-    self.modeHD = 'DIR'  # reset to DIR 
-    print(self.mode, ': ', self.modeHD)
-  elif self.mode == 'HD':
-    cmode('NAV')
-    print(self.mode)
+  # Switching NAV <=> HD
+  def switchNAV_HD(self):
+    # switching mode  NAV <=> HD
+    if self.mode == 'NAV':
+      self.cmode('HD')
+      self.modeHD = 'DIR'  # reset to DIR 
+      print(self.mode, ': ', self.modeHD)
+    elif self.mode == 'HD':
+      self.cmode('NAV')
+      print(self.mode)
 
-# Switching MAN <=> AUTO 
-# when in HD mode
-def switchDIR_INV(self):  # NOT IDEAL TO PASS SELF !!!!!!
-  if self.modeHD == 'INV':
-    self.HD_control_msg.mode = 1
-    print('DIR')
-    self.modeHD = 'DIR'
-  else:
-    self.HD_control_msg.mode = 0
-    print('INV')
-    self.modeHD = 'INV'
-  self.HD_control_msg.active = clear_tab(self.HD_control_msg.active)
-  self.axe_HD_old = [0, 0, 0, 0, 0, 0, 0]
-  self.axe_HD_new = [0, 0, 0, 0, 0, 0, 0] 
-  self.gripper_old = [0, 0, 0]
-  self.gripper_new = [0, 0, 0]
-  #self.hd_pub.publish(self.HD_control_msg)
+  # Switching MAN <=> AUTO 
+  # when in HD mode
+  def switchDIR_INV(self):  # NOT IDEAL TO PASS SELF !!!!!!
+    if self.modeHD == 'INV':
+      # self.HD_control_msg.mode = 1
+      print('DIR')
+      self.modeHD = 'DIR'
+    else:
+      # self.HD_control_msg.mode = 0
+      print('INV')
+      self.modeHD = 'INV'
+    # self.HD_control_msg.active = clear_tab(self.HD_control_msg.active)
+    self.axe_HD_old = [0, 0, 0, 0, 0, 0, 0]
+    self.axe_HD_new = [0, 0, 0, 0, 0, 0, 0] 
+    self.gripper_old = [0, 0, 0]
+    self.gripper_new = [0, 0, 0]
+    # self.hd_pub.publish(self.HD_control_msg)
 
 
-  self.cs.HD_mode_pub.publish(Int8(data=self.HD_control_msg.mode))
-  self.cs.HD_Angles_pub.publish(Int8MultiArray(data = self.axe_HD_new))
+    # self.cs.HD_mode_pub.publish(Int8(data=self.HD_control_msg.mode))
+    self.cs.HD_Angles_pub.publish(Int8MultiArray(data = self.axe_HD_new))
+    # ADDED 
+    self.cs.HD_InvManual_Coord_pub.publish(Int8MultiArray(data = self.gripper_new))
+
 
 
 
@@ -455,16 +460,16 @@ def clear_tab(tab):
 # if and only if changed from previous
 def newAxeVal(self):
   if (compare_list(self.axe_HD_old, self.axe_HD_new, 0) != 1) or (compare_list(self.gripper_old, self.gripper_new, 0) != 1):
-    print("send HD - angles: ", self.axe_HD_new , ' ', self.axe_HD_old, "gripper: ", self.gripper_old, ' ', self.gripper_new)
+    print("send HD - angles: old:", self.axe_HD_old , ' new: ', self.axe_HD_new, "gripper: old:", self.gripper_old, ' new: ', self.gripper_new)
     for k in range(len(self.axe_HD_new)):
       self.axe_HD_old[k] = self.axe_HD_new[k]
-      self.HD_control_msg.active[k] = self.axe_HD_new[k]
+      # self.HD_control_msg.active[k] = self.axe_HD_new[k]
     for k in range(len(self.gripper_old)):
       self.gripper_new = self.gripper_old
-      self.HD_control_msg.active[k + len(self.axe_HD_new)] = self.gripper_new[k]
+      # self.HD_control_msg.active[k + len(self.axe_HD_new)] = self.gripper_new[k]
     #self.hd_pub.publish(self.HD_control_msg)
 
-
+    self.cs.HD_Angles_pub.publish(Int8MultiArray(data = self.axe_HD_new))
     self.cs.HD_InvManual_Coord_pub.publish(Int8MultiArray(data = self.gripper_new))
 
 
