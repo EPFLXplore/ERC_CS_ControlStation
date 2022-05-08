@@ -151,10 +151,11 @@ class Controller():
     def launch_Manual(self):
         rospy.loginfo("\nlaunching manual controls\n")
         # TODO need to make it so that the control attribute of GamePad activates when plugging in joystick
-        if(self.gpad.control != None) : self.gpad.run()
+        if(self.gpad.control != None) : 
+            rospy.loginfo("\nlaunching manual controls22222\n")
+            self.gpad.start()
 
     def abort_Manual(self):
         rospy.loginfo("\naborting manual controls\n")
-        #TODO need to create a method abort() to stop the loop or smthg
-        #self.gpad.join()
+        self.gpad.join()
 
