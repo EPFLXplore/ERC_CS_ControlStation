@@ -14,7 +14,8 @@ from geometry_msgs.msg import Twist
 import sys
 
 # from CS_node import CS
-from keyMap            import *
+from Gamepad.keyMap            import Keymap
+#from keyMap            import *
 from std_msgs.msg import Int8MultiArray, Int8
 
 
