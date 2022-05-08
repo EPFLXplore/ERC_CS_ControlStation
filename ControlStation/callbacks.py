@@ -39,7 +39,7 @@ def test_joystick(twist):
 
 #Rover sends a confirmation that it received an instruction
 def rover_confirmation(boolean):
-     rospy.loginfo("Rover Confirmation: %s", boolean.data)
+     rospy.loginfo("Rover Confirmation: %s\n", boolean.data)
      RoverConfirmation.objects.update_or_create(name="RoverConfirm", defaults={'received': boolean.data})
 
 

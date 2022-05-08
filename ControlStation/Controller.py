@@ -60,8 +60,9 @@ class Controller():
     def pub_Task(self, task, instr): 
         arr = [task, instr]
         self.cs.Task_pub.publish(Int8MultiArray(data = arr))
-        
-        if(arr[0] == 1 and arr[1] == 1 ) : self.launch_Manual() # arr[0] == 1 et arr[1] == 1 
+
+        if(task == 1 and instr == 1) : self.launch_Manual() 
+        if(task == 1 and instr == 2) : self.abort_Manual()
 
 
     ###############################
@@ -73,16 +74,19 @@ class Controller():
     #  - 1 SemiAutonomous
     #  - 2 Inverse Manual
     #  - 3 Direct Manual
+
     def pub_hd_mode(self, mode) :
         if(mode == 0 or mode == 1):
+            rospy.loginfo("Set HD mode %d", mode)
             self.cs.HD_mode_pub.publish(data = mode)
         else:
             #rospy.loginfo("Error: HD mode can either 0 or 1 not ")
-            print("Error: HD mode can be either 0 or 1 not ", mode)
+            rospy.loginfo("Error: HD mode can be either 0 or 1 not %s", mode)
 
     # Send the id of the element the HD must reach 
     # when in Autonomous or SemiAutonomous mode
     def pub_hd_elemId(self, id) :
+        rospy.loginfo("HD: object id - %d", id)
         self.cs.HD_SemiAuto_Id_pub.publish(data = Int8(id))
 
 
@@ -105,6 +109,8 @@ class Controller():
                         float64 z
         '''
 
+        rospy.loginfo("NAV: set goal (%d, %d, %d)", x, y, z)
+
         g_id = GoalID(stamp = rospy.get_time(), id = 1) # TODO UNE FACON D'INCRÉMENTER L'ID À CHAQUE FOIS
         moveBaseGoal = MoveBaseGoal(target_pose = Pose(position = Point(x, y, z)))
 
@@ -113,6 +119,7 @@ class Controller():
 
     # cancel a specific Navigation goal by giving the goal's id
     def pub_cancel_nav_goal(self, given_id):
+        rospy.loginfo("NAV: cancel goal %d", given_id)
         self.cs.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = given_id))
 
 
@@ -131,6 +138,7 @@ class Controller():
     #  range: -180 and +180
 
     def pub_debug_wheels(self, wheel_id, rot_vel, range):
+        rospy.loginfo("Debug wheels")
         self.cs.Nav_DebugWheels_pub(Int16MultiArray(data = [wheel_id, rot_vel, range]))
 
 
@@ -142,20 +150,11 @@ class Controller():
     # is automatically launched from pub_Task when publishing Manual
     def launch_Manual(self):
         rospy.loginfo("\nlaunching manual controls\n")
-        self.gpad.run()
+        # TODO need to make it so that the control attribute of GamePad activates when plugging in joystick
+        if(self.gpad.control != None) : self.gpad.run()
 
     def abort_Manual(self):
         rospy.loginfo("\naborting manual controls\n")
-        self.gpad.join()
+        #TODO need to create a method abort() to stop the loop or smthg
+        #self.gpad.join()
 
-
-# ----------------- MAIN -----------------
-''' 
-if __name__ == '__main__' and len(sys.argv)>1:
-	arg = sys.argv
-	l = len(arg)
-	name = arg[1]
-	
-	if l==4 and name=="pub_Task":
-		globals()[name](int(arg[2]), int(arg[3]))
-'''

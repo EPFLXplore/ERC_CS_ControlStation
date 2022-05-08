@@ -1,3 +1,4 @@
+from curses.ascii import ctrl
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
@@ -34,68 +35,121 @@ def avionics(request):
 
 ctrler = Controller()
 #STATE BUTTONS
-#Manual
+
+# TASK: 
+    #       - Manual      = 1 
+    #       - Navigation  = 2 
+    #       - Maintenance = 3
+    #       - Science     = 4
+    #
+    # INSTR:  
+    #       - Launch = 1 
+    #       - Abort  = 2 
+    #       - Wait   = 3 
+    #       - Resume = 4 
+    #       - Retry  = 5
+
+
+###############################
+#             MANUAL          #
+###############################
+
 def launch_manual(request):
-    rospy.loginfo("Launching Manual")
+    rospy.loginfo("Manual: Launch")
     ctrler.pub_Task(1,1)
-    #print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','1','1'], shell=False, stdout=PIPE))
     return redirect('/Xplore_CS_2022/manualcontrol/')
+
 def abort_manual(request):
-    print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','1','2'], shell=False, stdout=PIPE))
+    rospy.loginfo("Manual: Abort")
+    ctrler.pub_Task(1,2)
     return redirect('/Xplore_CS_2022/manualcontrol/')
+
 def wait_manual(request):
-    print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','1','3'], shell=False, stdout=PIPE))
+    rospy.loginfo("Manual: Wait")
+    ctrler.pub_Task(1,3)
     return redirect('/Xplore_CS_2022/manualcontrol/')
+
 def resume_manual(request):
-    print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','1','4'], shell=False, stdout=PIPE))
+    rospy.loginfo("Manual: Resume")
+    ctrler.pub_Task(1,4)
     return redirect('/Xplore_CS_2022/manualcontrol/')
 
-#Navigation
+
+###############################
+#          NAVIGATION         #
+###############################
+
 def launch_nav(request):
-    print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','2','1'], shell=False, stdout=PIPE))
-    return redirect('/Xplore_CS_2022/navigation/')
-def abort_nav(request):
-    print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','2','2'], shell=False, stdout=PIPE))
-    return redirect('/Xplore_CS_2022/navigation/')
-def wait_nav(request):
-    print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','2','3'], shell=False, stdout=PIPE))
-    return redirect('/Xplore_CS_2022/navigation/')
-def resume_nav(request):
-    print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','2','4'], shell=False, stdout=PIPE))
+    rospy.loginfo("Navigation: Launch")
+    ctrler.pub_Task(2,1)
     return redirect('/Xplore_CS_2022/navigation/')
 
-#Handlingdevice
+def abort_nav(request):
+    rospy.loginfo("Navigation: Abort")
+    ctrler.pub_Task(2,2)
+    return redirect('/Xplore_CS_2022/navigation/')
+
+def wait_nav(request):
+    rospy.loginfo("Navigation: Wait")
+    ctrler.pub_Task(2,3)
+    return redirect('/Xplore_CS_2022/navigation/')
+
+def resume_nav(request):
+    rospy.loginfo("Navigation: Resume")
+    ctrler.pub_Task(2,4)
+    return redirect('/Xplore_CS_2022/navigation/')
+
+
+
+###############################
+#       HANDLING DEVICE       #
+###############################
+
 def launch_hd(request):
-    print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','3','1'], shell=False, stdout=PIPE))
+    rospy.loginfo("Maintenance: Launch")
+    ctrler.pub_Task(3,1)
     return redirect('/Xplore_CS_2022/handlingdevice/')
+
 def abort_hd(request):
-    print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','3','2'], shell=False, stdout=PIPE))
+    rospy.loginfo("Maintenance: Abort")
+    ctrler.pub_Task(3,2)
     return redirect('/Xplore_CS_2022/handlingdevice/')
+
 def wait_hd(request):
-    print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','3','3'], shell=False, stdout=PIPE))
+    rospy.loginfo("Maintenance: Wait")
+    ctrler.pub_Task(3,3)
     return redirect('/Xplore_CS_2022/handlingdevice/')
+
 def resume_hd(request):
-    print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','3','4'], shell=False, stdout=PIPE))
+    rospy.loginfo("Maintenance: Resume")
+    ctrler.pub_Task(3,4)
     return redirect('/Xplore_CS_2022/handlingdevice/')
+
 def retry_hd(request):
-    print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','3','5'], shell=False, stdout=PIPE))
+    rospy.loginfo("Maintenance: Retry")
+    ctrler.pub_Task(3,5)
     return redirect('/Xplore_CS_2022/handlingdevice/')
 
 #Science
 # TODO STILL NEED TO ADAPT TO NEW SCIENCE COMMANDS
 def launch_science(request):
-    print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','4','1'], shell=False, stdout=PIPE))
+    rospy.loginfo("Science: ???")
+    ctrler.pub_Task(4,1)
     return redirect('/Xplore_CS_2022/science/')
+
 def abort_science(request):
-    print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','4','2'], shell=False, stdout=PIPE))
+    ctrler.pub_Task(4,2)
     return redirect('/Xplore_CS_2022/science/')
+
 def wait_science(request):
-    print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','4','3'], shell=False, stdout=PIPE))
+    ctrler.pub_Task(4,3)
     return redirect('/Xplore_CS_2022/science/')
+
 def resume_science(request):
-    print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','4','4'], shell=False, stdout=PIPE))
+    ctrler.pub_Task(4,4)
     return redirect('/Xplore_CS_2022/science/')
+
 def retry_science(request):
-    print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','4','5'], shell=False, stdout=PIPE))
+    ctrler.pub_Task(4,5)
     return redirect('/Xplore_CS_2022/science/')
 

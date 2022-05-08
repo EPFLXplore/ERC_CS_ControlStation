@@ -27,7 +27,7 @@ Class Gamepad
     -
 
 '''
-class Gamepad(Thread):
+class Gamepad():
   
   devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
   #### print("#### debug(1): check list of devices connected") 
@@ -35,7 +35,6 @@ class Gamepad(Thread):
   #  print(device.path, device.name, device.phys)     
 
   def __init__(self, cs):
-
     self.cs = cs
 
   # ~ connection search gamepad
