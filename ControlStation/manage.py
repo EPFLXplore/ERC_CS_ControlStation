@@ -3,6 +3,8 @@
 import os
 import sys
 
+import rospy
+
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
@@ -15,6 +17,9 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
+
+    rospy.init_node("CONTROL_STATION", anonymous=True)
+    
     execute_from_command_line(sys.argv)
 
 

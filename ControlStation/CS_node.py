@@ -49,7 +49,7 @@ class CS:
 
         def __init__(self):
 
-                rospy.init_node("CONTROL_STATION", anonymous=True)
+                #rospy.init_node("CONTROL_STATION", anonymous=True)
 
                 self.navID = [0]
 
@@ -168,15 +168,15 @@ class CS:
                 rospy.Subscriber('/odometry/filtered', Odometry, nav_data)
 
                 
-        def run(self):
-                print("Listening")
-                rospy.spin()
+        #def run(self):
+         #       print("Listening")
+          #      rospy.spin()
 
 
-CStation = CS()
+#CStation = CS()
 
 #================================================================================
 #MAIN
-if __name__ == '__main__':
-        CStation.run()
+#if __name__ == '__main__':
+        #CStation.run()
   

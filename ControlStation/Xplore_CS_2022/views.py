@@ -6,6 +6,11 @@ from django.template import loader
 import sys
 from subprocess import run, PIPE
 
+from CS_node import *
+from Controller import *
+
+
+
 #PATHS
 CONTROLLER_PATH = '//home//rocknd79//Xplore//CS_workspace//ControlStation//Controller.py'
 
@@ -27,11 +32,13 @@ def science(request):
 def avionics(request):
     return render(request, 'pages/avionics.html')
 
-
+ctrler = Controller()
 #STATE BUTTONS
 #Manual
 def launch_manual(request):
-    print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','1','1'], shell=False, stdout=PIPE))
+    rospy.loginfo("Launching Manual")
+    ctrler.pub_Task(1,1)
+    #print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','1','1'], shell=False, stdout=PIPE))
     return redirect('/Xplore_CS_2022/manualcontrol/')
 def abort_manual(request):
     print(run([sys.executable,CONTROLLER_PATH, 'pub_Task','1','2'], shell=False, stdout=PIPE))
