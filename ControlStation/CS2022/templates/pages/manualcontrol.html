@@ -1,0 +1,294 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CS2022</title>
+  
+	<!-- STYLE -->
+	<link href="{% static 'common/border.css' %}" rel="stylesheet">
+	<link href="{% static 'manualcontrol/manualcontrol.css' %}" rel="stylesheet">
+	<link href="{% static 'common/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+	<!-- SCRIPT -->
+	<script src="{% static 'common/border.js' %}"></script> 
+	<script src="{% static 'manualcontrol/manualcontrol.js' %}"></script> 
+	<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+
+	<script>
+		$(document).ready(function() {
+    		$(document).on('submit', '#launch-form', function() {
+				window.location.href ="/CS2022/manualcontrol/launch";
+      			return false;
+    		 });
+    		$(document).on('submit', '#wait-form', function() {
+				window.location.href ="/CS2022/manualcontrol/wait";
+      			return false;
+    		 });
+    		$(document).on('submit', '#abort-form', function() {
+				window.location.href ="/CS2022/manualcontrol/abort";
+      			return false;
+    		 });
+    		$(document).on('submit', '#resume-form', function() {
+				window.location.href ="/CS2022/manualcontrol/resume";
+      			return false;
+    		 });
+    		$(document).on('submit', '#direct-form', function() {
+      			return false;
+    		 });
+    		$(document).on('submit', '#inverse-form', function() {
+      			return false;
+    		 });
+		});
+	</script>
+	
+	<!-- ICON -->
+	<link rel="icon" type="image/x-icon" href="{% static 'common/Xplore-icon.ico' %}">
+</head>
+
+<body>
+<div id="container">
+  	<div id="sidebar" class="box">
+  	  	<div class="logo">
+			<form class="logo-form" action="http://127.0.0.1:8000/CS2022/homepage">
+				<input id="imagelogo" type="image" src="{% static 'common/Xplore-logo-white.png' %}" alt="My image">
+			</form>
+  		</div>
+  	  
+		<div class="page-button-container">
+	  	  	<form action="http://127.0.0.1:8000/CS2022/navigation">
+				<button id="navigation" class="page-button">
+					<span>NAVIGATION</span>
+				</button>
+			</form>
+				
+			<form action="http://127.0.0.1:8000/CS2022/handlingdevice">
+				<button id="handlingdevice" class="page-button">
+					<span>HANDLING DEVICE</span>
+				</button>
+			</form>
+			
+			<form action="http://127.0.0.1:8000/CS2022/science">
+				<button id="science" class="page-button">
+					<span>SCIENCE</span>
+				</button>
+			</form>
+		
+			<form action="http://127.0.0.1:8000/CS2022/manualcontrol">
+				<button id="manualcontrol" class="current-page-button" disabled="true">
+					<span>MANUAL CONTROL</span>
+				</button>
+			</form>
+			
+			<form action="http://127.0.0.1:8000/CS2022/avionics">
+				<button id="avionics" class="page-button">
+					<span>AVIONICS</span>
+				</button>
+			</form>
+		</div>
+  	  
+		<div class="square-state-button-box">
+			<div class="state-button-container">
+				<form id="launch-form" class="state-button-form">
+					<button id="launch-button" class="state-button" onclick="lit_manual_state()">
+						<span>LAUNCH<span>
+					</button>
+				</form>
+			</div>
+
+			<div class="state-button-container">
+				<form id="wait-form" class="state-button-form">
+					<button id="wait-button" class="state-button" onclick="lit_waiting_state()">
+						<span>WAIT<span>
+					</button>
+				</form>
+			</div>
+		
+			<div class="state-button-container">
+				<form id="abort-form" class="state-button-form">
+					<button id="abort-button" class="state-button" onclick="unlit_manual_state()">
+						<span>ABORT<span>
+					</button>
+				</form>
+			</div>
+
+
+			<div class="state-button-container">
+				<form id="resume-form" class="state-button-form">
+					<button id="resume-button" class="state-button" onclick="unlit_waiting_state()">
+						<span>RESUME<span>
+					</button>
+				</form>
+			</div>
+		</div>
+
+		<div class="controller-switch">
+			<div class="switch-title-container">
+				<p class="switch-title">CONTROLLER</p>
+			</div>
+			<div class="switch-container">
+				<div class="form-check form-switch">
+					<input id="switch-input" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+				</div>
+			</div>
+		</div>
+
+		<div class="control-mode-container">
+			<div class="control-container">
+				<form id="direct-form" class="control-form">
+					<button id="direct-button" class="control-button" onclick="showDirect()">
+						<span>DIRECT<span>
+					</button>
+				</form>
+			</div>
+			
+			<div class="control-container">
+				<form id="inverse-form" class="control-form">
+					<button id="inverse-button" class="control-button" onclick="showInverse()">
+						<span>INVERSE<span>
+					</button>
+				</form>
+			</div>
+			
+		</div>
+  	</div>
+	
+  	<div id="right-side" class="box">
+  		<div class="top-bar">
+  			<label id="idle-state" class="neon-label">IDLE</label>
+  			<label id="navigation-state" class="neon-label">NAVIGATION</label>
+  			<label id="hd-state" class="neon-label">HANDLING DEVICE</label>
+  			<label id="science-state" class="neon-label">SCIENCE</label>
+  			<label id="manual-state" class="neon-label">MANUAL CONTROL</label>
+  			<label id="waiting-state" class="neon-label">WAITING</label>		
+  		</div>
+  		
+  		<div id="page" class="page">
+  				
+  			<div class="left">
+  				<div class="top-left">
+  				
+  					<video class="envmap" autoplay="true">
+  					</video>
+  					<p id="envmap-title">CAMERA 1</p>
+  					
+  				</div>
+  				<div class="h-separator">
+  				</div>
+  				<div class="bottom-left">
+  				
+					<video class="envmap" autoplay="true">
+					</video>
+					<p id="envmap-title">CAMERA 2</p>
+
+  				
+  				</div>
+  			</div>
+ 				<div class="v-separator">
+ 				</div>
+  			<div class="right">
+  			
+  
+  				
+  				<div class="settings-container">
+  					<div class="settings-top-bar">
+  						<div class="currentpos-container">
+  							<div class="pos-title-c">
+  								<p class="pos-title">CURRENT POSITION:</p>
+  							</div>
+  							<div class="pos-coord">
+  								<div class="coord-c">
+  									<p class="coord-type">X</p>
+  									<p class="coordinate">0.00</p>
+  								</div>
+  								<div class="coord-c">
+  									<p class="coord-type">Y</p>
+  									<p class="coordinate">0.00</p>
+  								</div>
+  								<div class="coord-c">
+  									<p class="coord-type">Z</p>
+  									<p class="coordinate">0.00</p>
+  								</div>
+  							</div>
+  						</div>
+  						<div class="velocity-container">
+  							<div class="velocity-title-c">
+  								<p class="velocity-title">VELOCITY:</p>
+  							</div>
+  							<div class="velocity-type-container">
+  								<div class="velocity-type-c">
+  									<p class="velocity-type">Linear:</p>
+  									<p class="velocity">0.00</p>
+  								</div>
+  								<div class="velocity-type-c">
+  									<p class="velocity-type">Angular:</p>
+  									<p class="velocity">0.00</p>
+  								</div>
+  							</div>
+  						</div>
+  					</div>
+  					<div class="settings-bottom">
+  						<div id="interactive_box" class="settings">
+							<div id="direct_box" class="settings_box">
+							  <div class="settings-title-box">
+								  <p class="settings-title">ENCODERS DATA:</p>
+							  </div>
+							  <ul style="color: white; margin-left: 45px;">
+								<li>e1: </li>
+            					<li>e2: </li>
+								<li>e3: </li>
+            					<li>e4: </li>
+								<li>e5: </li>
+            					<li>e6: </li>
+							  </ul>
+					
+							</div>
+						</div>
+
+						
+
+						<div style="margin-top: 30px;">	
+							<div id="inverse_box" class="settings_box">
+							  <div class="settings-title-box">
+								  <p class="settings-title">INVERSE KINEMATICS</p>
+							  </div>
+							  <div class="settings-values-box">
+								  
+								  <div class="data-line">
+									  <div class="settings-value-container">
+										  <input type="number" class="data-input" placeholder="X" name="x"/>
+										  
+									  </div>
+									  <div class="settings-value-container">
+										  <input type="number" class="data-input" placeholder="Y" name="y"/>
+										  
+									  </div>
+									  <div class="settings-value-container">
+										  <input type="number" class="data-input" placeholder="Z" name="z"/>
+										  
+									  </div>
+								  </div>
+							  </div>
+							  <div class="settings-buttons-box">
+								  <div class="set-box">
+									  <form class="set-form" action="">
+										  <button class="set-button">
+											  <span>SET</span>
+										  </button>
+									  </form>
+								  </div>
+							  </div>
+							  
+							</div>
+  						</div>
+						
+  					</div>
+  			</div>
+  		</div>
+  	</div>
+  	
+  </div>
+</body>
+
+</html>
