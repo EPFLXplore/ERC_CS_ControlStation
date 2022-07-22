@@ -1,3 +1,0 @@
-<form id="homepage" action="http://127.0.0.1:8000/Xplore_CS_2022/homepage">
-					<button style="background: {% static 'homepage/Xplore-logo.png' %}"></button>
-				</form>

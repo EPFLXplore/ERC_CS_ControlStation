@@ -1,7 +1,7 @@
 """ControlStation URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.2/topics/http/urls/
+    https://docs.djangoproject.com/en/3.0/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -21,5 +21,5 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('launcher/', views.launcher, name='launcher'),
-    path('Xplore_CS_2022/', include('Xplore_CS_2022.urls'))
+    path('CS2022/', include('CS2022.urls'))
 ]
