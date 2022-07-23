@@ -34,6 +34,7 @@ from sensor_msgs.msg       import Image
 from nav_msgs.msg          import Odometry
 from threading             import Thread
 from src.callbacks         import *
+from src.controller        import *
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
 django.setup()
@@ -48,6 +49,13 @@ class CS:
     
     def __init__(self):
 
+        # ========================================================
+        # DEBUG
+        rospy.init_node("CS2022", anonymous=False)
+        # ========================================================
+
+        self.controller = Controller(self)
+        self.rover      = Rover()
 
         self.navID = [0]
 

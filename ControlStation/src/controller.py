@@ -21,13 +21,14 @@ import rospy
 import sys
 
 from time                import sleep
-from src.cs_node         import *
+# from src.cs_node         import *
 from std_msgs.msg        import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray
 from move_base_msgs.msg  import MoveBaseActionGoal, MoveBaseGoal
 from geometry_msgs.msg   import Pose, Point
 from actionlib_msgs.msg  import GoalID
 # from Gamepad.GamepadTest import Gamepad
 from src.model           import *
+
 
 #================================================================================
 
@@ -38,8 +39,9 @@ class Controller():
         Controller (Model View Controller (MVC) template)
     '''
 
-    def __init__(self):
-        self.cs = CS()
+    def __init__(self, cs):
+        #self.cs = CS()
+        self.cs = cs
         # self.gpad = Gamepad(self.cs)
 
 

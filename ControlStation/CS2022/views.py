@@ -2,19 +2,23 @@
 # Libraries
 
 from curses.ascii       import ctrl
+from email.policy import HTTP
+from urllib.request import HTTPRedirectHandler
 from django.http        import HttpResponse
 from django.shortcuts   import render
 from django.shortcuts   import redirect
 from django.template    import loader
 from subprocess         import run, PIPE
+
+from urllib3 import HTTPResponse
 from src.cs_node        import *
 from src.controller     import *
 
+from manage import setup
+
 import sys
 
-# ===============================================================
-#PATHS
-CONTROLLER_PATH = '//home//rocknd79//Xplore//CS_workspace//ControlStation//Controller.py'
+
 
 # ===============================================================
 
@@ -36,7 +40,9 @@ def science(request):
 def avionics(request):
     return render(request, 'pages/avionics.html')
 
-ctrller = Controller()
+# cs.controller = cs.controller()
+cs = setup().CONTROL_STATION
+
 #STATE BUTTONS
 
 # TASK: 
@@ -57,22 +63,22 @@ ctrller = Controller()
 
 def launch_manual(request):
     rospy.loginfo("Manual: Launch")
-    ctrller.pub_Task(1,1)
+    cs.controller.pub_Task(1,1)
     return redirect('/CS2022/manualcontrol/')
 
 def abort_manual(request):
     rospy.loginfo("Manual: Abort")
-    ctrller.pub_Task(1,2)
+    cs.controller.pub_Task(1,2)
     return redirect('/CS2022/manualcontrol/')
 
 def wait_manual(request):
     rospy.loginfo("Manual: Wait")
-    ctrller.pub_Task(1,3)
+    cs.controller.pub_Task(1,3)
     return redirect('/CS2022/manualcontrol/')
 
 def resume_manual(request):
     rospy.loginfo("Manual: Resume")
-    ctrller.pub_Task(1,4)
+    cs.controller.pub_Task(1,4)
     return redirect('/CS2022/manualcontrol/')
 
 
@@ -81,22 +87,22 @@ def resume_manual(request):
 
 def launch_nav(request):
     rospy.loginfo("Navigation: Launch")
-    ctrller.pub_Task(2,1)
+    cs.controller.pub_Task(2,1)
     return redirect('/CS2022/navigation/')
 
 def abort_nav(request):
     rospy.loginfo("Navigation: Abort")
-    ctrller.pub_Task(2,2)
+    cs.controller.pub_Task(2,2)
     return redirect('/CS2022/navigation/')
 
 def wait_nav(request):
     rospy.loginfo("Navigation: Wait")
-    ctrller.pub_Task(2,3)
+    cs.controller.pub_Task(2,3)
     return redirect('/CS2022/navigation/')
 
 def resume_nav(request):
     rospy.loginfo("Navigation: Resume")
-    ctrller.pub_Task(2,4)
+    cs.controller.pub_Task(2,4)
     return redirect('/CS2022/navigation/')
 
 
@@ -106,27 +112,27 @@ def resume_nav(request):
 
 def launch_hd(request):
     rospy.loginfo("Maintenance: Launch")
-    ctrller.pub_Task(3,1)
+    cs.controller.pub_Task(3,1)
     return redirect('/CS2022/handlingdevice/')
 
 def abort_hd(request):
     rospy.loginfo("Maintenance: Abort")
-    ctrller.pub_Task(3,2)
+    cs.controller.pub_Task(3,2)
     return redirect('/CS2022/handlingdevice/')
 
 def wait_hd(request):
     rospy.loginfo("Maintenance: Wait")
-    ctrller.pub_Task(3,3)
+    cs.controller.pub_Task(3,3)
     return redirect('/CS2022/handlingdevice/')
 
 def resume_hd(request):
     rospy.loginfo("Maintenance: Resume")
-    ctrller.pub_Task(3,4)
+    cs.controller.pub_Task(3,4)
     return redirect('/CS2022/handlingdevice/')
 
 def retry_hd(request):
     rospy.loginfo("Maintenance: Retry")
-    ctrller.pub_Task(3,5)
+    cs.controller.pub_Task(3,5)
     return redirect('/CS2022/handlingdevice/')
 
 # -----------------------------------
@@ -135,22 +141,22 @@ def retry_hd(request):
 # TODO STILL NEED TO ADAPT TO NEW SCIENCE COMMANDS
 def launch_science(request):
     rospy.loginfo("Science: ???")
-    ctrller.pub_Task(4,1)
+    cs.controller.pub_Task(4,1)
     return redirect('/CS2022/science/')
 
 def abort_science(request):
-    ctrller.pub_Task(4,2)
+    cs.controller.pub_Task(4,2)
     return redirect('/CS2022/science/')
 
 def wait_science(request):
-    ctrller.pub_Task(4,3)
+    cs.controller.pub_Task(4,3)
     return redirect('/CS2022/science/')
 
 def resume_science(request):
-    ctrller.pub_Task(4,4)
+    cs.controller.pub_Task(4,4)
     return redirect('/CS2022/science/')
 
 def retry_science(request):
-    ctrller.pub_Task(4,5)
+    cs.controller.pub_Task(4,5)
     return redirect('/CS2022/science/')
 

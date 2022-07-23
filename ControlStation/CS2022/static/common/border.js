@@ -20,15 +20,13 @@ function unlit_idle_state() {
 /*=======================| NAVIGATION |===========================================*/
 function lit_navigation_state() {
     var nav_state = document.getElementById('navigation-state');
-    nav_state.style.background = neon;
-    nav_state.style.textShadow = "none";
-    nav_state.style.boxShadow  = "0 0 2em 0.3em"+neon;
+    nav_state.style.opacity = 1;
+
 }
 function unlit_navigation_state() {
     var nav_state = document.getElementById('navigation-state');
-    nav_state.style.background = "transparent";
-    nav_state.style.textShadow = "0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.25em currentColor";
-    nav_state.style.boxShadow  = "inset 0 0 0.5em 0 "+neon+", 0 0 0.5em 0 "+neon;
+    nav_state.style.opacity = 0.5;
+
 }
 
 /*=======================| HANDLING DEVICE |===========================================*/

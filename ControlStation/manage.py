@@ -2,6 +2,8 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import rospy
+
 
 
 def main():
@@ -15,6 +17,21 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
+    # rospy.init_node("CS2022", anonymous=False)
+
+# ============================================================================
+# DEBUG
+class setup:
+    
+    def __init__(self):
+        try:
+            from src.cs_node import CS
+        except:
+            print("import error")
+
+        self.CONTROL_STATION = CS()
+
+# ============================================================================
 
 
 if __name__ == '__main__':
