@@ -67,14 +67,14 @@ class Controller():
     # TODO STILL NEED TO ADAPT TO NEW SCIENCE COMMANDS
     def pub_Task(self, task, instr): 
         '''
-            publishes task instructions to the rover
+            publishes task instructions to the self.cs.rover
         '''
         checkArgs(task, instr)
 
         arr = [task, instr]
         self.cs.Task_pub.publish(Int8MultiArray(data = arr))
 
-        rover.setState(task, instr)
+        self.cs.rover.setState(task, instr)
 
         if(task == 1 and instr == 1) : self.launch_Manual() 
         if(task == 1 and instr == 2) : self.abort_Manual()
@@ -94,7 +94,7 @@ class Controller():
         if(mode == 0 or mode == 1):
             rospy.loginfo("Set HD mode %d", mode)
             self.cs.HD_mode_pub.publish(data = mode)
-            rover.HD.setHDMode(mode)
+            self.cs.rover.HD.setHDMode(mode)
         else:
             #rospy.loginfo("Error: HD mode can either 0 or 1 not ")
             rospy.loginfo("Error: HD mode can be either 0 or 1 not %s", mode)
@@ -110,19 +110,19 @@ class Controller():
     #          NAVIGATION         #
     ###############################
 
-    # give the coordinates the rover must reach
+    # give the coordinates the self.cs.rover must reach
     def pub_nav_goal(self, x, y, z):
         rospy.loginfo("NAV: set goal (%d, %d, %d)", x, y, z)
         moveBaseGoal = MoveBaseGoal(target_pose = Pose(position = Point(x, y, z)))
-        self.cs.Nav_Goal_pub.publish(MoveBaseActionGoal(goal_id = rover.currId, goal = moveBaseGoal))
-        rover.Nav.addGoal([x,y,z])
+        self.cs.Nav_Goal_pub.publish(MoveBaseActionGoal(goal_id = self.cs.rover.currId, goal = moveBaseGoal))
+        self.cs.rover.Nav.addGoal([x,y,z])
 
 
     # cancel a specific Navigation goal by giving the goal's id
     def pub_cancel_nav_goal(self, given_id):
         rospy.loginfo("NAV: cancel goal %d", given_id)
         self.cs.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = given_id))
-        rover.Nav.cancelGoal(given_id)
+        self.cs.rover.Nav.cancelGoal(given_id)
 
 
     # Debugging commands to individual wheels. Only use in "emergencies".
