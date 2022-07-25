@@ -20,21 +20,19 @@
 
 import os
 import rospy
-import sys
 import django
 
 
-from pickletools           import uint8
 from CS2022.models         import *
 from std_msgs.msg          import Int8MultiArray    , Int8        , Float32, Bool, String, Int16MultiArray, Int16
 from move_base_msgs.msg    import MoveBaseActionGoal, MoveBaseGoal
 from geometry_msgs.msg     import Twist 
 from actionlib_msgs.msg    import GoalID
-from sensor_msgs.msg       import Image 
 from nav_msgs.msg          import Odometry
-from threading             import Thread
 from src.callbacks         import *
 from src.controller        import *
+from sensor_msgs.msg       import CompressedImage
+from src.cameras               import *
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
 django.setup()
@@ -49,15 +47,13 @@ class CS:
     
     def __init__(self):
 
-        # ========================================================
-        # DEBUG
         rospy.init_node("CS2022", anonymous=False)
-        # ========================================================
 
         self.controller = Controller(self)
         self.rover      = Rover()
+        self.cameras    = Cameras()
 
-        self.navID = [0]
+        self.navID      = [0]
 
         # ---------------------------------------------------
         #  publishers
@@ -85,6 +81,13 @@ class CS:
         rospy.Subscriber('sc_state',                String,          sc_text_info       )
         rospy.Subscriber('sc_measurments_humidity', Int16MultiArray, sc_humidity        )
         rospy.Subscriber('sc_measurments_mass',     Int16,           sc_mass            )
+
+        rospy.Subscriber('camera_1',                CompressedImage, display_cam_1      , self.cameras)
+        rospy.Subscriber('camera_2',                CompressedImage, display_cam_2      , self.cameras)
+        rospy.Subscriber('camera_3',                CompressedImage, display_cam_3      , self.cameras)
+        rospy.Subscriber('camera_4',                CompressedImage, display_cam_4      , self.cameras)
+        rospy.Subscriber('camera_5',                CompressedImage, display_cam_5      , self.cameras)
+        rospy.Subscriber('camera_6',                CompressedImage, display_cam_6      , self.cameras)
 
         ''' 
         rospy.Subscriber('detection/state', UInt8, detection_state)
