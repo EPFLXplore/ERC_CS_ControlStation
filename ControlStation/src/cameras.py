@@ -23,8 +23,8 @@ from cv_bridge import CvBridge
 # ==================================================================
 class Cameras:
 
-    def __init__(self):
-        self.cam_1 = np.zeros((300, 300, 3))
+    def __init__(self):        
+        self.cam_1 = cv2.imread('/home/emile/Documents/CS_workspace/ControlStation/CS2022/static/common/logo-black2.png')
         self.cam_2 = np.zeros((300, 300, 3))
         self.cam_3 = np.zeros((300, 300, 3))
         self.cam_4 = np.zeros((300, 300, 3))

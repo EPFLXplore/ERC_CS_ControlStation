@@ -18,6 +18,7 @@
 from django.http            import HttpResponse, JsonResponse
 from django.shortcuts       import render
 from django.shortcuts       import redirect
+from numpy import ndarray
 from src.cs_node            import *
 from src.controller         import *
 from manage                 import setup
@@ -41,8 +42,9 @@ cs = setup().CONTROL_STATION
 class VideoCamera(object):
 
     def __init__(self, capture):
-        self.video = capture
-        (self.grabbed, self.frame) = self.video.read()
+        # self.video = capture
+
+        self.frame = cs.cameras.cam_1
         threading.Thread(target=self.update, args=()).start()
 
     # def __del__(self):
@@ -55,15 +57,15 @@ class VideoCamera(object):
 
     def update(self):
         while True:
-            (self.grabbed, self.frame) = self.video.read()
+            self.frame = cs.cameras.cam_1
 
 
 def gen(camera):
     while True:
-        if camera != None:
-            frame = camera.get_frame()
-            yield(b'--frame\r\n'
-                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+        
+        frame = camera.get_frame()
+        yield(b'--frame\r\n'
+            b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
 
 
