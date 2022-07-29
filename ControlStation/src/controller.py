@@ -24,11 +24,15 @@ from time                import sleep
 # from src.cs_node         import *
 from std_msgs.msg        import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray
 from move_base_msgs.msg  import MoveBaseActionGoal, MoveBaseGoal
-from geometry_msgs.msg   import Pose, Point
+from geometry_msgs.msg   import Pose, Point, Twist
 from actionlib_msgs.msg  import GoalID
 # from Gamepad.GamepadTest import Gamepad
 from src.model           import *
 
+# TODO new (Twist too)
+from threading              import Thread
+from nav_msgs.msg           import Odometry
+from CS2022.models          import *
 
 #================================================================================
 
@@ -63,6 +67,121 @@ class Controller():
         #       - Wait   = 3 
         #       - Resume = 4 
         #       - Retry  = 5
+
+    # =================================================================================================================
+    # CALLBACKS
+
+    def test_joystick(self, twist):
+        '''
+            debug joysticl
+        '''
+        tl = twist.linear
+        ta = twist.angular
+        rospy.loginfo("Linear %d %d %d", tl.x, tl.y, tl.z)
+        rospy.loginfo("Angular %d %d %d", ta.x, ta.y, ta.z)
+
+
+
+    def rover_confirmation(self, boolean):
+        '''
+            receives 
+            rover confirmation
+        '''
+        rospy.loginfo("Rover Confirmation: %s\n", boolean.data)
+
+
+    def task_progress(self, num):
+        '''
+            Notified on whether task is a:
+            failure (0)
+            success (1) 
+            checkpoint (2)
+        '''
+        val = num.data
+        if (0 <= val and val < 3):
+            TaskProgress.objects.update_or_create(name="TaskProgress", defaults={'state': val})
+        else:
+            str = "Impossible progress state: %s" % (val)
+            self.cs.exception_clbk(String(str))
+            
+
+
+
+    def sc_humidity(self, hums):
+        '''
+            receive an Int16MultiArray: [tube number, humidity inside tube]
+            tube number : arr[0]
+            value       : arr[1]
+        '''
+        arr = hums.data
+        self.cs.rover.SC.setTubeHum(arr[0], arr[1])
+
+
+
+    def sc_mass(self, mass):
+        '''
+            receive the total mass of the 3 tubes
+        '''
+        rospy.loginfo("SC mass: %s", val)
+        val = mass.data
+        self.cs.rover.SC.setSCMass(val)
+        #Science.objects.update_or_create(name="Science", defaults={'mass': val})
+
+
+    def sc_text_info(self, info):
+        '''
+            info on what is going on in the Science Bay:
+            ex: LED turned on, Picture taken, ...
+        '''
+        
+        str = info.data
+        Science.objects.update_or_create(name="Science", defaults = {'sc_text': str})
+        rospy.loginfo("Science: text_info: " + str)
+        
+
+    # TODO
+    def hd_data(matrix):
+        el1 = matrix[0]
+        el2 = matrix[1]
+        el3 = matrix[2]
+        el4 = matrix[3]
+        el5 = matrix[4]
+        el6 = matrix[5]
+        el7 = matrix[6]
+
+        
+
+    # TODO update the database everytime dist(pos1, pos2) > eps
+    # TODO IL FAUT PASSER A POSTGRESQL POUR LES ARRAYFIELD STP (ou utiliser des Blob)
+    def nav_data(self, odometry):
+        data = odometry.data
+
+        # position (x,y,z)
+        pos = data.pose.pose.position
+        
+        self.cs.rover.Nav.setPos([pos.x, pos.y, pos.z])
+
+        # linear velocity
+        twistLin = data.twist.twist.linear
+        
+        self.cs.rover.Nav.setLinVel([twistLin.x, twistLin.y, twistLin.z])
+
+        # angular velocity
+        twistAng = data.twist.twist.angular
+        
+        self.cs.rover.Nav.setAngVel([twistAng.x, twistAng.y, twistAng.z])
+
+
+
+    #TODO on pourrait faire une liste d'exceptions comme ca on a un historique des problèmes qui ont eu lieu
+    #General topic on which subsystems can publish if an unexpected exception was thrown
+    def exception_clbk(self, str): 
+        val = str.data
+        rospy.loginfo("Exception: " + val)
+        Exception.objects.update_or_create(name="Exception", defaults={'string': val})
+
+
+    # =================================================================================================================
 
     # TODO STILL NEED TO ADAPT TO NEW SCIENCE COMMANDS
     def pub_Task(self, task, instr): 
@@ -110,11 +229,13 @@ class Controller():
     #          NAVIGATION         #
     ###############################
 
-    # give the coordinates the self.cs.rover must reach
+    # give the coordinates the self.cs.
+    # rover must reach
     def pub_nav_goal(self, x, y, z):
         rospy.loginfo("NAV: set goal (%d, %d, %d)", x, y, z)
         moveBaseGoal = MoveBaseGoal(target_pose = Pose(position = Point(x, y, z)))
-        self.cs.Nav_Goal_pub.publish(MoveBaseActionGoal(goal_id = self.cs.rover.currId, goal = moveBaseGoal))
+        self.cs.Nav_Goal_pub.publish(MoveBaseActionGoal(goal_id = self.cs.
+        rover.currId, goal = moveBaseGoal))
         self.cs.rover.Nav.addGoal([x,y,z])
 
 

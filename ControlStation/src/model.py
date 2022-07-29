@@ -32,6 +32,7 @@ class Rover:
         self.Nav = Navigation()
         self.HD = HandlingDevice()
         self.SC = Science()
+        
 
         self.__state = np.zeros(2)
 
