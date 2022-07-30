@@ -20,7 +20,7 @@
 import rospy
 import sys
 
-from time                import sleep
+import time
 # from src.cs_node         import *
 from std_msgs.msg        import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray
 from move_base_msgs.msg  import MoveBaseActionGoal, MoveBaseGoal
@@ -78,6 +78,8 @@ class Controller():
 
         if(task == 1 and instr == 1) : self.launch_Manual() 
         if(task == 1 and instr == 2) : self.abort_Manual()
+
+        self.wait()
 
 
     ###############################
@@ -166,3 +168,11 @@ class Controller():
         rospy.loginfo("\nAborting manual controls\n")
         self.gpad.join()
 
+
+
+
+    def wait(self):
+        time.sleep(1)
+        #print(self.cs.rover.getReceived())
+        if(not self.cs.rover.getReceived()):
+            rospy.loginfo("Answer not received: TIMEOUT")

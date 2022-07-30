@@ -34,9 +34,19 @@ class Rover:
         self.SC = Science()
 
         self.__state = np.zeros(2)
+        self.__received = False
 
     def setState(self, task, instr):
         self.__state = np.array([task, instr])
+
+    def getState(self):
+        return self.__state
+
+    def setReceived(self, bool):
+        self.__received = bool
+
+    def getReceived(self):
+        return self.__received
         
 
 class Navigation:

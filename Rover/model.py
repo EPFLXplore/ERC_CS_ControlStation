@@ -43,9 +43,15 @@ class Model:
         self.SC = Science(rover)
 
         self.__state = np.zeros(2)
+        self.__received = False
 
     def setState(self, task, instr):
         self.__state = np.array([task, instr])
+
+    def getState(self):
+        return self.__state
+
+
         
 
 class Navigation:
