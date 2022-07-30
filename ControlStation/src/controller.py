@@ -29,10 +29,11 @@ import websocket  #TODO same synthax for python2 and 3 ?
 from time                import sleep
 # from src.cs_node         import *
 from std_msgs.msg        import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray
-from move_base_msgs.msg  import MoveBaseActionGoal, MoveBaseGoal
+from src.custom_msg_python import move_base_action_goal
+#from move_base_msgs.msg  import MoveBaseActionGoal, MoveBaseGoal
 from geometry_msgs.msg   import Pose, Point, Twist
 from actionlib_msgs.msg  import GoalID
-# from Gamepad.GamepadTest import Gamepad
+#from Gamepad.Gamepad     import Gamepad
 from src.model           import *
 
 # TODO new (Twist too)
@@ -63,7 +64,7 @@ class Controller():
 
         self.cs = cs
         # ws_homepage.connect()
-        # self.gpad = Gamepad(self.cs)
+        #self.gpad = Gamepad(self.cs)
 
 
     # =================================================================================================================
@@ -231,9 +232,10 @@ class Controller():
     # rover must reach
     def pub_nav_goal(self, x, y, z):
         rospy.loginfo("NAV: set goal (%d, %d, %d)", x, y, z)
-        moveBaseGoal = MoveBaseGoal(target_pose = Pose(position = Point(x, y, z)))
-        self.cs.Nav_Goal_pub.publish(MoveBaseActionGoal(goal_id = self.cs.
-        rover.currId, goal = moveBaseGoal))
+        #moveBaseGoal = MoveBaseGoal(target_pose = Pose(position = Point(x, y, z)))
+        #self.cs.Nav_Goal_pub.publish(MoveBaseActionGoal(goal_id = self.cs.rover.currId, goal = moveBaseGoal))
+        moveBaseGoal_var = Pose(position = Point(x, y, z))
+        self.cs.Nav_Goal_pub.publish(move_base_action_goal(currId = self.cs.rover.currId, moveBaseGoal = moveBaseGoal_var))
         self.cs.rover.Nav.addGoal([x,y,z])
 
 
