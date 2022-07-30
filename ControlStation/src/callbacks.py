@@ -102,6 +102,12 @@ def hd_data(matrix):
     el6 = matrix[5]
     el7 = matrix[6]
 
+
+def joint_telemetry(joints):
+    joints = joints.data
+
+    rover.HD.set_joint_positions(joints.position)
+    rover.HD.set_joint_velocities(joints.velocity)
     
 
 # TODO update the database everytime dist(pos1, pos2) > eps
