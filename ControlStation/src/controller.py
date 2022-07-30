@@ -1,16 +1,20 @@
 #
-# 27/11/2021
+# @date:    27/11/2021
 #
 # @authors: Emile Hreich
 #           emile.janhodithreich@epfl.ch
 #           
 #           Roman Danylovych
 #           roman.danylovych@epfl.ch
+# 
+#           Emma Gaia Poggiolini
+#           emmagaia.poggiolini@epfl.ch
 #
 # @brief: This file contains the Controller (following the Model View Controller
 #         design pattern)
 #         Here are created all the methods that define the I/O behavior with the
 #         user.
+# 
 #-------------------------------------------------------------------------------
 
 
@@ -19,6 +23,8 @@
 
 import rospy
 import sys
+import json
+import websocket  #TODO same synthax for python2 and 3 ?
 
 from time                import sleep
 # from src.cs_node         import *
@@ -35,6 +41,16 @@ from nav_msgs.msg           import Odometry
 from CS2022.models          import *
 
 #================================================================================
+# Webscokets for ASGI
+# ws_homepage = websocket.WebSocket()
+# ws_nav      = websocket.WebSocket()
+# ws_sc       = websocket.WebSocket()
+# ws_hd       = websocket.WebSocket()
+# ws_man      = websocket.WebSocket()
+# ws_av       = websocket.WebSocket()
+
+# ===============================================================================
+# Controller (MVC)
 
 
 class Controller():
@@ -44,29 +60,11 @@ class Controller():
     '''
 
     def __init__(self, cs):
-        #self.cs = CS()
+
         self.cs = cs
+        # ws_homepage.connect()
         # self.gpad = Gamepad(self.cs)
 
-
-    ###############################
-    #             TASK            #
-    ###############################
-
-    # send array: [task, instr]:
-        #
-        # TASK: 
-        #       - Manual      = 1 
-        #       - Navigation  = 2 
-        #       - Maintenance = 3
-        #       - Science     = 4
-        #
-        # INSTR:  
-        #       - Launch = 1 
-        #       - Abort  = 2 
-        #       - Wait   = 3 
-        #       - Resume = 4 
-        #       - Retry  = 5
 
     # =================================================================================================================
     # CALLBACKS

@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'CS2022.apps.Cs2022Config',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,15 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
-# ---------------------------------
-# ajax
-INSTALLED_APPS += (
-   'dajaxice',
-   'dajax'
-)
 
-DAJAXICE_MEDIA_PREFIX = 'dajaxice'
-# ---------------------------------
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -78,7 +71,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ControlStation.wsgi.application'
-
+ASGI_APPLICATION = 'ControlStation.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
