@@ -63,18 +63,18 @@ class CS:
         #  publishers
 
         # HD
-        self.Task_pub               = rospy.Publisher('Task',                  Int8MultiArray, queue_size=1)
-        self.HD_mode_pub            = rospy.Publisher('CS_HD_mode',            Int8,           queue_size=1)
-        self.HD_SemiAuto_Id_pub     = rospy.Publisher('CS_HD_SemiAuto_Id',     Int8,           queue_size=1)
-        self.HD_Angles_pub          = rospy.Publisher('Angles',          Int8MultiArray, queue_size=1)
-        self.HD_ManualVelocity_pub  = rospy.Publisher('ManualVelocity',  Float32,        queue_size=1)
-        self.HD_InvManual_Coord_pub = rospy.Publisher('InvManual_Coord', Int8MultiArray, queue_size=1)
+        self.Task_pub               = rospy.Publisher('Task',              Int8MultiArray, queue_size=1)
+        self.HD_mode_pub            = rospy.Publisher('CS_HD_mode',        Int8,           queue_size=1)
+        self.HD_SemiAuto_Id_pub     = rospy.Publisher('CS_HD_SemiAuto_Id', Int8,           queue_size=1)
+        self.HD_Angles_pub          = rospy.Publisher('Angles',            Int8MultiArray, queue_size=1)
+        self.HD_ManualVelocity_pub  = rospy.Publisher('ManualVelocity',    Float32,        queue_size=1)
+        self.HD_InvManual_Coord_pub = rospy.Publisher('InvManual_Coord',   Int8MultiArray, queue_size=1)
 
         # NAV
-        self.Nav_Goal_pub           = rospy.Publisher('CS_NAV_goal',    MoveBaseActionGoal, queue_size=1)
-        self.Nav_CancelGoal_pub     = rospy.Publisher('CS_NAV_cancel',  GoalID,             queue_size=1)
-        self.Nav_Joystick_pub       = rospy.Publisher('/cmd_vel',           Twist,              queue_size=1)
-        self.Nav_DebugWheels_pub    = rospy.Publisher('/debug/wheel_cmds',  Int16MultiArray,    queue_size=1)
+        self.Nav_Goal_pub           = rospy.Publisher('CS_NAV_goal',       MoveBaseActionGoal, queue_size=1)
+        self.Nav_CancelGoal_pub     = rospy.Publisher('CS_NAV_cancel',     GoalID,             queue_size=1)
+        self.Nav_Joystick_pub       = rospy.Publisher('/cmd_vel',          Twist,              queue_size=1)
+        self.Nav_DebugWheels_pub    = rospy.Publisher('/debug/wheel_cmds', Int16MultiArray,    queue_size=1)
 
         # ---------------------------------------------------
         #  Subscribers

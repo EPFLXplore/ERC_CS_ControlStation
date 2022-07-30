@@ -9,7 +9,7 @@ from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
 from geometry_msgs.msg  import Twist 
 from actionlib_msgs.msg import GoalID
 from sensor_msgs.msg    import JointState
-from nav_msgs.msg          import Odometry
+from nav_msgs.msg       import Odometry
 
 from model     import *
 from Globals   import *
@@ -61,7 +61,7 @@ class Rover:
         rospy.Subscriber('Task',              Int8MultiArray,     self.task_instr)
         rospy.Subscriber('CS_HD_mode',        Int8,               self.model.HD.setHDMode)
         rospy.Subscriber('CS_HD_SemiAuto_Id', Int8,               self.model.HD.set_semiAutoID)
-        rospy.Subscriber('CS_NAV_goal',       MoveBaseActionGoal, self.model.Nav.set_goal)
+        rospy.Subscriber('CS_NAV_goal',       MoveBaseActionGoal, self.model.Nav.setGoal)
         #rospy.Subscriber('CS_NAV_cancel',     GoalID,             self.model.Nav.cancel_goal)
 
 

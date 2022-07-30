@@ -21,11 +21,12 @@ import numpy as np
 import rospy
 
 from multiprocessing.sharedctypes import Value
-from unittest.loader              import VALID_MODULE_NAME
-from actionlib_msgs.msg  import GoalID
-from move_base_msgs.msg  import MoveBaseActionGoal, MoveBaseGoal
-from geometry_msgs.msg   import Pose, Point
+from unittest.loader    import VALID_MODULE_NAME
+from actionlib_msgs.msg import GoalID
+from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
+from geometry_msgs.msg  import Pose, Point
 from sensor_msgs.msg    import JointState
+from std_msgs.msg       import Int8, Int16, Bool, String, Int8MultiArray,  Int16MultiArray, UInt8MultiArray 
 
 from rover_node import Rover
 
@@ -37,9 +38,9 @@ class Model:
     def __init__(self, rover):
         self.rover = rover
 
-        self.Nav = Navigation()
-        self.HD = HandlingDevice()
-        self.SC = Science()
+        self.Nav = Navigation(rover)
+        self.HD = HandlingDevice(rover)
+        self.SC = Science(rover)
 
         self.__state = np.zeros(2)
 
@@ -186,6 +187,9 @@ class HandlingDevice:
         self.__joint_velocities = np.array(7)
 
     def setHDMode(self, mode_ros):
+
+        self.rover.RoverConfirm_pub.publish(Bool(True))
+
         mode = mode_ros.data
         if(mode < 0 or mode > 3): raise ValueError("Invalid mode")
         self.__hd_mode = mode
