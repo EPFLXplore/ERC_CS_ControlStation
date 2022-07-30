@@ -6,14 +6,11 @@
 import evdev
 from   evdev           import *
 
-import rospy
 import sys
 
 from   threading       import Thread
 from   time            import sleep
 
-#decomment 
-#from   CS_node         import CS
 from   keyMap          import *
 
 from geometry_msgs.msg import Twist
@@ -23,27 +20,14 @@ from std_msgs.msg      import Int8MultiArray, Int8, Bool
 '''
 Class Gamepad
 
-@Description: Command the Rover indenedently of the Control Station Backend  
+@Description: Thread to Command the Rover  
 
 @Attributes:
     -
 
 '''
 
-## To Launch File Independently - with NAV commands 
-#     0. delete  from   CS_node         import CS 
-#     1. delete  cs  from the arguments of __init__( )  and comment  self.cs = cs
-#     2. add in __init__( ): 
-#           rospy.init_node("CONTROL_STATION", anonymous=True)
-#           self.Nav_Joystick_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
-#           self.HD_Angles_pub    = rospy.Publisher('HD_joints', Int8MultiArray, queue_size=1) 
-#           self.HD_voltmeter_pub = rospy.Publisher('HD_oltmeter', Int8, queue_size=1)
-#           self.HD_mode_pub      = rospy.Publisher('HD_mode', Int8, queue_size=1)
-#     3. add at the end of the file:
-#           gamepad = Gamepad()
-#           gamepad.run()
-
-
+# ------global variables------ 
 max_val   = 32767
 max_L2_R2 = 255
 scale     = 100
@@ -51,9 +35,8 @@ scale     = 100
 
 class Gamepad(Thread):
 
-  def __init__(self):  #add cs
-    #self.cs = cs      #decomment
-    rospy.init_node("Control_Station")
+  def __init__(self, cs):  
+    self.cs = cs     
     #------------------variables-------------------
     # start-up mode = NAV 
     self.mode = 'NAV' #or 'HD'
@@ -67,7 +50,6 @@ class Gamepad(Thread):
     self.msg_nav_dir.angular.x = 0  # always zero
     self.msg_nav_dir.angular.y = 0  # always zero
     self.msg_nav_dir.angular.z = 0
-    #self.rate = rospy.Rate(10)
 
     self.axe_NAV_old = [0., 0., 0.]  # [.linear.x, .linear.y, .angular.z]
     self.axe_NAV_new = [0., 0., 0.]
@@ -76,7 +58,7 @@ class Gamepad(Thread):
     self.zero_HD    = [0, 0, 0, 0, 0, 0, 0]
     self.axe_HD_old = [0, 0, 0, 0, 0, 0, 0]
     self.axe_HD_new = [0, 0, 0, 0, 0, 0, 0]
-    self.joint = 0  # joint 1 as default joint
+    self.joint      = 0  # joint 1 as default joint
     self.voltmeter  = 0
     
     self.modeHD = 'DIR' #or 'INV' or 'DEBUG' 
@@ -85,22 +67,11 @@ class Gamepad(Thread):
       # DIR   == 2
       # INV   == 3
 
-    #self.joint3 = 1
-    #self.joint4 = 1
     self.homeGo  = Bool()
     self.homeGo  = 0
     self.homeSet = Bool()
     self.homeSet = 0
     self.homeSet_temp = 0 
-
-
-    #delete
-    self.Nav_Joystick_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
-    self.HD_Angles_pub    = rospy.Publisher('HD_joints', Int8MultiArray, queue_size=1) 
-    self.HD_voltmeter_pub = rospy.Publisher('HD_voltmeter', Int8, queue_size=1)
-    self.HD_mode_pub      = rospy.Publisher('HD_mode', Int8, queue_size=1)
-    self.HD_homeGo_pub    = rospy.Publisher('HD_reset_arm_pos', Bool, queue_size=1)
-    self.HD_homeSet_pub   = rospy.Publisher('HD_set_zero_arm_pos', Bool, queue_size=1)
 
     self.connect()
 
@@ -115,10 +86,6 @@ class Gamepad(Thread):
       # .EV_FF sends force feedback commands to an input device
       if evdev.ecodes.EV_FF in self.control.capabilities():
         self._running = True # variable to stop gamepad thread => when set to False
-        
-        #self.publisher_thread = threading.Timer(1/self.rate, self.Nav_Joystick_pub.publish(self.msg_nav_dir))
-        #self.publisher_thread.start()
-        
         break
       else: # error in connecting to gamepad 
         sys.stderr.write('Failed to find the haptic motor.\n')
@@ -134,8 +101,7 @@ class Gamepad(Thread):
       # TODOmko
           print(self.axe_NAV_new)
       # publish values
-          self.Nav_Joystick_pub.publish(self.msg_nav_dir)
-      #resetAxeNAV(self)
+          self.cs.Nav_Joystick_pub.publish(self.msg_nav_dir)
 
       if event.type != 0:
         if (self._running) == 0: # when self._running == False  run() stops
@@ -145,7 +111,7 @@ class Gamepad(Thread):
           if event.value == 1:
 
           #---------------SWITCH NAV <=> HD------------------------------------------------------------------
-            if event.code == Keymap.BTN_SHARE.value:  # Share Button => switch NAV <=> HD
+            if event.code == Keymap.BTN_SHARE.value:    # Share Button => switch NAV <=> HD
               self.switchNAV_HD()
 
             # switching  DIR => INV => DEBUG => DIR  only when in HD     
@@ -195,9 +161,8 @@ class Gamepad(Thread):
             #     TODO
           print(self.axe_NAV_new)
           # publish values
-          self.Nav_Joystick_pub.publish(self.msg_nav_dir)
+          self.cs.Nav_Joystick_pub.publish(self.msg_nav_dir)
           print("Nav published")
-          #resetAxeNAV(self)
               
 
 
@@ -278,7 +243,6 @@ class Gamepad(Thread):
 
           #---------------DEBUG----------------------------------------------------------------------------
           elif self.modeHD == 'DEBUG':
-            #print(event)
             if event.type == ecodes.EV_KEY:
               if event.value == 1:
                 #-----------joints 3, 4, 5, 6, gripper-------------
@@ -318,7 +282,6 @@ class Gamepad(Thread):
                 self.homeSet_temp = 1  # Max value: 255 
               if (ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Z") and (self.homeSet_temp == 1):   # L2 
                 self.setHome()            
-            #self.homeSet_temp = 0    
             # sends new values if and only if changed from previous
             resetAxe(self)
             newAxeVal(self)
@@ -338,26 +301,20 @@ class Gamepad(Thread):
                   self.axe_HD_new[6] = -10.
                 #-----------joint 3------------
                 elif event.code == Keymap.BTN_R1.value:       # R1 - joint 3 advance 
-                  #self.joint3 = -1
-                    self.axe_HD_new[2] = 50.
-                elif event.code == Keymap.BTN_L1.value:       # L1 - joint 3 advance
-                  #self.joint4 = -1
-                    self.axe_HD_new[2] = -50.              
+                  self.axe_HD_new[2] = 50.
+                elif event.code == Keymap.BTN_L1.value:       # L1 - joint 3 retreat
+                  self.axe_HD_new[2] = -50.              
                 #----------voltmeter------------
-                if event.code == Keymap.BTN_PS.value:       # PS button 
+                if event.code == Keymap.BTN_PS.value:         # PS button 
                   self.switchVoltmeter()
               #-----------reset joint 3, gripper------------
               elif event.value == 0:
                 self.axe_HD_new[6] = 0
                 self.axe_HD_new[2] = 0
-                #if event.code == Keymap.BTN_R1.value:         # R1 - joint 3 retreat
-                #  self.joint3 = 1
-                #elif event.code == Keymap.BTN_L1.value:       # L1 - joint 4 retreat
-                #  self.joint4 = 1
+      
             #---------------velocity---------------  
             if event.type == ecodes.EV_ABS:
               absevent = categorize(event)
-                            
               #-----------joint 2-------------
               if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RY":  # R3 up & down 
                 self.axe_HD_new[1] = -scale * round(absevent.event.value/max_val, 5) # Max value: 32768
@@ -372,11 +329,9 @@ class Gamepad(Thread):
                 self.axe_HD_new[5] = scale * round(absevent.event.value/max_val, 5) # Max value: 32768
               #-----------joint 4------------- 
               if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RZ":  # R2
-                #self.axe_HD_new[2] = scale * round(self.joint3 * absevent.event.value/max_L2_R2, 5) # Max value: 32768
                 self.axe_HD_new[3] = scale * round(absevent.event.value/max_L2_R2, 5) # Max value: 255
               #-----------joint 4------------- 
               if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Z":   # L2 
-                #self.axe_HD_new[3] = scale * round(self.joint4 * absevent.event.value/max_L2_R2, 5) # Max value: 32768
                 self.axe_HD_new[3] = scale * round(-absevent.event.value/max_L2_R2, 5) # Max value: 255
               #-----------go home-------------
               if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_HAT0Y":  # d-pad y
@@ -404,7 +359,6 @@ class Gamepad(Thread):
     elif self.mode == 'HD':
       self.cmode('NAV')
       print(self.mode)
-#     TODO publish!!!!!!  
 
 
   # Switching DIR => INV => DEBUG => DIR
@@ -429,10 +383,9 @@ class Gamepad(Thread):
     self.axe_HD_old = clear_tab(self.axe_HD_old)
     self.axe_HD_new = clear_tab(self.axe_HD_new)
 
-#     self.cs.HD_mode_pub.publish(Int8(data = self.modeHDmsg))
-#     self.cs.HD_Angles_pub.publish(Int8MultiArray(data = self.axe_HD_new))
-    self.HD_mode_pub.publish(Int8(data = self.modeHDmsg))
-    self.HD_Angles_pub.publish(Int8MultiArray(data = list(map(int, self.axe_HD_new))))
+    self.cs.HD_mode_pub.publish(Int8(data = self.modeHDmsg))
+    self.cs.HD_Angles_pub.publish(Int8MultiArray(data = self.axe_HD_new))
+    
 
 
   # Voltmeter:  Extend <=> Retreat
@@ -443,29 +396,29 @@ class Gamepad(Thread):
       self.voltmeter = 0
       #     TODO 
     print(self.voltmeter)  
-#     self.cs.HD_voltmeter_pub.publish(Int8(data = self.voltmeter))
-    self.HD_voltmeter_pub.publish(self.voltmeter)
+    self.cs.HD_voltmeter_pub.publish(Int8(data = self.voltmeter))
 
 
+  # HD: send arm to home position
   def goHome(self):
     self.homeGo = 1
     print(self.homeGo)
-    self.HD_homeGo_pub.publish(self.homeGo)
+    self.cs.HD_homeGo_pub.publish(self.homeGo)
     # reset bool
     self.homeGo = 0
     
-
+  # HD: set arm home position 
   def setHome(self):
     self.homeSet = 1
     print(self.homeSet)
-    self.HD_homeSet_pub.publish(self.homeSet)
+    self.cs.HD_homeSet_pub.publish(self.homeSet)
     # reset bool(s)
     self.homeSet = 0
     self.homeSet_temp = 0  
     
     
     
-def eval_axe(axe_value): #Donne le sens de rotation bras robot 32768 est la valeur max renvoyé par la manette
+def eval_axe(axe_value): # Donne le sens de rotation bras robot 32768 est la valeur max renvoyé par la manette
   if axe_value <= -32700:
     return -1
   elif axe_value >= 32700:
@@ -500,16 +453,13 @@ def clear_tab(tab):
 # Send new Joint velocities for HD
 # if and only if changed from previous
 def newAxeVal(self):
-  #if (compare_list(self.axe_HD_old, self.axe_HD_new, 1) != 1):
-    #print("send HD - angles:\nold:", self.axe_HD_old , ' new:', self.axe_HD_new)
-    for k in range(len(self.axe_HD_new)):
-      self.axe_HD_old[k] = self.axe_HD_new[k]
+  for k in range(len(self.axe_HD_new)):
+    self.axe_HD_old[k] = self.axe_HD_new[k]
 
-    #     TODO 
-    print(self.axe_HD_new)
+  #     TODO 
+  print(self.axe_HD_new)
 
-    #     self.cs.HD_Angles_pub.publish(Int8MultiArray(data = self.axe_HD_new))
-    self.HD_Angles_pub.publish(Int8MultiArray(data = list(map(int, self.axe_HD_new))))
+  self.cs.HD_Angles_pub.publish(Int8MultiArray(data = self.axe_HD_new))
                                
     
     
@@ -518,13 +468,5 @@ def newAxeVal(self):
 def resetAxe(self):
   reset_small(self.axe_HD_old)
   reset_small(self.axe_HD_new)
-
-
-
-if __name__ == "__main__" : 
-    gamepad = Gamepad()
-    gamepad.run()
-
-    exit()
 
 

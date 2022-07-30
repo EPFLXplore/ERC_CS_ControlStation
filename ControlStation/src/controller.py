@@ -29,11 +29,11 @@ import websocket  #TODO same synthax for python2 and 3 ?
 from time                import sleep
 # from src.cs_node         import *
 from std_msgs.msg        import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray
-from src.custom_msg_python import move_base_action_goal
+from catkin.src.custom_msg_python    import move_base_action_goal
 #from move_base_msgs.msg  import MoveBaseActionGoal, MoveBaseGoal
 from geometry_msgs.msg   import Pose, Point, Twist
 from actionlib_msgs.msg  import GoalID
-#from Gamepad.Gamepad     import Gamepad
+from Gamepad.Gamepad     import Gamepad
 from src.model           import *
 
 # TODO new (Twist too)
@@ -61,10 +61,9 @@ class Controller():
     '''
 
     def __init__(self, cs):
-
         self.cs = cs
+        self.gpad = Gamepad(self.cs)
         # ws_homepage.connect()
-        #self.gpad = Gamepad(self.cs)
 
 
     # =================================================================================================================
