@@ -176,3 +176,4 @@ class Controller():
         #print(self.cs.rover.getReceived())
         if(not self.cs.rover.getReceived()):
             rospy.loginfo("Answer not received: TIMEOUT")
+        self.cs.rover.setReceived(False)
