@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'channels',
-    'CS2022.apps.Cs2022Config',
+    'CS2022.apps.Cs2022Config', #'chat'
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
