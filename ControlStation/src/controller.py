@@ -26,15 +26,14 @@ import sys
 import json
 import websocket  #TODO same synthax for python2 and 3 ?
 
-import time
-# from src.cs_node         import *
-from std_msgs.msg        import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray
-from src.custom_msg_python import move_base_action_goal
-#from move_base_msgs.msg  import MoveBaseActionGoal, MoveBaseGoal
-from geometry_msgs.msg   import Pose, Point, Twist
-from actionlib_msgs.msg  import GoalID
-#from Gamepad.Gamepad     import Gamepad
-from src.model           import *
+from time                                 import sleep
+from std_msgs.msg                         import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray
+# TODO
+# from ros_package.src.custom_msg_python    import move_base_action_goal
+from geometry_msgs.msg                    import Pose, Point, Twist
+from actionlib_msgs.msg                   import GoalID
+from Gamepad.Gamepad                      import Gamepad
+from src.model                            import *
 
 # TODO new (Twist too)
 from threading              import Thread
@@ -44,7 +43,7 @@ from CS2022.models          import *
 #================================================================================
 # Webscokets for ASGI
 # ws_homepage = websocket.WebSocket()
-# ws_nav      = websocket.WebSocket()
+ws_nav      = websocket.WebSocket()
 # ws_sc       = websocket.WebSocket()
 # ws_hd       = websocket.WebSocket()
 # ws_man      = websocket.WebSocket()
@@ -61,10 +60,9 @@ class Controller():
     '''
 
     def __init__(self, cs):
-
         self.cs = cs
-        # ws_homepage.connect()
-        #self.gpad = Gamepad(self.cs)
+        self.gpad = Gamepad(self.cs)
+        # ws_nav.connect("ws://localhost:8000/ws/robot/navigation/")
 
 
     # =================================================================================================================
@@ -237,7 +235,9 @@ class Controller():
         #moveBaseGoal = MoveBaseGoal(target_pose = Pose(position = Point(x, y, z)))
         #self.cs.Nav_Goal_pub.publish(MoveBaseActionGoal(goal_id = self.cs.rover.currId, goal = moveBaseGoal))
         moveBaseGoal_var = Pose(position = Point(x, y, z))
-        self.cs.Nav_Goal_pub.publish(move_base_action_goal(currId = self.cs.rover.currId, moveBaseGoal = moveBaseGoal_var))
+        
+        # TODO
+        # self.cs.Nav_Goal_pub.publish(move_base_action_goal(currId = self.cs.rover.currId, moveBaseGoal = moveBaseGoal_var))
         self.cs.rover.Nav.addGoal([x,y,z])
 
 

@@ -4,64 +4,61 @@
 @Author: Emma Gaia Poggiolini
 '''
 import evdev
+from   evdev           import *
+
 import rospy
-from evdev             import*
-from threading         import Thread
-
-# from xplore_msg.msg    import HandlingControl
-from geometry_msgs.msg import Twist
-
 import sys
 
-# from CS_node import CS
-from Gamepad.keyMap            import Keymap
-#from keyMap            import *
-from std_msgs.msg import Int8MultiArray, Int8
+from   threading       import Thread
+from   time            import sleep
+
+#decomment 
+#from   CS_node         import CS
+from   keyMap          import *
+
+from geometry_msgs.msg import Twist
+from std_msgs.msg      import Int8MultiArray, Int8, Bool
 
 
 '''
 Class Gamepad
 
-@Description: Thread to 
+@Description: Command the Rover indenedently of the Control Station Backend  
 
 @Attributes:
     -
 
 '''
-class Gamepad(Thread):
-  print("coucou")
+
+## To Launch File Independently - with NAV commands 
+#     0. delete  from   CS_node         import CS 
+#     1. delete  cs  from the arguments of __init__( )  and comment  self.cs = cs
+#     2. add in __init__( ): 
+#           rospy.init_node("CONTROL_STATION", anonymous=True)
+#           self.Nav_Joystick_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
+#           self.HD_Angles_pub    = rospy.Publisher('HD_joints', Int8MultiArray, queue_size=1) 
+#           self.HD_voltmeter_pub = rospy.Publisher('HD_oltmeter', Int8, queue_size=1)
+#           self.HD_mode_pub      = rospy.Publisher('HD_mode', Int8, queue_size=1)
+#     3. add at the end of the file:
+#           gamepad = Gamepad()
+#           gamepad.run()
+
+
+max_val   = 32767
+max_L2_R2 = 255
+scale     = 100
   
-  devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
-  #### print("#### debug(1): check list of devices connected") 
-  # for device in devices:
-  #  print(device.path, device.name, device.phys)     
 
-  def __init__(self, cs):
-    Thread.__init__(self)
-    self.cs = cs
+class Gamepad(Thread):
 
-  # ~ connection search gamepad
-    for path in evdev.list_devices():
-      self.control = evdev.InputDevice(path)
-      # device.capabilities() returns all possible (KEY, value) pairs 
-      # representing the actions linked to device   
-      # .EV_FF sends force feedback commands to an input device
-      if evdev.ecodes.EV_FF in self.control.capabilities():
-        self._running = True # variable to stop gamepad thread => when set to False
-        break
-    else: # error in connecting to gamepad 
-      sys.stderr.write('Failed to find the haptic motor.\n')
-      self.control = None
-
-    # define ROS topics to publish 
-    self.rate = rospy.Rate(10)
-
+  def __init__(self):  #add cs
+    #self.cs = cs      #decomment
+    rospy.init_node("Control_Station")
+    #------------------variables-------------------
+    # start-up mode = NAV 
     self.mode = 'NAV' #or 'HD'
 
-    # NAV : 
-    #self.modeNAV = 'MAN' #or 'AUTO' 
-
-    # self.nav_pub = rospy.Publisher('cmd_vel', Twist, queue_size=1) # need to publish topic  #TODO
+    #------------------NAVIGATION------------------
     # declare and initialize msg_nav_dir
     self.msg_nav_dir = Twist()
     self.msg_nav_dir.linear.x  = 0
@@ -70,26 +67,47 @@ class Gamepad(Thread):
     self.msg_nav_dir.angular.x = 0  # always zero
     self.msg_nav_dir.angular.y = 0  # always zero
     self.msg_nav_dir.angular.z = 0
-    self.rate = rospy.Rate(10)
+    #self.rate = rospy.Rate(10)
 
-    self.axe_NAV_old = [0., 0.]  # [.linear.x, .angular.z]
-    self.axe_NAV_new = [0., 0.]
+    self.axe_NAV_old = [0., 0., 0.]  # [.linear.x, .linear.y, .angular.z]
+    self.axe_NAV_new = [0., 0., 0.]
 
-    # HD :
-    # self.hd_pub = rospy.Publisher('cmd_hd', Int8MultiArray, queue_size=1) #Object Roman #TODO
-    # self.HD_control_msg = HandlingControl()
-    # self.HD_control_msg.mode = 3  # 2='INV', 3='DIR' 
-    #self.HD_control_msg.active = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  # intialize every joint to 0 
+    #---------------HANDLING DEVICE----------------
+    self.zero_HD    = [0, 0, 0, 0, 0, 0, 0]
     self.axe_HD_old = [0, 0, 0, 0, 0, 0, 0]
     self.axe_HD_new = [0, 0, 0, 0, 0, 0, 0]
-    self.gripper_old = [0, 0, 0]
-    self.gripper_new = [0, 0, 0]
+    self.joint = 0  # joint 1 as default joint
+    self.voltmeter  = 0
     
-    self.modeHD = 'DIR' #or 'INV'
+    self.modeHD = 'DIR' #or 'INV' or 'DEBUG' 
+    self.modeHDmsg = 2  
+      # DEBUG == 1
+      # DIR   == 2
+      # INV   == 3
+
+    #self.joint3 = 1
+    #self.joint4 = 1
+    self.homeGo  = Bool()
+    self.homeGo  = 0
+    self.homeSet = Bool()
+    self.homeSet = 0
+    self.homeSet_temp = 0 
 
 
-  ''' 
-  def findJoystick(self):
+    #delete
+    self.Nav_Joystick_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
+    self.HD_Angles_pub    = rospy.Publisher('HD_joints', Int8MultiArray, queue_size=1) 
+    self.HD_voltmeter_pub = rospy.Publisher('HD_voltmeter', Int8, queue_size=1)
+    self.HD_mode_pub      = rospy.Publisher('HD_mode', Int8, queue_size=1)
+    self.HD_homeGo_pub    = rospy.Publisher('HD_reset_arm_pos', Bool, queue_size=1)
+    self.HD_homeSet_pub   = rospy.Publisher('HD_set_zero_arm_pos', Bool, queue_size=1)
+
+    self.connect()
+
+
+
+  def connect(self):
+    # ~ connection search gamepad
     for path in evdev.list_devices():
       self.control = evdev.InputDevice(path)
       # device.capabilities() returns all possible (KEY, value) pairs 
@@ -97,171 +115,142 @@ class Gamepad(Thread):
       # .EV_FF sends force feedback commands to an input device
       if evdev.ecodes.EV_FF in self.control.capabilities():
         self._running = True # variable to stop gamepad thread => when set to False
+        
+        #self.publisher_thread = threading.Timer(1/self.rate, self.Nav_Joystick_pub.publish(self.msg_nav_dir))
+        #self.publisher_thread.start()
+        
         break
-    else: # error in connecting to gamepad 
-      sys.stderr.write('Failed to find the haptic motor.\n')
-      self.control = None
-  '''
+      else: # error in connecting to gamepad 
+        sys.stderr.write('Failed to find the haptic motor.\n')
+        self.control = None
 
-
-  # what is this for ??
-  # def connect(self):
-  #   for path in evdev.list_devices():
-  #     self.control = evdev.InputDevice(path)
-  #     if evdev.ecodes.EV_FF in self.control.capabilities():
-  #       self._running = True #variable arret thread
-  #       break
-  #   else:
-  #     sys.stderr.write('Failed to find the haptic motor.\n')
-  #     self.control = None
 
 
   def run (self):
-    #dec = Decode_manette()
-    advance = 0
+    advance = 0  # control: if advancing can't retreat and vice versa
     retreat = 0
     for event in self.control.read_loop():
+      if self.mode == 'NAV':
+      # TODOmko
+          print(self.axe_NAV_new)
+      # publish values
+          self.Nav_Joystick_pub.publish(self.msg_nav_dir)
+      #resetAxeNAV(self)
+
       if event.type != 0:
         if (self._running) == 0: # when self._running == False  run() stops
           break
         # EV_KEY describes state changes of device
         if event.type == ecodes.EV_KEY:
           if event.value == 1:
-            print("before SHARE button") #TODO
-            print(event.code) #TODO
-            print(Keymap.BTN_SHARE.value) #TODO
-            if event.code == Keymap.BTN_SHARE.value: #Keymap.BTN_SHARE: # Share Button => switch NAV <=> HD
-              print("SHARE pressed") #TODO
+
+          #---------------SWITCH NAV <=> HD------------------------------------------------------------------
+            if event.code == Keymap.BTN_SHARE.value:  # Share Button => switch NAV <=> HD
               self.switchNAV_HD()
 
-            # switching  DIR <=> INV only when in HD     
-            if event.code == Keymap.BTN_OPTIONS.value:
+            # switching  DIR => INV => DEBUG => DIR  only when in HD     
+            if event.code == Keymap.BTN_OPTIONS.value:  # Option Button
               if self.mode == 'HD':
-                self.switchDIR_INV()
+                self.switchHDmode()
 
 
-        if (self.mode) == 'NAV': # NAVIGATION--------------------
-          if event.type == ecodes.EV_KEY:
-            if event.value == 1:
-              # R2 => advance: positive .linear.x
-              print(event.code)
-              if event.code == Keymap.BTN_R2.value: 
-                print("Button R2") #TODO 
-                if event.type == ecodes.EV_ABS:
-                  absevent = categorize(event)
-                  if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_PRESSURE":  # is this correct? 
-                    if (retreat == 0):  # advance (only if not retreating)
-                      self.axe_NAV_new[0] = round(absevent.event.value/255, 1)  # why /255 ?
-                      advance = 1
-                    if absevent.event.value == 0:  # stay still
-                      advance = 0
-              # L2 => retreat: negative .linear.x
-              if event.code == Keymap.BTN_L2.value: 
-                if event.type == ecodes.EV_ABS:
-                  absevent = categorize(event)
-                  if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_PRESSURE":
-                    if (advance == 0):  # go backwards (only if not retreating)
-                      self.axe_NAV_new[0] = round(-absevent.event.value/255, 1)
-                      retreat = 1
-                    if absevent.event.value == 0:  # stay still
-                      retreat = 0
-          #     if event.code == Keymap.BTN_CROSS: #Touche A
-          #         print('NAV')
-          # if self.modeNAV == 'MAN': #MANUEL ----------------------------
-            # ~ Configuration 2 for NAV
-            # ~ if event.type == ecodes.EV_ABS:
-              # ~ absevent = categorize(event)
-              # ~ if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Y":
-                # ~ self.axe_NAV_new[0] = -absevent.event.value
-              # ~ if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RY":
-                # ~ self.axe_NAV_new[1] = -absevent.event.value
-                
-            # ~ Configuration 1 for NAV
+
+        #------------------NAVIGATION------------------------------------------------------------------------
+        if (self.mode) == 'NAV':       
           if event.type == ecodes.EV_ABS:
             absevent = categorize(event)
-            if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_X":  # x-axis of R3 
-              if (absevent.event.value > 0):
-                self.axe_NAV_new[1] = round(absevent.event.value/32767, 1) # Max value :32768
-              else:
-                self.axe_NAV_new[1] = round(absevent.event.value/32768, 1) # Max value :32768
+          #---------------ANGULAR.Z--------------------------------------------------------------------------
+            if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RX":  # x-axis of R3 
+              #-----------increase/decrease-------------
+              # push joystick to the right for positive value
+              self.axe_NAV_new[2] = -round(absevent.event.value/max_val, 5) # Max value :32768
+          #---------------LINEAR.Y--------------------------------------------------------------------------
+            #------------crab mode------------
+            if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_X":  # x-axis of L3 
+              #-----------increase/decrease-------------
+              # push joystick to the right for positive value
+              self.axe_NAV_new[1] = -round(absevent.event.value/max_val, 5) # Max value :32768
 
-            # if event.type == ecodes.EV_ABS:
-            #   absevent = categorize(event)
-              # if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RZ":
-              #   if (retreat == 0):  # advance (only if not retreating)
-              #     self.axe_NAV_new[0] = round(absevent.event.value/255, 1)
-              #     advance = 1
-              #   if absevent.event.value == 0:  # stay still
-              #     advance = 0
-              # elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Z":
-              #   if (advance == 0):  # go backwards (only if not retreating)
-              #     self.axe_NAV_new[0] = round(-absevent.event.value/255, 1)
-              #     retreat = 1
-              #   if absevent.event.value == 0:  # stay still
-              #     retreat = 0
-              # elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_X":  #Direction sur l axe X du joystick gauche
-              #   if (absevent.event.value > 0):
-              #     self.axe_NAV_new[1] = round(absevent.event.value/32767, 1) #Max value :32768
-              #   else:
-              #     self.axe_NAV_new[1] = round(absevent.event.value/32768, 1) #Max value :32768
+          #---------------LINEAR.X---------------------------------------------------------------------------
+            #-------------advance--------------
+            if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RZ":  # button R2
+              if (retreat == 0):  # advance (only if not retreating)
+                self.axe_NAV_new[0] = round(absevent.event.value/max_L2_R2, 5)
+                advance = 1
+              if absevent.event.value == 0:  # stay still
+                advance = 0
+            #-------------retreat--------------
+            if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Z":  # button L2
+              if (advance == 0):  # go backwards (only if not retreating)
+                self.axe_NAV_new[0] = round(-absevent.event.value/max_L2_R2, 5)
+                retreat = 1
+              if absevent.event.value == 0:  # stay still
+                retreat = 0
 
-              # Publish variation with round 0.1 to NAV only when it was changed
-              if (compare_list(self.axe_NAV_old, self.axe_NAV_new, 0) != 1):
-                print("send", self.axe_NAV_new , ' ', self.axe_NAV_old)  
-                self.axe_NAV_old[0] = self.axe_NAV_new[0]
-                self.axe_NAV_old[1] = self.axe_NAV_new[1]
-                self.msg_nav_dir.linear.x = self.axe_NAV_new[0]
-                self.msg_nav_dir.angular.z = self.axe_NAV_new[1]
-                self.cs.Nav_Joystick_pub.publish(self.msg_nav_dir) #-------------------TODO
-                
-        # Handling Device 
-        elif (self.mode) == 'HD': 
+            # update values of linear.x, linear.y and angular.z
+            self.msg_nav_dir.linear.x = self.axe_NAV_new[0] / 2
+            self.msg_nav_dir.linear.y = self.axe_NAV_new[1] / 2
+            self.msg_nav_dir.angular.z = self.axe_NAV_new[2] / 2
+              
+            #     TODO
+          print(self.axe_NAV_new)
+          # publish values
+          self.Nav_Joystick_pub.publish(self.msg_nav_dir)
+          print("Nav published")
+          #resetAxeNAV(self)
+              
+
+
+        #-----------------HANDLING DEVICE--------------------------------------------------------------------
+        elif (self.mode) == 'HD':
+          #---------------INVERSE----------------------------------------------------------------------------
           if self.modeHD == 'INV':
-            # BUTTON--------------------
-            if event.type == ecodes.EV_KEY:
-              # Push
-              if event.value == 1: 
-                if event.code == Keymap.BTN_R1.value and self.axe_HD_new[4] == 0: # R1 joint 4 = 1
-                  self.axe_HD_new[3] = 1
-                elif event.code == Keymap.BTN_L1.value and self.axe_HD_new[4] == 0: # L1 joint 4 = -1
-                  self.axe_HD_new[3] = -1
-                elif event.code == Keymap.BTN_SQUARE.value and self.axe_HD_new[6] == 0: # Square button open the gripper
-                  self.axe_HD_new[6] = 1
-                elif event.code == Keymap.BTN_CROSS.value and self.axe_HD_new[6] == 0: # Cross button close the gripper
-                  self.axe_HD_new[6] = -1
-                # R2 => gripper rise: positive z
-                elif event.code == Keymap.BTN_R2.value: 
-                  if event.type == ecodes.EV_ABS:
-                    absevent = categorize(event)
-                    if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_PRESSURE":  # is this correct? 
-                      self.gripper_new[2] = eval_axe(absevent.event.value)
-                # L2 => gripper drop: negative z
-                elif event.code == Keymap.BTN_L2.value: 
-                  if event.type == ecodes.EV_ABS:
-                    absevent = categorize(event)
-                    if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_PRESSURE":
-                      self.gripper_new[2] = eval_axe(-absevent.event.value)
-              # Release
-              elif event.value == 0: 
-                if event.code == Keymap.BTN_R1.value: # R1 joint 4 = 1
-                  self.axe_HD_new[3] = 0
-                elif event.code == Keymap.BTN_L1.value: # L1 joint 4 = -1
-                  self.axe_HD_new[3] = 0
-                elif event.code == Keymap.BTN_SQUARE.value: # Square button Stop the opening
-                  self.axe_HD_new[6] = 0
-                elif event.code == Keymap.BTN_CROSS.value: # Triangle button Stop the closing
-                  self.axe_HD_new[6] = 0
-            # AXE-------------------------
-            elif event.type == ecodes.EV_ABS:
-              absevent = categorize(event)
-              if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_X": # joint 5 L3 left & right 
-                self.axe_HD_new[4] = eval_axe(absevent.event.value)
-              elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Y": # joint 6 L3 up & down
-                self.axe_HD_new[5] = eval_axe(absevent.event.value)
-              if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RX": # gripper move along x-axis
-                self.gripper_new[0] = eval_axe(absevent.event.value)
-              elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RY": # gripper move along y-axis
-                self.gripper_new[1] = eval_axe(absevent.event.value)
+            # buttons
+            # if event.type == ecodes.EV_KEY:
+            #   if event.value == 1: 
+            #     if event.code == Keymap.BTN_R1.value and self.axe_HD_new[4] == 0: # R1 joint 4 = 1
+            #       self.axe_HD_new[3] = 1
+            #     elif event.code == Keymap.BTN_L1.value and self.axe_HD_new[4] == 0: # L1 joint 4 = -1
+            #       self.axe_HD_new[3] = -1
+            #     elif event.code == Keymap.BTN_SQUARE.value and self.axe_HD_new[6] == 0: # Square button open the gripper
+            #       self.axe_HD_new[6] = 1
+            #     elif event.code == Keymap.BTN_CROSS.value and self.axe_HD_new[6] == 0: # Cross button close the gripper
+            #       self.axe_HD_new[6] = -1
+            #     # R2 => gripper rise: positive z
+            #     elif event.code == Keymap.BTN_R2.value: 
+            #       if event.type == ecodes.EV_ABS:
+            #         absevent = categorize(event)
+            #         if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_PRESSURE":  # is this correct? 
+            #           self.gripper_new[2] = eval_axe(absevent.event.value)
+            #     # L2 => gripper drop: negative z
+            #     elif event.code == Keymap.BTN_L2.value: 
+            #       if event.type == ecodes.EV_ABS:
+            #         absevent = categorize(event)
+            #         if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_PRESSURE":
+            #           self.gripper_new[2] = eval_axe(-absevent.event.value)
+            #   # Release
+            #   elif event.value == 0: 
+            #     if event.code == Keymap.BTN_R1.value: # R1 joint 4 = 1
+            #       self.axe_HD_new[3] = 0
+            #     elif event.code == Keymap.BTN_L1.value: # L1 joint 4 = -1
+            #       self.axe_HD_new[3] = 0
+            #     elif event.code == Keymap.BTN_SQUARE.value: # Square button Stop the opening
+            #       self.axe_HD_new[6] = 0
+            #     elif event.code == Keymap.BTN_CROSS.value: # Triangle button Stop the closing
+            #       self.axe_HD_new[6] = 0
+            # # AXE-------------------------
+            # elif event.type == ecodes.EV_ABS:
+            #   absevent = categorize(event)
+            #   if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_X": # joint 5 L3 left & right 
+            #     self.axe_HD_new[4] = eval_axe(absevent.event.value)
+            #   elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Y": # joint 6 L3 up & down
+            #     self.axe_HD_new[5] = eval_axe(absevent.event.value)
+            #   if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RX": # gripper move along x-axis
+            #     self.gripper_new[0] = eval_axe(absevent.event.value)
+            #   elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RY": # gripper move along y-axis
+            #     self.gripper_new[1] = eval_axe(absevent.event.value)
+
+
 
               # ~ print(ecodes.bytype[absevent.event.type][absevent.event.code])
               # if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RX": #Axe 1
@@ -287,114 +276,123 @@ class Gamepad(Thread):
             # sends new values if and only if changed from previous
             newAxeVal(self)
 
-
-          elif self.modeHD == 'DIR': # Direct Kinematics
+          #---------------DEBUG----------------------------------------------------------------------------
+          elif self.modeHD == 'DEBUG':
+            #print(event)
             if event.type == ecodes.EV_KEY:
               if event.value == 1:
-                joint = 6
-                if event.code == Keymap.BTN_R1.value: # joint 1
-                  joint = 0
-                elif event.code == Keymap.BTN_L1.value: # joint 2
-                  joint = 1
-                elif event.code == Keymap.BTN_SQUARE.value: # joint 3
-                  joint = 2
-                elif event.code == Keymap.BTN_CROSS.value: # joint 4
-                  joint = 3
+                #-----------joints 3, 4, 5, 6, gripper-------------
+                if event.code == Keymap.BTN_L1.value:         # joint 3
+                  self.joint = 2
+                elif event.code == Keymap.BTN_R1.value:       # joint 4
+                  self.joint = 3
                 elif event.code == Keymap.BTN_TRIANGLE.value: # joint 5
-                  joint = 4
-                elif event.code == Keymap.BTN_CIRCLE.value: # joint 6
-                  joint = 5
-                elif event.code == Keymap.BTN_SQUARE.value and self.axe_HD_new[6] == 0: # Square button open the gripper
-                  self.axe_HD_new[6] = 1
-                elif event.code == Keymap.BTN_CROSS.value and self.axe_HD_new[6] == 0: # Cross button close the gripper
-                  self.axe_HD_new[6] = -1
-                # R2 => gripper rise: positive z
-                elif event.code == Keymap.BTN_R2.value: 
-                  if event.type == ecodes.EV_ABS:
-                    absevent = categorize(event)
-                    if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_PRESSURE":  # is this correct? 
-                      self.gripper_new[2] = eval_axe(absevent.event.value)
-                # L2 => gripper drop: negative z
-                elif event.code == Keymap.BTN_L2.value: 
-                  if event.type == ecodes.EV_ABS:
-                    absevent = categorize(event)
-                    if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_PRESSURE":
-                      self.gripper_new[2] = eval_axe(-absevent.event.value)
-              # release gripper buttons
-              elif event.value == 0: 
-                if event.code == Keymap.BTN_SQUARE.value: # Square button Stop the opening
-                  self.axe_HD_new[6] = 0
-                elif event.code == Keymap.BTN_CROSS.value: # Triangle button Stop the closing
-                  self.axe_HD_new[6] = 0
-            # AXE-------------------------  
-            if event.type == ecodes.EV_ABS:
-              absevent = categorize(event)
-              if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Y": # joint L3 up & down
-                print(-eval_axe(absevent.event.value))
-                self.axe_HD_new[joint] = -eval_axe(absevent.event.value)
-              elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RX": # gripper move along x-axis
-                self.gripper_new[0] = eval_axe(absevent.event.value)
-              elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RY": # gripper move along y-axis
-                self.gripper_new[1] = eval_axe(absevent.event.value)
-
-              # if event.value == 1:
-              #   if event.code == dec.cBtn: #Touche r1 pince
-              #     self.axe_HD_new[6]=1
-              #   elif event.code==dec.tBtn : #Touche r1 pince
-              #     self.axe_HD_new[6]=-1
-              #   elif event.code==dec.l2Btn and self.axe_HD_new[5]==0: #Touche l2 axe Z
-              #     self.axe_HD_new[2]=1
-              #   elif event.code==dec.r2Btn and self.axe_HD_new[5]==0: #Touche r2 axe Z
-              #     self.axe_HD_new[2]=-1
-              #   elif event.code==dec.l1Btn : #Touche l1 rotationX
-              #     self.axe_HD_new[3]=1
-              #   elif event.code==dec.r1Btn : #Touche r1 rotationX
-              #     self.axe_HD_new[3]=-1
-
-              # elif event.value==0:
-              #   if event.code==dec.l2Btn: #Touche l2 axe 6 relacher
-              #     self.axe_HD_new[2]=0
-              #   elif event.code==dec.r2Btn: #Touche r2 axe 6 relacher
-              #     self.axe_HD_new[2]=0
-              #   elif event.code==dec.l1Btn: #Touche l1 rotationX
-              #     self.axe_HD_new[3]=0
-              #   elif event.code==dec.r1Btn: #Touche r1 rotationX
-              #     self.axe_HD_new[3]=0
-              #   elif event.code==dec.cBtn: #Touche r1 pince
-              #     self.axe_HD_new[6]=0
-              #   elif event.code==dec.tBtn : #Touche r1 pince
-              #     self.axe_HD_new[6]=0
-
-            # elif event.type == ecodes.EV_ABS:
-            #   absevent = categorize(event)
-            #   if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RY":#Axe Y
-            #     self.axe_HD_new[1] = eval_axe(absevent.event.value)
-            #   elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_X":#Axe X
-            #     self.axe_HD_new[0] = eval_axe(absevent.event.value)
-            #   elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_HAT0X":#Rotz
-            #     self.axe_HD_new[5] = absevent.event.value
-            #   elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_HAT0Y":#RotY
-            #     self.axe_HD_new[4] = absevent.event.value
-            #   #Axe Z
-            #   elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Z":#AxeZ
-            #     if absevent.event.value>=250:
-            #       self.axe_HD_new[2] = 1
-            #     else:
-            #       self.axe_HD_new[2] = 0
-            #   elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RZ":#AxeZ
-            #     if absevent.event.value>=250:
-            #       self.axe_HD_new[2] = -1
-            #     else:
-            #       self.axe_HD_new[2] = 0
-
+                  self.joint = 4
+                elif event.code == Keymap.BTN_CIRCLE.value:   # joint 6
+                  self.joint = 5
+                elif event.code == Keymap.BTN_CROSS.value:    # joint 7: gripper
+                  self.joint = 6
+                #----------voltmeter------------
+                if event.code == Keymap.BTN_PS.value:         # PS button 
+                  self.switchVoltmeter()
+              
+            if event.type == ecodes.EV_ABS:  
+              absevent = categorize(event) 
+              #-----------joint 1-------------
+              if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_HAT0X":  # d-pad x            
+                self.joint = 0
+              #-----------joint 2-------------  
+              if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_HAT0Y":  # d-pad y
+                #---------go home-------------
+                if event.value == 1:
+                    self.goHome()
+                else:                
+                    self.joint = 1
+              #-------------velocity-------------
+              if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RY":  # joint R3 up & down
+                #-----------increase/decrease-------------
+                # push joystick up for positive velocity      
+                self.axe_HD_new[self.joint] = scale * round(-absevent.event.value/max_val, 5) # Max value: 32768
+              #-----------set home------------- 
+              if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RZ":  # R2
+                self.homeSet_temp = 1  # Max value: 255 
+              if (ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Z") and (self.homeSet_temp == 1):   # L2 
+                self.setHome()            
+            #self.homeSet_temp = 0    
             # sends new values if and only if changed from previous
+            resetAxe(self)
             newAxeVal(self)
 
+          #---------------DIRECT---------------------------------------------------------------------------
+          elif self.modeHD == 'DIR': 
+            if event.type == ecodes.EV_KEY:
+              if event.value == 1:
+                #-----------gripper------------
+                if event.code == Keymap.BTN_TRIANGLE.value:   # gripper = +100
+                  self.axe_HD_new[6] = 100.
+                elif event.code == Keymap.BTN_CIRCLE.value:   # gripper = +10
+                  self.axe_HD_new[6] = 10.
+                elif event.code == Keymap.BTN_CROSS.value:    # gripper = -100
+                  self.axe_HD_new[6] = -100.
+                elif event.code == Keymap.BTN_SQUARE.value:   # gripper = -10
+                  self.axe_HD_new[6] = -10.
+                #-----------joint 3------------
+                elif event.code == Keymap.BTN_R1.value:       # R1 - joint 3 advance 
+                  #self.joint3 = -1
+                    self.axe_HD_new[2] = 50.
+                elif event.code == Keymap.BTN_L1.value:       # L1 - joint 3 advance
+                  #self.joint4 = -1
+                    self.axe_HD_new[2] = -50.              
+                #----------voltmeter------------
+                if event.code == Keymap.BTN_PS.value:       # PS button 
+                  self.switchVoltmeter()
+              #-----------reset joint 3, gripper------------
+              elif event.value == 0:
+                self.axe_HD_new[6] = 0
+                self.axe_HD_new[2] = 0
+                #if event.code == Keymap.BTN_R1.value:         # R1 - joint 3 retreat
+                #  self.joint3 = 1
+                #elif event.code == Keymap.BTN_L1.value:       # L1 - joint 4 retreat
+                #  self.joint4 = 1
+            #---------------velocity---------------  
+            if event.type == ecodes.EV_ABS:
+              absevent = categorize(event)
+                            
+              #-----------joint 2-------------
+              if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RY":  # R3 up & down 
+                self.axe_HD_new[1] = -scale * round(absevent.event.value/max_val, 5) # Max value: 32768
+              #-----------joint 1------------- 
+              if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RX":  # R3 left & right
+                self.axe_HD_new[0] = -scale * round(absevent.event.value/max_val, 5) # Max value: 32768
+              #-----------joint 5-------------
+              if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Y":  # L3 up & down 
+                self.axe_HD_new[4] = scale * round(absevent.event.value/max_val, 5) # Max value: 32768
+              #-----------joint 6------------- 
+              if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_X":  # L3 left & right
+                self.axe_HD_new[5] = scale * round(absevent.event.value/max_val, 5) # Max value: 32768
+              #-----------joint 4------------- 
+              if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RZ":  # R2
+                #self.axe_HD_new[2] = scale * round(self.joint3 * absevent.event.value/max_L2_R2, 5) # Max value: 32768
+                self.axe_HD_new[3] = scale * round(absevent.event.value/max_L2_R2, 5) # Max value: 255
+              #-----------joint 4------------- 
+              if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Z":   # L2 
+                #self.axe_HD_new[3] = scale * round(self.joint4 * absevent.event.value/max_L2_R2, 5) # Max value: 32768
+                self.axe_HD_new[3] = scale * round(-absevent.event.value/max_L2_R2, 5) # Max value: 255
+              #-----------go home-------------
+              if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_HAT0Y":  # d-pad y
+                if event.value == 1:
+                    self.goHome()            
+
+            # sends new values if and only if changed from previous
+            resetAxe(self)
+            newAxeVal(self)
         
+
 
   # Set self.mode
   def cmode(self, mode):
     self.mode = mode
+
 
   # Switching NAV <=> HD
   def switchNAV_HD(self):
@@ -406,34 +404,67 @@ class Gamepad(Thread):
     elif self.mode == 'HD':
       self.cmode('NAV')
       print(self.mode)
+#     TODO publish!!!!!!  
 
-  # Switching MAN <=> AUTO 
+
+  # Switching DIR => INV => DEBUG => DIR
   # when in HD mode
-  def switchDIR_INV(self):  # NOT IDEAL TO PASS SELF !!!!!!
-    if self.modeHD == 'INV':
-      # self.HD_control_msg.mode = 1
-      print('DIR')
-      self.modeHD = 'DIR'
-    else:
-      # self.HD_control_msg.mode = 0
+  def switchHDmode(self):  
+    #------DIR => INV------
+    if self.modeHD == 'DIR':
+      self.modeHDmsg = 3
       print('INV')
       self.modeHD = 'INV'
-    # self.HD_control_msg.active = clear_tab(self.HD_control_msg.active)
-    self.axe_HD_old = [0, 0, 0, 0, 0, 0, 0]
-    self.axe_HD_new = [0, 0, 0, 0, 0, 0, 0] 
-    self.gripper_old = [0, 0, 0]
-    self.gripper_new = [0, 0, 0]
-    # self.hd_pub.publish(self.HD_control_msg)
+    #-----INV => DEBUG-----
+    elif self.modeHD == 'INV':
+      self.modeHDmsg = 1
+      print('DEBUG')
+      self.modeHD = 'DEBUG'
+    #-----DEBUG => DIR-----
+    elif self.modeHD == 'DEBUG':
+      self.modeHDmsg = 2
+      print('DIR')
+      self.modeHD = 'DIR'  
+
+    self.axe_HD_old = clear_tab(self.axe_HD_old)
+    self.axe_HD_new = clear_tab(self.axe_HD_new)
+
+#     self.cs.HD_mode_pub.publish(Int8(data = self.modeHDmsg))
+#     self.cs.HD_Angles_pub.publish(Int8MultiArray(data = self.axe_HD_new))
+    self.HD_mode_pub.publish(Int8(data = self.modeHDmsg))
+    self.HD_Angles_pub.publish(Int8MultiArray(data = list(map(int, self.axe_HD_new))))
 
 
-    # self.cs.HD_mode_pub.publish(Int8(data=self.HD_control_msg.mode))
-    self.cs.HD_Angles_pub.publish(Int8MultiArray(data = self.axe_HD_new))
-    # ADDED 
-    self.cs.HD_InvManual_Coord_pub.publish(Int8MultiArray(data = self.gripper_new))
+  # Voltmeter:  Extend <=> Retreat
+  def switchVoltmeter(self):
+    if self.voltmeter == 0:
+      self.voltmeter = 1
+    else:
+      self.voltmeter = 0
+      #     TODO 
+    print(self.voltmeter)  
+#     self.cs.HD_voltmeter_pub.publish(Int8(data = self.voltmeter))
+    self.HD_voltmeter_pub.publish(self.voltmeter)
 
 
+  def goHome(self):
+    self.homeGo = 1
+    print(self.homeGo)
+    self.HD_homeGo_pub.publish(self.homeGo)
+    # reset bool
+    self.homeGo = 0
+    
 
-
+  def setHome(self):
+    self.homeSet = 1
+    print(self.homeSet)
+    self.HD_homeSet_pub.publish(self.homeSet)
+    # reset bool(s)
+    self.homeSet = 0
+    self.homeSet_temp = 0  
+    
+    
+    
 def eval_axe(axe_value): #Donne le sens de rotation bras robot 32768 est la valeur max renvoyé par la manette
   if axe_value <= -32700:
     return -1
@@ -442,6 +473,7 @@ def eval_axe(axe_value): #Donne le sens de rotation bras robot 32768 est la vale
   elif axe_value > -32700 and axe_value < 32700:
     return 0
 
+
 # Compare 2 arrays with a tolerance 
 def compare_list(list1, list2, tolerance):
   for k in range(len(list1)):
@@ -449,44 +481,50 @@ def compare_list(list1, list2, tolerance):
       return 0
   return 1
 
+
+# Values small enough to reset to 0 
+def reset_small(list1):
+  for k in range(len(list1)):
+    if (list1[k] >= -2 and list1[k] <= 2):
+      list1[k] = 0
+  return list1
+
+
 # Clear array 
 def clear_tab(tab):
   for k in range(len(tab)):
-    tab[k]=0
+    tab[k] = 0
   return tab
   
-# WHAT IS THIS FOR ????????
-# class Decode_manette():
-#   def __init__(self):
-#     self.xBtn = 304
-#     self.oBtn = 305
-#     self.tBtn = 307
-#     self.cBtn = 308
-#     self.l1Btn = 310
-#     self.r1Btn = 311
-#     self.l2Btn = 312
-#     self.r2Btn = 313
-#     self.optBtn = 315
-#     self.shaBtn = 314
-#     self.psBtn = 316
-#     self.l3Btn = 317
-#     self.r3Btn = 318
 
-# Send new Axe values for HD
+# Send new Joint velocities for HD
 # if and only if changed from previous
 def newAxeVal(self):
-  if (compare_list(self.axe_HD_old, self.axe_HD_new, 0) != 1) or (compare_list(self.gripper_old, self.gripper_new, 0) != 1):
-    print("send HD - angles: old:", self.axe_HD_old , ' new: ', self.axe_HD_new, "gripper: old:", self.gripper_old, ' new: ', self.gripper_new)
+  #if (compare_list(self.axe_HD_old, self.axe_HD_new, 1) != 1):
+    #print("send HD - angles:\nold:", self.axe_HD_old , ' new:', self.axe_HD_new)
     for k in range(len(self.axe_HD_new)):
       self.axe_HD_old[k] = self.axe_HD_new[k]
-      # self.HD_control_msg.active[k] = self.axe_HD_new[k]
-    for k in range(len(self.gripper_old)):
-      self.gripper_new = self.gripper_old
-      # self.HD_control_msg.active[k + len(self.axe_HD_new)] = self.gripper_new[k]
-    #self.hd_pub.publish(self.HD_control_msg)
 
-    self.cs.HD_Angles_pub.publish(Int8MultiArray(data = self.axe_HD_new))
-    self.cs.HD_InvManual_Coord_pub.publish(Int8MultiArray(data = self.gripper_new))
+    #     TODO 
+    print(self.axe_HD_new)
+
+    #     self.cs.HD_Angles_pub.publish(Int8MultiArray(data = self.axe_HD_new))
+    self.HD_Angles_pub.publish(Int8MultiArray(data = list(map(int, self.axe_HD_new))))
+                               
+    
+    
+# Send new Joint velocities for HD
+# if and only if abs(value) > 2
+def resetAxe(self):
+  reset_small(self.axe_HD_old)
+  reset_small(self.axe_HD_new)
 
 
-# send zero when stop increasing velocity 
+
+if __name__ == "__main__" : 
+    gamepad = Gamepad()
+    gamepad.run()
+
+    exit()
+
+

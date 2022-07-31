@@ -18,13 +18,12 @@
 from django.http            import HttpResponse, JsonResponse
 from django.shortcuts       import render
 from django.shortcuts       import redirect
+from django.http.response   import StreamingHttpResponse
+
 from numpy import ndarray
 from src.cs_node            import *
 from src.controller         import *
 from manage                 import setup
-from django.shortcuts       import render
-from django.http.response   import StreamingHttpResponse
-from django.http            import HttpResponse
 import threading
 import cv2
 
@@ -86,7 +85,9 @@ def manualcontrol(request):
     return render(request, 'pages/manualcontrol.html')
 
 def navigation(request):
-    return render(request, 'pages/navigation.html')
+    return render(request, 'pages/navigation.html', { 
+        'tab_name': "navigation"
+    })  #TODO tab_name 
 
 def science(request):
     return render(request, 'pages/science.html')
