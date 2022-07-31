@@ -70,6 +70,9 @@ class Rover:
         self.Nav_Goal_pub       = rospy.Publisher('/move_base/goal',   MoveBaseActionGoal, queue_size=1)
         self.Nav_CancelGoal_pub = rospy.Publisher('/move_base/cancel', GoalID,             queue_size=1)
 
+        # LOCAL ROS COMMUNICATION
+
+        rospy.Subscriber('Exception',                    String,          self.model.set_exception)
         rospy.Subscriber('/odometry/filtered',           Odometry,        self.model.Nav.nav_data)
         rospy.Subscriber('/arm_control/joint_telemetry', JointState,      self.model.HD.set_joint_telemetry)
         rospy.Subscriber('sc_state',                     String,          self.model.SC.set_text_info)

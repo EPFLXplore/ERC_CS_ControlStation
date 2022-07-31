@@ -143,6 +143,9 @@ class HandlingDevice:
         # HD mode: Inverse, Direct, Debug TODO
         self.__hd_mode = -1
 
+        self.__joint_positions = np.array(7)
+        self.__joint_velocities = np.array(7)
+
     def setHDMode(self, mode):
         if(mode < 0 or mode > 3): raise ValueError("Invalid mode")
         self.__hd_mode = mode
@@ -150,6 +153,26 @@ class HandlingDevice:
     def getHDMode(self):
         return self.__hd_mode
 
+
+    def set_joint_telemetry(self, telemetry_ros):
+        telemetry = telemetry_ros.data
+        self.set_joint_positions(telemetry.position)
+        self.set_joint_velocities(telemetry.velocity)
+        self.rover.HD_telemetry_pub.publish(telemetry)
+
+
+    def set_joint_positions(self, positions):
+        self.__joint_positions = positions
+
+    def get_joint_positions(self):
+        return self.__joint_positions
+
+
+    def set_joint_velocities(self, velocities):
+        self.__joint_velocities = velocities
+
+    def get_joint_velocities(self):
+        return self.__joint_velocities
 
 
 # TASK: 

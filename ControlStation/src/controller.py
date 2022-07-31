@@ -147,6 +147,8 @@ class Controller():
         el7 = matrix[6]
 
         
+    def hd_telemetry(self, jointstate):
+        self.cs.HD.set_joint_telemetry(jointstate)
 
     # TODO update the database everytime dist(pos1, pos2) > eps
     # TODO IL FAUT PASSER A POSTGRESQL POUR LES ARRAYFIELD STP (ou utiliser des Blob)

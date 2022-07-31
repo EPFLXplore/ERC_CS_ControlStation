@@ -52,6 +52,9 @@ class Model:
         return self.__state
 
 
+    def set_exception(self, exception):
+        self.rover.Exception_pub.publish(exception.data)
+
         
 
 class Navigation:
