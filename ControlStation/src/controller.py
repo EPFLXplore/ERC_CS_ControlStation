@@ -25,8 +25,8 @@ import rospy
 import sys
 import json
 import websocket  #TODO same synthax for python2 and 3 ?
+import time
 
-from time                                 import sleep
 from std_msgs.msg                         import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray
 # TODO
 # from ros_package.src.custom_msg_python    import move_base_action_goal
