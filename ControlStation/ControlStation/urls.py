@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 from . import views
+from CS2022 import views as v
 
 urlpatterns = [
     path('admin/', admin.site.urls),

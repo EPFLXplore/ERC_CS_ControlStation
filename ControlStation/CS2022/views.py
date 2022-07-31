@@ -1,26 +1,80 @@
+#
+# 24/07/2022
+#
+# @authors: Emile Hreich
+#           emile.janhodithreich@epfl.ch
+#
+#           Roman Danylovych
+#           roman.danylovych@epfl.ch
+#
+# @brief: 
+# 
+# -------------------------------------------------------------------------------
+
 # =============================================================
 # Libraries
 
-from curses.ascii       import ctrl
-from email.policy import HTTP
-from urllib.request import HTTPRedirectHandler
-from django.http        import HttpResponse
-from django.shortcuts   import render
-from django.shortcuts   import redirect
-from django.template    import loader
-from subprocess         import run, PIPE
 
-from urllib3 import HTTPResponse
-from src.cs_node        import *
-from src.controller     import *
-
-from manage import setup
-
-import sys
-
-
+from django.http            import HttpResponse, JsonResponse
+from django.shortcuts       import render
+from django.shortcuts       import redirect
+from numpy import ndarray
+from src.cs_node            import *
+from src.controller         import *
+from manage                 import setup
+from django.shortcuts       import render
+from django.http.response   import StreamingHttpResponse
+from django.http            import HttpResponse
+import threading
+import cv2
 
 # ===============================================================
+# Control Station setup
+
+cs = setup().CONTROL_STATION
+
+# ===============================================================
+# Django views
+
+# ------------------------------------
+# cameras
+
+class VideoCamera(object):
+
+    def __init__(self, capture):
+        # self.video = capture
+
+        self.frame = cs.cameras.cam_1
+        threading.Thread(target=self.update, args=()).start()
+
+    # def __del__(self):
+    #     self.video.release()
+
+    def get_frame(self):
+        image = self.frame
+        _, jpeg = cv2.imencode('.jpg', image)
+        return jpeg.tobytes()
+
+    def update(self):
+        while True:
+            self.frame = cs.cameras.cam_1
+
+
+def gen(camera):
+    while True:
+        
+        frame = camera.get_frame()
+        yield(b'--frame\r\n'
+            b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+
+
+def video_feed(request):
+    return StreamingHttpResponse(gen(VideoCamera(cs.cameras.cam_1)),
+                    content_type='multipart/x-mixed-replace; boundary=frame')
+
+# ------------------------------------
+# General views
 
 def handlingdevice(request):
     return render(request, 'pages/handlingdevice.html')
@@ -40,31 +94,14 @@ def science(request):
 def avionics(request):
     return render(request, 'pages/avionics.html')
 
-# cs.controller = cs.controller()
-cs = setup().CONTROL_STATION
-
-#STATE BUTTONS
-
-# TASK: 
-    #       - Manual      = 1 
-    #       - Navigation  = 2 
-    #       - Maintenance = 3
-    #       - Science     = 4
-    #
-    # INSTR:  
-    #       - Launch = 1 
-    #       - Abort  = 2 
-    #       - Wait   = 3 
-    #       - Resume = 4 
-    #       - Retry  = 5
-
 # -----------------------------------
-# manual control
+# manual control views
 
 def launch_manual(request):
     rospy.loginfo("Manual: Launch")
     cs.controller.pub_Task(1,1)
     return redirect('/CS2022/manualcontrol/')
+    
 
 def abort_manual(request):
     rospy.loginfo("Manual: Abort")
@@ -88,7 +125,9 @@ def resume_manual(request):
 def launch_nav(request):
     rospy.loginfo("Navigation: Launch")
     cs.controller.pub_Task(2,1)
-    return redirect('/CS2022/navigation/')
+
+    # return empty json response to update the page without refreshing
+    return JsonResponse({})
 
 def abort_nav(request):
     rospy.loginfo("Navigation: Abort")
@@ -105,10 +144,8 @@ def resume_nav(request):
     cs.controller.pub_Task(2,4)
     return redirect('/CS2022/navigation/')
 
-
-
 # -----------------------------------
-# handling device
+# Handling device views
 
 def launch_hd(request):
     rospy.loginfo("Maintenance: Launch")
@@ -136,7 +173,7 @@ def retry_hd(request):
     return redirect('/CS2022/handlingdevice/')
 
 # -----------------------------------
-# science
+# Science views
 
 # TODO STILL NEED TO ADAPT TO NEW SCIENCE COMMANDS
 def launch_science(request):
