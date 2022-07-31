@@ -11,7 +11,7 @@ import sys
 from   threading       import Thread
 from   time            import sleep
 
-from   keyMap          import *
+from   Gamepad.keyMap          import *
 
 from geometry_msgs.msg import Twist
 from std_msgs.msg      import Int8MultiArray, Int8, Bool

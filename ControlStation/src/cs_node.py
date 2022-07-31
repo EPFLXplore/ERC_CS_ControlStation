@@ -25,8 +25,10 @@ import django
 
 from CS2022.models         import *
 from std_msgs.msg          import Int8MultiArray    , Int8        , Float32, Bool, String, Int16MultiArray, Int16
-#from move_base_msgs.msg    import MoveBaseActionGoal, MoveBaseGoal
-from catkin.src.custom_msg_python import move_base_action_goal 
+
+# TODO
+# from ros_package.src.custom_msg_python.msg     import move_base_action_goal 
+
 from geometry_msgs.msg     import Twist 
 from actionlib_msgs.msg    import GoalID
 from nav_msgs.msg          import Odometry
@@ -71,7 +73,9 @@ class CS:
         self.HD_voltmeter_pub       = rospy.Publisher('HD_voltmeter',       Int8,           queue_size=1)
 
         # Navigation
-        self.Nav_Goal_pub           = rospy.Publisher('/move_base/goal',    move_base_action_goal, queue_size=1)
+
+        # TODO
+        # self.Nav_Goal_pub           = rospy.Publisher('/move_base/goal',    move_base_action_goal, queue_size=1)
         self.Nav_CancelGoal_pub     = rospy.Publisher('/move_base/cancel',  GoalID,             queue_size=1)
         self.Nav_Joystick_pub       = rospy.Publisher('/cmd_vel',           Twist,              queue_size=1)
         self.Nav_DebugWheels_pub    = rospy.Publisher('/debug/wheel_cmds',  Int16MultiArray,    queue_size=1)

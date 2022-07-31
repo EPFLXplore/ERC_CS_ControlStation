@@ -86,7 +86,9 @@ def manualcontrol(request):
     return render(request, 'pages/manualcontrol.html')
 
 def navigation(request):
-    return render(request, 'pages/navigation.html')
+    
+    return render(request, 'pages/navigation.html',{ 
+        'tab_name': "navigation"})
 
 def science(request):
     return render(request, 'pages/science.html')
