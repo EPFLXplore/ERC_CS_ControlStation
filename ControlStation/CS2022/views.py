@@ -85,6 +85,9 @@ def manualcontrol(request):
     return render(request, 'pages/manualcontrol.html')
 
 def navigation(request):
+
+    ws_nav.connect("ws://localhost:8000/ws/CS2022/navigation/")
+    print("debug")
     return render(request, 'pages/navigation.html', { 
         'tab_name': "navigation"
     })  #TODO tab_name 
