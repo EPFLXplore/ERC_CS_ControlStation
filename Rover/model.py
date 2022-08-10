@@ -18,21 +18,29 @@
 # Libraries
 
 import numpy as np 
+import rospy
 
 from multiprocessing.sharedctypes import Value
-from unittest.loader              import VALID_MODULE_NAME
+from unittest.loader    import VALID_MODULE_NAME
+from actionlib_msgs.msg import GoalID
+from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
+from geometry_msgs.msg  import Pose, Point
+from sensor_msgs.msg    import JointState
+from std_msgs.msg       import Int8, Int16, Bool, String, Int8MultiArray,  Int16MultiArray, UInt8MultiArray 
+
+from rover_node import Rover
 
 
-class Rover:
+class Model:
     '''
         Monitoring of the state of the rover
     '''
-    def __init__(self):
+    def __init__(self, rover):
+        self.rover = rover
 
-        self.Nav = Navigation()
-        self.HD = HandlingDevice()
-        self.SC = Science()
-        
+        self.Nav = Navigation(rover)
+        self.HD = HandlingDevice(rover)
+        self.SC = Science(rover)
 
         self.__state = np.zeros(2)
         self.__received = False
@@ -43,23 +51,23 @@ class Rover:
     def getState(self):
         return self.__state
 
-    def setReceived(self, bool):
-        self.__received = bool
 
-    def getReceived(self):
-        return self.__received
+    def set_exception(self, exception):
+        self.rover.Exception_pub.publish(exception.data)
+
         
 
 class Navigation:
     '''
         Monitoring of the navigation Data
     '''
-    def __init__(self):
-        # next Navigation goal ID
-        self.__nextId = 0
+    def __init__(self, rover):
 
-        # keep track of goals
-        self.__goals = np.array([])
+        self.rover = rover
+
+        # next Navigation goal ID
+        self.__currId = 0
+        self.__currGoal = np.zeros(3)
 
         # rover position
         self.__pos = np.zeros(3)
@@ -68,22 +76,24 @@ class Navigation:
         # rover angular velocity
         self.__angVel = np.zeros(3)
 
-    def addGoal(self, arr):
-        if(len(arr) != 3): raise Exception("array length must be 3 -> (x,y,z)")
+    def setGoal(self, goal):
+        self.__currGoal = goal.data
+        self.rover.Nav_Goal_pub.publish(goal.data)
 
-        np.append(self.__goals, arr)
-        self.incrementId()
-
-    def incrementId(self):
-        self.__nextId += 1
+    def getId(self):
+        return self.__currId
 
     def getGoal(self, id):
-        return self.__goals[id]
+        return self.__currGoal
 
-    def cancelGoal(self, id):
-        len = len(self.__goals)
-        if (id < 0 or id > len): raise ValueError("Invalid navigation goal id")
-        np.delete(self.__goals, id, 0)
+    '''def cancelGoal(self, given_id):
+        self.__currGoal = np.zeros(0)
+        self.__currId = -1
+        self.rover.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = given_id))
+    '''
+    def cancelGoal(self):
+        self.__currGoal = np.zeros(0)
+        self.rover.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = self.__currId))
     
     #------------- Twist Data -------------
     
@@ -108,50 +118,98 @@ class Navigation:
 
     #-------------------------------------
 
+    def nav_data(self, odometry_ros):
+        odometry = odometry_ros.data
+
+        # position (x,y,z)
+        pos = odometry.pose.pose.position
+        self.setPos([pos.x, pos.y, pos.z])
+
+        # linear velocity
+        twistLin = odometry.twist.twist.linear
+        self.setLinVel([twistLin.x, twistLin.y, twistLin.z])
+
+        # angular velocity
+        twistAng = odometry.twist.twist.angular
+        self.setAngVel([twistAng.x, twistAng.y, twistAng.z])
+
+        self.rover.NAV_odometry_pub.publish(odometry)
+
 
 class Science:
     '''
         Monitoring Science Data
     '''
 
-    def __init__(self):
+    def __init__(self, rover):
+
+        self.rover = rover
+
         # humidities of the 3 tubes
         self.__tubesHum = np.zeros(3)
         # total sample mass
         self.__sc_mass = 0
+        self.__info = ""
+
+    def set_text_info(self, str_ros):
+        self.__info = str_ros.data
+        self.rover.SC_state_pub.publish(self.__info)
 
 
-    def setSCMass(self, mass):
+    def set_sc_mass(self, mass):
         self.__sc_mass = mass
+        self.rover.SC_mass_pub.publish(self.__sc_mass)
     
-    def getSCMass(self):
+    def get_sc_mass(self):
         return self.__sc_mass
 
-    def setTubeHum(self, idx, val):
+
+    def set_humidities(self, humidities_ros):
+        humidity = humidities_ros.data
+        self.set_tube_num(humidity[0], humidity[1])
+
+    def set_tube_hum(self, idx, val):
+        '''
+        receive an Int16MultiArray: [tube number, humidity inside tube]
+        tube number : arr[0]
+        value       : arr[1]
+        '''
         self.__tubesHum[idx] = val
 
-    def getTubeHum(self, idx):
+    def get_tube_hum(self, idx):
         return self.__tubesHum[idx]
 
 
 
 class HandlingDevice:
-    '''
-        Monitoring Handling Device Data
-    '''
-    def __init__(self):
+    
+    ''' Monitoring Handling Device Data '''
+
+    def __init__(self, rover):
+
+        self.rover = rover
+
         # HD mode: Inverse, Direct, Debug TODO
         self.__hd_mode = -1
-
+        self.__semiAutoId = -1
         self.__joint_positions = np.array(7)
         self.__joint_velocities = np.array(7)
 
-    def setHDMode(self, mode):
+    def setHDMode(self, mode_ros):
+
+        self.rover.RoverConfirm_pub.publish(Bool(True))
+
+        mode = mode_ros.data
         if(mode < 0 or mode > 3): raise ValueError("Invalid mode")
         self.__hd_mode = mode
+        self.rover.HD_mode_pub.publish(mode)
 
     def getHDMode(self):
         return self.__hd_mode
+
+    def set_semiAutoID(self, id_ros):
+        self.__semiAutoId = id_ros.data
+        self.rover.HD_SemiAuto_Id_pub.publish(self.__semiAutoId)
 
 
     def set_joint_telemetry(self, telemetry_ros):
@@ -173,6 +231,7 @@ class HandlingDevice:
 
     def get_joint_velocities(self):
         return self.__joint_velocities
+
 
 
 # TASK: 

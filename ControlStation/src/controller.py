@@ -25,8 +25,8 @@ import rospy
 import sys
 import json
 import websocket  #TODO same synthax for python2 and 3 ?
+import time
 
-from time                                 import sleep
 from std_msgs.msg                         import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray
 # TODO
 # from ros_package.src.custom_msg_python    import move_base_action_goal
@@ -147,6 +147,8 @@ class Controller():
         el7 = matrix[6]
 
         
+    def hd_telemetry(self, jointstate):
+        self.cs.HD.set_joint_telemetry(jointstate)
 
     # TODO update the database everytime dist(pos1, pos2) > eps
     # TODO IL FAUT PASSER A POSTGRESQL POUR LES ARRAYFIELD STP (ou utiliser des Blob)
@@ -194,6 +196,8 @@ class Controller():
 
         if(task == 1 and instr == 1) : self.launch_Manual() 
         if(task == 1 and instr == 2) : self.abort_Manual()
+
+        self.wait()
 
 
     ###############################
@@ -287,3 +291,12 @@ class Controller():
         rospy.loginfo("\nAborting manual controls\n")
         self.gpad.join()
 
+
+
+
+    def wait(self):
+        time.sleep(1)
+        #print(self.cs.rover.getReceived())
+        if(not self.cs.rover.getReceived()):
+            rospy.loginfo("Answer not received: TIMEOUT")
+        self.cs.rover.setReceived(False)

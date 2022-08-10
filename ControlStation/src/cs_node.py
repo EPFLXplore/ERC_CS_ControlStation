@@ -35,6 +35,7 @@ from nav_msgs.msg          import Odometry
 from src.controller        import *
 from sensor_msgs.msg       import CompressedImage
 from src.cameras           import *
+from sensor_msgs.msg       import JointState
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
 django.setup()
@@ -59,11 +60,11 @@ class CS:
 
         # ---------------------------------------------------
         #  publishers
+        self.Task_pub               = rospy.Publisher('Task',               Int8MultiArray, queue_size=1)
 
         # Handling Device
-        self.Task_pub               = rospy.Publisher('Task',               Int8MultiArray, queue_size=1)
-        self.HD_mode_pub            = rospy.Publisher('HD_mode',            Int8,           queue_size=1)
-        self.HD_SemiAuto_Id_pub     = rospy.Publisher('HD_SemiAuto_Id',     Int8,           queue_size=1)
+        self.HD_mode_pub            = rospy.Publisher('CS_HD_mode',            Int8,           queue_size=1)
+        self.HD_SemiAuto_Id_pub     = rospy.Publisher('CS_HD_SemiAuto_Id',     Int8,           queue_size=1)
         self.HD_Angles_pub          = rospy.Publisher('HD_Angles',          Int8MultiArray, queue_size=1)
         #TODO necessary? 
         #self.HD_ManualVelocity_pub  = rospy.Publisher('HD_ManualVelocity',  Float32,        queue_size=1)
@@ -75,20 +76,21 @@ class CS:
         # Navigation
 
         # TODO
-        # self.Nav_Goal_pub           = rospy.Publisher('/move_base/goal',    move_base_action_goal, queue_size=1)
-        self.Nav_CancelGoal_pub     = rospy.Publisher('/move_base/cancel',  GoalID,             queue_size=1)
-        self.Nav_Joystick_pub       = rospy.Publisher('/cmd_vel',           Twist,              queue_size=1)
-        self.Nav_DebugWheels_pub    = rospy.Publisher('/debug/wheel_cmds',  Int16MultiArray,    queue_size=1)
+        # self.Nav_Goal_pub           = rospy.Publisher('CS_NAV_goal',     move_base_action_goal, queue_size=1)
+        self.Nav_CancelGoal_pub     = rospy.Publisher('CS_NAV_cancel',     GoalID,             queue_size=1)
+        self.Nav_Joystick_pub       = rospy.Publisher('/cmd_vel',          Twist,              queue_size=1)
+        self.Nav_DebugWheels_pub    = rospy.Publisher('/debug/wheel_cmds', Int16MultiArray,    queue_size=1)
 
         # ---------------------------------------------------
         #  Subscribers
 
-        rospy.Subscriber('RoverConfirm',            Bool,            self.controller.rover_confirmation )
-        rospy.Subscriber('Exception',               String,          self.controller.exception_clbk     )
-        rospy.Subscriber('TaskProgress',            Int8,            self.controller.task_progress      )
-        rospy.Subscriber('sc_state',                String,          self.controller.sc_text_info       )
-        rospy.Subscriber('sc_measurments_humidity', Int16MultiArray, self.controller.sc_humidity        )
-        rospy.Subscriber('sc_measurments_mass',     Int16,           self.controller.sc_mass            )
+        rospy.Subscriber('ROVER_RoverConfirm',            Bool,            self.controller.rover_confirmation )
+        rospy.Subscriber('ROVER_Exception',               String,          self.controller.exception_clbk     )
+        rospy.Subscriber('ROVER_TaskProgress',            Int8,            self.controller.task_progress      )
+        rospy.Subscriber('ROVER_SC_state',                String,          self.controller.sc_text_info       )
+        rospy.Subscriber('ROVER_SC_measurments_humidity', Int16MultiArray, self.controller.sc_humidity        )
+        rospy.Subscriber('ROVER_SC_measurments_mass',     Int16,           self.controller.sc_mass            )
+        rospy.Subscriber('ROVER_HD_telemetry',            JointState,      self.controller.hd_telemetry)
 
         # TODO
         # rospy.Subscriber('camera_1',                CompressedImage, self.controller.display_cam_1      , self.cameras)
@@ -107,4 +109,4 @@ class CS:
         
 
         rospy.Subscriber('/cmd_vel',           Twist,    self.controller.test_joystick)
-        rospy.Subscriber('/odometry/filtered', Odometry, self.controller.nav_data     )
+        rospy.Subscriber('ROVER_NAV_odometry', Odometry, self.controller.nav_data     )
