@@ -70,7 +70,7 @@ class Controller():
 
     def test_joystick(self, twist):
         '''
-            debug joysticl
+            debug joystick
         '''
         tl = twist.linear
         ta = twist.angular
@@ -79,12 +79,13 @@ class Controller():
 
 
 
-    def rover_confirmation(self, boolean):
+    def rover_confirmation(self, txt):
         '''
             receives 
             rover confirmation
         '''
-        rospy.loginfo("Rover Confirmation: %s\n", boolean.data)
+        rospy.loginfo("Rover Confirmation: %s\n", txt.data)
+        self.cs.rover.setReceived(True)
 
 
     def task_progress(self, num):
@@ -191,13 +192,12 @@ class Controller():
 
         arr = [task, instr]
         self.cs.Task_pub.publish(Int8MultiArray(data = arr))
+        self.wait()
 
         self.cs.rover.setState(task, instr)
 
         if(task == 1 and instr == 1) : self.launch_Manual() 
         if(task == 1 and instr == 2) : self.abort_Manual()
-
-        self.wait()
 
 
     ###############################
@@ -295,8 +295,10 @@ class Controller():
 
 
     def wait(self):
+        self.cs.rover.setInWait(True)
         time.sleep(1)
         #print(self.cs.rover.getReceived())
         if(not self.cs.rover.getReceived()):
             rospy.loginfo("Answer not received: TIMEOUT")
+        self.cs.rover.setInWait(False)
         self.cs.rover.setReceived(False)

@@ -35,7 +35,7 @@ class Rover:
         # +--------------------------------------------------------+
 
         # publish True if instruction receivd from CS (Rover node --> CS_node)
-        self.RoverConfirm_pub  = rospy.Publisher('ROVER_RoverConfirm',            Bool,            queue_size=1)
+        self.RoverConfirm_pub  = rospy.Publisher('ROVER_RoverConfirm',            String,          queue_size=1)
         # publish info on exception if one was thrown (Rover node --> CS_node)
         self.Exception_pub     = rospy.Publisher('ROVER_Exception',               String,          queue_size=1)
         self.TaskProgress      = rospy.Publisher('ROVER_TaskProgress',            Int8,            queue_size=1)
@@ -79,7 +79,7 @@ class Rover:
         rospy.Subscriber('sc_measurments_humidity',      Int16MultiArray, self.model.SC.set_humidities)
         rospy.Subscriber('sc_measurments_mass',          Int16,           self.model.SC.set_sc_mass)
 
-        '''rospy.Subscriber('/odometry/filtered',           Odometry,        self.Nav_pub.publish)
+        '''rospy.Subscriber('/odometry/filtered',           Odometry,     self.Nav_pub.publish)
         rospy.Subscriber('/arm_control/joint_telemetry', JointState,      self.HD_telemetry.publish)
         rospy.Subscriber('sc_state',                     String,          self.SC_state_pub.publish)
         rospy.Subscriber('sc_measurments_humidity',      Int16MultiArray, self.SC_humidities_pub.publish)
@@ -113,8 +113,9 @@ class Rover:
             self.Exception_pub.publish("Instr number denied (allowed only 1-5), received:", instr) 
             pass
         
-        rospy.loginfo("Rover: [task, instr] received")
-        self.RoverConfirm_pub.publish(Bool(True))
+        rospy.loginfo("Rover: [task = %d, instr = %d] received", task, instr)
+        self.RoverConfirm_pub.publish("Instructions received")
+        #self.RoverConfirm_pub.publish(Bool(True))
 
         if (task == 1):
             self.ROVER_STATE = Task.MANUAL

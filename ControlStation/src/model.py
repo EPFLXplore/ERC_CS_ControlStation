@@ -35,6 +35,7 @@ class Rover:
         
 
         self.__state = np.zeros(2)
+        self.__inWait = False
         self.__received = False
 
     def setState(self, task, instr):
@@ -48,6 +49,12 @@ class Rover:
 
     def getReceived(self):
         return self.__received
+
+    def setInWait(self, bool):
+        self.__inWait = bool
+
+    def getInWait(self):
+        return self.__inWait
         
 
 class Navigation:
@@ -101,12 +108,18 @@ class Navigation:
         return self.__pos
 
     def getLinVel(self):
-        return self.__linVel
+        #return self.__linVel
+        return np.linalg.norm(self.__linVel)
 
     def getAngVel(self):
-        return self.__angVel
+        #return self.__angVel
+        return np.linalg.norm(self.__angVel)
 
     #-------------------------------------
+
+    def distToGoal(self, id):
+        diff = self.getGoal(id) - self.getPos()
+        return np.linalg.norm(diff)
 
 
 class Science:
@@ -167,13 +180,14 @@ class HandlingDevice:
     def get_joint_positions(self):
         return self.__joint_positions
 
-
     def set_joint_velocities(self, velocities):
         self.__joint_velocities = velocities
 
     def get_joint_velocities(self):
         return self.__joint_velocities
 
+    def getVelNorm(self):
+        return np.linalg.norm(self.get_joint_velocities)
 
 # TASK: 
 #       - Manual      = 1 
