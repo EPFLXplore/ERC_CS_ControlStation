@@ -1,2 +1,0 @@
-custom_msg_python
--DCATKIN_DEVEL_PREFIX=/home/emile/Documents/CS_workspace/devel -DCMAKE_INSTALL_PREFIX=/home/emile/Documents/CS_workspace/install -G Unix Makefiles
