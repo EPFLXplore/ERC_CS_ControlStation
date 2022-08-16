@@ -1,8 +1,0 @@
-prefix=/home/emile/Documents/CS_workspace/devel
-
-Name: custom_msg_python
-Description: Description of custom_msg_python
-Version: 0.0.0
-Cflags: -I/home/emile/Documents/CS_workspace/devel/include
-Libs: -L${prefix}/lib 
-Requires: 

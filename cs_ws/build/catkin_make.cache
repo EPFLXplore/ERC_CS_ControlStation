@@ -1,0 +1,2 @@
+control_station
+-DCATKIN_DEVEL_PREFIX=/home/emile/Documents/CS_workspace/cs_ws/devel -DCMAKE_INSTALL_PREFIX=/home/emile/Documents/CS_workspace/cs_ws/install -G Unix Makefiles

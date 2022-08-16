@@ -1,0 +1,8 @@
+prefix=/home/emile/Documents/CS_workspace/cs_ws/install
+
+Name: control_station
+Description: Description of control_station
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
