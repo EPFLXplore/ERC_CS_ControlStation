@@ -79,6 +79,7 @@ class Navigation:
     def setGoal(self, goal):
         self.__currGoal = goal.data
         self.rover.Nav_Goal_pub.publish(goal.data)
+        self.RoverConfirm_pub.publish("Nav goal set")
 
     def getId(self):
         return self.__currId
@@ -94,6 +95,8 @@ class Navigation:
     def cancelGoal(self):
         self.__currGoal = np.zeros(0)
         self.rover.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = self.__currId))
+        self.RoverConfirm_pub.publish("Nav goal cancelled")
+
     
     #------------- Twist Data -------------
     
@@ -197,7 +200,7 @@ class HandlingDevice:
 
     def setHDMode(self, mode_ros):
 
-        self.rover.RoverConfirm_pub.publish(Bool(True))
+        self.rover.RoverConfirm_pub.publish("HD mode set")
 
         mode = mode_ros.data
         if(mode < 0 or mode > 3): raise ValueError("Invalid mode")
@@ -210,6 +213,7 @@ class HandlingDevice:
     def set_semiAutoID(self, id_ros):
         self.__semiAutoId = id_ros.data
         self.rover.HD_SemiAuto_Id_pub.publish(self.__semiAutoId)
+        self.RoverConfirm_pub.publish("HD Id set")
 
 
     def set_joint_telemetry(self, telemetry_ros):
