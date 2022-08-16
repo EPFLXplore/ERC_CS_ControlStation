@@ -84,7 +84,7 @@ class CS:
         # ---------------------------------------------------
         #  Subscribers
 
-        rospy.Subscriber('ROVER_RoverConfirm',            String,            self.controller.rover_confirmation )
+        rospy.Subscriber('ROVER_RoverConfirm',            String,          self.controller.rover_confirmation )
         rospy.Subscriber('ROVER_Exception',               String,          self.controller.exception_clbk     )
         rospy.Subscriber('ROVER_TaskProgress',            Int8,            self.controller.task_progress      )
         rospy.Subscriber('ROVER_SC_state',                String,          self.controller.sc_text_info       )
@@ -109,4 +109,5 @@ class CS:
         
 
         rospy.Subscriber('/cmd_vel',           Twist,    self.controller.test_joystick)
-        rospy.Subscriber('ROVER_NAV_odometry', Odometry, self.controller.nav_data     )
+        # rospy.Subscriber('ROVER_NAV_odometry', Odometry, self.controller.nav_data     )
+        rospy.Subscriber('ROVER_NAV_odometry', Int8, self.controller.nav_data     )

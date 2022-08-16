@@ -24,7 +24,7 @@
 import rospy
 import sys
 import json
-import websocket  #TODO same synthax for python2 and 3 ?
+import websocket  
 import time
 
 from std_msgs.msg                         import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray
@@ -42,12 +42,20 @@ from CS2022.models          import *
 
 #================================================================================
 # Webscokets for ASGI
-# ws_homepage = websocket.WebSocket()
-ws_nav      = websocket.WebSocket()
-# ws_sc       = websocket.WebSocket()
-# ws_hd       = websocket.WebSocket()
-# ws_man      = websocket.WebSocket()
-# ws_av       = websocket.WebSocket()
+
+NAV_WS_URL  = "ws://localhost:8000/ws/CS2022/navigation/"
+HD_WS_URL   = "ws://localhost:8000/ws/CS2022/handlingdevice/"
+SC_WS_URL   = "ws://localhost:8000/ws/CS2022/science/"
+AV_WS_URL   = "ws://localhost:8000/ws/CS2022/avionics/"
+MAN_WS_URL  = "ws://localhost:8000/ws/CS2022/manual/"
+HP_WS_URL   = "ws://localhost:8000/ws/CS2022/homepage/"
+
+ws_nav = websocket.WebSocket()
+ws_hd  = websocket.WebSocket()
+ws_sc  = websocket.WebSocket()
+ws_av  = websocket.WebSocket()
+ws_man = websocket.WebSocket()
+ws_hp  = websocket.WebSocket()
 
 # ===============================================================================
 # Controller (MVC)
@@ -151,25 +159,29 @@ class Controller():
     def hd_telemetry(self, jointstate):
         self.cs.HD.set_joint_telemetry(jointstate)
 
-    # TODO update the database everytime dist(pos1, pos2) > eps
-    # TODO IL FAUT PASSER A POSTGRESQL POUR LES ARRAYFIELD STP (ou utiliser des Blob)
     def nav_data(self, odometry):
         data = odometry.data
 
         # position (x,y,z)
-        pos = data.pose.pose.position
+        # pos = data.pose.pose.position
         
-        self.cs.rover.Nav.setPos([pos.x, pos.y, pos.z])
+        # self.cs.rover.Nav.setPos([pos.x, pos.y, pos.z])
 
         # linear velocity
-        twistLin = data.twist.twist.linear
+        # twistLin = data.twist.twist.linear
         
-        self.cs.rover.Nav.setLinVel([twistLin.x, twistLin.y, twistLin.z])
+        # self.cs.rover.Nav.setLinVel([twistLin.x, twistLin.y, twistLin.z])
 
         # angular velocity
-        twistAng = data.twist.twist.angular
+        # twistAng = data.twist.twist.angular
+        twistAng = data
         
-        self.cs.rover.Nav.setAngVel([twistAng.x, twistAng.y, twistAng.z])
+        # self.cs.rover.Nav.setAngVel([twistAng.x, twistAng.y, twistAng.z])
+
+        message = json.dumps({ 'message' : twistAng })
+        if ws_nav.connected :
+            # print(twistAng)
+            ws_nav.send('%s' % message)
 
 
 

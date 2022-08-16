@@ -207,7 +207,7 @@
 									
 									<div class="data-line-container">
 										<p class="data-title">Distance to goal: </p>
-										<p class="data">0 m</p>
+										<p id="debug-label" class="data">0 m</p>
 									</div>
 									<div class="data-line-container">
 										<p class="data-title">Route to goal: </p>
@@ -254,8 +254,9 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
+			console.log(data)
+			document.getElementById('debug-label').innerHTML = data.message
 			
-			console.log("debug")
 
 
         };

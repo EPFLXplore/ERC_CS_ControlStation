@@ -20,7 +20,7 @@ from django.shortcuts       import render
 from django.shortcuts       import redirect
 from django.http.response   import StreamingHttpResponse
 
-from numpy import ndarray
+from numpy                  import ndarray
 from src.cs_node            import *
 from src.controller         import *
 from manage                 import setup
@@ -76,27 +76,46 @@ def video_feed(request):
 # General views
 
 def handlingdevice(request):
-    return render(request, 'pages/handlingdevice.html')
+
+    ws_hd.connect(HD_WS_URL)
+    return render(request, 'pages/handlingdevice.html', { 
+        'tab_name': "handlingdevice"
+    }) 
 
 def homepage(request):
-    return render(request, 'pages/homepage.html')
+
+    ws_hp.connect(HP_WS_URL)
+    return render(request, 'pages/homepage.html', { 
+        'tab_name': "homepage"
+    }) 
 
 def manualcontrol(request):
-    return render(request, 'pages/manualcontrol.html')
+
+    ws_man.connect(MAN_WS_URL)
+    return render(request, 'pages/manualcontrol.html', { 
+        'tab_name': "manualcontrol"
+    }) 
 
 def navigation(request):
 
-    ws_nav.connect("ws://localhost:8000/ws/CS2022/navigation/")
-    print("debug")
+    ws_nav.connect(NAV_WS_URL)
     return render(request, 'pages/navigation.html', { 
         'tab_name': "navigation"
-    })  #TODO tab_name 
+    })  
 
 def science(request):
-    return render(request, 'pages/science.html')
+
+    ws_sc.connect(SC_WS_URL)
+    return render(request, 'pages/science.html', { 
+        'tab_name': "science"
+    }) 
 
 def avionics(request):
-    return render(request, 'pages/avionics.html')
+
+    ws_av.connect(AV_WS_URL)
+    return render(request, 'pages/avionics.html', { 
+        'tab_name': "avionics"
+    }) 
 
 # -----------------------------------
 # manual control views
