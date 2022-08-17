@@ -88,7 +88,7 @@ class CS:
         rospy.Subscriber('ROVER_Exception',               String,          self.controller.exception_clbk     )
         rospy.Subscriber('ROVER_TaskProgress',            Int8,            self.controller.task_progress      )
         rospy.Subscriber('ROVER_SC_state',                String,          self.controller.sc_text_info       )
-        rospy.Subscriber('ROVER_SC_measurments_humidity', Int16MultiArray, self.controller.sc_humidity        )
+        rospy.Subscriber('ROVER_SC_measurments_humidity', Int16,           self.controller.sc_humidity        )
         rospy.Subscriber('ROVER_SC_measurments_mass',     Int16,           self.controller.sc_mass            )
         rospy.Subscriber('ROVER_HD_telemetry',            JointState,      self.controller.hd_telemetry)
 

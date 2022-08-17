@@ -128,10 +128,15 @@ class Science:
     '''
 
     def __init__(self):
-        # humidities of the 3 tubes
-        self.__tubesHum = np.zeros(3)
+        # humidity of the specific tube
+        self.__tubeHum = 0
         # total sample mass
         self.__sc_mass = 0
+        self.__masses = np.zeros(3)
+
+        self.__op = -1
+        self.__tube = -1
+        self.__cmd = -1
 
 
     def setSCMass(self, mass):
@@ -140,11 +145,31 @@ class Science:
     def getSCMass(self):
         return self.__sc_mass
 
-    def setTubeHum(self, idx, val):
-        self.__tubesHum[idx] = val
+    def setTubeHum(self, val):
+        self.__tubeHum = val
 
-    def getTubeHum(self, idx):
-        return self.__tubesHum[idx]
+    def getTubeHum(self):
+        return self.__tubeHum
+
+    def selectTube(self, t):
+        self.__tube = t
+        self.setCmd(t + self.__op)
+
+    def getSelectedTube(self):
+        return self.__tube
+
+    def setOperation(self, op):
+        self.__op = op
+        self.setCmd(op + self.__tube)
+
+    def getOperation(self):
+        return self.__op
+
+    def setCmd(self, cmd):
+        self.__cmd = cmd
+
+    def getCmd(self):
+        return self.__cmd
 
 
 

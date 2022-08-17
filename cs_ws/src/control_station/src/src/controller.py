@@ -123,6 +123,9 @@ class Controller():
         self.cs.rover.SC.setTubeHum(arr[0], arr[1])
 
 
+    def sc_humidity(self, hum):
+        self.cs.rover.SC.setTubeHum(hum.data)
+
 
     def sc_mass(self, mass):
         '''
@@ -202,8 +205,13 @@ class Controller():
         '''
         checkArgs(task, instr)
 
-        arr = [task, instr]
-        self.cs.Task_pub.publish(Int8MultiArray(data = arr))
+        if(task == 4):
+            instr = self.cs.rover.SC.getCmd()
+            self.cs.Task_pub.publish(Int8MultiArray(data = [task, instr]))
+        else:
+            arr = [task, instr]
+            self.cs.Task_pub.publish(Int8MultiArray(data = arr))
+
         self.wait()
 
         self.cs.rover.setState(task, instr)
@@ -280,6 +288,18 @@ class Controller():
         rospy.loginfo("Debug wheels")
         self.cs.Nav_DebugWheels_pub(Int16MultiArray(data = [wheel_id, rot_vel, range]))
 
+
+    ##############################
+    #            SCIENCE         #
+    ##############################
+
+    def selectedTube(self, id):
+        if(id < 0 or id > 2): raise ValueError("tube ids are: 0, 1, 2")
+        self.cs.rover.selectTube(id)
+
+    def selectedOp(self, op):
+        self.cs.rover.setOperation(op)
+        
 
     ##############################
     #            MANUAL          #
