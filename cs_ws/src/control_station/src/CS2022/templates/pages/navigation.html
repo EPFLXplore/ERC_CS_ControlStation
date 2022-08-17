@@ -254,7 +254,7 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-			console.log(data)
+			// console.log(data)
 			document.getElementById('debug-label').innerHTML = data.message
 			
 

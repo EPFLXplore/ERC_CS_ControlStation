@@ -1,12 +1,13 @@
 '''
-@file  : cameras_receiver.py 
+@file  : cameras.py 
 
 @author: Emile Hreich
          emile.janhodithreich@epfl.ch
 
 @date : 30/03/2022
 
-@brief: 
+@brief: exectuable in the control_station ros package to recieve 
+        camera streams
 
 
 '''
@@ -21,6 +22,15 @@ from cv_bridge import CvBridge
 
 
 # ==================================================================
+
+        # TODO
+        # rospy.Subscriber('camera_1',                CompressedImage, self.controller.display_cam_1      , self.cameras)
+        # rospy.Subscriber('camera_2',                CompressedImage, self.controller.display_cam_2      , self.cameras)
+        # rospy.Subscriber('camera_3',                CompressedImage, self.controller.display_cam_3      , self.cameras)
+        # rospy.Subscriber('camera_4',                CompressedImage, self.controller.display_cam_4      , self.cameras)
+        # rospy.Subscriber('camera_5',                CompressedImage, self.controller.display_cam_5      , self.cameras)
+        # rospy.Subscriber('camera_6',                CompressedImage, self.controller.display_cam_6      , self.cameras)
+
 class Cameras:
 
     def __init__(self):        

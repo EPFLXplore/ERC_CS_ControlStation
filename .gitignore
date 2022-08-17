@@ -2,6 +2,9 @@
 __pycache__/
 *.pyc
 
+# Redis Backup file
+*.rdb
+
 # Prerequisites
 *.d
 

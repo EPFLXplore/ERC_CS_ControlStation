@@ -36,7 +36,7 @@ from Gamepad.Gamepad                      import Gamepad
 from src.model                            import *
 
 # TODO new (Twist too)
-from threading              import Thread
+# from threading              import Thread
 from nav_msgs.msg           import Odometry
 from CS2022.models          import *
 
@@ -56,6 +56,7 @@ ws_sc  = websocket.WebSocket()
 ws_av  = websocket.WebSocket()
 ws_man = websocket.WebSocket()
 ws_hp  = websocket.WebSocket()
+
 
 # ===============================================================================
 # Controller (MVC)

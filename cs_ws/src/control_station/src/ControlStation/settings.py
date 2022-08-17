@@ -25,6 +25,7 @@ SECRET_KEY = '0i#ukhj*v6$uyoxw6^uobi$@4tu+xdigq3vepn=oo=qu6p9r_2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 ALLOWED_HOSTS = []
 
 
@@ -32,7 +33,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'channels',
-    'CS2022.apps.Cs2022Config', #'chat'
+    'CS2022.apps.Cs2022Config',
+    'cameras', 
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
