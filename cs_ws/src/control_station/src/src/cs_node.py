@@ -54,7 +54,7 @@ class CS:
 
         self.controller = Controller(self)
         self.rover      = Rover()
-        self.cameras    = Cameras()
+        # self.cameras    = Cameras()
 
         self.navID      = [0]
 
