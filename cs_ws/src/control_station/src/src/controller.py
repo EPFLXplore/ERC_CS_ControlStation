@@ -50,12 +50,12 @@ AV_WS_URL   = "ws://localhost:8000/ws/CS2022/avionics/"
 MAN_WS_URL  = "ws://localhost:8000/ws/CS2022/manual/"
 HP_WS_URL   = "ws://localhost:8000/ws/CS2022/homepage/"
 
-'''ws_nav = websocket.WebSocket()
+ws_nav = websocket.WebSocket()
 ws_hd  = websocket.WebSocket()
 ws_sc  = websocket.WebSocket()
 ws_av  = websocket.WebSocket()
 ws_man = websocket.WebSocket()
-ws_hp  = websocket.WebSocket()'''
+ws_hp  = websocket.WebSocket()
 
 
 # ===============================================================================

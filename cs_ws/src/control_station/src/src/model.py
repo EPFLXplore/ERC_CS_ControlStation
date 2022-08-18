@@ -145,17 +145,16 @@ class Science:
         # humidity of the specific tube
         self.__tubeHum = 0
         # total sample mass
-        self.__sc_masses = np.zeros(3)
+
         self.__masses = np.zeros(3)
 
-        self.__op = -1
-        self.__tube = -1
+        self.__op_tube = np.zeros(2)
         self.__cmd = -1
 
     #--------------------------
 
     def setSCMass(self, mass):
-        self.__sc_masses[self.__tube] = mass
+        self.__masses[self.__op_tube[1]] = mass
     
     def getSCMass(self):
         return self.__sc_mass
@@ -170,22 +169,29 @@ class Science:
 
     #--------------------------
 
-    def selectTube(self, t):
-        self.__tube = t
-        self.setCmd(t + self.__op)
+    def setOperation(self, op):
+        self.__op_tube[0] = op
+        self.setTubeCmd()
 
-    def getSelectedTube(self):
-        return self.__tube
+    def getOperation(self):
+        return self.__op_tube[0]
+
 
     #--------------------------
 
-    def setOperation(self, op):
-        self.__op = op
-        self.setCmd(op + self.__tube)
+    def selectTube(self, t):
+        self.__op_tube[1] = t
+        self.setTubeCmd()
 
-    def getOperation(self):
-        return self.__op
+    def getSelectedTube(self):
+        return self.__op_tube[1]
 
+    #--------------------------
+
+    def setTubeCmd(self):
+        arr = self.__op_tube
+        self.setCmd(arr[0]*10 + arr[1])
+    
     #--------------------------
 
     def setCmd(self, cmd):
@@ -194,6 +200,7 @@ class Science:
     def getCmd(self):
         return self.__cmd
 
+    #--------------------------
 
 
 class HandlingDevice:
