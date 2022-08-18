@@ -66,7 +66,8 @@ class Navigation:
         self.__nextId = 0
 
         # keep track of goals
-        self.__goals = np.array([])
+        #self.__goals = np.array([])
+        self.__goal = np.zeros(3)
 
         # rover position
         self.__pos = np.zeros(3)
@@ -75,22 +76,30 @@ class Navigation:
         # rover angular velocity
         self.__angVel = np.zeros(3)
 
-    def addGoal(self, arr):
+    '''def addGoal(self, arr):
         if(len(arr) != 3): raise Exception("array length must be 3 -> (x,y,z)")
 
         np.append(self.__goals, arr)
         self.incrementId()
+    '''
 
     def incrementId(self):
         self.__nextId += 1
 
-    def getGoal(self, id):
+    '''def getGoal(self, id):
         return self.__goals[id]
+    '''
 
-    def cancelGoal(self, id):
+    def getGoal(self):
+        return self.__goal
+
+    '''def cancelGoal(self, id):
         len = len(self.__goals)
         if (id < 0 or id > len): raise ValueError("Invalid navigation goal id")
-        np.delete(self.__goals, id, 0)
+        np.delete(self.__goals, id, 0)'''
+
+    def cancelGoal(self):
+        self.__goal = np.zeros(3)
     
     #------------- Twist Data -------------
     
@@ -117,10 +126,13 @@ class Navigation:
 
     #-------------------------------------
 
-    def distToGoal(self, id):
+    '''def distToGoal(self, id):
         diff = self.getGoal(id) - self.getPos()
-        return np.linalg.norm(diff)
+        return np.linalg.norm(diff)'''
 
+    def distToGoal(self):
+        diff = self.getGoal() - self.getPos()
+        return np.linalg.norm(diff)
 
 class Science:
     '''

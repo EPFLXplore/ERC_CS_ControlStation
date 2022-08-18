@@ -166,22 +166,27 @@ class Controller():
         data = odometry.data
 
         # position (x,y,z)
-        # pos = data.pose.pose.position
+        pos = data.pose.pose.position
         
-        # self.cs.rover.Nav.setPos([pos.x, pos.y, pos.z])
+        self.cs.rover.Nav.setPos([pos.x, pos.y, pos.z])
 
         # linear velocity
-        # twistLin = data.twist.twist.linear
+        twistLin = data.twist.twist.linear
         
-        # self.cs.rover.Nav.setLinVel([twistLin.x, twistLin.y, twistLin.z])
+        self.cs.rover.Nav.setLinVel([twistLin.x, twistLin.y, twistLin.z])
 
         # angular velocity
-        # twistAng = data.twist.twist.angular
-        twistAng = data
+        twistAng = data.twist.twist.angular
+        #twistAng = data
         
-        # self.cs.rover.Nav.setAngVel([twistAng.x, twistAng.y, twistAng.z])
+        self.cs.rover.Nav.setAngVel([twistAng.x, twistAng.y, twistAng.z])
 
-        message = json.dumps({ 'message' : twistAng })
+        message = json.dumps({ 'x'      : pos.x, 
+                               'y'      : pos.y, 
+                               'linVel' : self.cs.rover.Nav.getLinVel(), 
+                               'angVel' : self.cs.rover.Nav.getAngVel(),
+                               'dist'   : self.cs.rover.Nav.distToGoal() })
+                               
         if ws_nav.connected :
             # print(twistAng)
             ws_nav.send('%s' % message)
