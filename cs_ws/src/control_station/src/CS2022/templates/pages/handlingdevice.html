@@ -321,14 +321,6 @@
 							<div class="input-title-container">{% csrf_token %}
 								<p class="input-title">TARGET</p>
 							</div>
-								
-							<div class="input-container">{% csrf_token %}
-								<input type="number" class="input" placeholder="X" name="x"/>
-								<input type="number" class="input" placeholder="Y" name="y"/>
-								<input type="number" class="input" placeholder="Z" name="z"/>
-
-								<button type="submit" class="set-button">SET</button>
-							</div>
 
 
 							<div class="button-dropdown-container">
@@ -345,6 +337,15 @@
 									<option>9</option>
 								</select> 
 							</div>
+
+							<div class="input-container">{% csrf_token %}
+								<!--<input type="number" class="input" placeholder="X" name="x"/>
+								<input type="number" class="input" placeholder="Y" name="y"/>
+								<input type="number" class="input" placeholder="Z" name="z"/>-->
+
+								<button type="submit" class="set-button">SET</button>
+							</div>
+
 						</form>
 					</div>
 

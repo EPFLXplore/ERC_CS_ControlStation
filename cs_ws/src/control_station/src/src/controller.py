@@ -132,8 +132,8 @@ class Controller():
         '''
             receive the total mass of the 3 tubes
         '''
-        rospy.loginfo("SC mass: %s", val)
         val = mass.data
+        rospy.loginfo("SC mass: %s", val)
         self.cs.rover.SC.setSCMass(val)
         #Science.objects.update_or_create(name="Science", defaults={'mass': val})
 
@@ -161,44 +161,33 @@ class Controller():
 
         
     def hd_telemetry(self, jointstate):
-        self.cs.HD.set_joint_telemetry(jointstate)
+        self.cs.HD.set_joint_telemetry(jointstate.data)
 
     def nav_data(self, odometry):
         # data = odometry.data
 
-        # # position (x,y,z)
-        # pos = data.pose.pose.position
+        # position (x,y,z)
+        pos = data.pose.pose.position
         
-        # self.cs.rover.Nav.setPos([pos.x, pos.y, pos.z])
+        self.cs.rover.Nav.setPos([pos.x, pos.y, pos.z])
 
-        # # linear velocity
-        # twistLin = data.twist.twist.linear
+        # linear velocity
+        twistLin = data.twist.twist.linear
         
-        # self.cs.rover.Nav.setLinVel([twistLin.x, twistLin.y, twistLin.z])
+        self.cs.rover.Nav.setLinVel([twistLin.x, twistLin.y, twistLin.z])
 
-        # # angular velocity
-        # twistAng = data.twist.twist.angular
-        # #twistAng = data
+        # angular velocity
+        twistAng = data.twist.twist.angular
+        #twistAng = data
         
-        # self.cs.rover.Nav.setAngVel([twistAng.x, twistAng.y, twistAng.z])
+        self.cs.rover.Nav.setAngVel([twistAng.x, twistAng.y, twistAng.z])
 
-        # message = json.dumps({ 'x'      : pos.x, 
-        #                        'y'      : pos.y, 
-        #                        'linVel' : self.cs.rover.Nav.getLinVel(), 
-        #                        'angVel' : self.cs.rover.Nav.getAngVel(),
-        #                        'dist'   : self.cs.rover.Nav.distToGoal() })
+        message = json.dumps({ 'x'      : pos.x, 
+                               'y'      : pos.y, 
+                               'linVel' : self.cs.rover.Nav.getLinVel(), 
+                               'angVel' : self.cs.rover.Nav.getAngVel(),
+                               'dist'   : self.cs.rover.Nav.distToGoal() })
                                
-        # if ws_nav.connected :
-        #     # print(twistAng)
-        #     ws_nav.send('%s' % message)
-        data = odometry.data
-
-
-        twistAng = data
-        
-        # self.cs.rover.Nav.setAngVel([twistAng.x, twistAng.y, twistAng.z])
-
-        message = json.dumps({ 'Debug': 0, 'Debug2' : twistAng })
         if ws_nav.connected :
             # print(twistAng)
             ws_nav.send('%s' % message)
@@ -277,7 +266,7 @@ class Controller():
         
         # TODO
         # self.cs.Nav_Goal_pub.publish(move_base_action_goal(currId = self.cs.rover.currId, moveBaseGoal = moveBaseGoal_var))
-        self.cs.rover.Nav.addGoal([x,y,z])
+        self.cs.rover.Nav.setGoal([x,y,z])
 
 
     # cancel a specific Navigation goal by giving the goal's id

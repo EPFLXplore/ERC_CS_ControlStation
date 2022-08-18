@@ -82,6 +82,8 @@ class Navigation:
         np.append(self.__goals, arr)
         self.incrementId()
     '''
+    def setGoal(self, arr):
+        self.__goal = arr
 
     def incrementId(self):
         self.__nextId += 1
@@ -143,25 +145,30 @@ class Science:
         # humidity of the specific tube
         self.__tubeHum = 0
         # total sample mass
-        self.__sc_mass = 0
+        self.__sc_masses = np.zeros(3)
         self.__masses = np.zeros(3)
 
         self.__op = -1
         self.__tube = -1
         self.__cmd = -1
 
+    #--------------------------
 
     def setSCMass(self, mass):
-        self.__sc_mass = mass
+        self.__sc_masses[self.__tube] = mass
     
     def getSCMass(self):
         return self.__sc_mass
+
+    #--------------------------
 
     def setTubeHum(self, val):
         self.__tubeHum = val
 
     def getTubeHum(self):
         return self.__tubeHum
+
+    #--------------------------
 
     def selectTube(self, t):
         self.__tube = t
@@ -170,12 +177,16 @@ class Science:
     def getSelectedTube(self):
         return self.__tube
 
+    #--------------------------
+
     def setOperation(self, op):
         self.__op = op
         self.setCmd(op + self.__tube)
 
     def getOperation(self):
         return self.__op
+
+    #--------------------------
 
     def setCmd(self, cmd):
         self.__cmd = cmd
@@ -196,6 +207,8 @@ class HandlingDevice:
         self.__joint_positions = np.array(7)
         self.__joint_velocities = np.array(7)
 
+    #--------------------------
+
     def setHDMode(self, mode):
         if(mode < 0 or mode > 3): raise ValueError("Invalid mode")
         self.__hd_mode = mode
@@ -203,13 +216,14 @@ class HandlingDevice:
     def getHDMode(self):
         return self.__hd_mode
 
+    #--------------------------
 
-    def set_joint_telemetry(self, telemetry_ros):
-        telemetry = telemetry_ros.data
+    def set_joint_telemetry(self, telemetry):
         self.set_joint_positions(telemetry.position)
         self.set_joint_velocities(telemetry.velocity)
-        self.rover.HD_telemetry_pub.publish(telemetry)
+        #self.rover.HD_telemetry_pub.publish(telemetry)
 
+    #--------------------------
 
     def set_joint_positions(self, positions):
         self.__joint_positions = positions
@@ -217,11 +231,15 @@ class HandlingDevice:
     def get_joint_positions(self):
         return self.__joint_positions
 
+    #--------------------------
+
     def set_joint_velocities(self, velocities):
         self.__joint_velocities = velocities
 
     def get_joint_velocities(self):
         return self.__joint_velocities
+
+    #--------------------------
 
     def getVelNorm(self):
         return np.linalg.norm(self.get_joint_velocities)
