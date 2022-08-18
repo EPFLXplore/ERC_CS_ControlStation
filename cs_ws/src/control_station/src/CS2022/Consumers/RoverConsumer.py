@@ -26,22 +26,26 @@ class RoverConsumer(AsyncWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message = text_data_json['message']
+        message_1 = text_data_json['Debug']
+        message_2 = text_data_json['Debug2']
 
         # Send message to room group
         await self.channel_layer.group_send(
             self.room_group_name,
             {
                 'type': 'topic_message',
-                'message': message
+                'Debug': message_1,
+                'Debug2': message_2
             }
         )
 
     # Receive message from room group
     async def topic_message(self, event):
-        message = event['message']
+        message_1 = event['Debug']
+        message_2 = event['Debug2']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'message': message
+            'Debug': message_1,
+            'Debug2':message_2
         }))

@@ -33,8 +33,6 @@ from geometry_msgs.msg     import Twist
 from actionlib_msgs.msg    import GoalID
 from nav_msgs.msg          import Odometry
 from src.controller        import *
-from sensor_msgs.msg       import CompressedImage
-from src.cameras           import *
 from sensor_msgs.msg       import JointState
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
@@ -54,7 +52,7 @@ class CS:
 
         self.controller = Controller(self)
         self.rover      = Rover()
-        self.cameras    = Cameras()
+        # self.cameras    = Cameras()
 
         self.navID      = [0]
 
@@ -92,13 +90,7 @@ class CS:
         rospy.Subscriber('ROVER_SC_measurments_mass',     Int16,           self.controller.sc_mass            )
         rospy.Subscriber('ROVER_HD_telemetry',            JointState,      self.controller.hd_telemetry)
 
-        # TODO
-        # rospy.Subscriber('camera_1',                CompressedImage, self.controller.display_cam_1      , self.cameras)
-        # rospy.Subscriber('camera_2',                CompressedImage, self.controller.display_cam_2      , self.cameras)
-        # rospy.Subscriber('camera_3',                CompressedImage, self.controller.display_cam_3      , self.cameras)
-        # rospy.Subscriber('camera_4',                CompressedImage, self.controller.display_cam_4      , self.cameras)
-        # rospy.Subscriber('camera_5',                CompressedImage, self.controller.display_cam_5      , self.cameras)
-        # rospy.Subscriber('camera_6',                CompressedImage, self.controller.display_cam_6      , self.cameras)
+
 
         # TODO
         # rospy.Subscriber('detection/state', UInt8, detection_state)

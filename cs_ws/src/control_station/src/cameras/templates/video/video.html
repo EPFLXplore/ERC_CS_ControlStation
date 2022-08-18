@@ -1,0 +1,40 @@
+<!--video.html-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Video</title>
+</head>
+<body>
+
+<div>
+    <h1>Video</h1>
+<div>
+<div>
+    <img id="resImg" src="" />
+</div>
+
+<script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js" ></script>
+<script>
+        let ws = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/video/'
+            + 'wms'
+            + '/'
+        );
+
+        ws.onmessage = function(evt) {
+            v_data = JSON.parse(evt.data);
+            $("#resImg").attr("src", v_data.message);
+            
+        };
+
+        ws.onclose = function(evt) {
+            console.log("Connection closed.");
+        };
+
+
+</script>
+</body>
+</html>

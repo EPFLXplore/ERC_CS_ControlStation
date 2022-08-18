@@ -12,7 +12,7 @@ urlpatterns = [
     path('avionics/', 		        views.avionics,		  name='avionics'),
 
     # Cameras
-    path('video_feed/',             views.video_feed,     name='video_feed'),
+    # path('video_feed/',             views.video_feed,     name='video_feed'),
     
     #STATE BUTTONS
     #Manualcontrol

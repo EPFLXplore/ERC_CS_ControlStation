@@ -20,6 +20,7 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('launcher/', views.launcher, name='launcher'),  #TODO extra
-    path('CS2022/', include('CS2022.urls'))
+    path('launcher/', views.launcher, name='launcher'),
+    path('CS2022/', include('CS2022.urls')),
+    path('cameras/', include('cameras.urls'))
 ]
