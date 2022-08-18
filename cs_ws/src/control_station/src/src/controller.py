@@ -50,12 +50,12 @@ AV_WS_URL   = "ws://localhost:8000/ws/CS2022/avionics/"
 MAN_WS_URL  = "ws://localhost:8000/ws/CS2022/manual/"
 HP_WS_URL   = "ws://localhost:8000/ws/CS2022/homepage/"
 
-ws_nav = websocket.WebSocket()
+'''ws_nav = websocket.WebSocket()
 ws_hd  = websocket.WebSocket()
 ws_sc  = websocket.WebSocket()
 ws_av  = websocket.WebSocket()
 ws_man = websocket.WebSocket()
-ws_hp  = websocket.WebSocket()
+ws_hp  = websocket.WebSocket()'''
 
 
 # ===============================================================================
@@ -132,8 +132,8 @@ class Controller():
         '''
             receive the total mass of the 3 tubes
         '''
-        rospy.loginfo("SC mass: %s", val)
         val = mass.data
+        rospy.loginfo("SC mass: %s", val)
         self.cs.rover.SC.setSCMass(val)
         #Science.objects.update_or_create(name="Science", defaults={'mass': val})
 
@@ -161,7 +161,7 @@ class Controller():
 
         
     def hd_telemetry(self, jointstate):
-        self.cs.HD.set_joint_telemetry(jointstate)
+        self.cs.HD.set_joint_telemetry(jointstate.data)
 
     def nav_data(self, odometry):
         data = odometry.data
@@ -187,7 +187,7 @@ class Controller():
                                'linVel' : self.cs.rover.Nav.getLinVel(), 
                                'angVel' : self.cs.rover.Nav.getAngVel(),
                                'dist'   : self.cs.rover.Nav.distToGoal() })
-                               
+
         if ws_nav.connected :
             # print(twistAng)
             ws_nav.send('%s' % message)
@@ -266,7 +266,7 @@ class Controller():
         
         # TODO
         # self.cs.Nav_Goal_pub.publish(move_base_action_goal(currId = self.cs.rover.currId, moveBaseGoal = moveBaseGoal_var))
-        self.cs.rover.Nav.addGoal([x,y,z])
+        self.cs.rover.Nav.setGoal([x,y,z])
 
 
     # cancel a specific Navigation goal by giving the goal's id
