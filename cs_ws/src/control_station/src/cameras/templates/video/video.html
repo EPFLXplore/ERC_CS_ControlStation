@@ -27,8 +27,7 @@
         ws.onmessage = function(evt) {
             v_data = JSON.parse(evt.data);
             $("#resImg").attr("src", v_data.message);
-            //console.log( "Received Message: " + v_data.message);
-            // ws.close();
+            
         };
 
         ws.onclose = function(evt) {

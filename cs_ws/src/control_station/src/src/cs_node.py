@@ -33,8 +33,6 @@ from geometry_msgs.msg     import Twist
 from actionlib_msgs.msg    import GoalID
 from nav_msgs.msg          import Odometry
 from src.controller        import *
-from sensor_msgs.msg       import CompressedImage
-from src.cameras           import *
 from sensor_msgs.msg       import JointState
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')

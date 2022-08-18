@@ -1,7 +1,7 @@
 # CS2022/routing.py
 from django.urls import re_path
 
-from . import RoverConsumer
+from .Consumers import RoverConsumer
 import cameras.CameraConsumer
 
 websocket_urlpatterns = [

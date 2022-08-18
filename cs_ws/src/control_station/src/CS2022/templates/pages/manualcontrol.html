@@ -122,6 +122,7 @@
 						</button>
 					</form>
 				</div>
+
 			</div>
 
 			<div class="controller-switch">
@@ -151,11 +152,11 @@
 						</button>
 					</form>
 				</div>
-				
 			</div>
 		</div>
 		
 		<div id="right-side" class="box">
+
 			<div class="top-bar">
 				<label id="idle-state" class="neon-label">IDLE</label>
 				<label id="navigation-state" class="neon-label">NAVIGATION</label>
@@ -170,27 +171,26 @@
 				<div class="left">
 					<div class="top-left">
 					
-						<img src="{% url 'video_feed' %}" width="100%">
+						<img id="camera_1" src="{% static 'common/logothumbnail.png' %}" height="100%" width="100%">
 						<p id="envmap-title">CAMERA 1</p>
 						
 					</div>
-					<div class="h-separator">
-					</div>
+
+					<div class="h-separator"></div>
+
 					<div class="bottom-left">
 					
-						<video class="envmap" autoplay="true">
-						</video>
+						<img id="camera_2" src="{% static 'common/logothumbnail.png' %}" height="100%" width="100%">
 						<p id="envmap-title">CAMERA 2</p>
 
-					
 					</div>
+
 				</div>
-					<div class="v-separator">
-					</div>
+
+				<div class="v-separator"></div>
+
 				<div class="right">
-				
-	
-					
+			
 					<div class="settings-container">
 						<div class="settings-top-bar">
 							<div class="currentpos-container">
@@ -228,21 +228,22 @@
 								</div>
 							</div>
 						</div>
+
 						<div class="settings-bottom">
+
 							<div id="interactive_box" class="settings">
 								<div id="direct_box" class="settings_box">
-								<div class="settings-title-box">
-									<p class="settings-title">ENCODERS DATA:</p>
-								</div>
-								<ul style="color: white; margin-left: 45px;">
-									<li>e1: </li>
-									<li>e2: </li>
-									<li>e3: </li>
-									<li>e4: </li>
-									<li>e5: </li>
-									<li>e6: </li>
-								</ul>
-						
+									<div class="settings-title-box">
+										<p class="settings-title">ENCODERS DATA:</p>
+									</div>
+									<ul style="color: white; margin-left: 45px;">
+										<li>e1: </li>
+										<li>e2: </li>
+										<li>e3: </li>
+										<li>e4: </li>
+										<li>e5: </li>
+										<li>e6: </li>
+									</ul>
 								</div>
 							</div>
 
@@ -279,19 +280,43 @@
 										</form>
 									</div>
 								</div>
-								
-								</div>
+
 							</div>
-							
 						</div>
+						
+					</div>
 				</div>
+				<!-- cameras grid -->
+				<div class="row">
+					<div class="column">
+						
+					  <img src="{% static 'common/logothumbnail.png' %}" width="17%">
+					  <img src="{% static 'common/logothumbnail.png' %}" width="17%">
+					  <img src="{% static 'common/logothumbnail.png' %}" width="17%">
+					  <img src="{% static 'common/logothumbnail.png' %}" width="17%">
+					  <img src="{% static 'common/logothumbnail.png' %}" width="17%">
+
+					</div>
+					<div class="column">
+					  <img src="{% static 'common/logothumbnail.png' %}" width="17%">
+					  <img src="{% static 'common/logothumbnail.png' %}" width="17%"> 
+					  <img src="{% static 'common/logothumbnail.png' %}" width="17%"> 
+					  <img src="{% static 'common/logothumbnail.png' %}" width="17%"> 
+					  <img src="{% static 'common/logothumbnail.png' %}" width="17%"> 
+
+					</div>
+					
+				  </div>
 			</div>
 		</div>
-		
 	</div>
+	<!-- =================================================================================================================== -->
 	<script>
 
 		const tabName = JSON.parse(document.getElementById('tab-name').textContent);
+
+		// ----------------------------------------------------------------------
+		// Data
 		const chatSocket = new WebSocket(
 			'ws://'
 			+ window.location.host
@@ -311,25 +336,29 @@
 		chatSocket.onclose = function(e) {
 			console.error('Chat socket closed unexpectedly');
 		};
-	
-		// document.querySelector('#chat-message-input').focus();
-		// document.querySelector('#chat-message-input').onkeyup = function(e) {
-		//     if (e.keyCode === 13) {  // enter, return
-		//         document.querySelector('#chat-message-submit').click();
-		//     }
-		// };
-	
-		// document.querySelector('#chat-message-submit').onclick = function(e) {
-		//     const messageInputDom = document.querySelector('#chat-message-input');
-		//     const message = messageInputDom.value;
-		//     chatSocket.send(JSON.stringify({
-		//         'message': message
-		//     }));
-		//     messageInputDom.value = '';
-		// };
-	
+
+		// --------------------------------------------------------------------------
+		// Cameras
+		let ws = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/video/'
+            + 'wms'
+            + '/'
+        );
+
+        ws.onmessage = function(evt) {
+            v_data = JSON.parse(evt.data);
+            $("#camera_1").attr("src", v_data.message);
+            
+        };
+
+        ws.onclose = function(evt) {
+            console.log("Connection closed.");
+        };
 	
 	</script>
+	<!-- ================================================================================================================= -->
 </body>
 
 </html>

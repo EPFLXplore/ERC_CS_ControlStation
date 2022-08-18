@@ -182,7 +182,7 @@ class Controller():
         
         # self.cs.rover.Nav.setAngVel([twistAng.x, twistAng.y, twistAng.z])
 
-        message = json.dumps({ 'message' : twistAng })
+        message = json.dumps({ 'Debug': 0, 'Debug2' : twistAng })
         if ws_nav.connected :
             # print(twistAng)
             ws_nav.send('%s' % message)

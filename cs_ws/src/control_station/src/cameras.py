@@ -13,80 +13,99 @@
 '''
 # ==================================================================
 # libraries
+
 import cv2
 import numpy as np
-# import threading
-# from flask import Flask, render_template, Response
+import rospy
+import websocket
+import base64
 
-from cv_bridge import CvBridge
 
+from sensor_msgs.msg       import CompressedImage
+from cv_bridge             import CvBridge
 
 # ==================================================================
 
-        # TODO
-        # rospy.Subscriber('camera_1',                CompressedImage, self.controller.display_cam_1      , self.cameras)
-        # rospy.Subscriber('camera_2',                CompressedImage, self.controller.display_cam_2      , self.cameras)
-        # rospy.Subscriber('camera_3',                CompressedImage, self.controller.display_cam_3      , self.cameras)
-        # rospy.Subscriber('camera_4',                CompressedImage, self.controller.display_cam_4      , self.cameras)
-        # rospy.Subscriber('camera_5',                CompressedImage, self.controller.display_cam_5      , self.cameras)
-        # rospy.Subscriber('camera_6',                CompressedImage, self.controller.display_cam_6      , self.cameras)
+CAMERA_WS_URL = 'ws://127.0.0.1:8000/ws/video/wms/'
 
-class Cameras:
+ws = websocket.WebSocket()
+ws.connect(CAMERA_WS_URL)
 
-    def __init__(self):        
-        self.cam_1 = cv2.imread('/home/emile/Documents/CS_workspace/ControlStation/CS2022/static/common/logo-black2.png')
-        self.cam_2 = np.zeros((300, 300, 3))
-        self.cam_3 = np.zeros((300, 300, 3))
-        self.cam_4 = np.zeros((300, 300, 3))
-        self.cam_5 = np.zeros((300, 300, 3))
-        self.cam_6 = np.zeros((300, 300, 3))
-        
+encode_param=[int(cv2.IMWRITE_JPEG_QUALITY),95]
 
+im_1 = np.zeros((300, 300, 3))
+im_2 = np.zeros((300, 300, 3))
+im_3 = np.zeros((300, 300, 3))
+im_4 = np.zeros((300, 300, 3))
+im_5 = np.zeros((300, 300, 3))
+im_6 = np.zeros((300, 300, 3))
 
-# def gen(camera):
-#     while True:
-#         frame = camera.get_frame()
-#         yield(b'--frame\r\n'
-#               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-
-
-bridge = CvBridge()  # bridge between OpenCV and ROS
-
-# cameras = Cameras()
 # ==================================================================
 # callback functions definition
 
 
-def display_cam_1(msg, cameras):
-    # global im1 
-    # im1 = bridge.compressed_imgmsg_to_cv2(msg)
-    cameras.cam_1 = bridge.compressed_imgmsg_to_cv2(msg)
+def display_cam_1(msg):
+    global im1 
+    im1 = bridge.compressed_imgmsg_to_cv2(msg)
+
+    imgencode = cv2.imencode('.jpg', im1, encode_param)
+    data = np.array(imgencode)
+    img = data.tobytes()
+    
+    # base64 encoded transmission
+    img = base64.b64encode(img).decode()
+    
+    ws.send("data:image/jpg;base64,"+ img)
+
     
 
-def display_cam_2(msg, cameras):
-    # global im2 
-    # im2 = bridge.compressed_imgmsg_to_cv2(msg)
-    cameras.cam_2 = bridge.compressed_imgmsg_to_cv2(msg)
+def display_cam_2(msg):
+    global im2 
+    im2 = bridge.compressed_imgmsg_to_cv2(msg)
 
-def display_cam_3(msg, cameras):
-    # global im3 
-    # im3 = bridge.compressed_imgmsg_to_cv2(msg)
-    cameras.cam_3 = bridge.compressed_imgmsg_to_cv2(msg)
+def display_cam_3(msg):
+    global im3 
+    im3 = bridge.compressed_imgmsg_to_cv2(msg)
+    
 
-def display_cam_4(msg, cameras):
-    # global im4 
-    # im4 = bridge.compressed_imgmsg_to_cv2(msg)
-    cameras.cam_4 = bridge.compressed_imgmsg_to_cv2(msg)
+def display_cam_4(msg):
+    global im4 
+    im4 = bridge.compressed_imgmsg_to_cv2(msg)
 
-def display_cam_5(msg, cameras):
-    # global im5 
-    # im5 = bridge.compressed_imgmsg_to_cv2(msg)
-    cameras.cam_5 = bridge.compressed_imgmsg_to_cv2(msg)
+def display_cam_5(msg):
+    global im5 
+    im5 = bridge.compressed_imgmsg_to_cv2(msg)
 
-def display_cam_6(msg, cameras):
-    # global im6 
-    # im6 = bridge.compressed_imgmsg_to_cv2(msg)
-    cameras.cam_6 = bridge.compressed_imgmsg_to_cv2(msg)
+def display_cam_6(msg):
+    global im6 
+    im6 = bridge.compressed_imgmsg_to_cv2(msg)
+
+
+
+# ==================================================================
+
+# ROS node definition
+rospy.init_node("cameras_reciever", anonymous=False)
+
+# ROS subscribers
+rospy.Subscriber('camera_1',                CompressedImage, display_cam_1 )
+rospy.Subscriber('camera_2',                CompressedImage, display_cam_2 )
+rospy.Subscriber('camera_3',                CompressedImage, display_cam_3 )
+rospy.Subscriber('camera_4',                CompressedImage, display_cam_4 )
+rospy.Subscriber('camera_5',                CompressedImage, display_cam_5 )
+rospy.Subscriber('camera_6',                CompressedImage, display_cam_6 )
+
+
+# ROS publishers
+
+
+bridge = CvBridge()  # bridge between OpenCV and ROS
+
+
+      
+
+        
+
 
 
 

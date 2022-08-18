@@ -38,39 +38,39 @@ cs = setup().CONTROL_STATION
 # ------------------------------------
 # cameras
 
-class VideoCamera(object):
+# class VideoCamera(object):
 
-    def __init__(self, capture):
-        # self.video = capture
+#     def __init__(self, capture):
+#         # self.video = capture
 
-        self.frame = cs.cameras.cam_1
-        threading.Thread(target=self.update, args=()).start()
+#         self.frame = cs.cameras.cam_1
+#         threading.Thread(target=self.update, args=()).start()
 
-    # def __del__(self):
-    #     self.video.release()
+#     # def __del__(self):
+#     #     self.video.release()
 
-    def get_frame(self):
-        image = self.frame
-        _, jpeg = cv2.imencode('.jpg', image)
-        return jpeg.tobytes()
+#     def get_frame(self):
+#         image = self.frame
+#         _, jpeg = cv2.imencode('.jpg', image)
+#         return jpeg.tobytes()
 
-    def update(self):
-        while True:
-            self.frame = cs.cameras.cam_1
+#     def update(self):
+#         while True:
+#             self.frame = cs.cameras.cam_1
 
 
-def gen(camera):
-    while True:
+# def gen(camera):
+#     while True:
         
-        frame = camera.get_frame()
-        yield(b'--frame\r\n'
-            b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+#         frame = camera.get_frame()
+#         yield(b'--frame\r\n'
+#             b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
 
 
-def video_feed(request):
-    return StreamingHttpResponse(gen(VideoCamera(cs.cameras.cam_1)),
-                    content_type='multipart/x-mixed-replace; boundary=frame')
+# def video_feed(request):
+#     return StreamingHttpResponse(gen(VideoCamera(cs.cameras.cam_1)),
+#                     content_type='multipart/x-mixed-replace; boundary=frame')
 
 # ------------------------------------
 # General views
