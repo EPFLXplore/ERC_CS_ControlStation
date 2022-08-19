@@ -164,7 +164,7 @@ class Controller():
         self.cs.HD.set_joint_telemetry(jointstate.data)
 
     def nav_data(self, odometry):
-        # data = odometry.data
+        data = odometry.data
 
         # position (x,y,z)
         pos = data.pose.pose.position
@@ -187,11 +187,10 @@ class Controller():
                                'linVel' : self.cs.rover.Nav.getLinVel(), 
                                'angVel' : self.cs.rover.Nav.getAngVel(),
                                'dist'   : self.cs.rover.Nav.distToGoal() })
-                               
+
         if ws_nav.connected :
             # print(twistAng)
             ws_nav.send('%s' % message)
-
 
 
     #TODO on pourrait faire une liste d'exceptions comme ca on a un historique des problèmes qui ont eu lieu

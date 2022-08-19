@@ -4,11 +4,11 @@ import json
 from .RoverConsumer import RoverConsumer
 
 
-class NavConsumer(RoverConsumer):
+class HDConsumer(RoverConsumer):
     
     async def connect(self):
         
-        self.tab_name = 'navigation'
+        self.tab_name = 'handlingdevice'
         self.tab_group_name = 'tab_%s' % self.tab_name
 
         # Join tab group
