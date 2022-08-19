@@ -156,8 +156,9 @@ class Science:
     def setSCMass(self, mass):
         self.__masses[self.__op_tube[1]] = mass
     
-    def getSCMass(self):
-        return self.__sc_mass
+    def getSCMass(self, idx):
+        if(idx < 0 or 2 < idx): raise ValueError("impossible tube number chosen (can be either 0, 1 or 2)")
+        return self.__sc_mass[idx]
 
     #--------------------------
 
