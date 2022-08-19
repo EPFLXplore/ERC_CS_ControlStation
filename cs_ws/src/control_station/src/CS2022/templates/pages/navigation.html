@@ -169,10 +169,12 @@
 									<p class="title">CURRENT POSITION</p>
 								</div>
 								<div class="data-container">
+									<!-- ROVER X COORDINATE -->
 									<div class="data-line-container">
 										<p class="data-title">X : </p>
 										<p id="X_coord" class="data">0</p>
 									</div>
+									<!-- ROVER Y COORDINATE -->
 									<div class="data-line-container">
 										<p class="data-title">Y : </p>
 										<p id="Y_coord" class="data">0</p>
@@ -186,10 +188,12 @@
 									<p class="title">GOAL POSITION</p>
 								</div>
 								<div class="data-container">
+									<!-- GOAL'S Y COORDINATE -->
 									<div class="data-line-container">
 										<p class="data-title">X : </p>
 										<p class="data">0</p>
 									</div>
+									<!-- GOAL'S X COORDINATE -->
 									<div class="data-line-container">
 										<p class="data-title">Y : </p>
 										<p class="data">0</p>
@@ -204,11 +208,12 @@
 									<p class="title">COURSE DATA</p>
 								</div>
 								<div class="data-container">
-									
+									<!-- DISTANCE TO GOAL -->
 									<div class="data-line-container">
 										<p class="data-title">Distance to goal: </p>
 										<p id="distToGoal" class="data">0 m</p>
 									</div>
+									<!-- ROUTE TO GOAL -->
 									<div class="data-line-container">
 										<p id="debug-label" class="data-title">Route to goal: </p>
 										<p class="data">0 m</p>
@@ -219,10 +224,12 @@
 									<p class="title">VELOCITY</p>
 								</div>
 								<div class="data-container">
+									<!-- LINEAR VELOCITY -->
 									<div class="data-line-container">
 										<p class="data-title">Linear: </p>
 										<p id="linVel" class="data">0 m/s</p>
 									</div>
+									<!-- ANGULAR VELOCITY -->
 									<div class="data-line-container">
 										<p class="data-title">Angular: </p>
 										<p id="angVel" class="data">0 rad/s</p>
@@ -255,12 +262,12 @@
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
 			// console.log(data)
-			document.getElementById('debug-label').innerHTML = data.Debug2
-			// document.getElementById('X_coord').innerHTML = data.x
-			// document.getElementById('Y_coord').innerHTML = data.y
-			// document.getElementById('linVel').innerHTML = data.linVel
-			// document.getElementById('angVel').innerHTML = data.angVel
-			// document.getElementById('distToGoal').innerHTML = data.dist
+			//document.getElementById('debug-label').innerHTML = data.Debug2
+			document.getElementById('X_coord').innerHTML    = data.x
+			document.getElementById('Y_coord').innerHTML    = data.y
+			document.getElementById('linVel').innerHTML     = data.linVel
+			document.getElementById('angVel').innerHTML     = data.angVel
+			document.getElementById('distToGoal').innerHTML = data.distance
 			
 
 

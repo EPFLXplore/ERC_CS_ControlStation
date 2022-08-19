@@ -112,18 +112,6 @@ class Controller():
             self.cs.exception_clbk(String(str))
             
 
-
-
-    def sc_humidity(self, hums):
-        '''
-            receive an Int16MultiArray: [tube number, humidity inside tube]
-            tube number : arr[0]
-            value       : arr[1]
-        '''
-        arr = hums.data
-        self.cs.rover.SC.setTubeHum(arr[0], arr[1])
-
-
     def sc_humidity(self, hum):
         self.cs.rover.SC.setTubeHum(hum.data)
 
@@ -182,11 +170,20 @@ class Controller():
         
         self.cs.rover.Nav.setAngVel([twistAng.x, twistAng.y, twistAng.z])
 
-        message = json.dumps({ 'x'      : pos.x, 
+        NavDictionary = {
+            'x'        : pos.x, 
+            'y'        : pos.y, 
+            'linVel'   : self.cs.rover.Nav.getLinVel(), 
+            'angVel'   : self.cs.rover.Nav.getAngVel(),
+            'distance' : self.cs.rover.Nav.distToGoal()
+        }
+
+        '''message = json.dumps({ 'x'      : pos.x, 
                                'y'      : pos.y, 
                                'linVel' : self.cs.rover.Nav.getLinVel(), 
                                'angVel' : self.cs.rover.Nav.getAngVel(),
-                               'dist'   : self.cs.rover.Nav.distToGoal() })
+                               'distance'   : self.cs.rover.Nav.distToGoal() })'''
+        message = json.dumps(NavDictionary)
 
         if ws_nav.connected :
             # print(twistAng)
