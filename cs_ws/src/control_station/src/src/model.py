@@ -30,12 +30,12 @@ class Rover:
     def __init__(self):
 
         self.Nav = Navigation()
-        self.HD = HandlingDevice()
-        self.SC = Science()
+        self.HD  = HandlingDevice()
+        self.SC  = Science()
         
 
-        self.__state = np.zeros(2)
-        self.__inWait = False
+        self.__state    = np.zeros(2)
+        self.__inWait   = False
         self.__received = False
 
     def setState(self, task, instr):
@@ -273,6 +273,4 @@ def extract_bit(index, num):
 
 
 
-# ==========================================================================================
-# instances
 

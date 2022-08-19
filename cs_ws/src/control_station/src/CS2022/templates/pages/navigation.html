@@ -2,8 +2,7 @@
 <!DOCTYPE html>
 
 <html lang="en">
-<!-- ================================================================================================ -->
-<!-- HEADER -->
+	<!-- HEADER -->
 	<head>
 		<meta charset="UTF-8">
 		<title>CS2022</title>
@@ -13,265 +12,259 @@
 		<link href="{% static 'common/border.css' %}" rel="stylesheet">
 		<link href="{% static 'navigation/navigation.css' %}" rel="stylesheet">
 		<link href="{% static 'common/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-		<!-- <link href="{% static 'navigation/timer.css' %}" rel="stylesheet"> -->
-
 	
 		<!-- --------------------------------------------------------------------------------------------- -->
 		<!-- SCRIPT -->
 		<script src="{% static 'common/border.js' %}"></script> 
 		<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
-		<!-- <script src="{% static 'navigation/timer.js' %}"></script>  -->
-		
-		
+			
 	</head>
-	<!-- ================================================================================================= -->
 	<!-- BODY -->
 	<body>
+
+		
 		{{ tab_name|json_script:"tab-name" }}
-	<div id="container">
-	<!-- -------------------------------------------------------------------------------------------------- -->
-	<!-- vertical navbar -->
-		<div id="sidebar" class="box">
-			<div class="logo">
-				<form class="logo-form" action="http://127.0.0.1:8000/CS2022/homepage">
-					<input id="imagelogo" type="image" src="{% static 'common/Xplore-logo-white.png' %}" alt="My image">
-				</form>
-			</div>
-		
-			<div class="page-button-container">
-				<form action="http://127.0.0.1:8000/CS2022/navigation">
-					<button id="navigation" class="current-page-button" disabled="true">
-						<span>NAVIGATION</span>
-					</button>
-				</form>
-					
-				<form action="http://127.0.0.1:8000/CS2022/handlingdevice">
-					<button id="handlingdevice" class="page-button">
-						<span>HANDLING DEVICE</span>
-					</button>
-				</form>
-				
-				<form action="http://127.0.0.1:8000/CS2022/science">
-					<button id="science" class="page-button">
-						<span>SCIENCE</span>
-					</button>
-				</form>
-				
-				<form action="http://127.0.0.1:8000/CS2022/manualcontrol">
-					<button id="manualcontrol" class="page-button">
-						<span>MANUAL CONTROL</span>
-					</button>
-				</form>
-				
-				<form action="http://127.0.0.1:8000/CS2022/avionics">
-					<button id="avionics" class="page-button">
-						<span>AVIONICS</span>
-					</button>
-				</form>
-			</div>
-		
-			<div class="square-state-button-box">
-				
-				<div class="state-button-container">
-					<form  class="state-button-form" method="POST">
-						{% csrf_token %}
-						<input id="launch-button" class="state-button" type="submit" value="LAUNCH">
+		{{ debug|json_script:"debug-name"  }}
+
+
+		<div id="container">
+		<!-- vertical navbar -->
+			<div id="sidebar" class="box">
+				<div class="logo">
+					<form class="logo-form" action="http://127.0.0.1:8000/CS2022/homepage">
+						<input id="imagelogo" type="image" src="{% static 'common/Xplore-logo-white.png' %}" alt="My image">
+					</form>
+				</div>
+			
+				<div class="page-button-container">
+					<form action="http://127.0.0.1:8000/CS2022/navigation">
+						<button id="navigation" class="current-page-button" disabled="true">
+							<span>NAVIGATION</span>
+						</button>
+					</form>
 						
+					<form action="http://127.0.0.1:8000/CS2022/handlingdevice">
+						<button id="handlingdevice" class="page-button">
+							<span>HANDLING DEVICE</span>
+						</button>
+					</form>
+					
+					<form action="http://127.0.0.1:8000/CS2022/science">
+						<button id="science" class="page-button">
+							<span>SCIENCE</span>
+						</button>
+					</form>
+					
+					<form action="http://127.0.0.1:8000/CS2022/manualcontrol">
+						<button id="manualcontrol" class="page-button">
+							<span>MANUAL CONTROL</span>
+						</button>
+					</form>
+					
+					<form action="http://127.0.0.1:8000/CS2022/avionics">
+						<button id="avionics" class="page-button">
+							<span>AVIONICS</span>
+						</button>
 					</form>
 				</div>
-
-				<script>
 			
-					document.querySelector("#launch-button").addEventListener("click", event => {
-						event.preventDefault();
-		
-						var elem = document.getElementById('navigation-state');
-						elem.style.opacity = 1;
-		
-		
-						let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
-						let request = new Request("launch/", {method: 'POST',
-																		body: '',
-																		headers: {"X-CSRFToken": csrfTokenValue}})
-						fetch(request)
-							.then(response => response.json())
-							.then(result => {})
-					})
-		
+				<div class="square-state-button-box">
 					
-				</script>
-				
-
-
-				<div class="state-button-container">
-					<form id="wait-form" class="state-button-form">
-						<button id="wait-button" class="state-button" onclick="lit_waiting_state()">
-							<span>WAIT<span>
-						</button>
-					</form>
-				</div>
-				
-				<div class="state-button-container">
-					<form id="abort-form" class="state-button-form">
-						<button id="abort-button" class="state-button" onclick="unlit_navigation_state()">
-							<span>ABORT<span>
-						</button>
-					</form>
-				</div>
-
-
-				<div class="state-button-container">
-					<form id="resume-form" class="state-button-form">
-						<button id="resume-button" class="state-button" onclick="unlit_waiting_state()">
-							<span>RESUME<span>
-						</button>
-					</form>
-				</div>
-			</div>
-
-			<!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-			<div class="timer"></div> -->
-		
-		</div>
-		
-		<!-- ------------------------------------------------------------------------------------------------->
-		<!-- horizontal navbar -->
-		<div id="right-side" class="box">
-			<div class="top-bar">
-				<label id="idle-state" class="neon-label">IDLE</label>
-				<label id="navigation-state" class="neon-label">NAVIGATION</label>
-				<label id="hd-state" class="neon-label">HANDLING DEVICE</label>
-				<label id="science-state" class="neon-label">SCIENCE</label>
-				<label id="manual-state" class="neon-label">MANUAL CONTROL</label>
-				<label id="waiting-state" class="neon-label">WAITING</label>		
-			</div>
-			
-			<div id="page" class="page">
-				<!--LEFT SIDE-->
-				<div class="left">
-					<div class="top-left">
-					
-					</div>
-					
-					<div class="h-separator"></div>
-					
-				</div>
-
-				<!--RIGHT SIDE-->
-				<div class="v-separator">
-				</div>
-
-				<div class="right">
-					<div class="top-right">
-						<div class="left-panel">
-							<div class="subject-container">
-								<div class="title-container">
-									<p class="title">CURRENT POSITION</p>
-								</div>
-								<div class="data-container">
-									<div class="data-line-container">
-										<p class="data-title">X : </p>
-										<p id="X_coord" class="data">0</p>
-									</div>
-									<div class="data-line-container">
-										<p class="data-title">Y : </p>
-										<p id="Y_coord" class="data">0</p>
-									</div>
-
-								</div>
-							</div>
+					<div class="state-button-container">
+						<form  class="state-button-form" method="POST">
+							{% csrf_token %}
+							<input id="launch-button" class="state-button" type="submit" value="LAUNCH">
 							
-							<div class="subject-container">
-								<div class="title-container">
-									<p class="title">GOAL POSITION</p>
-								</div>
-								<div class="data-container">
-									<div class="data-line-container">
-										<p class="data-title">X : </p>
-										<p class="data">0</p>
-									</div>
-									<div class="data-line-container">
-										<p class="data-title">Y : </p>
-										<p class="data">0</p>
-									</div>
-
-								</div>
-							</div>
-						</div>
-						<div class="right-panel">
-							<div class="subject-container">
-								<div class="title-container">
-									<p class="title">COURSE DATA</p>
-								</div>
-								<div class="data-container">
-									
-									<div class="data-line-container">
-										<p class="data-title">Distance to goal: </p>
-										<p id="distToGoal" class="data">0 m</p>
-									</div>
-									<div class="data-line-container">
-										<p id="debug-label" class="data-title">Route to goal: </p>
-										<p class="data">0 m</p>
-									</div>
-									
-								</div>
-								<div class="title-container">
-									<p class="title">VELOCITY</p>
-								</div>
-								<div class="data-container">
-									<div class="data-line-container">
-										<p class="data-title">Linear: </p>
-										<p id="linVel" class="data">0 m/s</p>
-									</div>
-									<div class="data-line-container">
-										<p class="data-title">Angular: </p>
-										<p id="angVel" class="data">0 rad/s</p>
-									</div>
-
-								</div>
-							</div>
-						</div>
+						</form>
 					</div>
-
-					<div class="h-separator-s">
+					
+					<div class="state-button-container">
+						<form id="wait-form" class="state-button-form">
+							<button id="wait-button" class="state-button" onclick="lit_waiting_state()">
+								<span>WAIT<span>
+							</button>
+						</form>
+					</div>
+					
+					<div class="state-button-container">
+						<form id="abort-form" class="state-button-form">
+							<button id="abort-button" class="state-button" onclick="unlit_navigation_state()">
+								<span>ABORT<span>
+							</button>
+						</form>
 					</div>
 
 
+					<div class="state-button-container">
+						<form id="resume-form" class="state-button-form">
+							<button id="resume-button" class="state-button" onclick="unlit_waiting_state()">
+								<span>RESUME<span>
+							</button>
+						</form>
+					</div>
+					<script>
+				
+						document.querySelector("#launch-button").addEventListener("click", event => {
+							event.preventDefault();
+			
+							var elem = document.getElementById('navigation-state');
+							elem.style.opacity = 1;
+			
+			
+							let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+							let request = new Request("launch/", {method: 'POST',
+																body: '',
+																headers: {"X-CSRFToken": csrfTokenValue}})
+							fetch(request)
+								.then(response => response.json())
+								.then(result => {})
+						})
+			
+						
+					</script>
+				</div>
+			</div>
+			
+			<!-- horizontal navbar -->
+			<div id="right-side" class="box">
+				<div class="top-bar">
+					<label id="idle-state" class="neon-label">IDLE</label>
+					<label id="navigation-state" class="neon-label">NAVIGATION</label>
+					<label id="hd-state" class="neon-label">HANDLING DEVICE</label>
+					<label id="science-state" class="neon-label">SCIENCE</label>
+					<label id="manual-state" class="neon-label">MANUAL CONTROL</label>
+					<label id="waiting-state" class="neon-label">WAITING</label>		
+				</div>
+				
+				<div id="page" class="page">
+					<!--LEFT SIDE-->
+					<div class="left">
+						<div class="top-left">
+						
+						</div>
+						
+						<div class="h-separator"></div>
+						
+					</div>
+
+					<!--RIGHT SIDE-->
+					<div class="v-separator">
+					</div>
+
+					<div class="right">
+						<div class="top-right">
+							<div class="left-panel">
+								<div class="subject-container">
+									<div class="title-container">
+										<p class="title">CURRENT POSITION</p>
+									</div>
+									<div class="data-container">
+										<div class="data-line-container">
+											<p class="data-title">X : </p>
+											<p id="X_coord" class="data">0</p>
+										</div>
+										<div class="data-line-container">
+											<p class="data-title">Y : </p>
+											<p id="Y_coord" class="data">0</p>
+										</div>
+
+									</div>
+								</div>
+								
+								<div class="subject-container">
+									<div class="title-container">
+										<p class="title">GOAL POSITION</p>
+									</div>
+									<div class="data-container">
+										<div class="data-line-container">
+											<p class="data-title">X : </p>
+											<p class="data">0</p>
+										</div>
+										<div class="data-line-container">
+											<p class="data-title">Y : </p>
+											<p class="data">0</p>
+										</div>
+
+									</div>
+								</div>
+							</div>
+							<div class="right-panel">
+								<div class="subject-container">
+									<div class="title-container">
+										<p class="title">COURSE DATA</p>
+									</div>
+									<div class="data-container">
+										
+										<div class="data-line-container">
+											<p class="data-title">Distance to goal: </p>
+											<p id="distToGoal" class="data">0 m</p>
+										</div>
+										<div class="data-line-container">
+											<p id="debug-label" class="data-title">Route to goal: </p>
+											<p class="data">0 m</p>
+										</div>
+										
+									</div>
+									<div class="title-container">
+										<p class="title">VELOCITY</p>
+									</div>
+									<div class="data-container">
+										<div class="data-line-container">
+											<p class="data-title">Linear: </p>
+											<p id="linVel" class="data">0 m/s</p>
+										</div>
+										<div class="data-line-container">
+											<p class="data-title">Angular: </p>
+											<p id="angVel" class="data">0 rad/s</p>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="h-separator-s">
+						</div>
+
+
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<script>
+		<!-- ========================================================================================================= -->
+		<script>
+			const test = JSON.parse(document.getElementById('debug-name').textContent);
+			console.log(test)
 
-		const tabName = JSON.parse(document.getElementById('tab-name').textContent);
-        const chatSocket = new WebSocket(
-            'ws://'
-            + window.location.host
-            + '/ws/CS2022/'
-            + tabName
-            + '/'
-        );
+			const tabName = JSON.parse(document.getElementById('tab-name').textContent);
+			const chatSocket = new WebSocket(
+				'ws://'
+				+ window.location.host
+				+ '/ws/CS2022/'
+				+ tabName
+				+ '/'
+			);
 
-        chatSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-			// console.log(data)
-			document.getElementById('debug-label').innerHTML = data.Debug2
-			// document.getElementById('X_coord').innerHTML = data.x
-			// document.getElementById('Y_coord').innerHTML = data.y
-			// document.getElementById('linVel').innerHTML = data.linVel
-			// document.getElementById('angVel').innerHTML = data.angVel
-			// document.getElementById('distToGoal').innerHTML = data.dist
-			
-
-
-        };
-
-        chatSocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
-        };
+			chatSocket.onmessage = function(e) {
+				const data = JSON.parse(e.data);
+				// console.log(data)
+				document.getElementById('debug-label').innerHTML = data.Debug2
+				// document.getElementById('X_coord').innerHTML = data.x
+				// document.getElementById('Y_coord').innerHTML = data.y
+				// document.getElementById('linVel').innerHTML = data.linVel
+				// document.getElementById('angVel').innerHTML = data.angVel
+				// document.getElementById('distToGoal').innerHTML = data.dist
+				
 
 
+			};
 
-	</script>
+			chatSocket.onclose = function(e) {
+				console.error('Chat socket closed unexpectedly');
+			};
+
+
+
+		</script>
 	</body>
-	</html>
+</html>
