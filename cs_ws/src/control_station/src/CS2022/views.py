@@ -18,14 +18,12 @@
 from django.http            import HttpResponse, JsonResponse
 from django.shortcuts       import render
 from django.shortcuts       import redirect
-from django.http.response   import StreamingHttpResponse
 
-from numpy                  import ndarray
 from src.cs_node            import *
 from src.controller         import *
 from manage                 import setup
-import threading
-import cv2
+
+
 
 # ===============================================================
 # Control Station setup
@@ -35,42 +33,6 @@ cs = setup().CONTROL_STATION
 # ===============================================================
 # Django views
 
-# ------------------------------------
-# cameras
-
-# class VideoCamera(object):
-
-#     def __init__(self, capture):
-#         # self.video = capture
-
-#         self.frame = cs.cameras.cam_1
-#         threading.Thread(target=self.update, args=()).start()
-
-#     # def __del__(self):
-#     #     self.video.release()
-
-#     def get_frame(self):
-#         image = self.frame
-#         _, jpeg = cv2.imencode('.jpg', image)
-#         return jpeg.tobytes()
-
-#     def update(self):
-#         while True:
-#             self.frame = cs.cameras.cam_1
-
-
-# def gen(camera):
-#     while True:
-        
-#         frame = camera.get_frame()
-#         yield(b'--frame\r\n'
-#             b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-
-
-
-# def video_feed(request):
-#     return StreamingHttpResponse(gen(VideoCamera(cs.cameras.cam_1)),
-#                     content_type='multipart/x-mixed-replace; boundary=frame')
 
 # ------------------------------------
 # General views
@@ -100,7 +62,8 @@ def navigation(request):
 
     ws_nav.connect(NAV_WS_URL)
     return render(request, 'pages/navigation.html', { 
-        'tab_name': "navigation"
+        'tab_name': "navigation",
+        'debug' : "debug_data"
     })  
 
 def science(request):
