@@ -48,7 +48,7 @@ def display_cam_1(msg):
     global im1 
     im1 = bridge.compressed_imgmsg_to_cv2(msg)
 
-    imgencode = cv2.imencode('.jpg', im1, encode_param)
+    result, imgencode = cv2.imencode('.jpg', im1, encode_param)
     data = np.array(imgencode)
     img = data.tobytes()
     
