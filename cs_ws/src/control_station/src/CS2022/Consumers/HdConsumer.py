@@ -24,26 +24,26 @@ class HDConsumer(RoverConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message_1 = text_data_json['Debug']
-        message_2 = text_data_json['Debug2']
+        joint_position = text_data_json['joint_pos']
+        joint_velocity = text_data_json['joint_vel']
 
         # Send message to room group
         await self.channel_layer.group_send(
             self.tab_group_name,
             {
                 'type': 'topic_message',
-                'Debug': message_1,
-                'Debug2': message_2
+                'joint_pos': joint_position,
+                'joint_vel': joint_velocity
             }
         )
 
     # Receive message from room group
     async def topic_message(self, event):
-        message_1 = event['Debug']
-        message_2 = event['Debug2']
+        joint_position = event['joint_pos']
+        joint_velocity = event['joint_vel']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'Debug': message_1,
-            'Debug2':message_2
+            'joint_pos': joint_position,
+            'joint_vel':joint_velocity
         }))
