@@ -43,7 +43,7 @@ from CS2022.models          import *
 #================================================================================
 # Webscokets for ASGI
 
-NAV_WS_URL  = "ws://localhost:8000/ws/CS2022/navigation/"
+NAV_WS_URL  = "ws://127.0.0.1:8000/ws/CS2022/navigation/"
 HD_WS_URL   = "ws://localhost:8000/ws/CS2022/handlingdevice/"
 SC_WS_URL   = "ws://localhost:8000/ws/CS2022/science/"
 AV_WS_URL   = "ws://localhost:8000/ws/CS2022/avionics/"
@@ -230,7 +230,8 @@ class Controller():
 
         self.wait()
 
-        self.cs.rover.setState(task, instr)
+        # self.cs.rover.setState(task, instr)
+        self.cs.rover.setState(Task(task))
 
         if(task == 1 and instr == 1) : self.launch_Manual() 
         if(task == 1 and instr == 2) : self.abort_Manual()
@@ -326,14 +327,13 @@ class Controller():
     def launch_Manual(self):
         rospy.loginfo("\nTrying manual controls\n")
 
-        #TODO ma boi
         #self.gpad.findJoystick()
 
         # TODO need to make it so that the control attribute of GamePad activates when plugging in joystick (patron Observateur?)
         # to avoid raising an Exception (if gamepad was found then launch)
-        if(self.gpad.control != None) : 
-            rospy.loginfo("\nLaunching manual controls\n")
-            self.gpad.start()
+        # if(self.gpad.control != None) : 
+        #     rospy.loginfo("\nLaunching manual controls\n")
+        #     self.gpad.start()
 
     def abort_Manual(self):
         rospy.loginfo("\nAborting manual controls\n")

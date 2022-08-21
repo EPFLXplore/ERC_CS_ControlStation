@@ -42,6 +42,8 @@
 
 <body>
 	{{ tab_name|json_script:"tab-name" }}
+	{{ current_state|json_script:"state"  }}
+
 <div id="container">
 	<div id="sidebar" class="box">
 		<div class="logo">
@@ -80,41 +82,55 @@
 					<span>AVIONICS</span>
 				</button>
 			</form>
+
+			<div>
+				<p style="color: white; margin-top: 15px; font-weight: bold;">ELAPSED TIME</p>
+				<p style="color: white; margin-bottom: 10px; ">00 : 00 : 00</p>
+
+				<img src="{% static 'common/ok.png' %}" alt="" width="48" height="48" style="margin-top: 10px; margin-right: 10px; opacity: 1;">
+				<img src="{% static 'common/warning.png' %}" alt="" width="40" height="40" style="margin-top: 10px; opacity: 0.2;">
+				<img src="{% static 'common/error.png' %}" alt="" width="42" height="42" style="margin-top: 10px; opacity: 0.2; margin-left:15px;">
+
+
+			</div>
+			
 		</div>
 	
-		<div class="square-state-button-box">
-			<div id="launch-box" class="state-button-container">
-				<form id="launch-form" class="state-button-form">
-					<button id="launch-button" class="state-button" onclick="lit_science_state()">
-						<span>LAUNCH<span>
-					</button>
-				</form>
-			</div>
-
-			<div id="wait-box" class="state-button-container">
-				<form id="confirm-form" class="state-button-form">
-					<button id="wait-button" class="state-button">
-						<span>CONFIRM<span>
-					</button>
+		<div class="square-state-button-box" style="margin-top: 780px;">
+			<div class="state-button-container">
+				<form  class="state-button-form" method="POST">
+					{% csrf_token %}
+					<input id="launch-button" class="state-button" type="submit" value="LAUNCH">
+					
 				</form>
 			</div>
 			
-			<div id="abort-box" class="state-button-container">
-				<form id="abort-form" class="state-button-form">
-					<button id="abort-button" class="state-button" onclick="unlit_science_state()">
-						<span>ABORT / NO LOAD<span>
-					</button>
+			<div class="state-button-container">
+				<form  class="state-button-form" method="POST">
+					{% csrf_token %}
+					<input id="wait-button" class="state-button" type="submit" value="WAIT">
+					
+				</form>
+			</div>
+			
+			<div class="state-button-container">
+				<form  class="state-button-form" method="POST">
+					{% csrf_token %}
+					<input id="abort-button" class="state-button" type="submit" value="ABORT">
+					
 				</form>
 			</div>
 
-			<div id="retry-box" class="state-button-container">
-				<form id="retry-form" class="state-button-form">
-					<button id="retry-button" class="state-button" onclick="lit_science_state()">
-						<span>RETRY / LOAD<span>
-					</button>
+
+			<div class="state-button-container">
+				<form  class="state-button-form" method="POST">
+					{% csrf_token %}
+					<input id="resume-button" class="state-button" type="submit" value="RESUME">
+					
 				</form>
 			</div>
 		</div>
+		
 	</div>
 	
   	<div id="right-side" class="box">
@@ -126,7 +142,38 @@
   			<label id="manual-state" class="neon-label">MANUAL CONTROL</label>
   			<label id="waiting-state" class="neon-label">WAITING</label>		
   		</div>
-  		
+  		<script>
+				
+			document.querySelector("#launch-button").addEventListener("click", event => {
+				event.preventDefault();
+
+				var elem1 = document.getElementById('navigation-state');
+				var elem2 = document.getElementById('idle-state');
+				var elem3 = document.getElementById('hd-state');
+				var elem4 = document.getElementById('manual-state');
+				var elem5 = document.getElementById('waiting-state');
+				var elem6 = document.getElementById('science-state');
+
+				elem1.style.opacity = 0.2;
+				elem2.style.opacity = 0.2;
+				elem3.style.opacity = 0.2;
+				elem4.style.opacity = 0.2;
+				elem5.style.opacity = 0.2;
+				elem6.style.opacity = 1;
+
+
+
+				let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+				let request = new Request('launch/', {method: 'POST',
+													body: '',
+													headers: {"X-CSRFToken": csrfTokenValue}})
+				fetch(request)
+					.then(response => response.json())
+					.then(result => {})
+			})
+
+			
+		</script>
   		<div id="page" class="page">
 			<div class="top-science-box">
 				<div class="buttons-box">
@@ -262,27 +309,14 @@
 	};
 
 	chatSocket.onclose = function(e) {
-		console.error('Chat socket closed unexpectedly');
+		console.log('Switched Tab');
 	};
 
-	// document.querySelector('#chat-message-input').focus();
-	// document.querySelector('#chat-message-input').onkeyup = function(e) {
-	//     if (e.keyCode === 13) {  // enter, return
-	//         document.querySelector('#chat-message-submit').click();
-	//     }
-	// };
-
-	// document.querySelector('#chat-message-submit').onclick = function(e) {
-	//     const messageInputDom = document.querySelector('#chat-message-input');
-	//     const message = messageInputDom.value;
-	//     chatSocket.send(JSON.stringify({
-	//         'message': message
-	//     }));
-	//     messageInputDom.value = '';
-	// };
-
+	
 
 </script>
+<script src="{% static 'common/common.js' %}"></script>
+
 </body>
 
 </html>

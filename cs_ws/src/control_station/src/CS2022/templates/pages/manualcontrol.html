@@ -15,7 +15,7 @@
 	<script src="{% static 'common/border.js' %}"></script> 
 	<script src="{% static 'manualcontrol/manualcontrol.js' %}"></script> 
 	<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
-
+	
 	<script>
 		$(document).ready(function() {
     		$(document).on('submit', '#launch-form', function() {
@@ -49,6 +49,8 @@
 
 <body>
 	{{ tab_name|json_script:"tab-name" }}
+	{{ current_state|json_script:"state"  }}
+
 	<div id="container">
 		<div id="sidebar" class="box">
 			<div class="logo">
@@ -87,72 +89,87 @@
 						<span>AVIONICS</span>
 					</button>
 				</form>
+				<div>
+					<p style="color: white; margin-top: 15px; font-weight: bold;">ELAPSED TIME</p>
+					<p style="color: white; margin-bottom: 10px; ">00 : 00 : 00</p>
+
+					<img src="{% static 'common/ok.png' %}" alt="" width="48" height="48" style="margin-top: 10px; margin-right: 10px; opacity: 1;">
+					<img src="{% static 'common/warning.png' %}" alt="" width="40" height="40" style="margin-top: 10px; opacity: 0.2;">
+					<img src="{% static 'common/error.png' %}" alt="" width="42" height="42" style="margin-top: 10px; opacity: 0.2; margin-left:15px;">
+
+
+				</div>
 			</div>
 		
-			<div class="square-state-button-box">
-				<div class="state-button-container">
-					<form id="launch-form" class="state-button-form">
-						<button id="launch-button" class="state-button" onclick="lit_manual_state()">
-							<span>LAUNCH<span>
-						</button>
-					</form>
-				</div>
+			<div class="square-state-button-box" style="margin-top: 780px;">
 
 				<div class="state-button-container">
-					<form id="wait-form" class="state-button-form">
-						<button id="wait-button" class="state-button" onclick="lit_waiting_state()">
-							<span>WAIT<span>
-						</button>
-					</form>
-				</div>
-			
-				<div class="state-button-container">
-					<form id="abort-form" class="state-button-form">
-						<button id="abort-button" class="state-button" onclick="unlit_manual_state()">
-							<span>ABORT<span>
-						</button>
-					</form>
-				</div>
-
-
-				<div class="state-button-container">
-					<form id="resume-form" class="state-button-form">
-						<button id="resume-button" class="state-button" onclick="unlit_waiting_state()">
-							<span>RESUME<span>
-						</button>
-					</form>
-				</div>
-
-			</div>
-
-			<div class="controller-switch">
-				<div class="switch-title-container">
-					<p class="switch-title">CONTROLLER</p>
-				</div>
-				<div class="switch-container">
-					<div class="form-check form-switch">
-						<input id="switch-input" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-					</div>
-				</div>
-			</div>
-
-			<div class="control-mode-container">
-				<div class="control-container">
-					<form id="direct-form" class="control-form">
-						<button id="direct-button" class="control-button" onclick="showDirect()">
-							<span>DIRECT<span>
-						</button>
+					<form  class="state-button-form" method="POST">
+						{% csrf_token %}
+						<input id="launch-button" class="state-button" type="submit" value="LAUNCH">
+						
 					</form>
 				</div>
 				
-				<div class="control-container">
-					<form id="inverse-form" class="control-form">
-						<button id="inverse-button" class="control-button" onclick="showInverse()">
-							<span>INVERSE<span>
-						</button>
+				<div class="state-button-container">
+					<form  class="state-button-form" method="POST">
+						{% csrf_token %}
+						<input id="wait-button" class="state-button" type="submit" value="WAIT">
+						
 					</form>
 				</div>
+				
+				<div class="state-button-container">
+					<form  class="state-button-form" method="POST">
+						{% csrf_token %}
+						<input id="abort-button" class="state-button" type="submit" value="ABORT">
+						
+					</form>
+				</div>
+
+
+				<div class="state-button-container">
+					<form  class="state-button-form" method="POST">
+						{% csrf_token %}
+						<input id="resume-button" class="state-button" type="submit" value="RESUME">
+						
+					</form>
+				</div>
+				<script>
+				
+					document.querySelector("#launch-button").addEventListener("click", event => {
+						event.preventDefault();
+		
+						var elem1 = document.getElementById('navigation-state');
+						var elem2 = document.getElementById('idle-state');
+						var elem3 = document.getElementById('hd-state');
+						var elem4 = document.getElementById('manual-state');
+						var elem5 = document.getElementById('waiting-state');
+
+						elem1.style.opacity = 0.2;
+						elem2.style.opacity = 0.2;
+						elem3.style.opacity = 0.2;
+						elem4.style.opacity = 1;
+						elem5.style.opacity = 0.2;
+		
+		
+						let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+						let request = new Request("launch/", {method: 'POST',
+															body: '',
+															headers: {"X-CSRFToken": csrfTokenValue}})
+						fetch(request)
+							.then(response => response.json())
+							.then(result => {})
+					})
+		
+					
+				</script>
+
 			</div>
+
+			
+
+			
 		</div>
 		
 		<div id="right-side" class="box">
@@ -334,7 +351,7 @@
 		};
 	
 		chatSocket.onclose = function(e) {
-			console.error('Chat socket closed unexpectedly');
+			console.log('Switched Tab');
 		};
 
 		// --------------------------------------------------------------------------
@@ -358,6 +375,8 @@
         };
 	
 	</script>
+	<script src="{% static 'common/common.js' %}"></script>
+
 	<!-- ================================================================================================================= -->
 </body>
 

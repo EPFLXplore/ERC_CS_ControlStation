@@ -1,0 +1,94 @@
+*{
+
+  background-color: black;
+  color: white;
+
+}
+
+#Angles {
+
+border: 5px solid grey;
+padding: 20px;
+margin: 20px;
+max-width : 300px;
+
+
+}
+
+.Rover {
+
+max-width: 350px;
+margin: 42px auto;
+padding: 15px;
+/* border: 15px solid white; */
+border-radius: 5px;
+min-height: 50vh;
+position:relative
+
+
+}
+
+#W1 {
+
+padding: 15px;
+position:absolute;
+bottom: 0;
+left: 0;
+margin: auto;
+border-radius: 50px;
+
+}
+
+#W2 {
+
+padding: 15px;
+position:absolute;
+bottom: 0;
+right: 0;
+margin: auto;
+border-radius: 50px;
+
+}
+
+#W3 {
+
+padding: 15px;
+position:absolute;
+top: 0;
+left: 0;
+margin: auto;
+border-radius: 50px;
+
+}
+
+
+#W4 {
+
+padding: 15px;
+position:absolute;
+top: 0;
+right: 0;
+margin: auto;
+border-radius: 50px;
+
+}
+
+#Body {
+
+
+position:absolute;
+top: 0;
+right: 0;
+left: 0;
+bottom: 0;
+margin: auto;
+border-radius: 10px;
+/* border:  1px solid white; */
+
+
+
+}
+
+
+
+

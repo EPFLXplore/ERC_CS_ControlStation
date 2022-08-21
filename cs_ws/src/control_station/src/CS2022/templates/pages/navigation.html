@@ -12,19 +12,20 @@
 		<link href="{% static 'common/border.css' %}" rel="stylesheet">
 		<link href="{% static 'navigation/navigation.css' %}" rel="stylesheet">
 		<link href="{% static 'common/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-	
+		<!-- <link rel="stylesheet" href="{% static 'navigation/Main.css' %}""> -->
 		<!-- --------------------------------------------------------------------------------------------- -->
 		<!-- SCRIPT -->
 		<script src="{% static 'common/border.js' %}"></script> 
 		<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+		<!-- <script src="{% static 'common/common.js' %}"></script> -->
 			
 	</head>
 	<!-- BODY -->
 	<body>
 
-		
+
 		{{ tab_name|json_script:"tab-name" }}
-		{{ debug|json_script:"debug-name"  }}
+		{{ current_state|json_script:"state"  }}
 
 
 		<div id="container">
@@ -66,9 +67,22 @@
 							<span>AVIONICS</span>
 						</button>
 					</form>
+
+					<div>
+						<p style="color: white; margin-top: 15px; font-weight: bold;">ELAPSED TIME</p>
+						<p style="color: white; margin-bottom: 10px; ">00 : 00 : 00</p>
+
+
+
+						<img src="{% static 'common/ok.png' %}" alt="" width="48" height="48" style="margin-top: 10px; margin-right: 10px; opacity: 1;">
+						<img src="{% static 'common/warning.png' %}" alt="" width="40" height="40" style="margin-top: 10px; opacity: 0.2;">
+						<img src="{% static 'common/error.png' %}" alt="" width="42" height="42" style="margin-top: 10px; opacity: 0.2; margin-left:15px;">
+
+						
+					</div>
 				</div>
-			
-				<div class="square-state-button-box">
+				
+				<div class="square-state-button-box" style="margin-top: 780px;">
 					
 					<div class="state-button-container">
 						<form  class="state-button-form" method="POST">
@@ -79,27 +93,27 @@
 					</div>
 					
 					<div class="state-button-container">
-						<form id="wait-form" class="state-button-form">
-							<button id="wait-button" class="state-button" onclick="lit_waiting_state()">
-								<span>WAIT<span>
-							</button>
+						<form  class="state-button-form" method="POST">
+							{% csrf_token %}
+							<input id="wait-button" class="state-button" type="submit" value="WAIT">
+							
 						</form>
 					</div>
 					
 					<div class="state-button-container">
-						<form id="abort-form" class="state-button-form">
-							<button id="abort-button" class="state-button" onclick="unlit_navigation_state()">
-								<span>ABORT<span>
-							</button>
+						<form  class="state-button-form" method="POST">
+							{% csrf_token %}
+							<input id="abort-button" class="state-button" type="submit" value="ABORT">
+							
 						</form>
 					</div>
 
 
 					<div class="state-button-container">
-						<form id="resume-form" class="state-button-form">
-							<button id="resume-button" class="state-button" onclick="unlit_waiting_state()">
-								<span>RESUME<span>
-							</button>
+						<form  class="state-button-form" method="POST">
+							{% csrf_token %}
+							<input id="resume-button" class="state-button" type="submit" value="RESUME">
+							
 						</form>
 					</div>
 					<script>
@@ -107,18 +121,28 @@
 						document.querySelector("#launch-button").addEventListener("click", event => {
 							event.preventDefault();
 			
-							var elem = document.getElementById('navigation-state');
-							elem.style.opacity = 1;
+							var elem1 = document.getElementById('navigation-state');
+							var elem2 = document.getElementById('idle-state');
+							var elem3 = document.getElementById('hd-state');
+							var elem4 = document.getElementById('manual-state');
+							var elem5 = document.getElementById('waiting-state');
+
+							elem1.style.opacity = 1;
+							elem2.style.opacity = 0.2;
+							elem3.style.opacity = 0.2;
+							elem4.style.opacity = 0.2;
+							elem5.style.opacity = 0.2;
 			
 			
 							let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
-							let request = new Request("launch/", {method: 'POST',
+							let request = new Request('launch/', {method: 'POST',
 																body: '',
 																headers: {"X-CSRFToken": csrfTokenValue}})
 							fetch(request)
 								.then(response => response.json())
 								.then(result => {})
 						})
+
 			
 						
 					</script>
@@ -143,7 +167,6 @@
 						
 						</div>
 						
-						<div class="h-separator"></div>
 						
 					</div>
 
@@ -234,21 +257,20 @@
 									</div>
 								</div>
 							</div>
+							
 						</div>
 
 						<div class="h-separator-s">
 						</div>
-
-
 					</div>
 				</div>
 			</div>
 		</div>
 		<!-- ========================================================================================================= -->
 		<script>
-			const test = JSON.parse(document.getElementById('debug-name').textContent);
-			console.log(test)
-
+			
+			// -----------------------------------------------------------------------------
+			// DataSocket
 			const tabName = JSON.parse(document.getElementById('tab-name').textContent);
 			const chatSocket = new WebSocket(
 				'ws://'
@@ -262,7 +284,7 @@
             const data = JSON.parse(e.data);
 			// console.log(data)
 			//document.getElementById('debug-label').innerHTML = data.Debug2
-			document.getElementById('X_coord').innerHTML    = Math.round((data.x[0] + 1 + Number.EPSILON)        * 100) / 100
+			document.getElementById('X_coord').innerHTML    = Math.round((data.x + Number.EPSILON)        * 100) / 100
 			document.getElementById('Y_coord').innerHTML    = Math.round((data.y + Number.EPSILON)        * 100) / 100
 			document.getElementById('linVel').innerHTML     = Math.round((data.linVel + Number.EPSILON)   * 100) / 100
 			document.getElementById('angVel').innerHTML     = Math.round((data.angVel + Number.EPSILON)   * 100) / 100
@@ -273,11 +295,22 @@
 			};
 
 			chatSocket.onclose = function(e) {
-				console.error('Chat socket closed unexpectedly');
+				console.log('Switched Tab');
 			};
+
+			// -----------------------------------------------------------------------------
+			// TimeSocket
+			const timeSocket = new WebSocket(
+				'ws://'
+				+ window.location.host
+				+ '/ws/CS2022/'
+				+ 'time'
+				+ '/'
+			);
 
 
 
 		</script>
+		<script src="{% static 'common/common.js' %}"></script>
 	</body>
 </html>
