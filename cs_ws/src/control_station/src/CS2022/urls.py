@@ -11,8 +11,7 @@ urlpatterns = [
     path('science/', 		        views.science,		  name='science'),
     path('avionics/', 		        views.avionics,		  name='avionics'),
 
-    # Cameras
-    # path('video_feed/',             views.video_feed,     name='video_feed'),
+    
     
     #STATE BUTTONS
     #Manualcontrol
@@ -39,6 +38,10 @@ urlpatterns = [
     #path('science/confirm/',       views.confirm_science,name='confirm_science'),
     path('science/abort/',          views.abort_science,  name='abort_science'),
     path('science/retry/',          views.retry_science,  name='retry_science'),
+    path('science/wait/',           views.wait_science,  name='wait_science'),
+
+    # timer
+    path('avionics/timer/',         views.start_timer,    name='start_timer')
     
     
 ]

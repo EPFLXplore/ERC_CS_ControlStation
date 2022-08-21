@@ -19,6 +19,7 @@
 # Libraries
 
 import os
+from turtle import st
 import rospy
 import django
 
@@ -35,6 +36,7 @@ from nav_msgs.msg          import Odometry
 from src.controller        import *
 from sensor_msgs.msg       import JointState
 
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
 django.setup()
 
@@ -49,6 +51,8 @@ class CS:
     def __init__(self):
 
         rospy.init_node("CS2022", anonymous=False)
+
+        
 
         self.controller = Controller(self)
         self.rover      = Rover()

@@ -15,6 +15,7 @@
 # Libraries
 
 
+from tracemalloc import start
 from django.http            import HttpResponse, JsonResponse
 from django.shortcuts       import render
 from django.shortcuts       import redirect
@@ -22,13 +23,39 @@ from django.shortcuts       import redirect
 from src.cs_node            import *
 from src.controller         import *
 from manage                 import setup
-
+from src.Time               import *
 
 
 # ===============================================================
 # Control Station setup
 
 cs = setup().CONTROL_STATION
+
+
+# ===============================================================
+# utils
+
+def parseState():
+    
+    s = cs.rover.getState()
+
+    if s == Task.IDLE.value:
+        state = "Idle"
+    elif s == Task.NAVIGATION.value:
+        state = "Navigation"
+    elif s == Task.MAINTENANCE.value:
+        state = "Maintenance"
+    elif s == Task.SCIENCE.value:
+        state = "Science"
+    elif s == Task.WAITING.value:
+        state = "Waiting"
+    else :
+        state = "ManualControl"
+
+    return state
+    
+
+
 
 # ===============================================================
 # Django views
@@ -39,45 +66,57 @@ cs = setup().CONTROL_STATION
 
 def handlingdevice(request):
 
+    state = parseState()
     ws_hd.connect(HD_WS_URL)
     return render(request, 'pages/handlingdevice.html', { 
-        'tab_name': "handlingdevice"
+        'tab_name': "handlingdevice",
+        'current_state' : state
     }) 
 
 def homepage(request):
 
+    state = parseState()
     ws_hp.connect(HP_WS_URL)
     return render(request, 'pages/homepage.html', { 
-        'tab_name': "homepage"
+        'tab_name': "homepage",
+        'current_state' : state
     }) 
 
 def manualcontrol(request):
 
+    state = parseState()
     ws_man.connect(MAN_WS_URL)
     return render(request, 'pages/manualcontrol.html', { 
-        'tab_name': "manualcontrol"
+        'tab_name': "manual",
+        'current_state' : state
     }) 
 
 def navigation(request):
 
+    state = parseState()
+
     ws_nav.connect(NAV_WS_URL)
     return render(request, 'pages/navigation.html', { 
         'tab_name': "navigation",
-        'debug' : "debug_data"
+        'current_state' : state
     })  
 
 def science(request):
 
+    state = parseState()
     ws_sc.connect(SC_WS_URL)
     return render(request, 'pages/science.html', { 
-        'tab_name': "science"
+        'tab_name': "science",
+        'current_state' : state
     }) 
 
 def avionics(request):
 
-    ws_av.connect(AV_WS_URL)
+    state = parseState()
+    # ws_av.connect(AV_WS_URL)
     return render(request, 'pages/avionics.html', { 
-        'tab_name': "avionics"
+        'tab_name': "avionics",
+        'current_state' : state
     }) 
 
 # -----------------------------------
@@ -86,23 +125,26 @@ def avionics(request):
 def launch_manual(request):
     rospy.loginfo("Manual: Launch")
     cs.controller.pub_Task(1,1)
-    return redirect('/CS2022/manualcontrol/')
+    cs.rover.setState(Task.MANUAL)
+    return JsonResponse({})
     
 
 def abort_manual(request):
     rospy.loginfo("Manual: Abort")
     cs.controller.pub_Task(1,2)
-    return redirect('/CS2022/manualcontrol/')
+    cs.rover.setState(Task.IDLE)
+    return JsonResponse({})
 
 def wait_manual(request):
     rospy.loginfo("Manual: Wait")
     cs.controller.pub_Task(1,3)
-    return redirect('/CS2022/manualcontrol/')
+    return JsonResponse({})
 
 def resume_manual(request):
     rospy.loginfo("Manual: Resume")
     cs.controller.pub_Task(1,4)
-    return redirect('/CS2022/manualcontrol/')
+    
+    return JsonResponse({})
 
 
 # -----------------------------------
@@ -111,24 +153,25 @@ def resume_manual(request):
 def launch_nav(request):
     rospy.loginfo("Navigation: Launch")
     cs.controller.pub_Task(2,1)
-
+    cs.rover.setState(Task.NAVIGATION)
     # return empty json response to update the page without refreshing
     return JsonResponse({})
 
 def abort_nav(request):
     rospy.loginfo("Navigation: Abort")
     cs.controller.pub_Task(2,2)
-    return redirect('/CS2022/navigation/')
+    cs.rover.setState(Task.IDLE)
+    return JsonResponse({})
 
 def wait_nav(request):
     rospy.loginfo("Navigation: Wait")
     cs.controller.pub_Task(2,3)
-    return redirect('/CS2022/navigation/')
+    return JsonResponse({})
 
 def resume_nav(request):
     rospy.loginfo("Navigation: Resume")
     cs.controller.pub_Task(2,4)
-    return redirect('/CS2022/navigation/')
+    return JsonResponse({})
 
 # -----------------------------------
 # Handling device views
@@ -136,27 +179,29 @@ def resume_nav(request):
 def launch_hd(request):
     rospy.loginfo("Maintenance: Launch")
     cs.controller.pub_Task(3,1)
-    return redirect('/CS2022/handlingdevice/')
+    cs.rover.setState(Task.MAINTENANCE)
+    return JsonResponse({})
 
 def abort_hd(request):
     rospy.loginfo("Maintenance: Abort")
     cs.controller.pub_Task(3,2)
-    return redirect('/CS2022/handlingdevice/')
+    cs.rover.setState(Task.IDLE)
+    return JsonResponse({})
 
 def wait_hd(request):
     rospy.loginfo("Maintenance: Wait")
     cs.controller.pub_Task(3,3)
-    return redirect('/CS2022/handlingdevice/')
+    return JsonResponse({})
 
 def resume_hd(request):
     rospy.loginfo("Maintenance: Resume")
     cs.controller.pub_Task(3,4)
-    return redirect('/CS2022/handlingdevice/')
+    return JsonResponse({})
 
 def retry_hd(request):
     rospy.loginfo("Maintenance: Retry")
     cs.controller.pub_Task(3,5)
-    return redirect('/CS2022/handlingdevice/')
+    return JsonResponse({})
 
 # -----------------------------------
 # Science views
@@ -165,21 +210,29 @@ def retry_hd(request):
 def launch_science(request):
     rospy.loginfo("Science: ???")
     cs.controller.pub_Task(4,1)
-    return redirect('/CS2022/science/')
+    cs.rover.setState(Task.SCIENCE)
+    return JsonResponse({})
 
 def abort_science(request):
     cs.controller.pub_Task(4,2)
-    return redirect('/CS2022/science/')
+    cs.rover.setState(Task.IDLE)
+    print("Aborting Science")
+    return JsonResponse({})
 
 def wait_science(request):
     cs.controller.pub_Task(4,3)
-    return redirect('/CS2022/science/')
+    return JsonResponse({})
 
 def resume_science(request):
     cs.controller.pub_Task(4,4)
-    return redirect('/CS2022/science/')
+    return JsonResponse({})
 
 def retry_science(request):
     cs.controller.pub_Task(4,5)
-    return redirect('/CS2022/science/')
+    return JsonResponse({})
+
+def start_timer(request):
+
+    startThread()
+    return JsonResponse({})
 

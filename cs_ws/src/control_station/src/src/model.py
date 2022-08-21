@@ -17,11 +17,19 @@
 #================================================================================
 # Libraries
 
+from enum import IntEnum
+
 import numpy as np 
 
-# from multiprocessing.sharedctypes import Value
-# from unittest.loader              import VALID_MODULE_NAME
+#================================================================================
 
+class Task(IntEnum):
+    IDLE        = 0
+    MANUAL      = 1
+    NAVIGATION  = 2
+    MAINTENANCE = 3
+    SCIENCE     = 4
+    WAITING     = 5
 
 class Rover:
     '''
@@ -34,12 +42,12 @@ class Rover:
         self.SC  = Science()
         
 
-        self.__state    = np.zeros(2)
+        self.__state    = Task.IDLE
         self.__inWait   = False
         self.__received = False
 
-    def setState(self, task, instr):
-        self.__state = np.array([task, instr])
+    def setState(self, task):
+        self.__state = task
 
     def getState(self):
         return self.__state
