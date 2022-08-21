@@ -62,10 +62,9 @@
 			<div>
 				<p style="color: white; margin-top: 15px; font-weight: bold;">ELAPSED TIME</p>
 				<p id="elapsed" style="color: white; margin-bottom: 10px; ">00 : 00 : 00</p>
-				<form  id="timer" class="state-button-form" method="POST">
-					{% csrf_token %}
-					<input id="launch-button" class="state-button" type="submit" value="start time" style="width: 130px; margin-bottom: 20px;;">	
-				</form>
+
+				
+
 				<img src="{% static 'common/ok.png' %}" alt="" width="48" height="48" style="margin-top: 10px; margin-right: 10px; opacity: 1;">
 				<img src="{% static 'common/warning.png' %}" alt="" width="40" height="40" style="margin-top: 10px; opacity: 0.2;">
 				<img src="{% static 'common/error.png' %}" alt="" width="42" height="42" style="margin-top: 10px; opacity: 0.2; margin-left:15px;">
@@ -232,8 +231,8 @@
 	// 	console.log('Switched Tab');
 	// };
 
-	// -----------------------------------------------------------------------------
-	// TimeSocket
+	// // -----------------------------------------------------------------------------
+	// // TimeSocket
 	const timeSocket = new WebSocket(
 		'ws://'
 		+ window.location.host
@@ -251,23 +250,11 @@
 
 	};
 
-
+	
 
 </script>
 <script>
 
-	document.querySelector("#timer").addEventListener("click", event => {
-		event.preventDefault();
-
-
-		let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
-		let request = new Request('timer/', {method: 'POST',
-											body: '',
-											headers: {"X-CSRFToken": csrfTokenValue}})
-		fetch(request)
-			.then(response => response.json())
-			.then(result => {})
-	});
 
 	var test = JSON.parse(document.getElementById('state').textContent);
 

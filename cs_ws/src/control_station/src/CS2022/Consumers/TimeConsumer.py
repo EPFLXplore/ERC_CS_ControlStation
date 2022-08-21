@@ -23,30 +23,30 @@ class TimeConsumer(RoverConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message_1 = text_data_json['seconds']
-        message_2 = text_data_json['minutes']
-        message_3 = text_data_json['hours']
+        message_1 = text_data_json['hor']
+        message_2 = text_data_json['min']
+        message_3 = text_data_json['sec']
 
         # Send message to room group
         await self.channel_layer.group_send(
             self.tab_group_name,
             {
                 'type': 'topic_message',
-                'seconds': message_1,
-                'minutes': message_2,
-                'hours'  : message_3
+                'hor': message_1,
+                'min': message_2,
+                'sec'  : message_3
             }
         )
 
     # Receive message from room group
     async def topic_message(self, event):
-        message_1 = event['seconds']
-        message_2 = event['minutes']
-        message_3 = event['hours']
+        message_1 = event['hor']
+        message_2 = event['min']
+        message_3 = event['sec']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'seconds': message_1,
-            'minutes': message_2,
-            'hours'  : message_3
+            'hor': message_1,
+            'min': message_2,
+            'sec'  : message_3
         }))

@@ -25,7 +25,7 @@ import django
 
 
 from CS2022.models         import *
-from std_msgs.msg          import Int8MultiArray    , Int8        , Float32, Bool, String, Int16MultiArray, Int16
+from std_msgs.msg          import Int8MultiArray    , Int8        , Int32MultiArray, Bool, String, Int16MultiArray, Int16
 
 # TODO
 # from ros_package.src.custom_msg_python.msg     import move_base_action_goal 
@@ -107,3 +107,6 @@ class CS:
         rospy.Subscriber('/cmd_vel',           Twist,    self.controller.test_joystick)
         rospy.Subscriber('ROVER_NAV_odometry', Odometry, self.controller.nav_data     )
         #rospy.Subscriber('ROVER_NAV_odometry', Int8, self.controller.nav_data     )
+
+        # Elpased time
+        rospy.Subscriber('Time',                Int32MultiArray, self.controller.elapsed_time )

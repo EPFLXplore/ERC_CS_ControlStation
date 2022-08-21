@@ -85,7 +85,7 @@
 
 			<div>
 				<p style="color: white; margin-top: 15px; font-weight: bold;">ELAPSED TIME</p>
-				<p style="color: white; margin-bottom: 10px; ">00 : 00 : 00</p>
+				<p id="elapsed" style="color: white; margin-bottom: 10px; ">00 : 00 : 00</p>
 
 				<img src="{% static 'common/ok.png' %}" alt="" width="48" height="48" style="margin-top: 10px; margin-right: 10px; opacity: 1;">
 				<img src="{% static 'common/warning.png' %}" alt="" width="40" height="40" style="margin-top: 10px; opacity: 0.2;">
@@ -312,6 +312,22 @@
 		console.log('Switched Tab');
 	};
 
+	const timeSocket = new WebSocket(
+		'ws://'
+		+ window.location.host
+		+ '/ws/CS2022/'
+		+ 'time'
+		+ '/'
+	);
+
+	timeSocket.onmessage = function(e) {
+		const data = JSON.parse(e.data);
+		
+		console.log("debug timer");
+		var time = `${data.hor} : ${data.min} : ${data.sec}`;
+		document.getElementById('elapsed').innerHTML    = time;
+
+	};
 	
 
 </script>

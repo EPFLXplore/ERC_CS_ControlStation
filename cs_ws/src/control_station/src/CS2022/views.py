@@ -23,7 +23,6 @@ from django.shortcuts       import redirect
 from src.cs_node            import *
 from src.controller         import *
 from manage                 import setup
-from src.Time               import *
 
 
 # ===============================================================
@@ -68,6 +67,7 @@ def handlingdevice(request):
 
     state = parseState()
     ws_hd.connect(HD_WS_URL)
+    ws_time.connect(TIME_WS_URL)
     return render(request, 'pages/handlingdevice.html', { 
         'tab_name': "handlingdevice",
         'current_state' : state
@@ -77,6 +77,7 @@ def homepage(request):
 
     state = parseState()
     ws_hp.connect(HP_WS_URL)
+    # ws_time.connect(TIME_WS_URL)
     return render(request, 'pages/homepage.html', { 
         'tab_name': "homepage",
         'current_state' : state
@@ -86,6 +87,7 @@ def manualcontrol(request):
 
     state = parseState()
     ws_man.connect(MAN_WS_URL)
+    # ws_time.connect(TIME_WS_URL)
     return render(request, 'pages/manualcontrol.html', { 
         'tab_name': "manual",
         'current_state' : state
@@ -95,7 +97,8 @@ def navigation(request):
 
     state = parseState()
 
-    ws_nav.connect(NAV_WS_URL)
+    # ws_nav.connect(NAV_WS_URL)
+    # ws_time.connect(TIME_WS_URL)
     return render(request, 'pages/navigation.html', { 
         'tab_name': "navigation",
         'current_state' : state
@@ -105,6 +108,7 @@ def science(request):
 
     state = parseState()
     ws_sc.connect(SC_WS_URL)
+    ws_time.connect(TIME_WS_URL)
     return render(request, 'pages/science.html', { 
         'tab_name': "science",
         'current_state' : state
@@ -113,7 +117,8 @@ def science(request):
 def avionics(request):
 
     state = parseState()
-    # ws_av.connect(AV_WS_URL)
+    ws_av.connect(AV_WS_URL)
+    ws_time.connect(TIME_WS_URL)
     return render(request, 'pages/avionics.html', { 
         'tab_name': "avionics",
         'current_state' : state
@@ -233,6 +238,7 @@ def retry_science(request):
 
 def start_timer(request):
 
-    startThread()
+    
+    # startThread()
     return JsonResponse({})
 

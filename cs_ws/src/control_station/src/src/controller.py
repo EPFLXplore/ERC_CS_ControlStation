@@ -49,14 +49,16 @@ SC_WS_URL   = "ws://localhost:8000/ws/CS2022/science/"
 AV_WS_URL   = "ws://localhost:8000/ws/CS2022/avionics/"
 MAN_WS_URL  = "ws://localhost:8000/ws/CS2022/manual/"
 HP_WS_URL   = "ws://localhost:8000/ws/CS2022/homepage/"
+TIME_WS_URL   = "ws://localhost:8000/ws/CS2022/time/"
 
-ws_nav = websocket.WebSocket()
-ws_hd  = websocket.WebSocket()
-ws_sc  = websocket.WebSocket()
-ws_av  = websocket.WebSocket()
-ws_man = websocket.WebSocket()
-ws_hp  = websocket.WebSocket()
 
+ws_nav  = websocket.WebSocket()
+ws_hd   = websocket.WebSocket()
+ws_sc   = websocket.WebSocket()
+ws_av   = websocket.WebSocket()
+ws_man  = websocket.WebSocket()
+ws_hp   = websocket.WebSocket()
+ws_time = websocket.WebSocket()
 
 # ===============================================================================
 # Controller (MVC)
@@ -350,3 +352,16 @@ class Controller():
             rospy.loginfo("Answer not received: TIMEOUT")
         self.cs.rover.setInWait(False)
         self.cs.rover.setReceived(False)
+
+    def elapsed_time(self, data):
+        TimeDict = {
+            'hor': data.data[0],
+            'min': data.data[1],
+            'sec': data.data[2]
+        }
+
+        message = json.dumps(TimeDict)
+
+        if ws_time.connected:
+
+            ws_time.send('%s' % message)
