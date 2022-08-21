@@ -76,7 +76,7 @@ class Rover:
         rospy.Subscriber('/odometry/filtered',           Odometry,        self.model.Nav.nav_data)
         rospy.Subscriber('/arm_control/joint_telemetry', JointState,      self.model.HD.set_joint_telemetry)
         rospy.Subscriber('sc_state',                     String,          self.model.SC.set_text_info)
-        rospy.Subscriber('sc_measurments_humidity',      Int16MultiArray, self.model.SC.set_humidities)
+        rospy.Subscriber('sc_measurments_humidity',      Int16,           self.model.SC.set_humidities)
         rospy.Subscriber('sc_measurments_mass',          Int16,           self.model.SC.set_sc_mass)
 
         '''rospy.Subscriber('/odometry/filtered',           Odometry,     self.Nav_pub.publish)

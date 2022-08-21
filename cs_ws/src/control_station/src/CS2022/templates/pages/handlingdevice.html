@@ -246,12 +246,39 @@
 				<div class="h-separator"></div>
 
 				<div class="bottom-right">
+
+						<div class="joint-data">
+							<div class="data-line-container">
+								
+								<p class="data"> Joint Positions: </p>
+
+									<p id="joint1_coord" class="data"> 0 </p> <p class="data"> &#xA0; </p>
+									<p id="joint2_coord" class="data"> 0 </p> <p class="data"> &#xA0; </p>
+									<p id="joint3_coord" class="data"> 0 </p> <p class="data"> &#xA0; </p>
+									<p id="joint4_coord" class="data"> 0 </p> <p class="data"> &#xA0; </p>
+									<p id="joint5_coord" class="data"> 0 </p> <p class="data"> &#xA0; </p>
+									<p id="joint6_coord" class="data"> 0 </p> <p class="data"> &#xA0; </p>
+									<p id="joint7_coord" class="data"> 0 </p> <p class="data"> &#xA0; </p>
+							</div>
+							
+							<div class="data-line-container">
+								<p class="data-title"> Joint Velocities: </p>
+
+									<p id="joint1_vel" class="data"> 0 </p> <p class="data"> &#xA0; </p>
+									<p id="joint2_vel" class="data"> 0 </p> <p class="data"> &#xA0; </p>
+									<p id="joint3_vel" class="data"> 0 </p> <p class="data"> &#xA0; </p>
+									<p id="joint4_vel" class="data"> 0 </p> <p class="data"> &#xA0; </p>
+									<p id="joint5_vel" class="data"> 0 </p> <p class="data"> &#xA0; </p>
+									<p id="joint6_vel" class="data"> 0 </p> <p class="data"> &#xA0; </p>
+									<p id="joint7_vel" class="data"> 0 </p> <p class="data"> &#xA0; </p>
+							</div>
+						</div>
+
 					<div class="user-input-container">
 						<form class="input-form" action="" method="POST">{% csrf_token %}
 							<div class="input-title-container">{% csrf_token %}
-								<p class="input-title">TARGET</p>
+								<p class="input-title"></p>
 							</div>
-
 
 							<div class="button-dropdown-container">
 								<p class="dropdown-title">ID</p>
@@ -302,6 +329,37 @@
 		const data = JSON.parse(e.data);
 		
 		// console.log("debug")
+		let num_joints = 7
+		for (let i = 1; i <= num_joints; i++) {
+			let str = "joint"
+			str = concat(str, toString(i))
+			str = concat(str, "_coord")
+			document.getElementById(str).innerHTML = Math.round((data.joint_pos[i-1] + 1 + Number.EPSILON) * 100) / 100
+		}
+
+
+
+
+
+
+
+
+
+		/*document.getElementById('joint1_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
+		document.getElementById('joint2_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
+		document.getElementById('joint3_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
+		document.getElementById('joint4_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
+		document.getElementById('joint5_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
+		document.getElementById('joint6_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
+		document.getElementById('joint7_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
+
+		document.getElementById('joint1_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
+		document.getElementById('joint2_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
+		document.getElementById('joint3_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
+		document.getElementById('joint4_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
+		document.getElementById('joint5_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
+		document.getElementById('joint6_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
+		document.getElementById('joint7_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100*/
 
 
 	};

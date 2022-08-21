@@ -18,7 +18,7 @@ class RoverConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
         # self.tab_name = self.scope['url_route']['kwargs']['tab_name']
-        self.tab_name = ''
+        self.tab_name = 'homepage'
         self.tab_group_name = 'tab_%s' % self.tab_name
 
         # Join tab group

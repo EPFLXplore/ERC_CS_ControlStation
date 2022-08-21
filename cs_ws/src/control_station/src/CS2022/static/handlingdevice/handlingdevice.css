@@ -99,6 +99,40 @@
 	margin-top: 3%;
 }
 
+.wrapper{
+	float: left
+}
+
+.joint-data{
+	margin-top: 10px;
+	margin-left: 10px;
+}
+
+
+.data{
+	float: left;
+	padding-left: 30px; 
+	color: rgb(255, 255, 255);
+	font-size: 15px;
+	font-family: var(--font);
+}
+
+.data-line-container{
+	width: 70%;
+	height: 30%;
+	margin-top: 3%;
+}
+
+.data-title{
+	float: left;
+	text-align: left;
+	color: rgb(196, 196, 196);
+	font-size: 15px;
+	font-family: var(--font);
+	width: 50%;
+	margin-top: 1%;
+}
+
 /*==========================================================================
 =====================|    P    |==========================================*/
 .table-title{
@@ -202,7 +236,7 @@
 .set-button{
 	float: left;
 	width: 20%;
-	margin: 4%;
+	margin: 3.5%;
 
 	border: 2px solid green;
 	border-radius: 5px;

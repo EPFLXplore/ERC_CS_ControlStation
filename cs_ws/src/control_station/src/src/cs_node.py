@@ -101,5 +101,5 @@ class CS:
         
 
         rospy.Subscriber('/cmd_vel',           Twist,    self.controller.test_joystick)
-        # rospy.Subscriber('ROVER_NAV_odometry', Odometry, self.controller.nav_data     )
-        rospy.Subscriber('ROVER_NAV_odometry', Int8, self.controller.nav_data     )
+        rospy.Subscriber('ROVER_NAV_odometry', Odometry, self.controller.nav_data     )
+        #rospy.Subscriber('ROVER_NAV_odometry', Int8, self.controller.nav_data     )

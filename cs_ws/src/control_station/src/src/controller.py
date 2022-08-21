@@ -151,8 +151,20 @@ class Controller():
     def hd_telemetry(self, jointstate):
         self.cs.HD.set_joint_telemetry(jointstate.data)
 
+        HdDictionary = {
+            'joint_pos' : self.cs.rover.HD.get_joint_positions(),
+            'joint_vel' : self.cs.rover.HD.get_joint_velocities()
+        }
+
+        message = json.dumps(HdDictionary)
+
+        if(ws_hd.connected):
+            ws_hd.send('%s' % message)
+
+
+
     def nav_data(self, odometry):
-        data = odometry.data
+        data = odometry
 
         # position (x,y,z)
         pos = data.pose.pose.position
@@ -169,6 +181,8 @@ class Controller():
         #twistAng = data
         
         self.cs.rover.Nav.setAngVel([twistAng.x, twistAng.y, twistAng.z])
+
+        rospy.loginfo("linvel %d", self.cs.rover.Nav.getLinVel())
 
         NavDictionary = {
             'x'        : pos.x, 

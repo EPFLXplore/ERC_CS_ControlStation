@@ -162,12 +162,14 @@
 									<!-- ROVER X COORDINATE -->
 									<div class="data-line-container">
 										<p class="data-title">X : </p>
-										<p id="X_coord" class="data">0</p>
+										<p id="X_coord" class="data"> 0 </p>
+										<p class="data"> &#xA0; m </p>
 									</div>
 									<!-- ROVER Y COORDINATE -->
 									<div class="data-line-container">
 										<p class="data-title">Y : </p>
-										<p id="Y_coord" class="data">0</p>
+										<p id="Y_coord" class="data"> 0 </p>
+										<p class="data"> &#xA0; m </p>
 									</div>
 
 								</div>
@@ -201,12 +203,14 @@
 									<!-- DISTANCE TO GOAL -->
 									<div class="data-line-container">
 										<p class="data-title">Distance to goal: </p>
-										<p id="distToGoal" class="data">0 m</p>
+										<p id="distToGoal" class="data"> 0 </p>
+										<p class="data"> &#xA0; m </p>
 									</div>
 									<!-- ROUTE TO GOAL -->
 									<div class="data-line-container">
 										<p id="debug-label" class="data-title">Route to goal: </p>
-										<p class="data">0 m</p>
+										<p class="data"> 0 </p>
+										<p class="data"> &#xA0; m </p>
 									</div>
 									
 								</div>
@@ -217,12 +221,14 @@
 									<!-- LINEAR VELOCITY -->
 									<div class="data-line-container">
 										<p class="data-title">Linear: </p>
-										<p id="linVel" class="data">0 m/s</p>
+										<p id="linVel" class="data">0</p>
+										<p class="data"> &#xA0; m/s </p>
 									</div>
 									<!-- ANGULAR VELOCITY -->
 									<div class="data-line-container">
 										<p class="data-title">Angular: </p>
-										<p id="angVel" class="data">0 rad/s</p>
+										<p id="angVel" class="data">0</p> 
+										<p class = "data"> &#xA0; rad/s</p>
 									</div>
 
 									</div>
@@ -256,11 +262,11 @@
             const data = JSON.parse(e.data);
 			// console.log(data)
 			//document.getElementById('debug-label').innerHTML = data.Debug2
-			document.getElementById('X_coord').innerHTML    = data.x
-			document.getElementById('Y_coord').innerHTML    = data.y
-			document.getElementById('linVel').innerHTML     = data.linVel
-			document.getElementById('angVel').innerHTML     = data.angVel
-			document.getElementById('distToGoal').innerHTML = data.distance
+			document.getElementById('X_coord').innerHTML    = Math.round((data.x[0] + 1 + Number.EPSILON)        * 100) / 100
+			document.getElementById('Y_coord').innerHTML    = Math.round((data.y + Number.EPSILON)        * 100) / 100
+			document.getElementById('linVel').innerHTML     = Math.round((data.linVel + Number.EPSILON)   * 100) / 100
+			document.getElementById('angVel').innerHTML     = Math.round((data.angVel + Number.EPSILON)   * 100) / 100
+			document.getElementById('distToGoal').innerHTML = Math.round((data.distance + Number.EPSILON) * 100) / 100
 			
 
 

@@ -1,11 +1,12 @@
 # CS2022/routing.py
 from django.urls import re_path, path
 
-from .Consumers import NavConsumer, HdConsumer, ScConsumer, AvConsumer, ManConsumer
+from .Consumers import RoverConsumer, NavConsumer, HdConsumer, ScConsumer, AvConsumer, ManConsumer
 import cameras.CameraConsumer
 
 websocket_urlpatterns = [
     # re_path(r'ws/CS2022/(?P<tab_name>\w+)/$', NavConsumer.NavConsumer.as_asgi()),
+    path('ws/CS2022/homepage/'      , RoverConsumer.RoverConsumer.as_asgi()),
     path('ws/CS2022/navigation/'    , NavConsumer.NavConsumer.as_asgi()),
     path('ws/CS2022/handlingdevice/', HdConsumer.HDConsumer.as_asgi()),
     path('ws/CS2022/avionics/'      , AvConsumer.AVConsumer.as_asgi()),
