@@ -2,342 +2,380 @@
 <!DOCTYPE html>
 
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<title>CS2022</title>
-  
+
 	<!-- STYLE -->
 	<link href="{% static 'common/border.css' %}" rel="stylesheet">
 	<link href="{% static 'handlingdevice/handlingdevice.css' %}" rel="stylesheet">
 	<link href="{% static 'common/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
 	<!-- SCRIPT -->
-	<script src="{% static 'common/border.js' %}"></script> 
+	<script src="{% static 'common/border.js' %}"></script>
 	<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
 
 	<script>
-		$(document).ready(function() {
-    		$(document).on('submit', '#launch-form', function() {
-				window.location.href ="/CS2022/handlingdevice/launch";
-      			return false;
-    		 });
-    		$(document).on('submit', '#wait-form', function() {
-				window.location.href ="/CS2022/handlingdevice/wait";
-      			return false;
-    		 });
-    		$(document).on('submit', '#abort-form', function() {
-				window.location.href ="/CS2022/handlingdevice/abort";
-      			return false;
-    		 });
-    		$(document).on('submit', '#resume-form', function() {
-				window.location.href ="/CS2022/handlingdevice/resume";
-      			return false;
-    		 });
-    		$(document).on('submit', '#retry-form', function() {
-				window.location.href ="/CS2022/handlingdevice/retry";
-      			return false;
-    		 });
+		$(document).ready(function () {
+			$(document).on('submit', '#launch-form', function () {
+				window.location.href = "/CS2022/handlingdevice/launch";
+				return false;
+			});
+			$(document).on('submit', '#wait-form', function () {
+				window.location.href = "/CS2022/handlingdevice/wait";
+				return false;
+			});
+			$(document).on('submit', '#abort-form', function () {
+				window.location.href = "/CS2022/handlingdevice/abort";
+				return false;
+			});
+			$(document).on('submit', '#resume-form', function () {
+				window.location.href = "/CS2022/handlingdevice/resume";
+				return false;
+			});
+			$(document).on('submit', '#retry-form', function () {
+				window.location.href = "/CS2022/handlingdevice/retry";
+				return false;
+			});
 		});
 	</script>
-	
+
 	<!-- ICON -->
 	<link rel="icon" type="image/x-icon" href="{% static 'common/Xplore-icon.ico' %}">
 </head>
 
 <body>
-{{ tab_name|json_script:"tab-name" }}
-{{ current_state|json_script:"state"  }}
+	{{ tab_name|json_script:"tab-name" }}
+	{{ current_state|json_script:"state" }}
 
-<div id="container">
-  	<div id="sidebar" class="box">
-  		<div class="logo">
-			<form class="logo-form" action="http://127.0.0.1:8000/CS2022/homepage">
-				<input id="imagelogo" type="image" src="{% static 'common/Xplore-logo-white.png' %}" alt="My image">
-			</form>
-  		</div>
-  	  
-  		<div class="page-button-container">
-  			<form action="http://127.0.0.1:8000/CS2022/navigation">
-				<button id="navigation" class="page-button">
-					<span>NAVIGATION</span>
-				</button>
-			</form>
-				
-			<form action="http://127.0.0.1:8000/CS2022/handlingdevice">
-				<button id="handlingdevice" class="current-page-button" disabled="true">
-					<span>HANDLING DEVICE</span>
-				</button>
-			</form>
-				
-			<form action="http://127.0.0.1:8000/CS2022/science">
-				<button id="science" class="page-button">
-					<span>SCIENCE</span>
-				</button>
-			</form>
-				
-			<form action="http://127.0.0.1:8000/CS2022/manualcontrol">
-				<button id="manualcontrol" class="page-button">
-					<span>MANUAL CONTROL</span>
-				</button>
-			</form>
-				
-			<form action="http://127.0.0.1:8000/CS2022/avionics">
-				<button id="avionics" class="page-button">
-					<span>AVIONICS</span>
-				</button>
-			</form>
-
-			<div>
-				<p style="color: white; margin-top: 15px; font-weight: bold;">ELAPSED TIME</p>
-				<p style="color: white; margin-bottom: 10px; ">00 : 00 : 00</p>
-
-				<img src="{% static 'common/ok.png' %}" alt="" width="48" height="48" style="margin-top: 10px; margin-right: 10px; opacity: 1;">
-				<img src="{% static 'common/warning.png' %}" alt="" width="40" height="40" style="margin-top: 10px; opacity: 0.2;">
-				<img src="{% static 'common/error.png' %}" alt="" width="42" height="42" style="margin-top: 10px; opacity: 0.2; margin-left:15px;">
-
-
-			</div>
-
-  		</div>
-  	  
-  		<div class="long-state-button-box" style="margin-top: 680px;">
-			<div class="state-button-container" >
-				<form  class="state-button-form" method="POST">
-					{% csrf_token %}
-					<input id="launch-button" class="state-button" type="submit" value="LAUNCH">
-					
-				</form>
-			</div>
-			
-			<div class="state-button-container">
-				<form  class="state-button-form" method="POST">
-					{% csrf_token %}
-					<input id="wait-button" class="state-button" type="submit" value="WAIT">
-					
-				</form>
-			</div>
-			
-			<div class="state-button-container">
-				<form  class="state-button-form" method="POST">
-					{% csrf_token %}
-					<input id="abort-button" class="state-button" type="submit" value="ABORT">
-					
+	<div id="container">
+		<div id="sidebar" class="box">
+			<div class="logo">
+				<form class="logo-form" action="http://127.0.0.1:8000/CS2022/homepage">
+					<input id="imagelogo" type="image" src="{% static 'common/Xplore-logo-white.png' %}" alt="My image">
 				</form>
 			</div>
 
-
-			<div class="state-button-container">
-				<form  class="state-button-form" method="POST">
-					{% csrf_token %}
-					<input id="resume-button" class="state-button" type="submit" value="RESUME">
-					
+			<div class="page-button-container">
+				<form action="http://127.0.0.1:8000/CS2022/navigation">
+					<button id="navigation" class="page-button">
+						<span>NAVIGATION</span>
+					</button>
 				</form>
+
+				<form action="http://127.0.0.1:8000/CS2022/handlingdevice">
+					<button id="handlingdevice" class="current-page-button" disabled="true">
+						<span>HANDLING DEVICE</span>
+					</button>
+				</form>
+
+				<form action="http://127.0.0.1:8000/CS2022/science">
+					<button id="science" class="page-button">
+						<span>SCIENCE</span>
+					</button>
+				</form>
+
+				<form action="http://127.0.0.1:8000/CS2022/manualcontrol">
+					<button id="manualcontrol" class="page-button">
+						<span>MANUAL CONTROL</span>
+					</button>
+				</form>
+
+				<form action="http://127.0.0.1:8000/CS2022/avionics">
+					<button id="avionics" class="page-button">
+						<span>AVIONICS</span>
+					</button>
+				</form>
+
+				<div>
+					<p style="color: white; margin-top: 15px; font-weight: bold;">ELAPSED TIME</p>
+					<p style="color: white; margin-bottom: 10px; ">00 : 00 : 00</p>
+
+					<img src="{% static 'common/ok.png' %}" alt="" width="48" height="48"
+						style="margin-top: 10px; margin-right: 10px; opacity: 1;">
+					<img src="{% static 'common/warning.png' %}" alt="" width="40" height="40"
+						style="margin-top: 10px; opacity: 0.2;">
+					<img src="{% static 'common/error.png' %}" alt="" width="42" height="42"
+						style="margin-top: 10px; opacity: 0.2; margin-left:15px;">
+
+
+				</div>
+
 			</div>
 
-			<div class="state-button-container">
-				<form  class="state-button-form" method="POST">
-					{% csrf_token %}
-					<input id="resume-button" class="state-button" type="submit" value="RETRY">
-					
-				</form>
+			<div class="long-state-button-box" style="margin-top: 680px;">
+				<div class="state-button-container">
+					<form class="state-button-form" method="POST">
+						{% csrf_token %}
+						<input id="launch-button" class="state-button" type="submit" value="LAUNCH">
+
+					</form>
+				</div>
+
+				<div class="state-button-container">
+					<form class="state-button-form" method="POST">
+						{% csrf_token %}
+						<input id="wait-button" class="state-button" type="submit" value="WAIT">
+
+					</form>
+				</div>
+
+				<div class="state-button-container">
+					<form class="state-button-form" method="POST">
+						{% csrf_token %}
+						<input id="abort-button" class="state-button" type="submit" value="ABORT">
+
+					</form>
+				</div>
+
+
+				<div class="state-button-container">
+					<form class="state-button-form" method="POST">
+						{% csrf_token %}
+						<input id="resume-button" class="state-button" type="submit" value="RESUME">
+
+					</form>
+				</div>
+
+				<div class="state-button-container">
+					<form class="state-button-form" method="POST">
+						{% csrf_token %}
+						<input id="resume-button" class="state-button" type="submit" value="RETRY">
+
+					</form>
+				</div>
+				<script>
+					document.querySelector("#launch-button").addEventListener("click", event => {
+						event.preventDefault();
+
+						var elem1 = document.getElementById('navigation-state');
+						var elem2 = document.getElementById('idle-state');
+						var elem3 = document.getElementById('hd-state');
+						var elem4 = document.getElementById('manual-state');
+						var elem5 = document.getElementById('waiting-state');
+
+						elem1.style.opacity = 0.2;
+						elem2.style.opacity = 0.2;
+						elem3.style.opacity = 1;
+						elem4.style.opacity = 0.2;
+						elem5.style.opacity = 0.2;
+
+
+						let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+						let request = new Request("launch/", {
+							method: 'POST',
+							body: '',
+							headers: { "X-CSRFToken": csrfTokenValue }
+						})
+						fetch(request)
+							.then(response => response.json())
+							.then(result => { })
+					})
+				</script>
 			</div>
-			<script>
-			document.querySelector("#launch-button").addEventListener("click", event => {
-				event.preventDefault();
-
-				var elem1 = document.getElementById('navigation-state');
-				var elem2 = document.getElementById('idle-state');
-				var elem3 = document.getElementById('hd-state');
-				var elem4 = document.getElementById('manual-state');
-				var elem5 = document.getElementById('waiting-state');
-
-				elem1.style.opacity = 0.2;
-				elem2.style.opacity = 0.2;
-				elem3.style.opacity = 1;
-				elem4.style.opacity = 0.2;
-				elem5.style.opacity = 0.2;
-
-
-				let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
-				let request = new Request("launch/", {method: 'POST',
-													body: '',
-													headers: {"X-CSRFToken": csrfTokenValue}})
-				fetch(request)
-					.then(response => response.json())
-					.then(result => {})
-			})
-		</script>
 		</div>
-  	</div>
-	
-  	<div id="right-side" class="box">
-  		<div class="top-bar">
-  			<label id="idle-state" class="neon-label">IDLE</label>
-  			<label id="navigation-state" class="neon-label">NAVIGATION</label>
-  			<label id="hd-state" class="neon-label">HANDLING DEVICE</label>
-  			<label id="science-state" class="neon-label">SCIENCE</label>
-  			<label id="manual-state" class="neon-label">MANUAL CONTROL</label>
-  			<label id="waiting-state" class="neon-label">WAITING</label>		
-  		</div>
-  		
-  		<div id="page" class="page">
-  			<!--LEFT SIDE-->
-  			<div class="left">
-				<div class="top-left">
-					<div class="table-container">
-						<table id="scroll-body" class="table table-dark table-striped">
-							<thead>
-								<tr>
-									<th scope="col">#</th>
-									<th scope="col">TAG/BUTTON</th>
-									<th scope="col">X</th>
-									<th scope="col">Y</th>
-									<th scope="col">Z</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<th scope="row">1</th>
-									<td>Button 1</td>
-									<td>0</td>
-									<td>0</td>
-									<td>0</td>
-								</tr>
-								<tr>
-									<th scope="row">2</th>
-									<td>Button 2</td>
-									<td>0</td>
-									<td>0</td>
-									<td>0</td>
-								</tr>
-								<tr>
-									<th scope="row">3</th>
-									<td>Button 3</td>
-									<td>0</td>
-									<td>0</td>
-									<td>0</td>
-								</tr>
-								<tr>
-									<th scope="row">4</th>
-									<td>Button 4</td>
-									<td>0</td>
-									<td>0</td>
-									<td>0</td>
-								</tr>
-								<tr>
-									<th scope="row">5</th>
-									<td>Button 5</td>
-									<td>0</td>
-									<td>0</td>
-									<td>0</td>
-								</tr>
-								<tr>
-									<th scope="row">6</th>
-									<td>Button 6</td>
-									<td>0</td>
-									<td>0</td>
-									<td>0</td>
-								</tr>
-								<tr>
-									<th scope="row">7</th>
-									<td>Button 7</td>
-									<td>0</td>
-									<td>0</td>
-									<td>0</td>
-								</tr>
-								<tr>
-									<th scope="row">8</th>
-									<td>Button 8</td>
-									<td>0</td>
-									<td>0</td>
-									<td>0</td>
-								</tr>
-								<tr>
-									<th scope="row">9</th>
-									<td>Button 9</td>
-									<td>0</td>
-									<td>0</td>
-									<td>0</td>
-								</tr>
-								<tr>
-									<th scope="row">10</th>
-									<td>Button 10</td>
-									<td>0</td>
-									<td>0</td>
-									<td>0</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
 
-				<div class="h-separator"></div>
-  
+		<div id="right-side" class="box">
+			<div class="top-bar">
+				<label id="idle-state" class="neon-label">IDLE</label>
+				<label id="navigation-state" class="neon-label">NAVIGATION</label>
+				<label id="hd-state" class="neon-label">HANDLING DEVICE</label>
+				<label id="science-state" class="neon-label">SCIENCE</label>
+				<label id="manual-state" class="neon-label">MANUAL CONTROL</label>
+				<label id="waiting-state" class="neon-label">WAITING</label>
 			</div>
 
-			<div class="v-separator"></div>
+			<div id="page" class="page">
+				<!--LEFT SIDE-->
+				<div class="left">
+					<div class="top-left">
+						<video class="camera"></video>
+					</div>
 
-			<!--RIGHT SIDE-->
-			<div class="right">
-				<div class="top-right">
-					<video class="camera"></video>
+					<div class="h-separator"></div>
+
+					<div class="bottom-left">
+						<video class="camera"></video>
+					</div>
+
 				</div>
 
-				<div class="h-separator"></div>
+				<div class="v-separator"></div>
 
-				<div class="bottom-right">
+				<!--RIGHT SIDE-->
+				<div class="right">
+					
+					<div class="top-right">
 
-						<div class="joint-data">
-							<div class="data-line-container">
-								
-								<p class="data"> Joint Positions: </p>
+						<div class="table-container">
+							<table id="scroll-body" class="table table-dark table-striped">
+								<thead>
+									<tr>
+										<th scope="col">#</th>
+										<th scope="col">TAG/BUTTON</th>
+										<th scope="col">X</th>
+										<th scope="col">Y</th>
+										<th scope="col">Z</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<th scope="row">1</th>
+										<td>Button 1</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+									</tr>
+									<tr>
+										<th scope="row">2</th>
+										<td>Button 2</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+									</tr>
+									<tr>
+										<th scope="row">3</th>
+										<td>Button 3</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+									</tr>
+									<tr>
+										<th scope="row">4</th>
+										<td>Button 4</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+									</tr>
+									<tr>
+										<th scope="row">5</th>
+										<td>Button 5</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+									</tr>
+									<tr>
+										<th scope="row">6</th>
+										<td>Button 6</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+									</tr>
+									<tr>
+										<th scope="row">7</th>
+										<td>Button 7</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+									</tr>
+									<tr>
+										<th scope="row">8</th>
+										<td>Button 8</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+									</tr>
+									<tr>
+										<th scope="row">9</th>
+										<td>Button 9</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+									</tr>
+									<tr>
+										<th scope="row">10</th>
+										<td>Button 10</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
 
-									<p id="joint1_coord" class="data"> 0 </p> <p class="data"> &#xA0; </p>
-									<p id="joint2_coord" class="data"> 0 </p> <p class="data"> &#xA0; </p>
-									<p id="joint3_coord" class="data"> 0 </p> <p class="data"> &#xA0; </p>
-									<p id="joint4_coord" class="data"> 0 </p> <p class="data"> &#xA0; </p>
-									<p id="joint5_coord" class="data"> 0 </p> <p class="data"> &#xA0; </p>
-									<p id="joint6_coord" class="data"> 0 </p> <p class="data"> &#xA0; </p>
-									<p id="joint7_coord" class="data"> 0 </p> <p class="data"> &#xA0; </p>
-							</div>
-							
-							<div class="data-line-container">
-								<p class="data-title"> Joint Velocities: </p>
+					<div class="h-separator"></div>
 
-									<p id="joint1_vel" class="data"> 0 </p> <p class="data"> &#xA0; </p>
-									<p id="joint2_vel" class="data"> 0 </p> <p class="data"> &#xA0; </p>
-									<p id="joint3_vel" class="data"> 0 </p> <p class="data"> &#xA0; </p>
-									<p id="joint4_vel" class="data"> 0 </p> <p class="data"> &#xA0; </p>
-									<p id="joint5_vel" class="data"> 0 </p> <p class="data"> &#xA0; </p>
-									<p id="joint6_vel" class="data"> 0 </p> <p class="data"> &#xA0; </p>
-									<p id="joint7_vel" class="data"> 0 </p> <p class="data"> &#xA0; </p>
+					<div class="bottom-right">
+
+						<div class="joints">
+							<div class="joint-data-pos">
+								<div class="title-container">
+									<p class="data-title"> Joint Positions (rad): </p>
+								</div>
+
+							<div class="container">
+									<p id="joint1_coord" class="data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint2_coord" class="data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint3_coord" class="data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint4_coord" class="data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint5_coord" class="data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint6_coord" class="data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint7_coord" class="data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+								</div>
+							</div> 
+
+							<div class="joint-data-pos">
+
+								<div class="title-container">
+									<p class="data-title"> Joint Velocities (m/s): </p>
+								</div>
+
+								<div class="container">
+									<p id="joint1_vel" class="data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint2_vel" class="data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint3_vel" class="data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint4_vel" class="data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint5_vel" class="data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint6_vel" class="data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint7_vel" class="data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+								</div>
 							</div>
 						</div>
 
-					<div class="user-input-container">
-						<form class="input-form" action="" method="POST">{% csrf_token %}
-							<div class="input-title-container">{% csrf_token %}
-								<p class="input-title"></p>
-							</div>
 
-							<div class="button-dropdown-container">
-								<p class="dropdown-title">ID</p>
-								<select class="dropdown" id="dropdown_id">
-									<option>1</option>
-									<option>2</option>
-									<option>3</option>
-									<option>4</option>
-									<option>5</option>
-									<option>6</option>
-									<option>7</option>
-									<option>8</option>
-									<option>9</option>
-								</select> 
 
-								<button type="submit" class="set-button" id="set">SET</button>
-							</div>
 
-						<!-- 
+
+						<div class="user-input-container">
+							<form class="input-form" action="" method="POST">{% csrf_token %}
+								<div class="input-title-container">{% csrf_token %}
+									<p class="input-title"></p>
+								</div>
+
+								<div class="button-dropdown-container">
+									<p class="dropdown-title">ID</p>
+									<select class="dropdown" id="dropdown_id">
+										<option>1</option>
+										<option>2</option>
+										<option>3</option>
+										<option>4</option>
+										<option>5</option>
+										<option>6</option>
+										<option>7</option>
+										<option>8</option>
+										<option>9</option>
+									</select>
+
+									<button type="submit" class="set-button" id="set">SET</button>
+								</div>
+
+								<!-- 
 							<div class="input-container">{% csrf_token %}
 								<input type="number" class="input" placeholder="X" name="x"/>
 								<input type="number" class="input" placeholder="Y" name="y"/>
@@ -345,79 +383,71 @@
 							</div> 
 						-->
 
-						</form>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
-  		</div>
-  	</div>
-  	
-</div>
-<script>
+		</div>
 
-	const tabName = JSON.parse(document.getElementById('tab-name').textContent);
-	const chatSocket = new WebSocket(
-		'ws://'
-		+ window.location.host
-		+ '/ws/CS2022/'
-		+ tabName
-		+ '/'
-	);
+	</div>
+	<script>
 
-	chatSocket.onmessage = function(e) {
-		const data = JSON.parse(e.data);
-		
-		// console.log("debug")
-		let num_joints = 7
-		for (let i = 1; i <= num_joints; i++) {
-			let str = "joint"
-			str = concat(str, toString(i))
-			str = concat(str, "_coord")
-			document.getElementById(str).innerHTML = Math.round((data.joint_pos[i-1] + 1 + Number.EPSILON) * 100) / 100
+		const tabName = JSON.parse(document.getElementById('tab-name').textContent);
+		const chatSocket = new WebSocket(
+			'ws://'
+			+ window.location.host
+			+ '/ws/CS2022/'
+			+ tabName
+			+ '/'
+		);
+
+		chatSocket.onmessage = function (e) {
+			const data = JSON.parse(e.data);
+
+			// console.log("debug")
+			/*let num_joints = 7
+			for (let i = 1; i <= num_joints; i++) {
+				let str = "joint"
+				str = concat(str, toString(i))
+				str = concat(str, "_coord")
+				document.getElementById(str).innerHTML = Math.round((data.joint_pos[i-1] + 1 + Number.EPSILON) * 100) / 100
+			}*/
+
+			document.getElementById('joint1_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint2_coord').innerHTML = Math.round((data.joint_pos[1] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint3_coord').innerHTML = Math.round((data.joint_pos[2] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint4_coord').innerHTML = Math.round((data.joint_pos[3] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint5_coord').innerHTML = Math.round((data.joint_pos[4] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint6_coord').innerHTML = Math.round((data.joint_pos[5] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint7_coord').innerHTML = Math.round((data.joint_pos[6] + Number.EPSILON) * 100) / 100
+
+			document.getElementById('joint1_vel').innerHTML = Math.round((data.joint_vel[0] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint2_vel').innerHTML = Math.round((data.joint_vel[1] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint3_vel').innerHTML = Math.round((data.joint_vel[2] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint4_vel').innerHTML = Math.round((data.joint_vel[3] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint5_vel').innerHTML = Math.round((data.joint_vel[4] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint6_vel').innerHTML = Math.round((data.joint_vel[5] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint7_vel').innerHTML = Math.round((data.joint_vel[6] + Number.EPSILON) * 100) / 100
+
+
+		};
+
+		chatSocket.onclose = function (e) {
+			console.log('Switched Tab');
+		};
+
+
+		/* WHEN SETTING A NEW ID */
+		let dropdownList = document.getElementById('dropdown_id');
+		let setButton = document.getElementById('set')
+		setButton.onclick = (v) => {
+			console.log("Selected value is: " + dropdownList.value);
 		}
 
 
-
-
-
-
-
-
-
-		/*document.getElementById('joint1_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
-		document.getElementById('joint2_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
-		document.getElementById('joint3_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
-		document.getElementById('joint4_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
-		document.getElementById('joint5_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
-		document.getElementById('joint6_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
-		document.getElementById('joint7_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
-
-		document.getElementById('joint1_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
-		document.getElementById('joint2_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
-		document.getElementById('joint3_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
-		document.getElementById('joint4_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
-		document.getElementById('joint5_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
-		document.getElementById('joint6_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
-		document.getElementById('joint7_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100*/
-
-
-	};
-
-	chatSocket.onclose = function(e) {
-		console.log('Switched Tab');
-	};
-
-
-	/* WHEN SETTING A NEW ID */
-	let dropdownList = document.getElementById('dropdown_id');
-	let setButton = document.getElementById('set')
-	setButton.onclick = (v) => {
-		console.log("Selected value is: " + dropdownList.value);
-	}
-
-
-</script>
-<script src="{% static 'common/common.js' %}"></script>
+	</script>
+	<script src="{% static 'common/common.js' %}"></script>
 
 </body>
 

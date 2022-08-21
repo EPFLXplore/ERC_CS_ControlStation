@@ -149,7 +149,8 @@ class Controller():
 
         
     def hd_telemetry(self, jointstate):
-        self.cs.HD.set_joint_telemetry(jointstate.data)
+        self.cs.rover.HD.set_joint_telemetry(jointstate)
+        pos = jointstate.position
 
         HdDictionary = {
             'joint_pos' : self.cs.rover.HD.get_joint_positions(),
@@ -157,6 +158,7 @@ class Controller():
         }
 
         message = json.dumps(HdDictionary)
+        rospy.loginfo("dis wallah %d %d %d %d %d %d %d", pos[0], pos[1], pos[2], pos[3], pos[4], pos[5], pos[6])
 
         if(ws_hd.connected):
             ws_hd.send('%s' % message)
