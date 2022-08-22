@@ -289,6 +289,11 @@
 					</div>
 					<div style="float:left;">
 						<P style="font-weight: bold;">VALIDATION</P>
+						<form  class="state-button-form" method="POST">
+							{% csrf_token %}
+							<input id="" class="state-button" type="submit" value="OK">
+							
+						</form>
 						
 					</div>
 					
@@ -306,6 +311,11 @@
 						<form  class="state-button-form" method="POST">
 							{% csrf_token %}
 							<input id="l" class="state-button" type="submit" value="COLOR ANALYSIS">
+							
+						</form>
+						<form  class="state-button-form" method="POST">
+							{% csrf_token %}
+							<input id="l" class="state-button" type="submit" value="DENSITY">
 							
 						</form>
 					</div>
