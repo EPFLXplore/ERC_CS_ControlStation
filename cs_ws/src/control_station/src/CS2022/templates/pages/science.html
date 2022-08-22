@@ -175,41 +175,178 @@
 			
 		</script>
   		<div id="page" class="page">
-			<div >
-				
-				
-				<div style="width: 500px;">
-					<div style="float: left; width: 150px; color: white; font-weight: bold; margin-top: 20px; margin-left: 20px;">TUBE 1</div>
-					<div style="float: left; width: 150px; color: white; font-weight: bold; margin-top: 20px; margin-top: 20px;">TUBE 2</div>
-					<div style="float: left; width: 150px; color: white; font-weight: bold; margin-top: 20px; margin-top: 20px;">TUBE 3</div>
+			<div style="float: left;  width: 75%; height: 100%;">
+
+				<div style="width: 600px; height: 50%; float: left; ">
+
+					<div style="float: left; width: 150px; color: white; font-weight: bold; margin-top: 20px; margin-left: 20px;">
+						<p>TUBE 1</p>
+
+						<div>
+							<p style="font-size: small; float:left;">humidity    :</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div >
+							<p style="font-size: small; float: left;">color    :</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">mass	    :</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">particle size:</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">volume    :</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">density    :</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						
+
+					</div>
+
+					<div style=" border-left: 2px solid rgb(75, 75, 81); height: 250px; float:left; padding-right: 30px; margin-top: 30px;"> </div>
+
+					<div style="float: left; width: 150px; color: white; font-weight: bold; margin-top: 20px; margin-top: 20px;">
+						<p>TUBE 2</p>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">mass	    :</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+					
+					</div>
+
+					<div style=" border-left: 2px solid rgb(75, 75, 81); height: 250px; float:left; padding-right: 30px; margin-top: 30px;"> </div>
+
+					<div style="float: left; width: 150px; color: white; font-weight: bold; margin-top: 20px; margin-top: 20px;">
+						<p>TUBE 3</p>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">mass	    :</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+					</div>
+
 					<br style="clear: left;" />
 				</div>
 				
 
-				<!-- <div class="tube-submit-box">
-					<form action="" method="POST" class="tube-form"> 
-						
-						<div class="submit-column">
-							<div class="tube-form-check">
-								<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube1" value="tube1">
-								<label class="tube-form-check-label" for="inlineRadio1">1</label>
-							</div>
-							<div class="tube-form-check">
-								<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube2" value="tube2">
-								<label class="tube-form-check-label" for="inlineRadio2">2</label>
-							</div>
-							<div class="tube-form-check">
-								<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube3" value="tube3">
-								<label class="tube-form-check-label" for="inlineRadio3">3</label>
-							</div>
+				<div style="width: 650px;  height: 50%; float: left; color: white;">
+					
+					<div style="margin-top: 20px; ">
+						<p style="font-weight: bold;">TUBE SELECTION</p>
+						<div class="tube-submit-box" style="float: left">
+							<form action="" method="POST" class="tube-form"> 
+								
+								<div class="submit-column">
+									<div class="tube-form-check">
+										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube1" value="tube1">
+										<label class="tube-form-check-label" for="inlineRadio1">1</label>
+									</div>
+									<div class="tube-form-check">
+										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube2" value="tube2">
+										<label class="tube-form-check-label" for="inlineRadio2">2</label>
+									</div>
+									<div class="tube-form-check">
+										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube3" value="tube3">
+										<label class="tube-form-check-label" for="inlineRadio3">3</label>
+									</div>
+								</div>
+								
+							</form>
 						</div>
+					</div>
+					<div >
+						<p style="font-weight: bold;">POSITION SELECTION</p>
+						<div class="tube-submit-box" style="float: left;">
+							<form action="" method="POST" class="tube-form"> 
+								
+								<div class="submit-column">
+									<div class="tube-form-check">
+										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube1" value="pos1">
+										<label class="tube-form-check-label" for="inlineRadio1">caching</label>
+									</div>
+									<div class="tube-form-check">
+										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube2" value="pos2">
+										<label class="tube-form-check-label" for="inlineRadio2">analysis</label>
+									</div>
+									<div class="tube-form-check">
+										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube3" value="pos3">
+										<label class="tube-form-check-label" for="inlineRadio3">??????</label>
+									</div>
+								</div>
+								
+							</form>
+						</div>
+					</div>
+					<div style="float:left;">
+						<P style="font-weight: bold;">VALIDATION</P>
 						
-					</form>
-				</div> -->
+					</div>
+					
+					
+				</div>
+
+				<div style="width: 600px; height: 50%; float: left;">
+					<p style="font-weight: bold; color:white; margin-left: 20px;">ANALYSIS</p>
+					<div style="width: 50%; margin-left: 20px;">
+					<form  class="state-button-form" method="POST" >
+							{% csrf_token %}
+							<input id="l" class="state-button" type="submit" value="PARTICLE SIZE">
+							
+						</form>
+						<form  class="state-button-form" method="POST">
+							{% csrf_token %}
+							<input id="l" class="state-button" type="submit" value="COLOR ANALYSIS">
+							
+						</form>
+					</div>
+				</div>
+
+				<div style="width: 650px; height: 50%; float: left;">
+					<p style="font-weight: bold; color:white;">BAY TRAP AND CACHING</p>
+					<label class="toggle">
+						<input class="toggle-checkbox" type="checkbox">
+						<div class="toggle-switch"></div>
+						<span class="toggle-label">Open Trap</span>
+					</label>
+
+					<div class="tube-submit-box" style="float: left;">
+						<form action="" method="POST" class="tube-form"> 
+							
+							<div class="submit-column">
+								<div class="tube-form-check">
+									<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube1" value="pos1">
+									<label class="tube-form-check-label" for="inlineRadio1">P1</label>
+								</div>
+								<div class="tube-form-check">
+									<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube2" value="pos2">
+									<label class="tube-form-check-label" for="inlineRadio2">P2</label>
+								</div>
+								<div class="tube-form-check">
+									<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube3" value="pos3">
+									<label class="tube-form-check-label" for="inlineRadio3">P3</label>
+								</div>
+							</div>
+							
+						</form>
+					</div>
+				</div>
+				
+				
 
 
 
 			</div>
+
 			<div class="bottom-science-box">
 				
 				<div class="gallery-box">
@@ -223,16 +360,20 @@
 						<div class="picture-container">
 							
 						</div>
-						
 							
-						</div>
 					</div>
 				</div>
-
 				
 			</div>
-  		</div>
-  	</div>
+			<div style="background-color: green; height:50%;">
+
+			</div>
+
+			
+				
+		</div>
+  	</div>  
+</div>
   	
   </div>
   <script>
