@@ -171,18 +171,34 @@
 
 							<div class="user-input-container">
 								<form class="input-form" action="" method="POST">{% csrf_token %}
-									<!-- <p class="input-title">TARGET</p> -->
 										
-									<div class="input-container">{% csrf_token %}
-										<input type="number" class="input" placeholder="X" name="x"/>
-										<input type="number" class="input" placeholder="Y" name="y"/>
+									{% csrf_token %}
+									<div class="input-container">
+										<input id="x" type="number" class="input" placeholder="X" name="x"/>
+										<input id="y" type="number" class="input" placeholder="Y" name="y"/>
 		
-										<button id="set" type="submit" class="set-button">SET</button>
-										<!-- <button id="cancel" type="submit" class="set-button">CANCEL</button>
-											CANCEL HAPPENS WHEN WE ABORT
-										-->
+										<input id="nav_set" class="state-button" type="submit" value="SET">
+										
 									</div>
 								</form>
+								<script>
+									document.querySelector("#nav_set").addEventListener("click", event => {
+										event.preventDefault();
+						
+										let formData = new FormData();
+										formData.append('x', document.querySelector("#x").value);
+										formData.append('y', document.querySelector("#y").value);
+						
+						
+										let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+										let request = new Request('set_goal/', {method: 'POST',
+																			body: formData,
+																			headers: {"X-CSRFToken": csrfTokenValue}})
+										fetch(request)
+											.then(response => response.json())
+											.then(result => {})
+										})
+								</script>
 							</div>
 
 						</div>

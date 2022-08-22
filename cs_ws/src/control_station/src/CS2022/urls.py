@@ -25,6 +25,7 @@ urlpatterns = [
     path('navigation/wait/',        views.wait_nav,       name='wait_nav'),
     path('navigation/abort/',       views.abort_nav,      name='abort_nav'),
     path('navigation/resume/',      views.resume_nav,     name='resume_nav'),
+    path('navigation/set_goal/',    views.set_nav,        name="set_nav"),
 
     #Handlingdevice
     path('handlingdevice/launch/',  views.launch_hd,      name='launch_hd'),

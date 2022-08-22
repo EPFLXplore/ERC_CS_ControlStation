@@ -242,3 +242,13 @@ def start_timer(request):
     # startThread()
     return JsonResponse({})
 
+def set_nav(request):
+
+    a = request.POST.get("x")
+    b = request.POST.get("y")
+    result = int(a) + int(b)
+
+    print(result)
+
+    return JsonResponse({})
+
