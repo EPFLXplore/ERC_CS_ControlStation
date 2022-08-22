@@ -175,32 +175,20 @@
 			
 		</script>
   		<div id="page" class="page">
-			<div class="top-science-box">
-				<div class="buttons-box">
-					<button class="science-button">
-						<span>MASS</span>
-					</button>
-					<button class="science-button">
-						<span>PICTURE</span>
-					</button>
-					<button class="science-button">
-						<span>HUMIDITY</span>
-					</button>
-					<button class="science-button">
-						<span>PICTURE ANALYSIS</span>
-					</button>
+			<div >
+				
+				
+				<div style="width: 500px;">
+					<div style="float: left; width: 150px; color: white; font-weight: bold; margin-top: 20px; margin-left: 20px;">TUBE 1</div>
+					<div style="float: left; width: 150px; color: white; font-weight: bold; margin-top: 20px; margin-top: 20px;">TUBE 2</div>
+					<div style="float: left; width: 150px; color: white; font-weight: bold; margin-top: 20px; margin-top: 20px;">TUBE 3</div>
+					<br style="clear: left;" />
 				</div>
-				<div class="tube-submit-box">
+				
+
+				<!-- <div class="tube-submit-box">
 					<form action="" method="POST" class="tube-form"> 
-						<div class="submit-column">
-							<div class="rotation-box">
-								<p class="rotation-title">Rotation</p>
-								<input type="number" class="rotation-input" placeholder="angle" name="rotation"/>
-							</div>
-							<div class="form-check">
-								<input class="form-check-input" type="checkbox" placeholder="Fill" id="flexCheckDefault">
-							</div>
-						</div>
+						
 						<div class="submit-column">
 							<div class="tube-form-check">
 								<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube1" value="tube1">
@@ -215,20 +203,11 @@
 								<label class="tube-form-check-label" for="inlineRadio3">3</label>
 							</div>
 						</div>
-						<div class="submit-column">{%csrf_token%}
-							<button type="submit" class="send-button">
-								<span>Send</span>
-							</button>
-						</div>
+						
 					</form>
-				</div>
+				</div> -->
 
-				<div class="log-box">
-					<p class="log-title">Dialog Box</p>
-					<div class="log-container">
-						<p class="log">.txt</p>
-					</div>
-				</div>
+
 
 			</div>
 			<div class="bottom-science-box">
@@ -244,46 +223,13 @@
 						<div class="picture-container">
 							
 						</div>
-						<div class="picture-container">
-							
-						</div>
-						<div class="picture-container">
-							
-						</div>
-						<div class="picture-container">
+						
 							
 						</div>
 					</div>
 				</div>
 
-				<div class="tube-box">
-					<div class="trap-box">
-						<p class="trap-title">TRAP</p>
-						<div class="trap-image-container">
-							<!-- <img id="trap-open" src="{% static 'science/trap-open.png' %}" alt="My image"> -->
-						</div>
-					</div>
-					<div class="tube-info-box">
-						<div id="top-line" class="tube-info-line">
-							<div id="tube-1" class="tube-container">
-								<!-- <img id="tube-image" src="{% static 'science/tube.png' %}" alt="tube"> -->
-							</div>
-						</div>
-						<div id="bottom-line" class="tube-info-line">
-							<div id="tube-2" class="tube-container">
-								<!-- <img id="tube-image" src="{% static 'science/tube.png' %}" alt="tube"> -->
-
-							</div>
-							<div id="actual-tube" class="tube-display">
-								
-							</div>
-							<div id="tube-3" class="tube-container">
-								<!-- <img id="tube-image" src="{% static 'science/tube.png' %}" alt="tube"> -->
-
-							</div>
-						</div>
-					</div>
-				</div>
+				
 			</div>
   		</div>
   	</div>
