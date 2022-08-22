@@ -196,11 +196,11 @@
 }
 
 #set{
-	border: 2px solid green;
+	border: 2px solid blue;
 }
 
 #set:hover{
-	background-color: green;
+	background-color: blue;
 }
 
 /*==========================================================================
