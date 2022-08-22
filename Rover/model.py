@@ -95,7 +95,7 @@ class Navigation:
     def cancelGoal(self):
         self.__currGoal = np.zeros(0)
         self.rover.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = self.__currId))
-        self.RoverConfirm_pub.publish("Nav goal cancelled")
+        self.rover.RoverConfirm_pub.publish("Nav goal cancelled")
 
     
     #------------- Twist Data -------------

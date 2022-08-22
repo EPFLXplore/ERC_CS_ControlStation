@@ -225,12 +225,10 @@ class Controller():
         '''
         checkArgs(task, instr)
 
-        if(task == 4):
-            instr = self.cs.rover.SC.getCmd()
-            self.cs.Task_pub.publish(Int8MultiArray(data = [task, instr]))
-        else:
-            arr = [task, instr]
-            self.cs.Task_pub.publish(Int8MultiArray(data = arr))
+        arr = [task, instr]
+        if(task == 4): arr[1] = self.cs.rover.SC.getCmd() #if Science then there are a bit more specific cmds
+            
+        self.cs.Task_pub.publish(Int8MultiArray(data = arr))
 
         self.wait()
 

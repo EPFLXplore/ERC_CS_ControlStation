@@ -163,104 +163,130 @@
 				<div id="page" class="page">
 					<!--LEFT SIDE-->
 					<div class="left">
-						<div class="top-left">
+						<div class="top-left"> </div>
 						
+						<div class="h-separator"></div>
+
+						<div class="bottom-left">
+
+							<div class="user-input-container">
+								<form class="input-form" action="" method="POST">{% csrf_token %}
+									<!-- <p class="input-title">TARGET</p> -->
+										
+									<div class="input-container">{% csrf_token %}
+										<input type="number" class="input" placeholder="X" name="x"/>
+										<input type="number" class="input" placeholder="Y" name="y"/>
+		
+										<button id="set" type="submit" class="set-button">SET</button>
+										<!-- <button id="cancel" type="submit" class="set-button">CANCEL</button>
+											CANCEL HAPPENS WHEN WE ABORT
+										-->
+									</div>
+								</form>
+							</div>
+
 						</div>
-						
-						
 					</div>
+				
 
-				<!--RIGHT SIDE-->
-				<div class="v-separator">
-				</div>
+					<!--RIGHT SIDE-->
+					<div class="v-separator"></div>
 
-				<div class="right">
-					<div class="top-right">
-						<div class="left-panel">
-							<div class="subject-container">
-								<div class="title-container">
-									<p class="title">CURRENT POSITION</p>
+
+					<div class="right">
+						<div class="top-right">
+							<div class="left-panel">
+								<div class="subject-container">
+									<div class="title-container">
+										<p class="title">CURRENT POSITION</p>
+									</div>
+									<div class="data-container">
+										<!-- ROVER X COORDINATE -->
+										<div class="data-line-container">
+											<p class="data-title">X : </p>
+											<p id="X_coord" class="data"> 0 </p>
+											<p class="data"> &#xA0; m </p>
+										</div>
+										<!-- ROVER Y COORDINATE -->
+										<div class="data-line-container">
+											<p class="data-title">Y : </p>
+											<p id="Y_coord" class="data"> 0 </p>
+											<p class="data"> &#xA0; m </p>
+										</div>
+
+									</div>
 								</div>
-								<div class="data-container">
-									<!-- ROVER X COORDINATE -->
-									<div class="data-line-container">
-										<p class="data-title">X : </p>
-										<p id="X_coord" class="data"> 0 </p>
-										<p class="data"> &#xA0; m </p>
+								
+								<div class="subject-container">
+									<div class="title-container">
+										<p class="title">GOAL POSITION</p>
 									</div>
-									<!-- ROVER Y COORDINATE -->
-									<div class="data-line-container">
-										<p class="data-title">Y : </p>
-										<p id="Y_coord" class="data"> 0 </p>
-										<p class="data"> &#xA0; m </p>
-									</div>
+									<div class="data-container">
+										<!-- GOAL'S Y COORDINATE -->
+										<div class="data-line-container">
+											<p class="data-title">X : </p>
+											<p class="data">0</p>
+										</div>
+										<!-- GOAL'S X COORDINATE -->
+										<div class="data-line-container">
+											<p class="data-title">Y : </p>
+											<p class="data">0</p>
+										</div>
 
+									</div>
 								</div>
 							</div>
-							
-							<div class="subject-container">
-								<div class="title-container">
-									<p class="title">GOAL POSITION</p>
-								</div>
-								<div class="data-container">
-									<!-- GOAL'S Y COORDINATE -->
-									<div class="data-line-container">
-										<p class="data-title">X : </p>
-										<p class="data">0</p>
+							<div class="right-panel">
+								<div class="subject-container">
+									<div class="title-container">
+										<p class="title">COURSE DATA</p>
 									</div>
-									<!-- GOAL'S X COORDINATE -->
-									<div class="data-line-container">
-										<p class="data-title">Y : </p>
-										<p class="data">0</p>
+									<div class="data-container">
+										<!-- DISTANCE TO GOAL -->
+										<div class="data-line-container">
+											<p class="data-title">Distance to goal: </p>
+											<p id="distToGoal" class="data"> 0 </p>
+											<p class="data"> &#xA0; m </p>
+										</div>
+										<!-- ROUTE TO GOAL -->
+										<div class="data-line-container">
+											<p id="debug-label" class="data-title">Route to goal: </p>
+											<p class="data"> 0 </p>
+											<p class="data"> &#xA0; m </p>
+										</div>
+										
 									</div>
+									<div class="title-container">
+										<p class="title">VELOCITY</p>
+									</div>
+									<div class="data-container">
+										<!-- LINEAR VELOCITY -->
+										<div class="data-line-container">
+											<p class="data-title">Linear: </p>
+											<p id="linVel" class="data">0</p>
+											<p class="data"> &#xA0; m/s </p>
+										</div>
+										<!-- ANGULAR VELOCITY -->
+										<div class="data-line-container">
+											<p class="data-title">Angular: </p>
+											<p id="angVel" class="data">0</p> 
+											<p class = "data"> &#xA0; rad/s</p>
+										</div>
 
+										</div>
+									</div>
 								</div>
+								
+							</div>
+
+							<div class="h-separator-s">
 							</div>
 						</div>
-						<div class="right-panel">
-							<div class="subject-container">
-								<div class="title-container">
-									<p class="title">COURSE DATA</p>
-								</div>
-								<div class="data-container">
-									<!-- DISTANCE TO GOAL -->
-									<div class="data-line-container">
-										<p class="data-title">Distance to goal: </p>
-										<p id="distToGoal" class="data"> 0 </p>
-										<p class="data"> &#xA0; m </p>
-									</div>
-									<!-- ROUTE TO GOAL -->
-									<div class="data-line-container">
-										<p id="debug-label" class="data-title">Route to goal: </p>
-										<p class="data"> 0 </p>
-										<p class="data"> &#xA0; m </p>
-									</div>
-									
-								</div>
-								<div class="title-container">
-									<p class="title">VELOCITY</p>
-								</div>
-								<div class="data-container">
-									<!-- LINEAR VELOCITY -->
-									<div class="data-line-container">
-										<p class="data-title">Linear: </p>
-										<p id="linVel" class="data">0</p>
-										<p class="data"> &#xA0; m/s </p>
-									</div>
-									<!-- ANGULAR VELOCITY -->
-									<div class="data-line-container">
-										<p class="data-title">Angular: </p>
-										<p id="angVel" class="data">0</p> 
-										<p class = "data"> &#xA0; rad/s</p>
-									</div>
 
-									</div>
-								</div>
-							</div>
+						<div class="bottom-right">
+
 							
-						</div>
 
-						<div class="h-separator-s">
 						</div>
 					</div>
 				</div>
@@ -268,6 +294,10 @@
 		</div>
 		<!-- ========================================================================================================= -->
 		<script>
+			/* Prevents a prompt from appearing if you refresh after entering values*/
+			if ( window.history.replaceState ) {
+				window.history.replaceState( null, null, window.location.href );
+			}
 			
 			// -----------------------------------------------------------------------------
 			// DataSocket
@@ -289,7 +319,7 @@
 				document.getElementById('linVel').innerHTML     = Math.round((data.linVel + Number.EPSILON)   * 100) / 100
 				document.getElementById('angVel').innerHTML     = Math.round((data.angVel + Number.EPSILON)   * 100) / 100
 				document.getElementById('distToGoal').innerHTML = Math.round((data.distance + Number.EPSILON) * 100) / 100
-				
+		
 
 
 				};
