@@ -4,13 +4,13 @@
 }
 
 .top-science-box{
-    width: 100%;
+    width: 50%;
     height: 45%;
 }
 
 .bottom-science-box{
     width: 100%;
-    height: 45%;
+    height: 100%;
 }
 
 .buttons-box{
@@ -85,23 +85,27 @@
 }
 
 .gallery-box{
-    float: left;
-    width: 50%;
-    height: 100%;
+    /* float: left; */
+    /* position: fixed; */
+    width: 25%;
+    height: 85%;
     overflow: hidden;
-    overflow-x: scroll;
+    overflow-y: scroll;
+    /* right: 0; */
+    float: left;
+    /* top: 10; */
 }
 
 .scrollable-gallery{
     height: 100%;
-    width: 300%;
+    width: 100%;
 }
 
 .picture-container{
     float: left;
-    width: 15em;
-    height: 15em;
-    margin: 5em;
+    width: 20em;
+    height: 42em;
+    margin: 1.5em;
     background-image: url(image-background.jpg);
     border-radius: 10px;
 }
@@ -237,8 +241,9 @@
 =====================| LABEL  |===============================================*/
 .tube-form-check-label{
     color: white;
-    margin-left: 10%;
+    margin-left: 5%;
     margin-top: 5.5%;
+    font-size: smaller;
 }
 
 /*==========================================================================
@@ -273,8 +278,8 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    -webkit-print-color-adjust: exact;
-    color-adjust: exact;
+    /* -webkit-print-color-adjust: exact;
+    color-adjust: exact; */
 }
 
 .tube-form-check-input[type="radio"] {
@@ -282,8 +287,8 @@
 }
 
 .tube-form-check-input:checked {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
+    background-color: #0d3a7d;
+    border-color: #0d3a7d;
 }
 
 .tube-form-check-input:checked[type="radio"] {
@@ -299,4 +304,70 @@
 #tube-image{
     height: 100%;
     width: 60%
+}
+
+/* ==================================== */
+/* switch */
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, ".SFNSText-Regular", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
+}
+
+.toggle {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.toggle-switch {
+  display: inline-block;
+  background: #ccc;
+  border-radius: 16px;
+  width: 58px;
+  height: 32px;
+  position: relative;
+  vertical-align: middle;
+  transition: background 0.25s;
+}
+.toggle-switch:before, .toggle-switch:after {
+  content: "";
+}
+.toggle-switch:before {
+  display: block;
+  background: linear-gradient(to bottom, #fff 0%, #eee 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  transition: left 0.25s;
+}
+.toggle:hover .toggle-switch:before {
+  background: linear-gradient(to bottom, #fff 0%, #fff 100%);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+}
+.toggle-checkbox:checked + .toggle-switch {
+  background: #56c080;
+}
+.toggle-checkbox:checked + .toggle-switch:before {
+  left: 30px;
+}
+
+.toggle-checkbox {
+  position: absolute;
+  visibility: hidden;
+}
+
+.toggle-label {
+  margin-left: 5px;
+  position: relative;
+  top: 2px;
+  color: white;
 }
