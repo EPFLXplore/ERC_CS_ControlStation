@@ -178,6 +178,17 @@ def resume_nav(request):
     cs.controller.pub_Task(2,4)
     return JsonResponse({})
 
+def set_nav(request):
+
+    x = float(request.POST.get("x"))
+    y = float(request.POST.get("y"))
+    
+    cs.controller.pub_nav_goal(x, y)
+    goal = cs.rover.Nav.getGoal()
+    print("the goal is:", goal[0], goal[1])
+
+    return JsonResponse({})
+
 # -----------------------------------
 # Handling device views
 
@@ -206,6 +217,14 @@ def resume_hd(request):
 def retry_hd(request):
     rospy.loginfo("Maintenance: Retry")
     cs.controller.pub_Task(3,5)
+    return JsonResponse({})
+
+def set_id(request):
+    id = int(request.POST.get("id"))
+    print(cs.rover.HD.getElemId())
+    cs.controller.pub_hd_elemId(id)
+    
+
     return JsonResponse({})
 
 # -----------------------------------
@@ -242,13 +261,5 @@ def start_timer(request):
     # startThread()
     return JsonResponse({})
 
-def set_nav(request):
 
-    a = request.POST.get("x")
-    b = request.POST.get("y")
-    result = int(a) + int(b)
-
-    print(result)
-
-    return JsonResponse({})
 

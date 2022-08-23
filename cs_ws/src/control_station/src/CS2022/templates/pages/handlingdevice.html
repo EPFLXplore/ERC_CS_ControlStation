@@ -346,6 +346,18 @@
 									<p class="data"> &#xA0; </p>
 								</div>
 							</div>
+
+							<div class="joint-data-pos">
+
+								<div class="title-container">
+									<p class="data-title"> Distance to element: </p>
+								</div>
+
+								<div class="container">
+									<p id="tof" class="data"> 0 </p>
+									<p class="data"> &#xA0; m</p>
+								</div>
+							</div>
 						</div>
 
 
@@ -372,7 +384,7 @@
 										<option>9</option>
 									</select>
 
-									<button type="submit" class="set-button" id="set">SET</button>
+									<input id="set_id" class="set-button" type="submit" value="SET"> <!-- set-button -->
 								</div>
 
 								<!-- 
@@ -384,6 +396,26 @@
 						-->
 
 							</form>
+
+							<script>
+								document.querySelector("#set_id").addEventListener("click", event => {
+										event.preventDefault();
+										
+										/* sending goal coordinates to back-end*/
+										let formData = new FormData();
+										formData.append('id', document.querySelector("#dropdown_id").value);
+						
+						
+										let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+										let request = new Request('set_id/', {method: 'POST',
+																			body: formData,
+																			headers: {"X-CSRFToken": csrfTokenValue}})
+										fetch(request)
+											.then(response => response.json())
+											.then(result => {})
+										})
+							</script>
+
 						</div>
 					</div>
 				</div>
@@ -429,6 +461,8 @@
 			document.getElementById('joint5_vel').innerHTML = Math.round((data.joint_vel[4] + Number.EPSILON) * 100) / 100
 			document.getElementById('joint6_vel').innerHTML = Math.round((data.joint_vel[5] + Number.EPSILON) * 100) / 100
 			document.getElementById('joint7_vel').innerHTML = Math.round((data.joint_vel[6] + Number.EPSILON) * 100) / 100
+
+			document.getElementById('tof').innerHTML = Math.round((data.tof + Number.EPSILON) * 100) / 100000 //divide by 100000 to convert into meters
 
 
 		};

@@ -33,6 +33,7 @@ urlpatterns = [
     path('handlingdevice/abort/',   views.abort_hd,       name='abort_hd'),
     path('handlingdevice/resume/',  views.resume_hd,      name='resume_hd'),
     path('handlingdevice/retry/',   views.retry_hd,       name='retry_hd'),
+    path('handlingdevice/set_id/',  views.set_id,         name='set_id'),
     
     #Science
     path('science/launch/',         views.launch_science, name='launch_science'),

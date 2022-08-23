@@ -25,7 +25,7 @@ import django
 
 
 from CS2022.models         import *
-from std_msgs.msg          import Int8MultiArray    , Int8        , Int32MultiArray, Bool, String, Int16MultiArray, Int16
+from std_msgs.msg          import Int8MultiArray    , Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16
 
 # TODO
 # from ros_package.src.custom_msg_python.msg     import move_base_action_goal 
@@ -93,7 +93,7 @@ class CS:
         rospy.Subscriber('ROVER_SC_measurments_humidity', Int16,           self.controller.sc_humidity        )
         rospy.Subscriber('ROVER_SC_measurments_mass',     Int16,           self.controller.sc_mass            )
         rospy.Subscriber('ROVER_HD_telemetry',            JointState,      self.controller.hd_telemetry       )
-
+        rospy.Subscriber('ROVER_HD_tof',                  Int32,           self.controller.hd_tof             )
 
 
         # TODO

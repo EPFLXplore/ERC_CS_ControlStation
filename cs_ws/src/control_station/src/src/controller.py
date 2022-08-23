@@ -156,8 +156,11 @@ class Controller():
 
         HdDictionary = {
             'joint_pos' : self.cs.rover.HD.get_joint_positions(),
-            'joint_vel' : self.cs.rover.HD.get_joint_velocities()
+            'joint_vel' : self.cs.rover.HD.get_joint_velocities(),
+            'tof'       : self.cs.rover.HD.get_tof()
         }
+
+        print("tof %d", self.cs.rover.HD.get_tof())
 
         message = json.dumps(HdDictionary)
         rospy.loginfo("dis wallah %d %d %d %d %d %d %d", pos[0], pos[1], pos[2], pos[3], pos[4], pos[5], pos[6])
@@ -165,6 +168,20 @@ class Controller():
         if(ws_hd.connected):
             ws_hd.send('%s' % message)
 
+    def hd_tof(self, val):
+        self.cs.rover.HD.set_tof(val.data)
+
+        HdDictionary = {
+            'joint_pos' : self.cs.rover.HD.get_joint_positions(),
+            'joint_vel' : self.cs.rover.HD.get_joint_velocities(),
+            'tof'       : self.cs.rover.HD.get_tof()
+        }
+
+        message = json.dumps(HdDictionary)
+        rospy.loginfo("tof my guy %d (mm):", val.data)
+
+        if(ws_hd.connected):
+            ws_hd.send('%s' % message)
 
 
     def nav_data(self, odometry):
@@ -262,7 +279,9 @@ class Controller():
     # when in Autonomous or SemiAutonomous mode
     def pub_hd_elemId(self, id) :
         rospy.loginfo("HD: object id - %d", id)
-        self.cs.HD_SemiAuto_Id_pub.publish(data = Int8(id))
+        print(type(id))
+        self.cs.rover.HD.setElemId(id)
+        self.cs.HD_SemiAuto_Id_pub.publish(data = id)
 
 
     ###############################
@@ -271,15 +290,15 @@ class Controller():
 
     # give the coordinates the self.cs.
     # rover must reach
-    def pub_nav_goal(self, x, y, z):
-        rospy.loginfo("NAV: set goal (%d, %d, %d)", x, y, z)
+    def pub_nav_goal(self, x, y):
+        rospy.loginfo("NAV: set goal (%d, %d)", x, y)
         #moveBaseGoal = MoveBaseGoal(target_pose = Pose(position = Point(x, y, z)))
         #self.cs.Nav_Goal_pub.publish(MoveBaseActionGoal(goal_id = self.cs.rover.currId, goal = moveBaseGoal))
-        moveBaseGoal_var = Pose(position = Point(x, y, z))
+        moveBaseGoal_var = Pose(position = Point(x, y, 0))
         
         # TODO
         # self.cs.Nav_Goal_pub.publish(move_base_action_goal(currId = self.cs.rover.currId, moveBaseGoal = moveBaseGoal_var))
-        self.cs.rover.Nav.setGoal([x,y,z])
+        self.cs.rover.Nav.setGoal([x,y])
 
 
     # cancel a specific Navigation goal by giving the goal's id

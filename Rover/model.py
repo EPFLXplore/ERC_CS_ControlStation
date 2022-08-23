@@ -198,6 +198,8 @@ class HandlingDevice:
         self.__joint_positions = np.array(7)
         self.__joint_velocities = np.array(7)
 
+        self.__distToElem = 0
+
     def setHDMode(self, mode_ros):
 
         self.rover.RoverConfirm_pub.publish("HD mode set")
@@ -213,7 +215,7 @@ class HandlingDevice:
     def set_semiAutoID(self, id_ros):
         self.__semiAutoId = id_ros.data
         self.rover.HD_SemiAuto_Id_pub.publish(self.__semiAutoId)
-        self.RoverConfirm_pub.publish("HD Id set")
+        self.rover.RoverConfirm_pub.publish("HD Id set")
 
 
     def set_joint_telemetry(self, telemetry_ros):
@@ -235,6 +237,11 @@ class HandlingDevice:
 
     def get_joint_velocities(self):
         return self.__joint_velocities
+
+    
+    def set_tof(self, val):
+        self.__distToElem = val.data
+        self.rover.HD_tof_pub.publish(val.data)
 
 
 

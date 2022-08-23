@@ -4,7 +4,7 @@ import rospy
 
 from abc import ABC, abstractmethod #Abstract Base Class
 
-from std_msgs.msg       import Int8, Int16, Bool, String, Int8MultiArray,  Int16MultiArray, UInt8MultiArray 
+from std_msgs.msg       import Int8, Int16, Int32, Bool, String, Int8MultiArray,  Int16MultiArray, UInt8MultiArray 
 from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
 from geometry_msgs.msg  import Twist 
 from actionlib_msgs.msg import GoalID
@@ -44,6 +44,7 @@ class Rover:
         self.SC_mass_pub       = rospy.Publisher('ROVER_SC_measurments_mass',     Int16,           queue_size=1)
         self.HD_telemetry_pub  = rospy.Publisher('ROVER_HD_telemetry',            JointState,      queue_size=1)
         self.NAV_odometry_pub  = rospy.Publisher('ROVER_NAV_odometry',            Odometry,        queue_size=1)
+        self.HD_tof            = rospy.Publisher('ROVER_HD_tof',                  Int32,           queue_size=1)
 
         # publish instruction concerning the Maintenance task  (Rover node --> HD node)
         self.Maintenance_pub = rospy.Publisher('Maintenance', Int8, queue_size=1)
@@ -78,6 +79,7 @@ class Rover:
         rospy.Subscriber('sc_state',                     String,          self.model.SC.set_text_info)
         rospy.Subscriber('sc_measurments_humidity',      Int16,           self.model.SC.set_humidities)
         rospy.Subscriber('sc_measurments_mass',          Int16,           self.model.SC.set_sc_mass)
+        rospy.Subscriber('/avionics_ToF',                Int32,           self.model.HD.set_tof)
 
         '''rospy.Subscriber('/odometry/filtered',           Odometry,     self.Nav_pub.publish)
         rospy.Subscriber('/arm_control/joint_telemetry', JointState,      self.HD_telemetry.publish)

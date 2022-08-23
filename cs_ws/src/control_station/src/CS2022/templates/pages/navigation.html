@@ -177,14 +177,15 @@
 										<input id="x" type="number" class="input" placeholder="X" name="x"/>
 										<input id="y" type="number" class="input" placeholder="Y" name="y"/>
 		
-										<input id="nav_set" class="state-button" type="submit" value="SET">
+										<input id="nav_set" class="set-button" type="submit" value="SET">
 										
 									</div>
 								</form>
 								<script>
 									document.querySelector("#nav_set").addEventListener("click", event => {
 										event.preventDefault();
-						
+										
+										/* sending goal coordinates to back-end*/
 										let formData = new FormData();
 										formData.append('x', document.querySelector("#x").value);
 										formData.append('y', document.querySelector("#y").value);

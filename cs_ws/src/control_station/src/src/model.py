@@ -75,7 +75,7 @@ class Navigation:
 
         # keep track of goals
         #self.__goals = np.array([])
-        self.__goal = np.zeros(3)
+        self.__goal = np.zeros(2)
 
         # rover position
         self.__pos = np.zeros(3)
@@ -91,7 +91,8 @@ class Navigation:
         self.incrementId()
     '''
     def setGoal(self, arr):
-        self.__goal = arr
+        self.__goal[0] = arr[0]
+        self.__goal[1] = arr[1]
 
     def incrementId(self):
         self.__nextId += 1
@@ -109,7 +110,7 @@ class Navigation:
         np.delete(self.__goals, id, 0)'''
 
     def cancelGoal(self):
-        self.__goal = np.zeros(3)
+        self.__goal = np.zeros(2)
     
     #------------- Twist Data -------------
     
@@ -220,8 +221,11 @@ class HandlingDevice:
         # HD mode: Inverse, Direct, Debug TODO
         self.__hd_mode = -1
 
-        self.__joint_positions = np.array(7)
-        self.__joint_velocities = np.array(7)
+        self.__elemId = -1
+        self.__distToElem = 0
+
+        self.__joint_positions = [0,0,0,0,0,0,0]
+        self.__joint_velocities = [0,0,0,0,0,0,0]
 
     #--------------------------
 
@@ -259,6 +263,22 @@ class HandlingDevice:
 
     def getVelNorm(self):
         return np.linalg.norm(self.get_joint_velocities)
+
+    #--------------------------
+    
+    def setElemId(self, id):
+        self.__elemId = id
+
+    def getElemId(self):
+        return self.__elemId
+
+    #--------------------------
+
+    def set_tof(self, tof):
+        self.__distToElem = tof
+
+    def get_tof(self):
+        return self.__distToElem
 
 # TASK: 
 #       - Manual      = 1 
