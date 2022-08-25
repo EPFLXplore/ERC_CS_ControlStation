@@ -77,8 +77,8 @@ class Navigation:
         self.__angVel = np.zeros(3)
 
     def setGoal(self, goal):
-        self.__currGoal = goal.data
-        self.rover.Nav_Goal_pub.publish(goal.data)
+        self.__currGoal = goal
+        self.rover.Nav_Goal_pub.publish(goal)
         self.RoverConfirm_pub.publish("Nav goal set")
 
     def getId(self):

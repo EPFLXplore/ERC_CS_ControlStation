@@ -434,18 +434,20 @@
 						</div>
 
 
-
-
-
 						<div class="user-input-container">
 							<form class="input-form" action="" method="POST">{% csrf_token %}
 								<div class="input-title-container">{% csrf_token %}
 									<p class="input-title"></p>
+									<!-- <input id="scan" class="set-button" type="submit" value="SCAN"> 
+									I SUGGEST FOR NOW TO JUST HAVE THE OPTION TO SEND THE ID 0 TO SCAN AND NOT HAVE A SEPARATE BUTTON-->
 								</div>
 
 								<div class="button-dropdown-container">
 									<p class="dropdown-title">ID</p>
 									<select class="dropdown" id="dropdown_id">
+
+										<option>0</option>
+
 										<option>1</option>
 										<option>2</option>
 										<option>3</option>
