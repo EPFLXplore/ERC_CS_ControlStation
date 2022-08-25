@@ -169,6 +169,10 @@
 
 						<div class="bottom-left">
 
+							<p class="data"> Current Goal &nbsp — &nbsp</p>
+							<p class="data"> &nbsp x: &nbsp </p><p id="X_goal" class="data"> 0 </p>
+							<p class="data"> &nbsp&nbsp&nbsp y: &nbsp </p><p id="Y_goal" class="data"> 0 </p>
+
 							<div class="user-input-container">
 								<form class="input-form" action="" method="POST">{% csrf_token %}
 										
@@ -199,6 +203,8 @@
 											.then(response => response.json())
 											.then(result => {})
 										})
+
+									
 								</script>
 							</div>
 

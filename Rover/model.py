@@ -214,8 +214,11 @@ class HandlingDevice:
 
     def set_semiAutoID(self, id_ros):
         self.__semiAutoId = id_ros.data
-        self.rover.HD_SemiAuto_Id_pub.publish(self.__semiAutoId)
+        #self.rover.HD_SemiAuto_Id_pub.publish(self.__semiAutoId)
         self.rover.RoverConfirm_pub.publish("HD Id set")
+
+    def getId(self):
+        return self.__semiAutoId
 
 
     def set_joint_telemetry(self, telemetry_ros):

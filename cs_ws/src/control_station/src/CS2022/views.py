@@ -97,7 +97,7 @@ def navigation(request):
 
     state = parseState()
 
-    # ws_nav.connect(NAV_WS_URL)
+    ws_nav.connect(NAV_WS_URL)
     # ws_time.connect(TIME_WS_URL)
     return render(request, 'pages/navigation.html', { 
         'tab_name': "navigation",

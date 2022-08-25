@@ -132,6 +132,8 @@ class Rover:
 
         elif (task == 3): #Maintenance
             self.ROVER_STATE = Task.MAINTENANCE
+            if(instr == 1): self.HD_SemiAuto_Id_pub.publish(self.model.HD.getId())
+            elif(instr == 2): self.HD_SemiAuto_Id_pub.publish(-1)
             self.Maintenance_pub.publish(instr)
 
         else:  #task == 4, Science

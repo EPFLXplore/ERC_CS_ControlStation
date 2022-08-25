@@ -23,27 +23,43 @@ class MANConsumer(RoverConsumer):
 
     # Receive message from WebSocket
     async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message_1 = text_data_json['Debug']
-        message_2 = text_data_json['Debug2']
+        text_data_json  = json.loads(text_data)
+        x_pos           = text_data_json['x']
+        y_pos           = text_data_json['y']
+        linearVelocity  = text_data_json['linVel']
+        angularVelocity = text_data_json['angVel']
+        joint_position  = text_data_json['joint_pos']
+        joint_velocity  = text_data_json['joint_vel']
 
         # Send message to room group
         await self.channel_layer.group_send(
             self.tab_group_name,
             {
-                'type': 'topic_message',
-                'Debug': message_1,
-                'Debug2': message_2
+                'type'     : 'topic_message',
+                'x'        : x_pos,
+                'y'        : y_pos,
+                'linVel'   : linearVelocity,
+                'angVel'   : angularVelocity,
+                'joint_pos': joint_position,
+                'joint_vel': joint_velocity
             }
         )
 
     # Receive message from room group
     async def topic_message(self, event):
-        message_1 = event['Debug']
-        message_2 = event['Debug2']
+        x_pos           = event['x']
+        y_pos           = event['y']
+        linearVelocity  = event['linVel']
+        angularVelocity = event['angVel']
+        joint_position  = event['joint_pos']
+        joint_velocity  = event['joint_vel']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'Debug': message_1,
-            'Debug2':message_2
+            'x'        : x_pos,
+            'y'        : y_pos,
+            'linVel'   : linearVelocity,
+            'angVel'   : angularVelocity,
+            'joint_pos': joint_position,
+            'joint_vel': joint_velocity
         }))

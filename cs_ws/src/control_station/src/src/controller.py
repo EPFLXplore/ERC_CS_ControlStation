@@ -40,6 +40,7 @@ from src.model                            import *
 from nav_msgs.msg           import Odometry
 from CS2022.models          import *
 
+
 #================================================================================
 # Webscokets for ASGI
 
@@ -154,19 +155,7 @@ class Controller():
         self.cs.rover.HD.set_joint_telemetry(jointstate)
         pos = jointstate.position
 
-        HdDictionary = {
-            'joint_pos' : self.cs.rover.HD.get_joint_positions(),
-            'joint_vel' : self.cs.rover.HD.get_joint_velocities(),
-            'tof'       : self.cs.rover.HD.get_tof()
-        }
-
-        print("tof %d", self.cs.rover.HD.get_tof())
-
-        message = json.dumps(HdDictionary)
-        rospy.loginfo("dis wallah %d %d %d %d %d %d %d", pos[0], pos[1], pos[2], pos[3], pos[4], pos[5], pos[6])
-
-        if(ws_hd.connected):
-            ws_hd.send('%s' % message)
+        self.jsonMsg(Task.MAINTENANCE, ws_hd)
 
     def hd_tof(self, val):
         self.cs.rover.HD.set_tof(val.data)
@@ -182,6 +171,8 @@ class Controller():
 
         if(ws_hd.connected):
             ws_hd.send('%s' % message)
+
+        
 
 
     def nav_data(self, odometry):
@@ -205,24 +196,16 @@ class Controller():
 
         rospy.loginfo("linvel %d", self.cs.rover.Nav.getLinVel())
 
-        NavDictionary = {
-            'x'        : pos.x, 
-            'y'        : pos.y, 
-            'linVel'   : self.cs.rover.Nav.getLinVel(), 
-            'angVel'   : self.cs.rover.Nav.getAngVel(),
-            'distance' : self.cs.rover.Nav.distToGoal()
-        }
+        '''state = self.cs.rover.getState()
+        if(state == Task.NAVIGATION):
+            self.jsonMsg(state, ws_nav)
+        elif(state == Task.MANUAL):
+            self.jsonMsg(state, ws_man)'''
 
-        '''message = json.dumps({ 'x'      : pos.x, 
-                               'y'      : pos.y, 
-                               'linVel' : self.cs.rover.Nav.getLinVel(), 
-                               'angVel' : self.cs.rover.Nav.getAngVel(),
-                               'distance'   : self.cs.rover.Nav.distToGoal() })'''
-        message = json.dumps(NavDictionary)
-
-        if ws_nav.connected :
-            # print(twistAng)
-            ws_nav.send('%s' % message)
+        '''if(ws_man.connected): self.jsonMsg(Task.MANUAL, ws_man)
+        if(ws_nav.connected): self.jsonMsg(Task.NAVIGATION, ws_nav)'''
+        self.sendJson(Task.NAVIGATION)
+            
 
 
     #TODO on pourrait faire une liste d'exceptions comme ca on a un historique des problèmes qui ont eu lieu
@@ -384,3 +367,104 @@ class Controller():
         if ws_time.connected:
 
             ws_time.send('%s' % message)
+
+
+    '''def jsonMsg(self, tab, socket):
+        print(socket.connected)
+        if(socket.connected):
+            #Dictionary = defaultdict()
+            
+            if(tab == Task.NAVIGATION):
+                nav = self.cs.rover.Nav
+                pos = nav.getPos()
+                Dictionary = {
+                    'x'        : pos[0], 
+                    'y'        : pos[1], 
+                    'linVel'   : nav.getLinVel(), 
+                    'angVel'   : nav.getAngVel(),
+                    'distance' : nav.distToGoal()
+                }
+
+            elif(tab == Task.MAINTENANCE):
+                hd = self.cs.rover.HD
+                Dictionary = {
+                    'joint_pos' : hd.get_joint_positions(),
+                    'joint_vel' : hd.get_joint_velocities(),
+                    'tof'       : hd.get_tof()
+                }
+
+            elif(tab == Task.SCIENCE):
+                sc = self.cs.rover.SC
+                ###############################
+                # BIG TODO !!!!!!!!!!!!!!!!!!!!
+                ###############################
+
+            elif(tab == Task.MANUAL):
+                nav = self.cs.rover.Nav
+                hd = self.cs.rover.HD
+
+                pos = nav.getPos()
+                Dictionary = {
+                    'x'         : pos[0], 
+                    'y'         : pos[1], 
+                    'linVel'    : nav.getLinVel(), 
+                    'angVel'    : nav.getAngVel(),
+                    'joint_pos' : hd.get_joint_positions(),
+                    'joint_vel' : hd.get_joint_velocities()
+                }
+
+            rospy.loginfo("oh nae %d", Dictionary['x'])
+            message = json.dumps(Dictionary)
+            socket.send('%s' % message)'''
+
+    def sendJson(self, subsyst):
+
+        if(ws_man.connected):
+            socket = ws_man
+
+            nav = self.cs.rover.Nav
+            hd = self.cs.rover.HD
+
+            pos = nav.getPos()
+            Dictionary = {
+                'x'         : pos[0], 
+                'y'         : pos[1], 
+                'linVel'    : nav.getLinVel(), 
+                'angVel'    : nav.getAngVel(),
+                'joint_pos' : hd.get_joint_positions(),
+                'joint_vel' : hd.get_joint_velocities()
+            }
+
+        elif(subsyst == Task.NAVIGATION):
+            socket = ws_nav
+
+            nav = self.cs.rover.Nav
+            pos = nav.getPos()
+            Dictionary = {
+                'x'        : pos[0], 
+                'y'        : pos[1], 
+                'linVel'   : nav.getLinVel(), 
+                'angVel'   : nav.getAngVel(),
+                'distance' : nav.distToGoal()
+            }
+
+        elif(subsyst == Task.MAINTENANCE):
+            socket = ws_hd
+
+            hd = self.cs.rover.HD
+            Dictionary = {
+                'joint_pos' : hd.get_joint_positions(),
+                'joint_vel' : hd.get_joint_velocities(),
+                'tof'       : hd.get_tof()
+            }
+
+        elif(subsyst == Task.SCIENCE):
+            socket = ws_sc
+
+            sc = self.cs.rover.SC
+            ###############################
+            # BIG TODO !!!!!!!!!!!!!!!!!!!!
+            ###############################
+
+        message = json.dumps(Dictionary)
+        socket.send('%s' % message)

@@ -142,7 +142,8 @@ class Navigation:
         return np.linalg.norm(diff)'''
 
     def distToGoal(self):
-        diff = self.getGoal() - self.getPos()
+        pos = self.getPos()
+        diff = self.getGoal() - [pos[0], pos[1]]
         return np.linalg.norm(diff)
 
 class Science:

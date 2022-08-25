@@ -217,11 +217,11 @@
 								<div class="pos-coord">
 									<div class="coord-c">
 										<p class="coord-type">X</p>
-										<p class="coordinate">0.00</p>
+										<p id="X_coord" class="coordinate">0.00</p>
 									</div>
 									<div class="coord-c">
 										<p class="coord-type">Y</p>
-										<p class="coordinate">0.00</p>
+										<p id="Y_coord" class="coordinate">0.00</p>
 									</div>
 									<div class="coord-c">
 										<p class="coord-type">Z</p>
@@ -236,11 +236,11 @@
 								<div class="velocity-type-container">
 									<div class="velocity-type-c">
 										<p class="velocity-type">Linear:</p>
-										<p class="velocity">0.00</p>
+										<p id="linVel" class="velocity">0.00</p>
 									</div>
 									<div class="velocity-type-c">
 										<p class="velocity-type">Angular:</p>
-										<p class="velocity">0.00</p>
+										<p id="angVel" class="velocity">0.00</p>
 									</div>
 								</div>
 							</div>
@@ -253,14 +253,28 @@
 									<div class="settings-title-box">
 										<p class="settings-title">ENCODERS DATA:</p>
 									</div>
-									<ul style="color: white; margin-left: 45px;">
-										<li>e1: </li>
-										<li>e2: </li>
-										<li>e3: </li>
-										<li>e4: </li>
-										<li>e5: </li>
-										<li>e6: </li>
-									</ul>
+									<div class="encoders">
+										<ul class="joints" >
+											<li id="joint1_coord">e1: </li>
+											<li id="joint2_coord">e2: </li>
+											<li id="joint3_coord">e3: </li>
+											<li id="joint4_coord">e4: </li>
+											<li id="joint5_coord">e5: </li>
+											<li id="joint6_coord">e6: </li>
+											<li id="joint7_coord">e7: </li>
+										</ul>
+
+										<ul class="joints" >
+											<li id="joint1_vel">e1: </li>
+											<!-- <p style="color:white"> OH NAH </p> -->
+											<li id="joint2_vel">e2: </li>
+											<li id="joint3_vel">e3: </li>
+											<li id="joint4_vel">e4: </li>
+											<li id="joint5_vel">e5: </li>
+											<li id="joint6_vel">e6: </li>
+											<li id="joint7_vel">e7: </li>
+										</ul>
+									</div>
 								</div>
 							</div>
 
@@ -347,6 +361,26 @@
 			
 			console.log("debug")
 	
+			document.getElementById('X_coord').innerHTML    = Math.round((data.x + Number.EPSILON)        * 100) / 100
+			document.getElementById('Y_coord').innerHTML    = Math.round((data.y + Number.EPSILON)        * 100) / 100
+			document.getElementById('linVel').innerHTML     = Math.round((data.linVel + Number.EPSILON)   * 100) / 100
+			document.getElementById('angVel').innerHTML     = Math.round((data.angVel + Number.EPSILON)   * 100) / 100
+
+			document.getElementById('joint1_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint2_coord').innerHTML = Math.round((data.joint_pos[1] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint3_coord').innerHTML = Math.round((data.joint_pos[2] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint4_coord').innerHTML = Math.round((data.joint_pos[3] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint5_coord').innerHTML = Math.round((data.joint_pos[4] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint6_coord').innerHTML = Math.round((data.joint_pos[5] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint7_coord').innerHTML = Math.round((data.joint_pos[6] + Number.EPSILON) * 100) / 100
+
+			document.getElementById('joint1_vel').innerHTML = Math.round((data.joint_vel[0] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint2_vel').innerHTML = Math.round((data.joint_vel[1] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint3_vel').innerHTML = Math.round((data.joint_vel[2] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint4_vel').innerHTML = Math.round((data.joint_vel[3] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint5_vel').innerHTML = Math.round((data.joint_vel[4] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint6_vel').innerHTML = Math.round((data.joint_vel[5] + Number.EPSILON) * 100) / 100
+			document.getElementById('joint7_vel').innerHTML = Math.round((data.joint_vel[6] + Number.EPSILON) * 100) / 100
 	
 		};
 	
@@ -367,6 +401,7 @@
         ws.onmessage = function(evt) {
             v_data = JSON.parse(evt.data);
             $("#camera_1").attr("src", v_data.message);
+
             
         };
 
