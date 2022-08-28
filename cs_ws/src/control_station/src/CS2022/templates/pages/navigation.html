@@ -62,9 +62,9 @@
 						</button>
 					</form>
 					
-					<form action="http://127.0.0.1:8000/CS2022/avionics">
-						<button id="avionics" class="page-button">
-							<span>AVIONICS</span>
+					<form action="http://127.0.0.1:8000/CS2022/logs">
+						<button id="logs" class="page-button">
+							<span>LOGS</span>
 						</button>
 					</form>
 
@@ -169,10 +169,6 @@
 
 						<div class="bottom-left">
 
-							<p class="data"> Current Goal &nbsp — &nbsp</p>
-							<p class="data"> &nbsp x: &nbsp </p><p id="X_goal" class="data"> 0 </p>
-							<p class="data"> &nbsp&nbsp&nbsp y: &nbsp </p><p id="Y_goal" class="data"> 0 </p>
-
 							<div class="user-input-container">
 								<form class="input-form" action="" method="POST">{% csrf_token %}
 										
@@ -180,6 +176,7 @@
 									<div class="input-container">
 										<input id="x" type="number" class="input" placeholder="X" name="x"/>
 										<input id="y" type="number" class="input" placeholder="Y" name="y"/>
+										<input id="yaw" type="number" class="input" placeholder="YAW" name="yaw">
 		
 										<input id="nav_set" class="set-button" type="submit" value="SET">
 										
@@ -191,8 +188,9 @@
 										
 										/* sending goal coordinates to back-end*/
 										let formData = new FormData();
-										formData.append('x', document.querySelector("#x").value);
-										formData.append('y', document.querySelector("#y").value);
+										formData.append('x',   document.querySelector("#x").value);
+										formData.append('y',   document.querySelector("#y").value);
+										formData.append('yaw', document.querySelector('#yaw').value)
 						
 						
 										let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
@@ -236,13 +234,19 @@
 											<p id="Y_coord" class="data"> 0 </p>
 											<p class="data"> &#xA0; m </p>
 										</div>
+										<div class="data-line-container">
+											<p class="data-title">Z : </p>
+											<p id="Z_coord" class="data"> 0 </p>
+											<p class="data"> &#xA0; m </p>
+										</div>
 
 									</div>
 								</div>
 								
 								<div class="subject-container">
+									
 									<div class="title-container">
-										<p class="title">GOAL POSITION</p>
+										<p class="title">GOAL </p>
 									</div>
 									<div class="data-container">
 										<!-- GOAL'S Y COORDINATE -->
@@ -302,8 +306,7 @@
 								
 							</div>
 
-							<div class="h-separator-s">
-							</div>
+							<div class="h-separator-s"></div>
 						</div>
 
 						<div class="bottom-right">
@@ -339,6 +342,7 @@
 				//document.getElementById('debug-label').innerHTML = data.Debug2
 				document.getElementById('X_coord').innerHTML    = Math.round((data.x + Number.EPSILON)        * 100) / 100
 				document.getElementById('Y_coord').innerHTML    = Math.round((data.y + Number.EPSILON)        * 100) / 100
+				document.getElementById('Z_coord').innerHTML    = Math.round((data.z + Number.EPSILON)        * 100) / 100
 				document.getElementById('linVel').innerHTML     = Math.round((data.linVel + Number.EPSILON)   * 100) / 100
 				document.getElementById('angVel').innerHTML     = Math.round((data.angVel + Number.EPSILON)   * 100) / 100
 				document.getElementById('distToGoal').innerHTML = Math.round((data.distance + Number.EPSILON) * 100) / 100

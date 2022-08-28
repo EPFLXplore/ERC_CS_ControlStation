@@ -77,9 +77,9 @@
 				</button>
 			</form>
 			  
-			<form action="http://127.0.0.1:8000/CS2022/avionics">
-				<button id="avionics" class="page-button">
-					<span>AVIONICS</span>
+			<form action="http://127.0.0.1:8000/CS2022/logs">
+				<button id="logs" class="page-button">
+					<span>LOGS</span>
 				</button>
 			</form>
 
@@ -248,15 +248,15 @@
 								
 								<div class="submit-column">
 									<div class="tube-form-check">
-										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube1" value="tube1">
+										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube1" value="1">
 										<label class="tube-form-check-label" for="inlineRadio1">1</label>
 									</div>
 									<div class="tube-form-check">
-										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube2" value="tube2">
+										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube2" value="2">
 										<label class="tube-form-check-label" for="inlineRadio2">2</label>
 									</div>
 									<div class="tube-form-check">
-										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube3" value="tube3">
+										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube3" value="3">
 										<label class="tube-form-check-label" for="inlineRadio3">3</label>
 									</div>
 								</div>
@@ -271,29 +271,57 @@
 								
 								<div class="submit-column">
 									<div class="tube-form-check">
-										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube1" value="pos1">
+										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube1" value="10">
 										<label class="tube-form-check-label" for="inlineRadio1">caching</label>
 									</div>
 									<div class="tube-form-check">
-										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube2" value="pos2">
+										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube2" value="20">
 										<label class="tube-form-check-label" for="inlineRadio2">analysis</label>
 									</div>
 									<div class="tube-form-check">
-										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube3" value="pos3">
+										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube3" value="30">
 										<label class="tube-form-check-label" for="inlineRadio3">sampling</label>
 									</div>
 								</div>
 								
 							</form>
+
 						</div>
 					</div>
 					<div style="float:left;">
 						<P style="font-weight: bold;">VALIDATION</P>
 						<form  class="state-button-form" method="POST">
 							{% csrf_token %}
-							<input id="" class="state-button" type="submit" value="OK">
+							<input id="set-ok" class="state-button" type="submit" value="OK">
 							
 						</form>
+
+						<script>
+
+							document.querySelector("#set-ok").addEventListener("click", event => {
+								event.preventDefault();
+									
+								let selected = document.querySelectorAll("input[type=radio]:checked")
+								
+								if(selected.length != 2) {
+									throw "Must select tube + operation"
+								}
+								
+								let formData = new FormData();
+								formData.append('tube', selected.item(0).value);
+								formData.append('operation', selected.item(1).value);
+					
+					
+								let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+								let request = new Request('set_tube_cmd/', {method: 'POST',
+																	body: formData,
+																	headers: {"X-CSRFToken": csrfTokenValue}})
+								fetch(request)
+									.then(response => response.json())
+									.then(result => {})
+								})
+
+						</script>
 						
 					</div>
 					
@@ -329,7 +357,7 @@
 						<span class="toggle-label">Open Trap</span>
 					</label>
 
-					<div class="tube-submit-box" style="float: left;">
+					<!-- <div class="tube-submit-box" style="float: left;">
 						<form action="" method="POST" class="tube-form"> 
 							
 							<div class="submit-column">
@@ -348,7 +376,7 @@
 							</div>
 							
 						</form>
-					</div>
+					</div>-->
 				</div>
 				
 				

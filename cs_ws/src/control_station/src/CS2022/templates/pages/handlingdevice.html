@@ -82,9 +82,9 @@
 					</button>
 				</form>
 
-				<form action="http://127.0.0.1:8000/CS2022/avionics">
-					<button id="avionics" class="page-button">
-						<span>AVIONICS</span>
+				<form action="http://127.0.0.1:8000/CS2022/logs">
+					<button id="logs" class="page-button">
+						<span>LOGS</span>
 					</button>
 				</form>
 
@@ -211,7 +211,7 @@
 						<div class="table-container">
 							<table id="scroll-body" class="table table-dark table-striped">
 								<thead>
-									<tr>
+									<tr class="title-tr">
 										<th scope="col">#</th>
 										<th scope="col">TAG/BUTTON</th>
 										<th scope="col">X</th>
@@ -325,7 +325,7 @@
 									</tr>
 									<tr>
 										<th scope="row">11</th>
-										<td>Button 10</td>
+										<td>Button 11</td>
 										<td>0</td>
 										<td>0</td>
 										<td>0</td>
@@ -335,7 +335,7 @@
 									</tr>
 									<tr>
 										<th scope="row">12</th>
-										<td>Button 10</td>
+										<td>Button 12</td>
 										<td>0</td>
 										<td>0</td>
 										<td>0</td>
@@ -345,7 +345,7 @@
 									</tr>
 									<tr>
 										<th scope="row">13</th>
-										<td>Button 10</td>
+										<td>Button 13</td>
 										<td>0</td>
 										<td>0</td>
 										<td>0</td>
@@ -355,7 +355,7 @@
 									</tr>
 									<tr>
 										<th scope="row">14</th>
-										<td>Button 10</td>
+										<td>Button 14</td>
 										<td>0</td>
 										<td>0</td>
 										<td>0</td>
@@ -512,33 +512,28 @@
 		chatSocket.onmessage = function (e) {
 			const data = JSON.parse(e.data);
 
-			// console.log("debug")
-			/*let num_joints = 7
-			for (let i = 1; i <= num_joints; i++) {
-				let str = "joint"
-				str = concat(str, toString(i))
-				str = concat(str, "_coord")
-				document.getElementById(str).innerHTML = Math.round((data.joint_pos[i-1] + 1 + Number.EPSILON) * 100) / 100
-			}*/
+			/* display joint coordinates */
+			let coordinates = document.querySelectorAll('#joint1_coord, #joint2_coord, #joint3_coord, #joint4_coord, #joint5_coord, #joint6_coord, #joint7_coord');
+			let i = 0;
+			coordinates.forEach(coord => {
+				document.getElementById(coord.id).innerHTML = Math.round((data.joint_pos[i] + Number.EPSILON) * 100) / 100;
+				i += 1;
+			})
 
-			document.getElementById('joint1_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint2_coord').innerHTML = Math.round((data.joint_pos[1] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint3_coord').innerHTML = Math.round((data.joint_pos[2] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint4_coord').innerHTML = Math.round((data.joint_pos[3] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint5_coord').innerHTML = Math.round((data.joint_pos[4] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint6_coord').innerHTML = Math.round((data.joint_pos[5] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint7_coord').innerHTML = Math.round((data.joint_pos[6] + Number.EPSILON) * 100) / 100
+			/* display joint velocities */
+			let velocities = document.querySelectorAll('#joint1_vel, #joint2_vel, #joint3_vel, #joint4_vel, #joint5_vel, #joint6_vel, #joint7_vel');
+			let j = 0;
+			velocities.forEach(vel => {
+				document.getElementById(vel.id).innerHTML = Math.round((data.joint_vel[j] + Number.EPSILON) * 100) / 100;
+				j += 1;
+			})
 
-			document.getElementById('joint1_vel').innerHTML = Math.round((data.joint_vel[0] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint2_vel').innerHTML = Math.round((data.joint_vel[1] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint3_vel').innerHTML = Math.round((data.joint_vel[2] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint4_vel').innerHTML = Math.round((data.joint_vel[3] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint5_vel').innerHTML = Math.round((data.joint_vel[4] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint6_vel').innerHTML = Math.round((data.joint_vel[5] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint7_vel').innerHTML = Math.round((data.joint_vel[6] + Number.EPSILON) * 100) / 100
-
+			/* display ToF */
 			document.getElementById('tof').innerHTML = Math.round((data.tof + Number.EPSILON) * 100) / 100000 //divide by 100000 to convert into meters
 
+
+			let elements = document.querySelectorAll("tbody > tr");
+			elements.forEach(e => console.log(e))
 
 		};
 

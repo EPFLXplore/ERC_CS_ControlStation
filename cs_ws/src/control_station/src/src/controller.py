@@ -21,17 +21,20 @@
 #================================================================================
 # Libraries
 
+from turtle import pos
 import rospy
 import sys
 import json
 import websocket  
 import time
 
-from std_msgs.msg                         import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray
+from std_msgs.msg                         import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray, Header
 # TODO
 # from ros_package.src.custom_msg_python    import move_base_action_goal
-from geometry_msgs.msg                    import Pose, Point, Twist
+from geometry_msgs.msg                    import Pose, Point, Twist, PoseStamped, Quaternion
 from actionlib_msgs.msg                   import GoalID
+from tf.transformations import quaternion_from_euler
+
 from Gamepad.Gamepad                      import Gamepad
 from src.model                            import *
 
@@ -97,9 +100,11 @@ class Controller():
             receives 
             rover confirmation
         '''
-        rospy.loginfo("Rover Confirmation: %s\n", txt.data)
-        self.cs.rover.setReceived(True)
-
+        if(self.cs.rover.getInWait()):
+            rospy.loginfo("Rover Confirmation: %s\n", txt.data)
+            self.cs.rover.setReceived(True)
+        else:
+            rospy.loginfo("Received after timeout: %s\n", txt.data)
 
     def task_progress(self, num):
         '''
@@ -142,26 +147,23 @@ class Controller():
         
 
     # TODO
-    def hd_data(matrix):
-        el1 = matrix[0]
-        el2 = matrix[1]
-        el3 = matrix[2]
-        el4 = matrix[3]
-        el5 = matrix[4]
-        el6 = matrix[5]
-        el7 = matrix[6]
-
+    # receive: [id, x, y, z, a, b, c]    (x,y,z) --> translations and (a,b,c) --> rotations
+    def hd_detected_element(self, arr):
+        element = arr.data
+        self.cs.rover.HD.setDetectedElements(element)
         
+
     def hd_telemetry(self, jointstate):
         self.cs.rover.HD.set_joint_telemetry(jointstate)
-        pos = jointstate.position
+        #pos = jointstate.position
+        rospy.loginfo("displayed")
+        self.sendJson(Task.MAINTENANCE)
 
-        self.jsonMsg(Task.MAINTENANCE, ws_hd)
 
     def hd_tof(self, val):
         self.cs.rover.HD.set_tof(val.data)
 
-        HdDictionary = {
+        '''HdDictionary = {
             'joint_pos' : self.cs.rover.HD.get_joint_positions(),
             'joint_vel' : self.cs.rover.HD.get_joint_velocities(),
             'tof'       : self.cs.rover.HD.get_tof()
@@ -171,7 +173,9 @@ class Controller():
         rospy.loginfo("tof my guy %d (mm):", val.data)
 
         if(ws_hd.connected):
-            ws_hd.send('%s' % message)
+            ws_hd.send('%s' % message)'''
+
+        self.sendJson(Task.MAINTENANCE)
 
         
 
@@ -224,11 +228,12 @@ class Controller():
         '''
             publishes task instructions to the self.cs.rover
         '''
-        checkArgs(task, instr)
+        #checkArgs(task, instr)
 
         arr = [task, instr]
-        if(task == 4): arr[1] = self.cs.rover.SC.getCmd() #if Science then there are a bit more specific cmds
-            
+        #if(task == 4): arr[1] = self.cs.rover.SC.getCmd() #if Science then there are a bit more specific cmds
+
+        self.cs.rover.setInWait(True)    
         self.cs.Task_pub.publish(Int8MultiArray(data = arr))
 
         self.wait()
@@ -274,15 +279,32 @@ class Controller():
 
     # give the coordinates the self.cs.
     # rover must reach
-    def pub_nav_goal(self, x, y):
-        rospy.loginfo("NAV: set goal (%d, %d)", x, y)
+    def pub_nav_goal(self, x, y, yaw):
+        rospy.loginfo("NAV: set goal (%.2f, %.2f) + %.2f (orientation)", x, y, yaw)
         #moveBaseGoal = MoveBaseGoal(target_pose = Pose(position = Point(x, y, z)))
         #self.cs.Nav_Goal_pub.publish(MoveBaseActionGoal(goal_id = self.cs.rover.currId, goal = moveBaseGoal))
-        moveBaseGoal_var = Pose(position = Point(x, y, 0))
+        #moveBaseGoal_var = Pose(position = Point(x, y, 0))
         
         # TODO
         # self.cs.Nav_Goal_pub.publish(move_base_action_goal(currId = self.cs.rover.currId, moveBaseGoal = moveBaseGoal_var))
-        self.cs.rover.Nav.setGoal([x,y])
+        self.cs.rover.Nav.setGoal([x, y, yaw])
+
+        nav = self.cs.rover.Nav
+        h = Header()
+        h.frame_id = str(nav.getId())
+
+        pose = Pose()
+
+        point = Point(x, y, 0.0)
+        pose.position = point
+
+        q = quaternion_from_euler(0, 0, yaw)
+        pose.orientation.x = q[0]
+        pose.orientation.y = q[1]
+        pose.orientation.z = q[2]
+        pose.orientation.w = q[3]
+        
+        self.cs.Nav_Goal_pub.publish(PoseStamped(header = h, pose = pose))
 
 
     # cancel a specific Navigation goal by giving the goal's id
@@ -317,10 +339,10 @@ class Controller():
 
     def selectedTube(self, id):
         if(id < 0 or id > 2): raise ValueError("tube ids are: 0, 1, 2")
-        self.cs.rover.selectTube(id)
+        self.cs.rover.SC.selectTube(id)
 
     def selectedOp(self, op):
-        self.cs.rover.setOperation(op)
+        self.cs.rover.SC.setOperation(op)
         
 
     ##############################
@@ -348,13 +370,21 @@ class Controller():
 
 
     def wait(self):
-        self.cs.rover.setInWait(True)
-        time.sleep(1)
+        #time.sleep(1)
         #print(self.cs.rover.getReceived())
+        start = time.time()
+        while(not self.cs.rover.getReceived() and ((time.time() - start) < 1)): 
+            continue
+
+        self.cs.rover.setInWait(False)
+
         if(not self.cs.rover.getReceived()):
             rospy.loginfo("Answer not received: TIMEOUT")
-        self.cs.rover.setInWait(False)
+        
         self.cs.rover.setReceived(False)
+
+
+
 
     def elapsed_time(self, data):
         TimeDict = {
@@ -430,6 +460,7 @@ class Controller():
             Dictionary = {
                 'x'         : pos[0], 
                 'y'         : pos[1], 
+                'z'         : pos[2],
                 'linVel'    : nav.getLinVel(), 
                 'angVel'    : nav.getAngVel(),
                 'joint_pos' : hd.get_joint_positions(),
@@ -444,6 +475,7 @@ class Controller():
             Dictionary = {
                 'x'        : pos[0], 
                 'y'        : pos[1], 
+                'z'        : pos[2],
                 'linVel'   : nav.getLinVel(), 
                 'angVel'   : nav.getAngVel(),
                 'distance' : nav.distToGoal()

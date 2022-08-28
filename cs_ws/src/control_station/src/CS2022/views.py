@@ -114,13 +114,13 @@ def science(request):
         'current_state' : state
     }) 
 
-def avionics(request):
+def logs(request):
 
     state = parseState()
     ws_av.connect(AV_WS_URL)
     ws_time.connect(TIME_WS_URL)
-    return render(request, 'pages/avionics.html', { 
-        'tab_name': "avionics",
+    return render(request, 'pages/logs.html', { 
+        'tab_name': "logs",
         'current_state' : state
     }) 
 
@@ -182,10 +182,11 @@ def set_nav(request):
 
     x = float(request.POST.get("x"))
     y = float(request.POST.get("y"))
+    yaw = float(request.POST.get("yaw"))
     
-    cs.controller.pub_nav_goal(x, y)
+    cs.controller.pub_nav_goal(x, y, yaw)
     goal = cs.rover.Nav.getGoal()
-    print("the goal is:", goal[0], goal[1])
+    print("the goal is (x = %.2f, y = %.2f, yaw = %.2f):", goal[0], goal[1], goal[2])
 
     return JsonResponse({})
 
@@ -261,5 +262,16 @@ def start_timer(request):
     # startThread()
     return JsonResponse({})
 
+def set_tube_cmd(request):
+    tube = int(request.POST.get("tube"))
+    operation = int(request.POST.get("operation"))
+    
+    cs.controller.selectedTube(tube)
+    cs.controller.selectedOp(operation)
 
+    print("SC: (tube = ", tube,", operation = ", operation, ")")
+    print("cmd: ", cs.rover.SC.getCmd())
 
+    cs.controller.pub_Task(Task.SCIENCE.value, int(cs.rover.SC.getCmd()))
+
+    return JsonResponse({})

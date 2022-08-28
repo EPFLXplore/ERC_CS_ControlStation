@@ -101,7 +101,7 @@
 
 .title-container{
 	width: 100%;
-	height: 10%;
+	height: 20%;
 }
 
 .data-container{
@@ -112,7 +112,6 @@
 .data-line-container{
 	width: 100%;
 	height: 30%;
-	margin-top: 3%;
 }
 
 /*==========================================================================
@@ -133,7 +132,7 @@
 }
 
 .input-container{
-	width: 20%;
+	width: 30%;
 	height: 30%;
 	/*border: 2px solid purple;*/
 
@@ -152,7 +151,7 @@
 
 .input-container .input{
 	float: left;
-	width: 30%;
+	width: 20%;
     height: 40%;
 	margin-right: 6%;
 	text-align: center;
@@ -172,7 +171,7 @@
 
 .set-button{
 	float: left;
-	width: 65%;
+	width: 72%;
 	margin-top: 3%;
 
 	border-radius: 5px;
@@ -234,7 +233,7 @@
 
 .data-title{
 	float: left;
-	text-align: left;
+	text-align: center;
 	color: rgb(196, 196, 196);
 	font-size: 15px;
 	font-family: var(--font);

@@ -30,7 +30,7 @@ from std_msgs.msg          import Int8MultiArray    , Int8, Int32, Int32MultiArr
 # TODO
 # from ros_package.src.custom_msg_python.msg     import move_base_action_goal 
 
-from geometry_msgs.msg     import Twist 
+from geometry_msgs.msg     import Twist, PoseStamped
 from actionlib_msgs.msg    import GoalID
 from nav_msgs.msg          import Odometry
 from src.controller        import *
@@ -79,6 +79,7 @@ class CS:
 
         # TODO
         # self.Nav_Goal_pub           = rospy.Publisher('CS_NAV_goal',     move_base_action_goal, queue_size=1)
+        self.Nav_Goal_pub           = rospy.Publisher('CS_NAV_goal',       PoseStamped,        queue_size=1)
         self.Nav_CancelGoal_pub     = rospy.Publisher('CS_NAV_cancel',     GoalID,             queue_size=1)
         self.Nav_Joystick_pub       = rospy.Publisher('/cmd_vel',          Twist,              queue_size=1)
         self.Nav_DebugWheels_pub    = rospy.Publisher('/debug/wheel_cmds', Int16MultiArray,    queue_size=1)
@@ -94,6 +95,7 @@ class CS:
         rospy.Subscriber('ROVER_SC_measurments_mass',     Int16,           self.controller.sc_mass            )
         rospy.Subscriber('ROVER_HD_telemetry',            JointState,      self.controller.hd_telemetry       )
         rospy.Subscriber('ROVER_HD_tof',                  Int32,           self.controller.hd_tof             )
+        rospy.Subscriber('ROVER_HD_detected_element',     Int16MultiArray, self.controller.hd_detected_element)
 
 
         # TODO

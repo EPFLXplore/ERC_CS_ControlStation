@@ -77,9 +77,14 @@ class Navigation:
         self.__angVel = np.zeros(3)
 
     def setGoal(self, goal):
-        self.__currGoal = goal
+
+        self.RoverConfirm_pub.publish("received NAV goal")
+
+
+
+        #self.__currGoal = goal
         self.rover.Nav_Goal_pub.publish(goal)
-        self.RoverConfirm_pub.publish("Nav goal set")
+        
 
     def getId(self):
         return self.__currId
@@ -93,9 +98,11 @@ class Navigation:
         self.rover.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = given_id))
     '''
     def cancelGoal(self):
+
+        self.rover.RoverConfirm_pub.publish("received NAV goal cancellation")
+        
         self.__currGoal = np.zeros(0)
         self.rover.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = self.__currId))
-        self.rover.RoverConfirm_pub.publish("Nav goal cancelled")
 
     
     #------------- Twist Data -------------
@@ -205,17 +212,29 @@ class HandlingDevice:
         self.rover.RoverConfirm_pub.publish("HD mode set")
 
         mode = mode_ros.data
-        if(mode < 0 or mode > 3): raise ValueError("Invalid mode")
-        self.__hd_mode = mode
-        self.rover.HD_mode_pub.publish(mode)
+        if(mode < 0 or mode > 3): 
+            #raise ValueError("Invalid mode")
+            self.rover.Exception_pub.publish("Invalid mode, must be between 0 and 3")
+        else:
+            self.__hd_mode = mode
+            self.rover.HD_mode_pub.publish(mode)
 
     def getHDMode(self):
         return self.__hd_mode
 
+
     def set_semiAutoID(self, id_ros):
-        self.__semiAutoId = id_ros.data
+
+        self.rover.RoverConfirm_pub.publish("received HD element ID")
+
+        id = id_ros.data
         #self.rover.HD_SemiAuto_Id_pub.publish(self.__semiAutoId)
-        self.rover.RoverConfirm_pub.publish("HD Id set")
+        if(id < 0 or id > 14):
+            self.rover.Exception_pub.publish("Invalid ID, must be between 0 and 14")
+        else:
+            self.__semiAutoId = id
+            self.rover.HD_SemiAuto_Id_pub.publish(id)
+
 
     def getId(self):
         return self.__semiAutoId
@@ -247,6 +266,9 @@ class HandlingDevice:
         self.rover.HD_tof_pub.publish(val.data)
 
 
+    def setDetectedElement(self, elem):
+        self.rover.HD_element_pub(elem)
+
 
 # TASK: 
 #       - Manual      = 1 
@@ -263,7 +285,18 @@ class HandlingDevice:
 def checkArgs(task, instr):
 
     if (task < 1 or task > 4): raise ValueError("inexistent task")
-    if (instr < 1 or instr > 6): raise ValueError("inexistent instruction")
+    if(task != 4):
+        if (instr < 1 or instr > 6): raise ValueError("inexistent instruction")
+    else:
+        if( (instr < 10 or instr > 11) or
+            (instr < 20 or instr > 22) or
+            (instr < 30 or instr > 32) or
+            (instr < 40 or instr > 42) or
+            (instr != 50) or
+            (instr != 8) or
+            (instr != 9) or
+            (instr < 0 or instr > 3)
+            ): raise ValueError("inexistent instruction")
 
     if(instr == 5):
         if(task != 3 and task != 4): raise ValueError("This task can't run Retry")

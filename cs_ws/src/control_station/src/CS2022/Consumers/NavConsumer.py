@@ -1,5 +1,6 @@
 import json
 from re import X
+from zlib import Z_NO_COMPRESSION
 # from channels.generic.websocket import AsyncWebsocketConsumer
 
 from .RoverConsumer import RoverConsumer
@@ -27,6 +28,7 @@ class NavConsumer(RoverConsumer):
         text_data_json = json.loads(text_data)
         x_pos           = text_data_json['x']
         y_pos           = text_data_json['y']
+        z_pos           = text_data_json['z']
         linearVelocity  = text_data_json['linVel']
         angularVelocity = text_data_json['angVel']
         distance        = text_data_json['distance']
@@ -38,6 +40,7 @@ class NavConsumer(RoverConsumer):
                 'type'    : 'topic_message',
                 'x'       : x_pos,
                 'y'       : y_pos,
+                'z'       : z_pos,
                 'linVel'  : linearVelocity,
                 'angVel'  : angularVelocity,
                 'distance': distance
@@ -48,6 +51,7 @@ class NavConsumer(RoverConsumer):
     async def topic_message(self, event):
         x_pos           = event['x']
         y_pos           = event['y']
+        z_pos           = event['z']
         linearVelocity  = event['linVel']
         angularVelocity = event['angVel']
         distance        = event['distance']
@@ -56,6 +60,7 @@ class NavConsumer(RoverConsumer):
         await self.send(text_data=json.dumps({
             'x'       : x_pos,
             'y'       : y_pos,
+            'z'       : z_pos,
             'linVel'  : linearVelocity,
             'angVel'  : angularVelocity,
             'distance': distance

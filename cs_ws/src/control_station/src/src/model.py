@@ -23,6 +23,11 @@ import numpy as np
 
 #================================================================================
 
+
+NBR_BUTTONS = 14
+ELEMENT_DATA_SIZE = 6
+
+
 class Task(IntEnum):
     IDLE        = 0
     MANUAL      = 1
@@ -35,6 +40,7 @@ class Rover:
     '''
         Monitoring of the state of the rover
     '''
+
     def __init__(self):
 
         self.Nav = Navigation()
@@ -46,17 +52,23 @@ class Rover:
         self.__inWait   = False
         self.__received = False
 
+    #--------State--------
+
     def setState(self, task):
         self.__state = task
 
     def getState(self):
         return self.__state
 
+    #--------Received Flag--------
+
     def setReceived(self, bool):
         self.__received = bool
 
     def getReceived(self):
         return self.__received
+
+    #--------Waiting Flag--------
 
     def setInWait(self, bool):
         self.__inWait = bool
@@ -75,10 +87,14 @@ class Navigation:
 
         # keep track of goals
         #self.__goals = np.array([])
-        self.__goal = np.zeros(2)
+        
+        # [x,y, yaw]
+        self.__goal = np.zeros(3)
 
         # rover position
         self.__pos = np.zeros(3)
+        # rover yaw
+        self.__yaw = 0
         # rover linear velocity
         self.__linVel = np.zeros(3)
         # rover angular velocity
@@ -93,9 +109,13 @@ class Navigation:
     def setGoal(self, arr):
         self.__goal[0] = arr[0]
         self.__goal[1] = arr[1]
+        self.__goal[2] = arr[2]
 
     def incrementId(self):
         self.__nextId += 1
+
+    def getId(self):
+        return self.__nextId
 
     '''def getGoal(self, id):
         return self.__goals[id]
@@ -104,13 +124,21 @@ class Navigation:
     def getGoal(self):
         return self.__goal
 
+
+    #--------Orientation--------
+    def setYaw(self, val):
+        self.__yaw = val
+
+    def getYaw(self):
+        return self.__yaw
+
     '''def cancelGoal(self, id):
         len = len(self.__goals)
         if (id < 0 or id > len): raise ValueError("Invalid navigation goal id")
         np.delete(self.__goals, id, 0)'''
 
     def cancelGoal(self):
-        self.__goal = np.zeros(2)
+        self.__goal = np.zeros(3)
     
     #------------- Twist Data -------------
     
@@ -161,7 +189,7 @@ class Science:
         self.__op_tube = np.zeros(2)
         self.__cmd = -1
 
-    #--------------------------
+    #--------SC Mass--------
 
     def setSCMass(self, mass):
         self.__masses[self.__op_tube[1]] = mass
@@ -170,7 +198,7 @@ class Science:
         if(idx < 0 or 2 < idx): raise ValueError("impossible tube number chosen (can be either 0, 1 or 2)")
         return self.__sc_mass[idx]
 
-    #--------------------------
+    #--------Tube Humidity--------
 
     def setTubeHum(self, val):
         self.__tubeHum = val
@@ -178,7 +206,7 @@ class Science:
     def getTubeHum(self):
         return self.__tubeHum
 
-    #--------------------------
+    #--------SC Operation--------
 
     def setOperation(self, op):
         self.__op_tube[0] = op
@@ -188,7 +216,7 @@ class Science:
         return self.__op_tube[0]
 
 
-    #--------------------------
+    #--------Tube--------
 
     def selectTube(self, t):
         self.__op_tube[1] = t
@@ -197,13 +225,13 @@ class Science:
     def getSelectedTube(self):
         return self.__op_tube[1]
 
-    #--------------------------
+    #--------Specific Tube Command--------
 
     def setTubeCmd(self):
         arr = self.__op_tube
-        self.setCmd(arr[0]*10 + arr[1])
+        self.setCmd(arr[0] + arr[1])
     
-    #--------------------------
+    #--------Command--------
 
     def setCmd(self, cmd):
         self.__cmd = cmd
@@ -228,7 +256,9 @@ class HandlingDevice:
         self.__joint_positions = [0,0,0,0,0,0,0]
         self.__joint_velocities = [0,0,0,0,0,0,0]
 
-    #--------------------------
+        self.__elements = np.zeros((NBR_BUTTONS, ELEMENT_DATA_SIZE)) # 14x6 matrix
+
+    #--------HD mode--------
 
     def setHDMode(self, mode):
         if(mode < 0 or mode > 3): raise ValueError("Invalid mode")
@@ -237,14 +267,14 @@ class HandlingDevice:
     def getHDMode(self):
         return self.__hd_mode
 
-    #--------------------------
+    #--------ROS telemetry--------
 
     def set_joint_telemetry(self, telemetry):
         self.set_joint_positions(telemetry.position)
         self.set_joint_velocities(telemetry.velocity)
         #self.rover.HD_telemetry_pub.publish(telemetry)
 
-    #--------------------------
+    #--------Joint Positions--------
 
     def set_joint_positions(self, positions):
         self.__joint_positions = positions
@@ -252,7 +282,7 @@ class HandlingDevice:
     def get_joint_positions(self):
         return self.__joint_positions
 
-    #--------------------------
+    #--------Joint Velocities--------
 
     def set_joint_velocities(self, velocities):
         self.__joint_velocities = velocities
@@ -260,12 +290,12 @@ class HandlingDevice:
     def get_joint_velocities(self):
         return self.__joint_velocities
 
-    #--------------------------
+    #--------Velocity--------
 
     def getVelNorm(self):
         return np.linalg.norm(self.get_joint_velocities)
 
-    #--------------------------
+    #--------ID--------
     
     def setElemId(self, id):
         self.__elemId = id
@@ -273,13 +303,22 @@ class HandlingDevice:
     def getElemId(self):
         return self.__elemId
 
-    #--------------------------
+    #--------ToF--------
 
     def set_tof(self, tof):
         self.__distToElem = tof
 
     def get_tof(self):
         return self.__distToElem
+
+    #--------Detected Elements--------
+    
+    def setDetectedElement(self, arr):
+        data = np.zeros(ELEMENT_DATA_SIZE)
+        for i in range(6):
+            data[i] = arr[i+1]
+        self.__elements[arr[0]-1] = data  # arr[0]-1 because ids are numbered 1 to 14 and array is indexed 0 to 13
+
 
 # TASK: 
 #       - Manual      = 1 
