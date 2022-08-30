@@ -78,7 +78,7 @@ class Navigation:
 
     def setGoal(self, goal):
 
-        self.RoverConfirm_pub.publish("received NAV goal")
+        self.rover.RoverConfirm_pub.publish("received NAV goal")
 
 
 

@@ -26,6 +26,7 @@ class HDConsumer(RoverConsumer):
         text_data_json = json.loads(text_data)
         joint_position = text_data_json['joint_pos']
         joint_velocity = text_data_json['joint_vel']
+        detected_elements = text_data_json['detected_elems']
         tof            = text_data_json['tof']
 
         # Send message to room group
@@ -35,6 +36,7 @@ class HDConsumer(RoverConsumer):
                 'type': 'topic_message',
                 'joint_pos': joint_position,
                 'joint_vel': joint_velocity,
+                'detected_elems': detected_elements,
                 'tof'      : tof
             }
         )
@@ -43,11 +45,13 @@ class HDConsumer(RoverConsumer):
     async def topic_message(self, event):
         joint_position = event['joint_pos']
         joint_velocity = event['joint_vel']
+        detected_elements = event['detected_elems']
         tof            = event['tof']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'joint_pos': joint_position,
             'joint_vel': joint_velocity,
+            'detected_elems': detected_elements,
             'tof'      : tof
         }))

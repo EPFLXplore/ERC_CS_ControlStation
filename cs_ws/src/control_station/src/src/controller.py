@@ -150,7 +150,11 @@ class Controller():
     # receive: [id, x, y, z, a, b, c]    (x,y,z) --> translations and (a,b,c) --> rotations
     def hd_detected_element(self, arr):
         element = arr.data
-        self.cs.rover.HD.setDetectedElements(element)
+        self.cs.rover.HD.setDetectedElement(element)
+
+        rospy.loginfo("received HD element info [%d, %d, %d, %d, %d, %d, %d]", element[0], element[1], element[2], element[3], element[4], element[5], element[6])
+
+        self.sendJson(Task.MAINTENANCE)
         
 
     def hd_telemetry(self, jointstate):
@@ -488,6 +492,7 @@ class Controller():
             Dictionary = {
                 'joint_pos' : hd.get_joint_positions(),
                 'joint_vel' : hd.get_joint_velocities(),
+                'detected_elems' : hd.getElements().flatten().tolist(),
                 'tof'       : hd.get_tof()
             }
 

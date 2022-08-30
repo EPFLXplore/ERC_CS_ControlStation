@@ -171,7 +171,7 @@ class Navigation:
 
     def distToGoal(self):
         pos = self.getPos()
-        diff = self.getGoal() - [pos[0], pos[1]]
+        diff = np.array([self.getGoal()[0], self.getGoal()[1]]) - np.array([pos[0], pos[1]])
         return np.linalg.norm(diff)
 
 class Science:
@@ -314,10 +314,14 @@ class HandlingDevice:
     #--------Detected Elements--------
     
     def setDetectedElement(self, arr):
+        print("AHHHHHHHHHHHHHHHHHHHH")
         data = np.zeros(ELEMENT_DATA_SIZE)
         for i in range(6):
             data[i] = arr[i+1]
         self.__elements[arr[0]-1] = data  # arr[0]-1 because ids are numbered 1 to 14 and array is indexed 0 to 13
+
+    def getElements(self):
+        return self.__elements
 
 
 # TASK: 

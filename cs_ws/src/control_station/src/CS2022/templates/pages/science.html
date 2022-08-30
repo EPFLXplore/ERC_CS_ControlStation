@@ -100,18 +100,18 @@
 			<div class="state-button-container">
 				<form  class="state-button-form" method="POST">
 					{% csrf_token %}
-					<input id="launch-button" class="state-button" type="submit" value="LAUNCH">
+					<input id="launch-button" class="state-button" type="submit" value="CONFIRM">
 					
 				</form>
 			</div>
 			
-			<div class="state-button-container">
+			<!--<div class="state-button-container">
 				<form  class="state-button-form" method="POST">
 					{% csrf_token %}
 					<input id="wait-button" class="state-button" type="submit" value="WAIT">
 					
 				</form>
-			</div>
+			</div>-->
 			
 			<div class="state-button-container">
 				<form  class="state-button-form" method="POST">
@@ -125,7 +125,7 @@
 			<div class="state-button-container">
 				<form  class="state-button-form" method="POST">
 					{% csrf_token %}
-					<input id="resume-button" class="state-button" type="submit" value="RESUME">
+					<input id="resume-button" class="state-button" type="submit" value="RETRY">
 					
 				</form>
 			</div>
@@ -175,7 +175,7 @@
 			
 		</script>
   		<div id="page" class="page">
-			<div style="float: left;  width: 75%; height: 100%;">
+			<div style="float: left;  width: 75%; height: 65%; border-style: solid; border-color: red;">
 
 				<div style="width: 600px; height: 50%; float: left; ">
 
@@ -184,6 +184,10 @@
 
 						<div>
 							<p style="font-size: small; float:left;">humidity    :</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div >
+							<p style="font-size: small; float: left;">open    :</p>
 							<p style="font-size: small;  padding-left: 100px;">0</p>
 						</div>
 						<div >
@@ -210,16 +214,44 @@
 							<p style="font-size: small; float: left; ">density    :</p>
 							<p style="font-size: small;  padding-left: 100px;">0</p>
 						</div>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">filled    :</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
 						
 
 					</div>
 
 					<div style=" border-left: 2px solid rgb(75, 75, 81); height: 250px; float:left; padding-right: 30px; margin-top: 30px;"> </div>
 
-					<div style="float: left; width: 150px; color: white; font-weight: bold; margin-top: 20px; margin-top: 20px;">
+					<div style="float: left; width: 150px; color: white; font-weight: bold; margin-top: 20px; margin-left: 20px;">
 						<p>TUBE 2</p>
+						<div >
+							<p style="font-size: small; float: left;">open    :</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div >
+							<p style="font-size: small; float: left;">color    :</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
 						<div style="float: left;">
 							<p style="font-size: small; float: left; ">mass	    :</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">particle size:</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">volume    :</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">density    :</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">filled    :</p>
 							<p style="font-size: small;  padding-left: 100px;">0</p>
 						</div>
 					
@@ -229,8 +261,32 @@
 
 					<div style="float: left; width: 150px; color: white; font-weight: bold; margin-top: 20px; margin-top: 20px;">
 						<p>TUBE 3</p>
+						<div >
+							<p style="font-size: small; float: left;">open    :</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div >
+							<p style="font-size: small; float: left;">color    :</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
 						<div style="float: left;">
 							<p style="font-size: small; float: left; ">mass	    :</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">particle size:</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">volume    :</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">density    :</p>
+							<p style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">filled    :</p>
 							<p style="font-size: small;  padding-left: 100px;">0</p>
 						</div>
 					</div>
@@ -242,7 +298,7 @@
 				<div style="width: 650px;  height: 50%; float: left; color: white;">
 					
 					<div style="margin-top: 20px; ">
-						<p style="font-weight: bold;">TUBE SELECTION</p>
+						<p style="font-weight: bold; margin-left:10px">TUBE</p>
 						<div class="tube-submit-box" style="float: left">
 							<form action="" method="POST" class="tube-form"> 
 								
@@ -264,23 +320,23 @@
 							</form>
 						</div>
 					</div>
-					<div >
-						<p style="font-weight: bold;">POSITION SELECTION</p>
+					<div style="margin-bottom: 20px; ">
+						<p style="font-weight: bold;">OPERATION</p>
 						<div class="tube-submit-box" style="float: left;">
 							<form action="" method="POST" class="tube-form"> 
 								
 								<div class="submit-column">
 									<div class="tube-form-check">
 										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube1" value="10">
-										<label class="tube-form-check-label" for="inlineRadio1">caching</label>
+										<label class="tube-form-check-label" for="inlineRadio1">MASS</label>
 									</div>
 									<div class="tube-form-check">
 										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube2" value="20">
-										<label class="tube-form-check-label" for="inlineRadio2">analysis</label>
+										<label class="tube-form-check-label" for="inlineRadio2">CAMERA</label>
 									</div>
 									<div class="tube-form-check">
 										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube3" value="30">
-										<label class="tube-form-check-label" for="inlineRadio3">sampling</label>
+										<label class="tube-form-check-label" for="inlineRadio3">SAMPLING</label>
 									</div>
 								</div>
 								
@@ -328,28 +384,37 @@
 					
 				</div>
 
-				<div style="width: 600px; height: 50%; float: left;">
-					<p style="font-weight: bold; color:white; margin-left: 20px;">ANALYSIS</p>
-					<div style="width: 50%; margin-left: 20px;">
-					<form  class="state-button-form" method="POST" >
+				<div style="width: 600px; height: 40%; float: left; position:relative;">
+					<div style="position: absolute; bottom:0px;">
+
+						<form  class="state-button-form" style="margin-left:20px; margin-bottom:20px" method="POST" >
 							{% csrf_token %}
-							<input id="l" class="state-button" type="submit" value="PARTICLE SIZE">
+							<input id="take-pic" class="state-button" type="submit" value="TAKE PIC">
 							
 						</form>
-						<form  class="state-button-form" method="POST">
-							{% csrf_token %}
-							<input id="l" class="state-button" type="submit" value="COLOR ANALYSIS">
-							
-						</form>
-						<form  class="state-button-form" method="POST">
-							{% csrf_token %}
-							<input id="l" class="state-button" type="submit" value="DENSITY">
-							
-						</form>
+
+						<p style="font-weight: bold; color:white; margin-left: 20px;">ANALYSIS</p>
+						<div style="width: 100%; margin-left: 20px;">
+							<form  class="state-button-form" method="POST" >
+								{% csrf_token %}
+								<input id="l" class="state-button" type="submit" value="PARTICLE SIZE">
+								
+							</form>
+							<form  class="state-button-form" method="POST">
+								{% csrf_token %}
+								<input id="l" class="state-button" type="submit" value="COLOR ANALYSIS">
+								
+							</form>
+							<form  class="state-button-form" method="POST">
+								{% csrf_token %}
+								<input id="l" class="state-button" type="submit" value="DENSITY">
+								
+							</form>
+						</div>
 					</div>
 				</div>
 
-				<div style="width: 650px; height: 50%; float: left;">
+				<!--<div style="width: 650px; height: 50%; float: left;">
 					<p style="font-weight: bold; color:white;">BAY TRAP AND CACHING</p>
 					<label class="toggle">
 						<input class="toggle-checkbox" type="checkbox">
@@ -357,7 +422,7 @@
 						<span class="toggle-label">Open Trap</span>
 					</label>
 
-					<!-- <div class="tube-submit-box" style="float: left;">
+					 <div class="tube-submit-box" style="float: left;">
 						<form action="" method="POST" class="tube-form"> 
 							
 							<div class="submit-column">
@@ -376,8 +441,8 @@
 							</div>
 							
 						</form>
-					</div>-->
-				</div>
+					</div>
+				</div>-->
 				
 				
 

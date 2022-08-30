@@ -225,7 +225,7 @@
 								<tbody>
 									<tr>
 										<th scope="row">1</th>
-										<td>Button 1</td>
+										<td class="element-title">Button 1</td>
 										<td>0</td>
 										<td>0</td>
 										<td>0</td>
@@ -235,7 +235,7 @@
 									</tr>
 									<tr>
 										<th scope="row">2</th>
-										<td>Button 2</td>
+										<td class="element-title">Button 2</td>
 										<td>0</td>
 										<td>0</td>
 										<td>0</td>
@@ -245,7 +245,7 @@
 									</tr>
 									<tr>
 										<th scope="row">3</th>
-										<td>Button 3</td>
+										<td class="element-title">Button 3</td>
 										<td>0</td>
 										<td>0</td>
 										<td>0</td>
@@ -255,7 +255,7 @@
 									</tr>
 									<tr>
 										<th scope="row">4</th>
-										<td>Button 4</td>
+										<td class="element-title">Button 4</td>
 										<td>0</td>
 										<td>0</td>
 										<td>0</td>
@@ -265,7 +265,7 @@
 									</tr>
 									<tr>
 										<th scope="row">5</th>
-										<td>Button 5</td>
+										<td class="element-title">Button 5</td>
 										<td>0</td>
 										<td>0</td>
 										<td>0</td>
@@ -275,7 +275,7 @@
 									</tr>
 									<tr>
 										<th scope="row">6</th>
-										<td>Button 6</td>
+										<td class="element-title">Button 6</td>
 										<td>0</td>
 										<td>0</td>
 										<td>0</td>
@@ -285,7 +285,7 @@
 									</tr>
 									<tr>
 										<th scope="row">7</th>
-										<td>Button 7</td>
+										<td class="element-title">Button 7</td>
 										<td>0</td>
 										<td>0</td>
 										<td>0</td>
@@ -295,7 +295,7 @@
 									</tr>
 									<tr>
 										<th scope="row">8</th>
-										<td>Button 8</td>
+										<td class="element-title">Button 8</td>
 										<td>0</td>
 										<td>0</td>
 										<td>0</td>
@@ -305,7 +305,7 @@
 									</tr>
 									<tr>
 										<th scope="row">9</th>
-										<td>Button 9</td>
+										<td class="element-title">Button 9</td>
 										<td>0</td>
 										<td>0</td>
 										<td>0</td>
@@ -315,7 +315,7 @@
 									</tr>
 									<tr>
 										<th scope="row">10</th>
-										<td>Button 10</td>
+										<td class="element-title">Button 10</td>
 										<td>0</td>
 										<td>0</td>
 										<td>0</td>
@@ -325,7 +325,7 @@
 									</tr>
 									<tr>
 										<th scope="row">11</th>
-										<td>Button 11</td>
+										<td class="element-title">Button 11</td>
 										<td>0</td>
 										<td>0</td>
 										<td>0</td>
@@ -335,7 +335,7 @@
 									</tr>
 									<tr>
 										<th scope="row">12</th>
-										<td>Button 12</td>
+										<td class="element-title">Button 12</td>
 										<td>0</td>
 										<td>0</td>
 										<td>0</td>
@@ -345,7 +345,7 @@
 									</tr>
 									<tr>
 										<th scope="row">13</th>
-										<td>Button 13</td>
+										<td class="element-title">Button 13</td>
 										<td>0</td>
 										<td>0</td>
 										<td>0</td>
@@ -355,7 +355,7 @@
 									</tr>
 									<tr>
 										<th scope="row">14</th>
-										<td>Button 14</td>
+										<td class="element-title">Button 14</td>
 										<td>0</td>
 										<td>0</td>
 										<td>0</td>
@@ -365,6 +365,7 @@
 									</tr>
 								</tbody>
 							</table>
+
 						</div>
 					</div>
 
@@ -480,7 +481,6 @@
 										let formData = new FormData();
 										formData.append('id', document.querySelector("#dropdown_id").value);
 						
-						
 										let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
 										let request = new Request('set_id/', {method: 'POST',
 																			body: formData,
@@ -532,8 +532,15 @@
 			document.getElementById('tof').innerHTML = Math.round((data.tof + Number.EPSILON) * 100) / 100000 //divide by 100000 to convert into meters
 
 
-			let elements = document.querySelectorAll("tbody > tr");
-			elements.forEach(e => console.log(e))
+			let elements = document.querySelectorAll("td:not(.element-title)");
+			let k = 0;
+			elements.forEach(e => {
+				console.log(e.innerHTML)
+				e.innerHTML = data.detected_elems[k];
+				//console.log(Math.round((data.detected_elems[k] + Number.EPSILON) * 100) / 100)
+				
+				k += 1;
+			})
 
 		};
 
