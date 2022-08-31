@@ -97,6 +97,7 @@ class Gamepad(Thread):
     advance = 0  # control: if advancing can't retreat and vice versa
     retreat = 0
     for event in self.control.read_loop():
+
       if self.mode == 'NAV':
       # TODOmko
           print(self.axe_NAV_new)
@@ -104,7 +105,8 @@ class Gamepad(Thread):
           self.cs.Nav_Joystick_pub.publish(self.msg_nav_dir)
 
       if event.type != 0:
-        if (self._running) == 0: # when self._running == False  run() stops
+        #if (self._running) == 0: # when self._running == False  run() stops
+        if(self._running == False):
           break
         # EV_KEY describes state changes of device
         if event.type == ecodes.EV_KEY:

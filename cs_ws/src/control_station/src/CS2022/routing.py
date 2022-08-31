@@ -9,7 +9,7 @@ websocket_urlpatterns = [
     path('ws/CS2022/homepage/'      , RoverConsumer.RoverConsumer.as_asgi()),
     path('ws/CS2022/navigation/'    , NavConsumer.NavConsumer.as_asgi()),
     path('ws/CS2022/handlingdevice/', HdConsumer.HDConsumer.as_asgi()),
-    path('ws/CS2022/avionics/'      , AvConsumer.AVConsumer.as_asgi()),
+    path('ws/CS2022/logs/'      , AvConsumer.AVConsumer.as_asgi()),
     path('ws/CS2022/manual/'        , ManConsumer.MANConsumer.as_asgi()),
     path('ws/CS2022/science/'       , ScConsumer.SCConsumer.as_asgi()),
     path('ws/CS2022/time/'       , TimeConsumer.TimeConsumer.as_asgi()),

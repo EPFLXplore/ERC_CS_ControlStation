@@ -8,7 +8,7 @@ class AVConsumer(RoverConsumer):
     
     async def connect(self):
         
-        self.tab_name = 'avionics'
+        self.tab_name = 'logs'
         self.tab_group_name = 'tab_%s' % self.tab_name
 
         # Join tab group
@@ -24,26 +24,22 @@ class AVConsumer(RoverConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message_1 = text_data_json['Debug']
-        message_2 = text_data_json['Debug2']
+        exceptions = text_data_json['exceptions']
 
         # Send message to room group
         await self.channel_layer.group_send(
             self.tab_group_name,
             {
                 'type': 'topic_message',
-                'Debug': message_1,
-                'Debug2': message_2
+                'exceptions': exceptions
             }
         )
 
     # Receive message from room group
     async def topic_message(self, event):
-        message_1 = event['Debug']
-        message_2 = event['Debug2']
+        exceptions = event['exceptions']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'Debug': message_1,
-            'Debug2':message_2
+            'exceptions': exceptions
         }))

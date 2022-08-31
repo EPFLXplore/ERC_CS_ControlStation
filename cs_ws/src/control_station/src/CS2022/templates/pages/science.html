@@ -175,9 +175,9 @@
 			
 		</script>
   		<div id="page" class="page">
-			<div style="float: left;  width: 75%; height: 65%; border-style: solid; border-color: red;">
+			<div style="float: left;  width: 75%; height: 80%; border-style: solid; ">
 
-				<div style="width: 600px; height: 50%; float: left; ">
+				<div style="width: 600px; height: 50%; float: left;">
 
 					<div style="float: left; width: 150px; color: white; font-weight: bold; margin-top: 20px; margin-left: 20px;">
 						<p>TUBE 1</p>
@@ -293,13 +293,23 @@
 
 					<br style="clear: left;" />
 				</div>
+
+				<!-- <div class="dialog-box"></div> -->
+				<div class="dialog-box">
+					<textarea id="dialog" readonly name="dialog" rows="4" cols="50" style="color:rgba(0,0,0,0.6)">AHHHHHHHHHHH</textarea>
+					<div style="float: left; color:white;">
+						<p style="font-size: medium; float: left; ">trap    :</p>
+						<p style="font-size: medium;  padding-left: 80px;">CLOSED</p>
+					</div>
+				</div>
+				
 				
 
-				<div style="width: 650px;  height: 50%; float: left; color: white;">
+				<div style="width: 450px;  height: 50%; float: left; color: white;">
 					
-					<div style="margin-top: 20px; ">
+					<div style="margin-top: 0px; ">
 						<p style="font-weight: bold; margin-left:10px">TUBE</p>
-						<div class="tube-submit-box" style="float: left">
+						<div class="tube-submit-box" style="float: left; margin-left:10px" >
 							<form action="" method="POST" class="tube-form"> 
 								
 								<div class="submit-column">
@@ -327,20 +337,21 @@
 								
 								<div class="submit-column">
 									<div class="tube-form-check">
-										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube1" value="10">
-										<label class="tube-form-check-label" for="inlineRadio1">MASS</label>
+										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube3" value="10">
+										<label class="tube-form-check-label" for="inlineRadio3">SAMPLING</label>
 									</div>
 									<div class="tube-form-check">
 										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube2" value="20">
 										<label class="tube-form-check-label" for="inlineRadio2">CAMERA</label>
 									</div>
 									<div class="tube-form-check">
-										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube3" value="30">
-										<label class="tube-form-check-label" for="inlineRadio3">SAMPLING</label>
+										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube1" value="30">
+										<label class="tube-form-check-label" for="inlineRadio1">MASS</label>
 									</div>
 								</div>
 								
 							</form>
+							
 
 						</div>
 					</div>
@@ -387,6 +398,12 @@
 				<div style="width: 600px; height: 40%; float: left; position:relative;">
 					<div style="position: absolute; bottom:0px;">
 
+						<form  class="state-button-form" style="margin-left:20px; margin-bottom:5px" method="POST" >
+							{% csrf_token %}
+							<input id="humidity" class="state-button" type="submit" value="HUMIDITY">
+							
+						</form>
+
 						<form  class="state-button-form" style="margin-left:20px; margin-bottom:20px" method="POST" >
 							{% csrf_token %}
 							<input id="take-pic" class="state-button" type="submit" value="TAKE PIC">
@@ -412,6 +429,28 @@
 							</form>
 						</div>
 					</div>
+					<script>
+
+						document.querySelector("#humidity").addEventListener("click", event => {
+							event.preventDefault();
+								
+							let humidity = document.getElementById("humidity").value;
+							
+							let formData = new FormData();
+							//formData.append('humidity', 3); // command to receive humidity is 3
+				
+				
+							let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+							let request = new Request('get_humidity/', {method: 'POST',
+																body: formData,
+																headers: {"X-CSRFToken": csrfTokenValue}})
+							fetch(request)
+								.then(response => response.json())
+								.then(result => {})
+							})
+
+
+					</script>
 				</div>
 
 				<!--<div style="width: 650px; height: 50%; float: left;">

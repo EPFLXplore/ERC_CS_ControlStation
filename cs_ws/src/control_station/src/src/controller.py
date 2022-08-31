@@ -41,7 +41,7 @@ from src.model                            import *
 # TODO new (Twist too)
 # from threading              import Thread
 from nav_msgs.msg           import Odometry
-from CS2022.models          import *
+from CS2022                 import models
 
 #from src_ros_msg.custom_msg_python.msg import move_base_action_goal
 
@@ -51,7 +51,7 @@ from CS2022.models          import *
 NAV_WS_URL  = "ws://127.0.0.1:8000/ws/CS2022/navigation/"
 HD_WS_URL   = "ws://localhost:8000/ws/CS2022/handlingdevice/"
 SC_WS_URL   = "ws://localhost:8000/ws/CS2022/science/"
-AV_WS_URL   = "ws://localhost:8000/ws/CS2022/avionics/"
+AV_WS_URL   = "ws://localhost:8000/ws/CS2022/logs/"
 MAN_WS_URL  = "ws://localhost:8000/ws/CS2022/manual/"
 HP_WS_URL   = "ws://localhost:8000/ws/CS2022/homepage/"
 TIME_WS_URL   = "ws://localhost:8000/ws/CS2022/time/"
@@ -106,6 +106,7 @@ class Controller():
         else:
             rospy.loginfo("Received after timeout: %s\n", txt.data)
 
+#OANDSMADSMAPKMDAMSDPA TODO
     def task_progress(self, num):
         '''
             Notified on whether task is a:
@@ -205,14 +206,6 @@ class Controller():
 
         rospy.loginfo("linvel %d", self.cs.rover.Nav.getLinVel())
 
-        '''state = self.cs.rover.getState()
-        if(state == Task.NAVIGATION):
-            self.jsonMsg(state, ws_nav)
-        elif(state == Task.MANUAL):
-            self.jsonMsg(state, ws_man)'''
-
-        '''if(ws_man.connected): self.jsonMsg(Task.MANUAL, ws_man)
-        if(ws_nav.connected): self.jsonMsg(Task.NAVIGATION, ws_nav)'''
         self.sendJson(Task.NAVIGATION)
             
 
@@ -222,7 +215,11 @@ class Controller():
     def exception_clbk(self, str): 
         val = str.data
         rospy.loginfo("Exception: " + val)
-        Exception.objects.update_or_create(name="Exception", defaults={'string': val})
+        #Exception.objects.update_or_create(name="Exception", defaults={'string': val})
+        #e = models.Exception(string=val).save()
+        self.cs.rover.addException(val)
+
+        self.sendJson(Task.LOGS)
 
 
     # =================================================================================================================
@@ -342,11 +339,17 @@ class Controller():
     ##############################
 
     def selectedTube(self, id):
-        if(id < 0 or id > 2): raise ValueError("tube ids are: 0, 1, 2")
+        if(id < 1 or id > 3): raise ValueError("tube ids are: 0, 1, 2")
         self.cs.rover.SC.selectTube(id)
 
     def selectedOp(self, op):
         self.cs.rover.SC.setOperation(op)
+
+    def setHumidity(self, val):
+        self.cs.rover.SC.setTubeHum(val)
+
+    def set_sc_cmd(self, cmd):
+        self.cs.rover.SC.setCmd(cmd)
         
 
     ##############################
@@ -366,9 +369,13 @@ class Controller():
         #     rospy.loginfo("\nLaunching manual controls\n")
         #     self.gpad.start()
 
+        self.gpad.connect()
+        self.gpad.run()
+
+
     def abort_Manual(self):
         rospy.loginfo("\nAborting manual controls\n")
-        self.gpad.join()
+        self.gpad._running = False
 
 
 
@@ -503,6 +510,26 @@ class Controller():
             ###############################
             # BIG TODO !!!!!!!!!!!!!!!!!!!!
             ###############################
+            Dictionary = {
+                'isOpen'        : sc.getIsOpen(),
+                'masses'        : sc.getMasses(),
+                'particle_size' : sc.getParticleSizes(),
+                'volumes'       : sc.getVolumes(),
+                'densities'     : sc.getDensities(),
+                'isFilled'      : sc.getFilled(),
+                'humidity'      : sc.getTubeHum(),
+                'colors'        : sc.getColors(),
+                'pics'          : sc.getPics(),
+                'info'          : sc.getInfo()
+            }
+
+        elif(subsyst == Task.LOGS):
+            socket = ws_av
+            #l = list(models.Exception.objects.all())
+            l = self.cs.rover.getExceptions()
+            Dictionary = {
+                'exceptions' : l
+            }
 
         message = json.dumps(Dictionary)
         socket.send('%s' % message)

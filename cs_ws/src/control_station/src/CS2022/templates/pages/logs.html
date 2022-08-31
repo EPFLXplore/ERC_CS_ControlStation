@@ -89,7 +89,7 @@
 			<div id="page" class="page">
 				<div class="top">
 					<div class="top-left">
-						<div id="column-1" class="column">
+						<!--<div id="column-1" class="column">
 			
 
 							<div id="gyroscope-box" class="data-box">
@@ -184,6 +184,9 @@
 									</data-line>
 								</div>
 							</div>
+						</div>-->
+						<div class="dialog-box">
+							<textarea id="dialog" readonly name="dialog" rows="30" cols="70" style="color:rgba(0,0,0,0.8)">AHHHHHHHHHHH</textarea>
 						</div>
 					</div>
 
@@ -210,22 +213,25 @@
   </div>
   <script>
 
-	// const tabName = JSON.parse(document.getElementById('tab-name').textContent);
-	// const chatSocket = new WebSocket(
-	// 	'ws://'
-	// 	+ window.location.host
-	// 	+ '/ws/CS2022/'
-	// 	+ tabName
-	// 	+ '/'
-	// );
+	const tabName = JSON.parse(document.getElementById('tab-name').textContent);
+	const chatSocket = new WebSocket(
+	 	'ws://'
+	 	+ window.location.host
+	 	+ '/ws/CS2022/'
+	 	+ tabName
+	 	+ '/'
+	);
+	
 
-	// chatSocket.onmessage = function(e) {
-	// 	const data = JSON.parse(e.data);
-		
-	// 	console.log("debug")
+	chatSocket.onmessage = function(e) {
+	 	const data = JSON.parse(e.data);
+		console.log(data)
+	 	//console.log("debug")
+
+		document.getElementById("dialog").value = data.exceptions.join("\n - ")
 
 
-	// };
+	};
 
 	// chatSocket.onclose = function(e) {
 	// 	console.log('Switched Tab');

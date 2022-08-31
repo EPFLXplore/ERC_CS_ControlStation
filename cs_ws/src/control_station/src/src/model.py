@@ -18,6 +18,7 @@
 # Libraries
 
 from enum import IntEnum
+from syslog import LOG_SYSLOG
 
 import numpy as np 
 
@@ -35,6 +36,7 @@ class Task(IntEnum):
     MAINTENANCE = 3
     SCIENCE     = 4
     WAITING     = 5
+    LOGS        = 6 #not really a task. Here just to display exceptions on GUI
 
 class Rover:
     '''
@@ -51,6 +53,8 @@ class Rover:
         self.__state    = Task.IDLE
         self.__inWait   = False
         self.__received = False
+
+        self.__exceptions = []
 
     #--------State--------
 
@@ -76,6 +80,13 @@ class Rover:
     def getInWait(self):
         return self.__inWait
         
+    #--------Exception--------
+
+    def addException(self, e):
+        self.__exceptions.append(str(e))
+
+    def getExceptions(self):
+        return self.__exceptions
 
 class Navigation:
     '''
@@ -185,6 +196,8 @@ class Science:
         # total sample mass
 
         self.__masses = np.zeros(3)
+        self.__isOpen = np.zeros(3)
+
 
         self.__op_tube = np.zeros(2)
         self.__cmd = -1
@@ -197,6 +210,9 @@ class Science:
     def getSCMass(self, idx):
         if(idx < 0 or 2 < idx): raise ValueError("impossible tube number chosen (can be either 0, 1 or 2)")
         return self.__sc_mass[idx]
+
+    def getMasses(self):
+        return self.__masses
 
     #--------Tube Humidity--------
 
@@ -240,6 +256,12 @@ class Science:
         return self.__cmd
 
     #--------------------------
+
+    def setIsOpen(self, idx, bool):
+        self.__isOpen[idx] = bool
+
+    def getIsOpen(self):
+        return self.__isOpen
 
 
 class HandlingDevice:

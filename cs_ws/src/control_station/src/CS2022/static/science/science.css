@@ -21,7 +21,7 @@
 
 .tube-submit-box{
     float: left;
-    width: 40%;
+    width: 100px;
     height: 100%;
 }
 
@@ -161,6 +161,20 @@
 
 #tube-3{
     margin-left: 14%;
+}
+
+
+
+.dialog-box {
+    float:left;
+    margin-top:20px;
+    height: 50%; 
+    width:50%; 
+    color:rgba(0,0,0,0.6);
+}
+
+.dialog{
+    color:rgba(0,0,0,0.6);
 }
 
 /*==========================================================================

@@ -9,7 +9,7 @@ urlpatterns = [
     path('manualcontrol/', 	        views.manualcontrol,  name='manualcontrol'),
     path('handlingdevice/',         views.handlingdevice, name='handlingdevice'),
     path('science/', 		        views.science,		  name='science'),
-    path('logs/', 		        views.logs,		  name='logs'),
+    path('logs/', 		            views.logs,		      name='logs'),
 
     
     
@@ -41,7 +41,8 @@ urlpatterns = [
     path('science/abort/',          views.abort_science,  name='abort_science'),
     path('science/retry/',          views.retry_science,  name='retry_science'),
     path('science/wait/',           views.wait_science,   name='wait_science'),
-    path('science/set_tube_cmd/',     views.set_tube_cmd,   name="set_tube_cmd"),
+    path('science/set_tube_cmd/',   views.set_tube_cmd,   name='set_tube_cmd'),
+    path('science/get_humidity/',   views.get_hum,        name='get_hum'),
 
     # timer
     path('logs/timer/',         views.start_timer,    name='start_timer')

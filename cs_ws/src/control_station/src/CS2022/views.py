@@ -224,8 +224,6 @@ def set_id(request):
     id = int(request.POST.get("id"))
     print(cs.rover.HD.getElemId())
     cs.controller.pub_hd_elemId(id)
-    
-
     return JsonResponse({})
 
 # -----------------------------------
@@ -275,3 +273,14 @@ def set_tube_cmd(request):
     cs.controller.pub_Task(Task.SCIENCE.value, int(cs.rover.SC.getCmd()))
 
     return JsonResponse({})
+
+
+def get_hum(request):
+    cs.controller.set_sc_cmd(3)
+    print("cmd:", cs.rover.SC.getCmd())
+
+    cs.controller.pub_Task(Task.SCIENCE.value, int(cs.rover.SC.getCmd()))
+
+    return JsonResponse({})
+
+
