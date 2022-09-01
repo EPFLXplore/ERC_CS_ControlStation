@@ -28,6 +28,10 @@ class Rover:
 
         self.model = Model(self)
 
+        self.received = False
+        self.waiting  = False
+        self.tries = 0
+
         self.ROVER_STATE = Task.IDLE
 
         # +--------------------------------------------------------+
@@ -40,8 +44,9 @@ class Rover:
         self.Exception_pub     = rospy.Publisher('ROVER_Exception',               String,          queue_size=1)
         self.TaskProgress      = rospy.Publisher('ROVER_TaskProgress',            Int8,            queue_size=1)
         self.SC_state_pub      = rospy.Publisher('ROVER_SC_state',                String,          queue_size=1)
-        self.SC_humidities_pub = rospy.Publisher('ROVER_SC_measurments_humidity', Int16,           queue_size=1)
-        self.SC_mass_pub       = rospy.Publisher('ROVER_SC_measurments_mass',     Int16,           queue_size=1)
+        self.SC_humidities_pub = rospy.Publisher('ROVER_SC_measurements_humidity', Int16,           queue_size=1)
+        #self.SC_mass_pub       = rospy.Publisher('ROVER_SC_measurements_mass',     Int16,           queue_size=1)
+        self.SC_params_pub     = rospy.Publisher('ROVER_SC_params',               Int16MultiArray, queue_size=1)
         self.HD_telemetry_pub  = rospy.Publisher('ROVER_HD_telemetry',            JointState,      queue_size=1)
         self.NAV_odometry_pub  = rospy.Publisher('ROVER_NAV_odometry',            Odometry,        queue_size=1)
         self.HD_tof            = rospy.Publisher('ROVER_HD_tof',                  Int32,           queue_size=1)
@@ -65,6 +70,7 @@ class Rover:
         rospy.Subscriber('CS_HD_SemiAuto_Id', Int8,               self.model.HD.set_semiAutoID)
         #rospy.Subscriber('CS_NAV_goal',       MoveBaseActionGoal, self.model.Nav.setGoal)
         rospy.Subscriber('CS_NAV_goal',       PoseStamped,        self.model.Nav.setGoal)
+        rospy.Subscriber('CS_Confirm',        Bool,               self.cs_confirm)
 
         #rospy.Subscriber('CS_NAV_cancel',     GoalID,             self.model.Nav.cancel_goal)
 
@@ -80,16 +86,11 @@ class Rover:
         rospy.Subscriber('/odometry/filtered',           Odometry,        self.model.Nav.nav_data)
         rospy.Subscriber('/arm_control/joint_telemetry', JointState,      self.model.HD.set_joint_telemetry)
         rospy.Subscriber('sc_state',                     String,          self.model.SC.set_text_info)
-        rospy.Subscriber('sc_measurments_humidity',      Int16,           self.model.SC.set_humidities)
-        rospy.Subscriber('sc_measurments_mass',          Int16,           self.model.SC.set_sc_mass)
+        rospy.Subscriber('sc_measurements_humidity',      Int16,           self.model.SC.set_humidity)
+        #rospy.Subscriber('sc_measurements_mass',          Int16,           self.model.SC.set_sc_mass)
+        rospy.Subscriber('sc_params',                    Int16MultiArray, self.model.SC.params)
         rospy.Subscriber('/avionics_ToF',                Int32,           self.model.HD.set_tof)
         rospy.Subscriber('detection/detected_elements',  Int16MultiArray, self.model.HD.setDetectedElement)
-
-        '''rospy.Subscriber('/odometry/filtered',           Odometry,     self.Nav_pub.publish)
-        rospy.Subscriber('/arm_control/joint_telemetry', JointState,      self.HD_telemetry.publish)
-        rospy.Subscriber('sc_state',                     String,          self.SC_state_pub.publish)
-        rospy.Subscriber('sc_measurments_humidity',      Int16MultiArray, self.SC_humidities_pub.publish)
-        rospy.Subscriber('sc_measurments_mass',          Int16,           self.SC_mass_pub.publish)'''
 
 
     # receives array: [task, instr]:
@@ -152,6 +153,31 @@ class Rover:
         print("Listening")
         rospy.spin() 
  
+    
+    def cs_confirm(self, bool):
+        if(self.waiting): 
+            rospy.loginfo("CS Confirmation Received")
+            self.received = True
+
+
+    def wait(self, pub, val):
+
+        self.waiting = True
+
+        pub.publish(val)
+        start = time.time()
+        while(not self.received and ((time.time() - start) < 1)): continue
+
+        if(not self.received and self.tries < 3): 
+            self.tries += 1
+            self.wait(pub, val)
+
+        if(not self.received):
+            rospy.loginfo("Answer not received: TIMEOUT")
+
+        self.waiting = False
+        self.received = False
+
 
 #==========================================================================
 #MAIN

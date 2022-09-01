@@ -53,6 +53,8 @@ class Model:
 
 
     def set_exception(self, exception):
+        #self.rover.waiting = True
+        self.rover.wait(self.rover.Exception_pub, exception)
         self.rover.Exception_pub.publish(exception.data)
 
         
@@ -79,8 +81,6 @@ class Navigation:
     def setGoal(self, goal):
 
         self.rover.RoverConfirm_pub.publish("received NAV goal")
-
-
 
         #self.__currGoal = goal
         self.rover.Nav_Goal_pub.publish(goal)
@@ -155,8 +155,9 @@ class Science:
 
         self.rover = rover
 
-        # humidities of the 3 tubes
-        self.__tubesHum = np.zeros(3)
+        # tube humidity
+        self.__tubeHum = 0
+        self.__params = []
         # total sample mass
         self.__sc_mass = 0
         self.__info = ""
@@ -174,20 +175,18 @@ class Science:
         return self.__sc_mass
 
 
-    def set_humidities(self, humidities_ros):
+    def set_humidity(self, humidities_ros):
         humidity = humidities_ros.data
-        self.set_tube_num(humidity[0], humidity[1])
+        self.__tubeHum = humidity
 
-    def set_tube_hum(self, idx, val):
-        '''
-        receive an Int16MultiArray: [tube number, humidity inside tube]
-        tube number : arr[0]
-        value       : arr[1]
-        '''
-        self.__tubesHum[idx] = val
+    def get_tube_hum(self):
+        return self.__tubeHum
 
-    def get_tube_hum(self, idx):
-        return self.__tubesHum[idx]
+
+    def params(self, arr):
+        self.__params = arr.data
+        #self.rover.waiting = True
+        self.rover.wait(self.rover.SC_params_pub, arr)
 
 
 

@@ -196,7 +196,15 @@ class Science:
         # total sample mass
 
         self.__masses = np.zeros(3)
-        self.__isOpen = np.zeros(3)
+        self.__tubes_closed = np.zeros(3)
+        self.__volumes = np.zeros(3)
+        self.__colors = np.zeros(3)
+        self.__particleSizes = np.zeros(3)
+        self.__densities = np.zeros(3)
+        self.__trap_closed = True
+        self.__filled = np.zeros(3)
+
+        self.__info = []
 
 
         self.__op_tube = np.zeros(2)
@@ -231,7 +239,6 @@ class Science:
     def getOperation(self):
         return self.__op_tube[0]
 
-
     #--------Tube--------
 
     def selectTube(self, t):
@@ -255,13 +262,96 @@ class Science:
     def getCmd(self):
         return self.__cmd
 
-    #--------------------------
+    #--------Opened tubes--------
 
-    def setIsOpen(self, idx, bool):
-        self.__isOpen[idx] = bool
+    def setTubeState(self, idx, val):
+        self.__tubes_closed[idx] = bool(val)
 
-    def getIsOpen(self):
-        return self.__isOpen
+    def getTubesState(self):
+        return self.__tubes_closed
+
+    #--------Densities--------
+    def setDensity(self, idx, val):
+        self.__densities[idx] = val
+
+    def getDensities(self):
+        return self.__densities
+
+    #--------Volumes--------
+
+    def setVolume(self, idx, val):
+        self.__volumes[idx] = val
+
+    def getVolumes(self):
+        return self.__volumes
+
+        
+    #--------Trap--------
+
+    def setTrapState(self, val):
+        self.__trap_closed= bool(val)
+
+    def getTrapState(self):
+        return self.__trap_closed
+
+    #--------Particle Size--------
+
+    def setParticleSize(self, idx, val):
+        self.__particleSizes[idx] = val
+
+    def getParticleSizes(self):
+        return self.__particleSizes
+
+    #--------Filled--------
+
+    def setTubeFilled(self, idx, val):
+        self.__filled[idx] = val
+
+    def getFilled(self):
+        return self.__filled
+
+    #--------Colors--------
+
+    def setTubeColor(self, idx, val):
+        self.__colors[idx] = val
+
+    def getTubeColor(self):
+        return self.__colors
+
+    #--------INFO--------
+
+    def addInfo(self, txt):
+        self.__info.append(txt)
+
+    def getInfos(self):
+        return self.__info
+
+    #--------STATE--------
+    def setState(self, txt):
+        self.__state = txt
+
+    def getState(self):
+        return self.__state
+
+
+    #--------DESERIALIZATION--------
+    def deSerializeState(self, save_list):
+        '''
+        Undo the serialization of serializeState and save the variables.
+        Input: save_list (list of int) list to be deserialized
+        Output: None
+        '''
+
+        #cast to ints
+        save_list = map(int,save_list)
+
+        #desrializing
+        #self.disc_position = save_list[0]
+        self.__tubes_closed = map(bool,save_list[1:4])
+        self.__filled = map(bool,save_list[4:7])
+        self.__trap_closed = bool(save_list[7])
+        self.__masses = save_list[8:] # TODO il me semble que ça renvoit 4 nombres et pas 3
+
 
 
 class HandlingDevice:

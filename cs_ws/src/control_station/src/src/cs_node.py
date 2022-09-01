@@ -63,6 +63,7 @@ class CS:
         # ---------------------------------------------------
         #  publishers
         self.Task_pub               = rospy.Publisher('Task',               Int8MultiArray, queue_size=1)
+        self.CS_confirm_pub         = rospy.Publisher('CS_Confirm',        Bool,            queue_size=1)
 
         # Handling Device
         self.HD_mode_pub            = rospy.Publisher('CS_HD_mode',            Int8,           queue_size=1)
@@ -87,15 +88,17 @@ class CS:
         # ---------------------------------------------------
         #  Subscribers
 
-        rospy.Subscriber('ROVER_RoverConfirm',            String,          self.controller.rover_confirmation )
-        rospy.Subscriber('ROVER_Exception',               String,          self.controller.exception_clbk     )
-        rospy.Subscriber('ROVER_TaskProgress',            Int8,            self.controller.task_progress      )
-        rospy.Subscriber('ROVER_SC_state',                String,          self.controller.sc_text_info       )
+        rospy.Subscriber('ROVER_RoverConfirm',             String,          self.controller.rover_confirmation )
+        rospy.Subscriber('ROVER_Exception',                String,          self.controller.exception_clbk     )
+        rospy.Subscriber('ROVER_TaskProgress',             Int8,            self.controller.task_progress      )
+        rospy.Subscriber('ROVER_SC_state',                 String,          self.controller.sc_state           )
+        rospy.Subscriber('ROVER_SC_info',                  String,          self.controller.sc_text_info       )
+        rospy.Subscriber('ROVER_SC_params',                Int16MultiArray, self.controller.sc_params          )
         rospy.Subscriber('ROVER_SC_measurements_humidity', Int16,           self.controller.sc_humidity        )
-        rospy.Subscriber('ROVER_SC_measurements_mass',     Int16,           self.controller.sc_mass            )
-        rospy.Subscriber('ROVER_HD_telemetry',            JointState,      self.controller.hd_telemetry       )
-        rospy.Subscriber('ROVER_HD_tof',                  Int32,           self.controller.hd_tof             )
-        rospy.Subscriber('ROVER_HD_detected_element',     Int16MultiArray, self.controller.hd_detected_element)
+        #rospy.Subscriber('ROVER_SC_measurements_mass',     Int16,           self.controller.sc_mass            )
+        rospy.Subscriber('ROVER_HD_telemetry',             JointState,      self.controller.hd_telemetry       )
+        rospy.Subscriber('ROVER_HD_tof',                   Int32,           self.controller.hd_tof             )
+        rospy.Subscriber('ROVER_HD_detected_element',      Int16MultiArray, self.controller.hd_detected_element)
 
 
         # TODO

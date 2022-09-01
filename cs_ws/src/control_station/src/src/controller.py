@@ -142,9 +142,23 @@ class Controller():
             ex: LED turned on, Picture taken, ...
         '''
         
+        self.cs.CS_confirm_pub.publish(True)
+
         str = info.data
-        Science.objects.update_or_create(name="Science", defaults = {'sc_text': str})
+        #Science.objects.update_or_create(name="Science", defaults = {'sc_text': str})
         rospy.loginfo("Science: text_info: " + str)
+        self.cs.rover.SC.addInfo(str)
+
+
+
+    #TODO
+    def sc_state(self, state):
+        self.sc_text_info(state)
+        
+
+
+    def sc_params(self, arr):
+        self.cs.rover.SC.deSerializeState(arr.data)
         
 
     # TODO
@@ -218,6 +232,8 @@ class Controller():
         #Exception.objects.update_or_create(name="Exception", defaults={'string': val})
         #e = models.Exception(string=val).save()
         self.cs.rover.addException(val)
+
+        self.cs.CS_confirm_pub.publish(True)
 
         self.sendJson(Task.LOGS)
 
@@ -350,6 +366,7 @@ class Controller():
 
     def set_sc_cmd(self, cmd):
         self.cs.rover.SC.setCmd(cmd)
+
         
 
     ##############################
@@ -411,54 +428,6 @@ class Controller():
             ws_time.send('%s' % message)
 
 
-    '''def jsonMsg(self, tab, socket):
-        print(socket.connected)
-        if(socket.connected):
-            #Dictionary = defaultdict()
-            
-            if(tab == Task.NAVIGATION):
-                nav = self.cs.rover.Nav
-                pos = nav.getPos()
-                Dictionary = {
-                    'x'        : pos[0], 
-                    'y'        : pos[1], 
-                    'linVel'   : nav.getLinVel(), 
-                    'angVel'   : nav.getAngVel(),
-                    'distance' : nav.distToGoal()
-                }
-
-            elif(tab == Task.MAINTENANCE):
-                hd = self.cs.rover.HD
-                Dictionary = {
-                    'joint_pos' : hd.get_joint_positions(),
-                    'joint_vel' : hd.get_joint_velocities(),
-                    'tof'       : hd.get_tof()
-                }
-
-            elif(tab == Task.SCIENCE):
-                sc = self.cs.rover.SC
-                ###############################
-                # BIG TODO !!!!!!!!!!!!!!!!!!!!
-                ###############################
-
-            elif(tab == Task.MANUAL):
-                nav = self.cs.rover.Nav
-                hd = self.cs.rover.HD
-
-                pos = nav.getPos()
-                Dictionary = {
-                    'x'         : pos[0], 
-                    'y'         : pos[1], 
-                    'linVel'    : nav.getLinVel(), 
-                    'angVel'    : nav.getAngVel(),
-                    'joint_pos' : hd.get_joint_positions(),
-                    'joint_vel' : hd.get_joint_velocities()
-                }
-
-            rospy.loginfo("oh nae %d", Dictionary['x'])
-            message = json.dumps(Dictionary)
-            socket.send('%s' % message)'''
-
     def sendJson(self, subsyst):
 
         if(ws_man.connected):
@@ -511,7 +480,8 @@ class Controller():
             # BIG TODO !!!!!!!!!!!!!!!!!!!!
             ###############################
             Dictionary = {
-                'isOpen'        : sc.getIsOpen(),
+                'tubes_closed'   : sc.getTubesState(),
+                'trap_closed'   : sc.getTrapState(),
                 'masses'        : sc.getMasses(),
                 'particle_size' : sc.getParticleSizes(),
                 'volumes'       : sc.getVolumes(),
@@ -519,8 +489,9 @@ class Controller():
                 'isFilled'      : sc.getFilled(),
                 'humidity'      : sc.getTubeHum(),
                 'colors'        : sc.getColors(),
-                'pics'          : sc.getPics(),
-                'info'          : sc.getInfo()
+                #'pics'          : sc.getPics(),
+                'info'          : sc.getInfos(),
+                'state'         : sc.getState()
             }
 
         elif(subsyst == Task.LOGS):
