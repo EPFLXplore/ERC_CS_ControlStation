@@ -77,7 +77,7 @@ class Rover:
 
         self.HD_mode_pub        = rospy.Publisher('HD_mode',           Int8,               queue_size=1)
         self.HD_SemiAuto_Id_pub = rospy.Publisher('HD_SemiAuto_Id',    Int8,               queue_size=1)
-        self.Nav_Goal_pub       = rospy.Publisher('/move_base/goal',   MoveBaseActionGoal, queue_size=1)
+        self.Nav_Goal_pub       = rospy.Publisher('CS/NAV_goal',       PoseStamped,        queue_size=1)
         self.Nav_CancelGoal_pub = rospy.Publisher('/move_base/cancel', GoalID,             queue_size=1)
 
         # LOCAL ROS COMMUNICATION

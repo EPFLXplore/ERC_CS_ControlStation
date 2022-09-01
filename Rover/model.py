@@ -81,6 +81,7 @@ class Navigation:
     def setGoal(self, goal):
 
         self.rover.RoverConfirm_pub.publish("received NAV goal")
+        self.__currId = goal.header.frame_id
 
         #self.__currGoal = goal
         self.rover.Nav_Goal_pub.publish(goal)
