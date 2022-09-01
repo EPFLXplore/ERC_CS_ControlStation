@@ -215,8 +215,8 @@
 							<p id="tube-density" style="font-size: small;  padding-left: 100px;">0</p>
 						</div>
 						<div style="float: left;">
-							<p style="font-size: small; float: left; ">filled    :</p>
-							<p id="tube-filled" style="font-size: small;  padding-left: 100px;">0</p>
+							<p style="font-size: small; float: left; ">empty    :</p>
+							<p id="tube-empty" style="font-size: small;  padding-left: 100px;">0</p>
 						</div>
 						
 
@@ -251,8 +251,8 @@
 							<p id="tube-density" style="font-size: small;  padding-left: 100px;">0</p>
 						</div>
 						<div style="float: left;">
-							<p style="font-size: small; float: left; ">filled    :</p>
-							<p id="tube-filled" style="font-size: small;  padding-left: 100px;">0</p>
+							<p style="font-size: small; float: left; ">empty    :</p>
+							<p id="tube-empty" style="font-size: small;  padding-left: 100px;">0</p>
 						</div>
 					
 					</div>
@@ -286,8 +286,8 @@
 							<p id="tube-density" style="font-size: small;  padding-left: 100px;">0</p>
 						</div>
 						<div style="float: left;">
-							<p style="font-size: small; float: left; ">filled    :</p>
-							<p id="tube-filled" style="font-size: small;  padding-left: 100px;">0</p>
+							<p style="font-size: small; float: left; ">empty    :</p>
+							<p id="tube-empty" style="font-size: small;  padding-left: 100px;">0</p>
 						</div>
 					</div>
 
@@ -301,7 +301,7 @@
 					<textarea id="dialog" readonly name="dialog" rows="4" cols="50" style="color:rgba(0,0,0,0.6)">AHHHHHHHHHHH</textarea>
 					<div style="float: left; color:white;">
 						<p style="font-size: medium; float: left; ">trap    :</p>
-						<p id="trap-state" style="font-size: medium;  padding-left: 80px;">CLOSED</p>
+						<p id="trap-closed" style="font-size: medium;  padding-left: 80px;">CLOSED</p>
 					</div>
 				</div>
 				
@@ -454,37 +454,6 @@
 
 					</script>
 				</div>
-
-				<!--<div style="width: 650px; height: 50%; float: left;">
-					<p style="font-weight: bold; color:white;">BAY TRAP AND CACHING</p>
-					<label class="toggle">
-						<input class="toggle-checkbox" type="checkbox">
-						<div class="toggle-switch"></div>
-						<span class="toggle-label">Open Trap</span>
-					</label>
-
-					 <div class="tube-submit-box" style="float: left;">
-						<form action="" method="POST" class="tube-form"> 
-							
-							<div class="submit-column">
-								<div class="tube-form-check">
-									<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube1" value="pos1">
-									<label class="tube-form-check-label" for="inlineRadio1">P1</label>
-								</div>
-								<div class="tube-form-check">
-									<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube2" value="pos2">
-									<label class="tube-form-check-label" for="inlineRadio2">P2</label>
-								</div>
-								<div class="tube-form-check">
-									<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube3" value="pos3">
-									<label class="tube-form-check-label" for="inlineRadio3">P3</label>
-								</div>
-							</div>
-							
-						</form>
-					</div>
-				</div>-->
-				
 				
 
 
@@ -536,19 +505,29 @@
 		
 		console.log("debug")
 
+		let params = data.params
+
 		/* EVERYTHING CONCERNING COMMON TUBE DATA*/
 		let closed = document.querySelectorAll("#closed")
-		tubes_op(closed, data.tubes_closed)
+		tubes_op(closed, params.slice(1,4))
+		let filled = document.querySelectorAll("#tube-empty")
+		tubes_op(filled, params.slice(4,7))
 		let masses = document.querySelectorAll("#tube-mass")
 		tubes_op(masses, data.masses)
+		let trap_closed = document.querySelector("#trap-closed")
+		if(params[7] == 1) {
+			trap_state.innerHTML = "CLOSED"
+		} else {
+			trap_state.innerHTML = "OPENED"
+		}
+
 		let particles = document.querySelectorAll("#particle-size")
 		tubes_op(particles, data.particle_size)
 		let volumes = document.querySelectorAll("#tube-volume")
 		tubes_op(volumes, data.volumes)
 		let densities = document.querySelectorAll("#tube-density")
 		tubes_op(densities, data.densities)
-		let filled = document.querySelectorAll("#tube-filled")
-		tubes_op(filled, data.isFilled)
+		
 		let colors = document.querySelectorAll("#tube-color")
 		tubes_op(colors, data.colors)
 
@@ -556,12 +535,7 @@
 		document.querySelector("#humidity").innerHTML = data.humidity
 
 		/* TRAP STATE */
-		let trap_state = document.querySelector("#trap-state")
-		if(data.trap_state == true) {
-			trap_state.innerHTML = "CLOSED"
-		} else {
-			trap_state.innerHTML = "OPENED"
-		}
+		
 
 		/* DIALOG BOX */
 		document.querySelector('#dialog').innerHTML = data.infos.join("\n - ")

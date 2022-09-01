@@ -105,46 +105,14 @@ class Navigation:
         self.__currGoal = np.zeros(0)
         self.rover.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = self.__currId))
 
-    
-    #------------- Twist Data -------------
-    
-    def setPos(self, arr):
-        self.__pos = arr
 
-    def setLinVel(self, arr):
-        self.__linVel = arr
-
-    def setAngVel(self, arr):
-        self.__angVel = arr
-
-
-    def getPos(self):
-        return self.__pos
-
-    def getLinVel(self):
-        return self.__linVel
-
-    def getAngVel(self):
-        return self.__angVel
 
     #-------------------------------------
 
-    def nav_data(self, odometry_ros):
+    '''def nav_data(self, odometry_ros):
         odometry = odometry_ros.data
 
-        # position (x,y,z)
-        pos = odometry.pose.pose.position
-        self.setPos([pos.x, pos.y, pos.z])
-
-        # linear velocity
-        twistLin = odometry.twist.twist.linear
-        self.setLinVel([twistLin.x, twistLin.y, twistLin.z])
-
-        # angular velocity
-        twistAng = odometry.twist.twist.angular
-        self.setAngVel([twistAng.x, twistAng.y, twistAng.z])
-
-        self.rover.NAV_odometry_pub.publish(odometry)
+        self.rover.NAV_odometry_pub.publish(odometry)'''
 
 
 class Science:
@@ -160,7 +128,6 @@ class Science:
         self.__tubeHum = 0
         self.__params = []
         # total sample mass
-        self.__sc_mass = 0
         self.__info = ""
 
     def set_text_info(self, str_ros):

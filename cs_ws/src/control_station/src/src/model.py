@@ -202,7 +202,7 @@ class Science:
         self.__particleSizes = np.zeros(3)
         self.__densities = np.zeros(3)
         self.__trap_closed = True
-        self.__filled = np.zeros(3)
+        self.__empty = np.zeros(3)
 
         self.__info = []
 
@@ -304,11 +304,11 @@ class Science:
 
     #--------Filled--------
 
-    def setTubeFilled(self, idx, val):
-        self.__filled[idx] = val
+    def setTubeEmpty(self, idx, val):
+        self.__empty[idx] = val
 
-    def getFilled(self):
-        return self.__filled
+    def areEmpty(self):
+        return self.__empty
 
     #--------Colors--------
 

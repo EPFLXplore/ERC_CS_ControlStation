@@ -150,7 +150,6 @@ class Controller():
         self.cs.rover.SC.addInfo(str)
 
 
-
     #TODO
     def sc_state(self, state):
         self.sc_text_info(state)
@@ -164,10 +163,10 @@ class Controller():
     # TODO
     # receive: [id, x, y, z, a, b, c]    (x,y,z) --> translations and (a,b,c) --> rotations
     def hd_detected_element(self, arr):
-        element = arr.data
-        self.cs.rover.HD.setDetectedElement(element)
+        elements = arr.data
+        self.cs.rover.HD.setDetectedElement(elements)
 
-        rospy.loginfo("received HD element info [%d, %d, %d, %d, %d, %d, %d]", element[0], element[1], element[2], element[3], element[4], element[5], element[6])
+        rospy.loginfo("received HD element info [%d, %d, %d, %d, %d, %d, %d]", elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6])
 
         self.sendJson(Task.MAINTENANCE)
         
@@ -181,19 +180,6 @@ class Controller():
 
     def hd_tof(self, val):
         self.cs.rover.HD.set_tof(val.data)
-
-        '''HdDictionary = {
-            'joint_pos' : self.cs.rover.HD.get_joint_positions(),
-            'joint_vel' : self.cs.rover.HD.get_joint_velocities(),
-            'tof'       : self.cs.rover.HD.get_tof()
-        }
-
-        message = json.dumps(HdDictionary)
-        rospy.loginfo("tof my guy %d (mm):", val.data)
-
-        if(ws_hd.connected):
-            ws_hd.send('%s' % message)'''
-
         self.sendJson(Task.MAINTENANCE)
 
         
@@ -480,18 +466,20 @@ class Controller():
             # BIG TODO !!!!!!!!!!!!!!!!!!!!
             ###############################
             Dictionary = {
-                'tubes_closed'   : sc.getTubesState(),
+                ''' 'tubes_closed'   : sc.getTubesState(),
                 'trap_closed'   : sc.getTrapState(),
-                'masses'        : sc.getMasses(),
+                'isFilled'      : sc.getFilled(),
+                'masses'        : sc.getMasses(), '''
+
+                'params'        : sc.getParams(),
                 'particle_size' : sc.getParticleSizes(),
                 'volumes'       : sc.getVolumes(),
                 'densities'     : sc.getDensities(),
-                'isFilled'      : sc.getFilled(),
                 'humidity'      : sc.getTubeHum(),
                 'colors'        : sc.getColors(),
                 #'pics'          : sc.getPics(),
-                'info'          : sc.getInfos(),
-                'state'         : sc.getState()
+                'infos'          : sc.getInfos(),
+                #'state'         : sc.getState()
             }
 
         elif(subsyst == Task.LOGS):
