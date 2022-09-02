@@ -163,7 +163,26 @@
 				<div id="page" class="page">
 					<!--LEFT SIDE-->
 					<div class="left">
-						<div class="top-left"> </div>
+						<div class="top-left"> 
+
+							<div class="top-left">
+								<canvas id="navmap" width="1500" height="710" ></canvas>
+								
+							</div>
+							
+							<script>
+								const map = document.getElementById('navmap'); 
+								const myContext = map.getContext('2d');
+								var imageObj = new Image();
+	
+								imageObj.src = "{% static 'common/mars_yard_2022.png' %}";
+								imageObj.onload = function() {
+									myContext.drawImage(imageObj, 0, 0, 1000, 610);
+								};
+								
+	
+							</script>
+						</div>
 						
 						<div class="h-separator"></div>
 
