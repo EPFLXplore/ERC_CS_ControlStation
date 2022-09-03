@@ -24,26 +24,46 @@ class SCConsumer(RoverConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message_1 = text_data_json['Debug']
-        message_2 = text_data_json['Debug2']
+        parameters     = text_data_json['params']
+        particle_sizes = text_data_json['particle_sizes']
+        volumes        = text_data_json['volumes']
+        densities      = text_data_json['densities']
+        colors         = text_data_json['colors']
+        humidity       = text_data_json['humidity']
+        infos          = text_data_json['infos']
 
         # Send message to room group
         await self.channel_layer.group_send(
             self.tab_group_name,
             {
                 'type': 'topic_message',
-                'Debug': message_1,
-                'Debug2': message_2
+                'params'        : parameters,
+                'particle_sizes': particle_sizes,
+                'volumes'       : volumes,
+                'densities'     : densities,
+                'colors'        : colors,
+                'humidity'      : humidity,
+                'infos'         : infos
             }
         )
 
     # Receive message from room group
     async def topic_message(self, event):
-        message_1 = event['Debug']
-        message_2 = event['Debug2']
+        params         = event['params']
+        particle_sizes = event['particle_sizes']
+        volumes        = event['volumes']
+        densities      = event['densities']
+        colors         = event['colors']
+        humidity       = event['humidity']
+        infos          = event['infos']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'Debug': message_1,
-            'Debug2':message_2
+            'params'        : params,
+            'particle_sizes': particle_sizes,
+            'volumes'       : volumes,
+            'densities'     : densities,
+            'colors'        : colors,
+            'humidity'      : humidity,
+            'infos'         : infos
         }))

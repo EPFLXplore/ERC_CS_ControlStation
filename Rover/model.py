@@ -78,7 +78,12 @@ class Navigation:
         # rover angular velocity
         self.__angVel = np.zeros(3)
 
+
+        #self.__cancelled = True 
+
     def setGoal(self, goal):
+
+        #self.__cancelled = False
 
         self.rover.RoverConfirm_pub.publish("received NAV goal")
         self.__currId = goal.header.frame_id
@@ -101,9 +106,11 @@ class Navigation:
     def cancelGoal(self):
 
         self.rover.RoverConfirm_pub.publish("received NAV goal cancellation")
-        
-        self.__currGoal = np.zeros(0)
-        self.rover.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = self.__currId))
+
+        if(not self.__cancelled): 
+            #self.__cancelled = True
+            self.__currGoal = np.zeros(0)
+            self.rover.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = self.__currId))
 
 
 
@@ -127,20 +134,11 @@ class Science:
         # tube humidity
         self.__tubeHum = 0
         self.__params = []
-        # total sample mass
         self.__info = ""
 
     def set_text_info(self, str_ros):
         self.__info = str_ros.data
-        self.rover.SC_state_pub.publish(self.__info)
-
-
-    def set_sc_mass(self, mass):
-        self.__sc_mass = mass
-        self.rover.SC_mass_pub.publish(self.__sc_mass)
-    
-    def get_sc_mass(self):
-        return self.__sc_mass
+        self.rover.wait(self.rover.SC_infos_pub, str_ros)
 
 
     def set_humidity(self, humidities_ros):
@@ -155,6 +153,9 @@ class Science:
         self.__params = arr.data
         #self.rover.waiting = True
         self.rover.wait(self.rover.SC_params_pub, arr)
+
+    def getParams(self):
+        return self.__params
 
 
 

@@ -33,7 +33,7 @@ from std_msgs.msg                         import Int8MultiArray, Int8, Float32, 
 # from ros_package.src.custom_msg_python    import move_base_action_goal
 from geometry_msgs.msg                    import Pose, Point, Twist, PoseStamped, Quaternion
 from actionlib_msgs.msg                   import GoalID
-from tf.transformations import quaternion_from_euler
+from tf.transformations import quaternion_from_euler, euler_from_quaternion
 
 from Gamepad.Gamepad                      import Gamepad
 from src.model                            import *
@@ -54,7 +54,7 @@ SC_WS_URL   = "ws://localhost:8000/ws/CS2022/science/"
 AV_WS_URL   = "ws://localhost:8000/ws/CS2022/logs/"
 MAN_WS_URL  = "ws://localhost:8000/ws/CS2022/manual/"
 HP_WS_URL   = "ws://localhost:8000/ws/CS2022/homepage/"
-TIME_WS_URL   = "ws://localhost:8000/ws/CS2022/time/"
+TIME_WS_URL = "ws://localhost:8000/ws/CS2022/time/"
 
 
 ws_nav  = websocket.WebSocket()
@@ -146,18 +146,25 @@ class Controller():
 
         str = info.data
         #Science.objects.update_or_create(name="Science", defaults = {'sc_text': str})
-        rospy.loginfo("Science: text_info: " + str)
+        rospy.loginfo("Science: " + str)
         self.cs.rover.SC.addInfo(str)
+        #self.sendJson(Task.SCIENCE)
 
 
     #TODO
     def sc_state(self, state):
-        self.sc_text_info(state)
+        #self.sc_text_info(state)
+        print("tqt")
         
 
 
     def sc_params(self, arr):
-        self.cs.rover.SC.deSerializeState(arr.data)
+        rospy.loginfo(arr)
+        self.cs.CS_confirm_pub.publish(True)
+        #self.cs.rover.SC.deSerializeState(arr.data)
+        rospy.loginfo(arr.data)
+        self.cs.rover.SC.setParams(arr.data)
+        self.sendJson(Task.SCIENCE)
         
 
     # TODO
@@ -187,24 +194,27 @@ class Controller():
 
     def nav_data(self, odometry):
         data = odometry
+        nav =self.cs.rover.Nav
 
         # position (x,y,z)
         pos = data.pose.pose.position
-        
-        self.cs.rover.Nav.setPos([pos.x, pos.y, pos.z])
+        nav.setPos([pos.x, pos.y, pos.z])
+
+        # orientation
+        quaternion = data.pose.pose.orientation
+        explicit_quat = [quaternion.x, quaternion.y, quaternion.z, quaternion.w]
+        roll, pitch, yaw = euler_from_quaternion(explicit_quat)
+        nav.setYaw(yaw)
 
         # linear velocity
         twistLin = data.twist.twist.linear
-        
-        self.cs.rover.Nav.setLinVel([twistLin.x, twistLin.y, twistLin.z])
+        nav.setLinVel([twistLin.x, twistLin.y, twistLin.z])
 
         # angular velocity
         twistAng = data.twist.twist.angular
-        #twistAng = data
-        
-        self.cs.rover.Nav.setAngVel([twistAng.x, twistAng.y, twistAng.z])
+        nav.setAngVel([twistAng.x, twistAng.y, twistAng.z])
 
-        rospy.loginfo("linvel %d", self.cs.rover.Nav.getLinVel())
+        rospy.loginfo("linvel %d", nav.getLinVel())
 
         self.sendJson(Task.NAVIGATION)
             
@@ -444,7 +454,8 @@ class Controller():
                 'z'        : pos[2],
                 'linVel'   : nav.getLinVel(), 
                 'angVel'   : nav.getAngVel(),
-                'distance' : nav.distToGoal()
+                'distance' : nav.distToGoal(),
+                'yaw'      : nav.getYaw()
             }
 
         elif(subsyst == Task.MAINTENANCE):
@@ -462,24 +473,17 @@ class Controller():
             socket = ws_sc
 
             sc = self.cs.rover.SC
-            ###############################
-            # BIG TODO !!!!!!!!!!!!!!!!!!!!
-            ###############################
             Dictionary = {
-                ''' 'tubes_closed'   : sc.getTubesState(),
-                'trap_closed'   : sc.getTrapState(),
-                'isFilled'      : sc.getFilled(),
-                'masses'        : sc.getMasses(), '''
-
                 'params'        : sc.getParams(),
-                'particle_size' : sc.getParticleSizes(),
+                'particle_sizes' : sc.getParticleSizes(),
                 'volumes'       : sc.getVolumes(),
                 'densities'     : sc.getDensities(),
-                'humidity'      : sc.getTubeHum(),
                 'colors'        : sc.getColors(),
+                'humidity'      : sc.getTubeHum(),
                 #'pics'          : sc.getPics(),
-                'infos'          : sc.getInfos(),
+                'infos'          : sc.getInfos()
                 #'state'         : sc.getState()
+                
             }
 
         elif(subsyst == Task.LOGS):
@@ -491,4 +495,8 @@ class Controller():
             }
 
         message = json.dumps(Dictionary)
-        socket.send('%s' % message)
+        if(socket.connected):
+            print("sent")
+            socket.send('%s' % message)
+
+            

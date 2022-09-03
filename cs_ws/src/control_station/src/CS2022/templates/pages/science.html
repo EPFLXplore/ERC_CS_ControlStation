@@ -513,16 +513,16 @@
 		let filled = document.querySelectorAll("#tube-empty")
 		tubes_op(filled, params.slice(4,7))
 		let masses = document.querySelectorAll("#tube-mass")
-		tubes_op(masses, data.masses)
+		tubes_op(masses, params.slice(7, 10))
 		let trap_closed = document.querySelector("#trap-closed")
 		if(params[7] == 1) {
-			trap_state.innerHTML = "CLOSED"
+			trap_closed.innerHTML = "CLOSED"
 		} else {
-			trap_state.innerHTML = "OPENED"
+			trap_closed.innerHTML = "OPENED"
 		}
 
 		let particles = document.querySelectorAll("#particle-size")
-		tubes_op(particles, data.particle_size)
+		tubes_op(particles, data.particle_sizes)
 		let volumes = document.querySelectorAll("#tube-volume")
 		tubes_op(volumes, data.volumes)
 		let densities = document.querySelectorAll("#tube-density")
@@ -532,21 +532,19 @@
 		tubes_op(colors, data.colors)
 
 		/* HUMIDITY OF CONCERNED TUBE */
+		console.log(data.humidity)
 		document.querySelector("#humidity").innerHTML = data.humidity
-
-		/* TRAP STATE */
 		
-
+		console.log("at least log something my guy")
+		console.log(data.infos)
 		/* DIALOG BOX */
-		document.querySelector('#dialog').innerHTML = data.infos.join("\n - ")
-
-
+		document.getElementById('dialog').value = data.infos.join("\n - ")
 
 	};
 
 	function tubes_op(queries, values) {
 		for(i = 0; i < 3; i++) {
-			queries[i].innerHTML = data.values[i]
+			queries[i].innerHTML = values[i]
 		}
 	}
 
