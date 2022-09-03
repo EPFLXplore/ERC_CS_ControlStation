@@ -136,11 +136,12 @@ class Rover:
         # NAVIGATION
         elif (task == Task.NAVIGATION.value): 
             self.ROVER_STATE = Task.NAVIGATION
-
-            if(instr == Instruction.ABORT.value): 
+            if(instr == Instruction.LAUNCH.value):
+                rospy.loginfo("goal launched")
+                self.Nav_Goal_pub.publish(self.model.Nav.getGoal())
+            elif(instr == Instruction.ABORT.value): 
                 self.model.Nav.cancelGoal()
                 self.ROVER_STATE = Task.IDLE
-
             else:
                 self.Nav_pub.publish(instr)
 

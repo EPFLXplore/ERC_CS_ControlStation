@@ -24,7 +24,7 @@ from multiprocessing.sharedctypes import Value
 from unittest.loader    import VALID_MODULE_NAME
 from actionlib_msgs.msg import GoalID
 from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
-from geometry_msgs.msg  import Pose, Point
+from geometry_msgs.msg  import Pose, Point, PoseStamped
 from sensor_msgs.msg    import JointState
 from std_msgs.msg       import Int8, Int16, Bool, String, Int8MultiArray,  Int16MultiArray, UInt8MultiArray 
 
@@ -78,7 +78,7 @@ class Navigation:
 
         # next Navigation goal ID
         self.__currId = 0
-        self.__currGoal = np.zeros(3)
+        self.__currGoal = PoseStamped()
 
         # rover position
         self.__pos = np.zeros(3)
@@ -99,15 +99,16 @@ class Navigation:
 
         self.rover.RoverConfirm_pub.publish("received NAV goal")
         self.__currId = goal.header.frame_id
+        self.__currGoal = goal
 
         #self.__currGoal = goal
-        self.rover.Nav_Goal_pub.publish(goal)
+        #self.rover.Nav_Goal_pub.publish(goal)
         
 
     def getId(self):
         return self.__currId
 
-    def getGoal(self, id):
+    def getGoal(self):
         return self.__currGoal
 
     '''def cancelGoal(self, given_id):
