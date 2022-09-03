@@ -20,32 +20,28 @@ class Instruction(IntEnum):
   RESUME = 4
   RETRY  = 5
 
-class Science(IntEnum):
-  LOAD_HIST = 1
-  ABORT = 2
-  MASS_MEASUREMENT = 3
-  # ... = 4 ?
-  RETRY = 5
-  CONFIRM = 6
-  CALIBRATION_MASS = 7
-  EXIT = 8
+class ScienceTask(IntEnum):
+  ABORT    = 0
+  RETRY    = 1
+  CONFIRM  = 2
+  HUMIDITY = 3
+  PARAMS   = 4
   TAKE_PIC = 9
 
   START_SAMPLING_0 = 10
   START_SAMPLING_1 = 11
   START_SAMPLING_2 = 12
 
-  USER_CONFIRM_0 = 20
-  USER_CONFIRM_1 = 21
-  USER_CONFIRM_2 = 22
+  ROT_TO_PIC_0   = 20
+  ROT_TO_PIC_1   = 21
+  ROT_TO_PIC_2   = 22
 
-  IMG_ANALYSIS_0 = 30
-  IMG_ANALYSIS_1 = 31
-  IMG_ANALYSIS_2 = 32
+  MASS_MEASURE_0 = 30
+  MASS_MEASURE_1 = 31
+  MASS_MEASURE_2 = 32
 
-  HUMIDITY_MEASUREMENT_0 = 40
-  HUMIDITY_MEASUREMENT_1 = 41
-  HUMIDITY_MEASUREMENT_2 = 42
+  
+
 
 # ROVER_STATE    = task.IDLE
 # INSTRUCTION    = instruction.WORK

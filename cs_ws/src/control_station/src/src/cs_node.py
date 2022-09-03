@@ -91,7 +91,7 @@ class CS:
         rospy.Subscriber('ROVER_RoverConfirm',             String,          self.controller.rover_confirmation )
         rospy.Subscriber('ROVER_Exception',                String,          self.controller.exception_clbk     )
         rospy.Subscriber('ROVER_TaskProgress',             Int8,            self.controller.task_progress      )
-        rospy.Subscriber('ROVER_SC_state',                 String,          self.controller.sc_state           )
+        rospy.Subscriber('ROVER_SC_state',                 String,          self.controller.sc_text_info       ) #self.sc_state
         rospy.Subscriber('ROVER_SC_info',                  String,          self.controller.sc_text_info       )
         rospy.Subscriber('ROVER_SC_params',                Int16MultiArray, self.controller.sc_params          )
         rospy.Subscriber('ROVER_SC_measurements_humidity', Int16,           self.controller.sc_humidity        )
