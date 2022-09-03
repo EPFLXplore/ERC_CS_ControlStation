@@ -402,7 +402,25 @@
 
 						<form  class="state-button-form" style="margin-left:20px; margin-bottom:5px" method="POST" >
 							{% csrf_token %}
-							<input id="humidity" class="state-button" type="submit" value="HUMIDITY">
+							<input id="get_infos" class="state-button" type="submit" value="INFO">
+							
+						</form>
+
+						<form  class="state-button-form" style="margin-left:20px; margin-bottom:5px" method="POST" >
+							{% csrf_token %}
+							<input id="get_state" class="state-button" type="submit" value="STATE">
+							
+						</form>
+
+						<form  class="state-button-form" style="margin-left:20px; margin-bottom:5px" method="POST" >
+							{% csrf_token %}
+							<input id="get_parameters" class="state-button" type="submit" value="PARAMETERS">
+							
+						</form>
+
+						<form  class="state-button-form" style="margin-left:20px; margin-bottom:5px" method="POST" >
+							{% csrf_token %}
+							<input id="get_humidity" class="state-button" type="submit" value="HUMIDITY">
 							
 						</form>
 
@@ -433,14 +451,10 @@
 					</div>
 					<script>
 
-						document.querySelector("#humidity").addEventListener("click", event => {
+						document.querySelector("#get_humidity").addEventListener("click", event => {
 							event.preventDefault();
-								
-							let humidity = document.getElementById("humidity").value;
 							
 							let formData = new FormData();
-							//formData.append('humidity', 3); // command to receive humidity is 3
-				
 				
 							let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
 							let request = new Request('get_humidity/', {method: 'POST',
@@ -451,6 +465,50 @@
 								.then(result => {})
 							})
 
+
+						document.querySelector("#get_parameters").addEventListener("click", event => {
+							event.preventDefault();
+							
+							let formData = new FormData();
+				
+							let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+							let request = new Request('get_parameters/', {method: 'POST',
+																body: formData,
+																headers: {"X-CSRFToken": csrfTokenValue}})
+							fetch(request)
+								.then(response => response.json())
+								.then(result => {})
+							})
+
+							
+						document.querySelector("#get_infos").addEventListener("click", event => {
+							event.preventDefault();
+							
+							let formData = new FormData();
+				
+							let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+							let request = new Request('get_sc_info/', {method: 'POST',
+																body: formData,
+																headers: {"X-CSRFToken": csrfTokenValue}})
+							fetch(request)
+								.then(response => response.json())
+								.then(result => {})
+							})	
+
+
+						document.querySelector("#get_state").addEventListener("click", event => {
+							event.preventDefault();
+							
+							let formData = new FormData();
+				
+							let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+							let request = new Request('get_sc_state/', {method: 'POST',
+																body: formData,
+																headers: {"X-CSRFToken": csrfTokenValue}})
+							fetch(request)
+								.then(response => response.json())
+								.then(result => {})
+							})	
 
 					</script>
 				</div>
@@ -490,6 +548,10 @@
   	
   </div>
   <script>
+	/* Prevents a prompt from appearing if you refresh after entering values*/
+	if ( window.history.replaceState ) {
+		window.history.replaceState( null, null, window.location.href );
+	}
 
 	const tabName = JSON.parse(document.getElementById('tab-name').textContent);
 	const chatSocket = new WebSocket(
@@ -513,7 +575,7 @@
 		let filled = document.querySelectorAll("#tube-empty")
 		tubes_op(filled, params.slice(4,7))
 		let masses = document.querySelectorAll("#tube-mass")
-		tubes_op(masses, params.slice(7, 10))
+		tubes_op(masses, params.slice(8, 11))
 		let trap_closed = document.querySelector("#trap-closed")
 		if(params[7] == 1) {
 			trap_closed.innerHTML = "CLOSED"

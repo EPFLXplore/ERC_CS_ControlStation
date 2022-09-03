@@ -29,6 +29,7 @@ from sensor_msgs.msg    import JointState
 from std_msgs.msg       import Int8, Int16, Bool, String, Int8MultiArray,  Int16MultiArray, UInt8MultiArray 
 
 from rover_node import Rover
+from Globals import *
 
 
 class Model:
@@ -51,12 +52,20 @@ class Model:
     def getState(self):
         return self.__state
 
+    def getTask(self):
+        return self.__state[0]
+
 
     def set_exception(self, exception):
         #self.rover.waiting = True
         self.rover.wait(self.rover.Exception_pub, exception)
         self.rover.Exception_pub.publish(exception.data)
 
+    def setProgress(self, val):
+        if(self.getTask() == Task.NAVIGATION.value):
+            self.Nav.setCancelled(True)
+        
+        self.rover.TaskProgress_pub.publish(val)
         
 
 class Navigation:
@@ -78,12 +87,15 @@ class Navigation:
         # rover angular velocity
         self.__angVel = np.zeros(3)
 
+        self.__cancelled = True 
 
-        #self.__cancelled = True 
+    def setCancelled(self, bool):
+        self.__cancelled = bool
 
     def setGoal(self, goal):
 
         #self.__cancelled = False
+        self.setCancelled(False)
 
         self.rover.RoverConfirm_pub.publish("received NAV goal")
         self.__currId = goal.header.frame_id
@@ -108,7 +120,7 @@ class Navigation:
         self.rover.RoverConfirm_pub.publish("received NAV goal cancellation")
 
         if(not self.__cancelled): 
-            #self.__cancelled = True
+            self.setCancelled(True)
             self.__currGoal = np.zeros(0)
             self.rover.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = self.__currId))
 
@@ -133,12 +145,23 @@ class Science:
 
         # tube humidity
         self.__tubeHum = 0
-        self.__params = []
-        self.__info = ""
+        self.__params = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        self.__info = "info"
+        self.__state = "state"
 
     def set_text_info(self, str_ros):
         self.__info = str_ros.data
         self.rover.wait(self.rover.SC_infos_pub, str_ros)
+
+    def get_text_info(self):
+        return self.__info
+
+    def set_state_info(self, str_ros):
+        self.__state = str_ros.data
+        self.rover.wait(self.rover.SC_infos_pub, str_ros)
+
+    def get_state_info(self):
+        return self.__state
 
 
     def set_humidity(self, humidities_ros):
@@ -151,12 +174,10 @@ class Science:
 
     def params(self, arr):
         self.__params = arr.data
-        #self.rover.waiting = True
         self.rover.wait(self.rover.SC_params_pub, arr)
 
     def getParams(self):
         return self.__params
-
 
 
 class HandlingDevice:

@@ -148,7 +148,7 @@ class Controller():
         #Science.objects.update_or_create(name="Science", defaults = {'sc_text': str})
         rospy.loginfo("Science: " + str)
         self.cs.rover.SC.addInfo(str)
-        #self.sendJson(Task.SCIENCE)
+        self.sendJson(Task.SCIENCE)
 
 
     #TODO

@@ -42,7 +42,7 @@ class Rover:
         self.RoverConfirm_pub  = rospy.Publisher('ROVER_RoverConfirm',            String,          queue_size=1)
         # publish info on exception if one was thrown (Rover node --> CS_node)
         self.Exception_pub     = rospy.Publisher('ROVER_Exception',               String,          queue_size=1)
-        self.TaskProgress      = rospy.Publisher('ROVER_TaskProgress',            Int8,            queue_size=1)
+        self.TaskProgress_pub  = rospy.Publisher('ROVER_TaskProgress',            Int8,            queue_size=1)
         self.SC_state_pub      = rospy.Publisher('ROVER_SC_state',                String,          queue_size=1)
         self.SC_infos_pub      = rospy.Publisher('ROVER_SC_info',                 String,          queue_size=1)
         self.SC_humidities_pub = rospy.Publisher('ROVER_SC_measurements_humidity', Int16,          queue_size=1)
@@ -65,17 +65,17 @@ class Rover:
         # +------------------------------------------------------+
 
         # receive an array = [task, instruction] (CS_node --> Rover node)
-        rospy.Subscriber('Task',              Int8MultiArray,     self.task_instr)
-        rospy.Subscriber('CS_HD_mode',        Int8,               self.model.HD.setHDMode)
-        rospy.Subscriber('CS_HD_SemiAuto_Id', Int8,               self.model.HD.set_semiAutoID)
-        rospy.Subscriber('CS_NAV_goal',       PoseStamped,        self.model.Nav.setGoal)
-        rospy.Subscriber('CS_Confirm',        Bool,               self.cs_confirm)
+        rospy.Subscriber('Task',              Int8MultiArray, self.task_instr)
+        rospy.Subscriber('CS_HD_mode',        Int8,           self.model.HD.setHDMode)
+        rospy.Subscriber('CS_HD_SemiAuto_Id', Int8,           self.model.HD.set_semiAutoID)
+        rospy.Subscriber('CS_NAV_goal',       PoseStamped,    self.model.Nav.setGoal)
+        rospy.Subscriber('CS_Confirm',        Bool,           self.cs_confirm)
 
 
-        self.HD_mode_pub        = rospy.Publisher('HD_mode',           Int8,               queue_size=1)
-        self.HD_SemiAuto_Id_pub = rospy.Publisher('HD_SemiAuto_Id',    Int8,               queue_size=1)
-        self.Nav_Goal_pub       = rospy.Publisher('CS/NAV_goal',       PoseStamped,        queue_size=1)
-        self.Nav_CancelGoal_pub = rospy.Publisher('/move_base/cancel', GoalID,             queue_size=1)
+        self.HD_mode_pub        = rospy.Publisher('HD_mode',           Int8,        queue_size=1)
+        self.HD_SemiAuto_Id_pub = rospy.Publisher('HD_SemiAuto_Id',    Int8,        queue_size=1)
+        self.Nav_Goal_pub       = rospy.Publisher('CS/NAV_goal',       PoseStamped, queue_size=1)
+        self.Nav_CancelGoal_pub = rospy.Publisher('/move_base/cancel', GoalID,      queue_size=1)
 
         # LOCAL ROS COMMUNICATION
         # TODO DO NOT DELETE YET
@@ -84,10 +84,12 @@ class Rover:
         rospy.Subscriber('sc_info',                      String,          self.model.SC.set_text_info)
         rospy.Subscriber('sc_measurements_humidity',     Int16,           self.model.SC.set_humidity)
         rospy.Subscriber('sc_params',                    Int16MultiArray, self.model.SC.params)'''
-        rospy.Subscriber('sc_state',                     String,          self.model.SC.set_text_info)
+        rospy.Subscriber('sc_state',                     String,          self.model.SC.set_state_info)
         rospy.Subscriber('sc_info',                      String,          self.model.SC.set_text_info)  #self.SC_infos_pub.publish)
         rospy.Subscriber('sc_measurements_humidity',     Int16,           self.SC_humidities_pub.publish)
-        rospy.Subscriber('sc_params',                    Int16MultiArray, self.SC_params_pub.publish)
+        rospy.Subscriber('sc_params',                    Int16MultiArray, self.model.SC.params)
+        rospy.Subscriber('TaskProgress',                 Int8,            self.model.setProgress)
+
 
         # IMMEDIATE RETRANSMIT TO CS
         rospy.Subscriber('/odometry/filtered',           Odometry,        self.NAV_odometry_pub.publish)
@@ -159,7 +161,14 @@ class Rover:
         # SCIENCE
         else: 
             self.ROVER_STATE = Task.SCIENCE
-            self.SC_pub.publish(instr)
+            if(instr== ScienceTask.PARAMS.value):
+                self.wait(self.SC_params_pub, Int16MultiArray(data=self.model.SC.getParams()))
+            elif(instr == ScienceTask.INFO.value):
+                self.wait(self.SC_infos_pub, String(self.model.SC.get_text_info()))
+            elif(instr == ScienceTask.STATE.value):
+                self.wait(self.SC_state_pub, String(self.model.SC.get_state_info()))
+            else:
+                self.SC_pub.publish(instr)
         
     # ros starts spinning and the node starts listening to info 
     # coming from topics it's subscribed to
