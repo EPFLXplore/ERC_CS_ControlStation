@@ -44,6 +44,8 @@ urlpatterns = [
     path('science/set_tube_cmd/',   views.set_tube_cmd,   name='set_tube_cmd'),
     path('science/get_humidity/',   views.get_humidity,   name='get_humidity'),
     path('science/get_parameters/', views.get_parameters, name='get_parameters'),
+    path('science/get_sc_info/',    views.get_sc_info, name='get_sc_info'),
+    path('science/get_sc_state/',   views.get_sc_state, name='get_sc_state'),
 
     # timer
     path('logs/timer/',         views.start_timer,    name='start_timer')

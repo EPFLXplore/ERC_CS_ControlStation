@@ -1,4 +1,5 @@
 from curses.ascii import US
+from distutils.log import INFO
 from enum import IntEnum
 from tkinter import image_names
 from tkinter.messagebox import RETRY
@@ -26,6 +27,8 @@ class ScienceTask(IntEnum):
   CONFIRM  = 2
   HUMIDITY = 3
   PARAMS   = 4
+  INFO     = 5
+  STATE    = 6
   TAKE_PIC = 9
 
   START_SAMPLING_0 = 10

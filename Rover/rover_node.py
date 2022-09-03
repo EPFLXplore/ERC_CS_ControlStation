@@ -84,7 +84,7 @@ class Rover:
         rospy.Subscriber('sc_info',                      String,          self.model.SC.set_text_info)
         rospy.Subscriber('sc_measurements_humidity',     Int16,           self.model.SC.set_humidity)
         rospy.Subscriber('sc_params',                    Int16MultiArray, self.model.SC.params)'''
-        rospy.Subscriber('sc_state',                     String,          self.model.SC.set_text_info)
+        rospy.Subscriber('sc_state',                     String,          self.model.SC.set_state_info)
         rospy.Subscriber('sc_info',                      String,          self.model.SC.set_text_info)  #self.SC_infos_pub.publish)
         rospy.Subscriber('sc_measurements_humidity',     Int16,           self.SC_humidities_pub.publish)
         rospy.Subscriber('sc_params',                    Int16MultiArray, self.model.SC.params)
@@ -161,10 +161,12 @@ class Rover:
         # SCIENCE
         else: 
             self.ROVER_STATE = Task.SCIENCE
-            if(task == ScienceTask.PARAMS.value):
+            if(instr== ScienceTask.PARAMS.value):
                 self.wait(self.SC_params_pub, Int16MultiArray(data=self.model.SC.getParams()))
-                #self.SC_params_pub.publish(Int16MultiArray(data=self.model.SC.getParams()))
-
+            elif(instr == ScienceTask.INFO.value):
+                self.wait(self.SC_infos_pub, String(self.model.SC.get_text_info()))
+            elif(instr == ScienceTask.STATE.value):
+                self.wait(self.SC_state_pub, String(self.model.SC.get_state_info()))
             else:
                 self.SC_pub.publish(instr)
         

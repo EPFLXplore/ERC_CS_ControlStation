@@ -270,27 +270,25 @@ def set_tube_cmd(request):
     print("SC: (operation = ", operation, ", tube = ", tube, ")")
     print("cmd: ", cs.rover.SC.getCmd())
 
-    #cs.controller.pub_Task(Task.SCIENCE.value, int(cs.rover.SC.getCmd()))
-    #return JsonResponse({})
-    return sc_send_cmd()
+    return sc_send_cmd(cs.rover.SC.getCmd())
 
 
 def get_humidity(request):
-    cs.controller.set_sc_cmd(3)
-    print("cmd:", cs.rover.SC.getCmd())
-
-    cs.controller.pub_Task(Task.SCIENCE.value, int(cs.rover.SC.getCmd()))
-
-    return JsonResponse({})
+    return sc_send_cmd(3)
 
 
 def get_parameters(request):
-    cs.controller.set_sc_cmd(4)
+    return sc_send_cmd(4)
+
+def get_sc_info(request):
+    return sc_send_cmd(5)
+
+def get_sc_state(request):
+    return sc_send_cmd(6)
+
+
+def sc_send_cmd(val):
+    cs.controller.set_sc_cmd(val)
     print("cmd:", cs.rover.SC.getCmd())
-
-    return sc_send_cmd()
-
-
-def sc_send_cmd():
     cs.controller.pub_Task(Task.SCIENCE.value, int(cs.rover.SC.getCmd()))
     return JsonResponse({})

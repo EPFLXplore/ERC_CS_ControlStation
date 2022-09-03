@@ -146,11 +146,22 @@ class Science:
         # tube humidity
         self.__tubeHum = 0
         self.__params = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-        self.__info = ""
+        self.__info = "info"
+        self.__state = "state"
 
     def set_text_info(self, str_ros):
         self.__info = str_ros.data
         self.rover.wait(self.rover.SC_infos_pub, str_ros)
+
+    def get_text_info(self):
+        return self.__info
+
+    def set_state_info(self, str_ros):
+        self.__state = str_ros.data
+        self.rover.wait(self.rover.SC_infos_pub, str_ros)
+
+    def get_state_info(self):
+        return self.__state
 
 
     def set_humidity(self, humidities_ros):
