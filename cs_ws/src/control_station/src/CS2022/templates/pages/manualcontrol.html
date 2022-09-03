@@ -277,67 +277,35 @@
 								</div>
 							</div>
 
-							
-
-							<!--<div style="margin-top: 30px;">	
-								<div id="inverse_box" class="settings_box">
-								<div class="settings-title-box">
-									<p class="settings-title">INVERSE KINEMATICS</p>
-								</div>
-								<div class="settings-values-box">
+							<div class="row">
+								<div class="column">
 									
-									<div class="data-line">
-										<div class="settings-value-container">
-											<input type="number" class="data-input" placeholder="X" name="x"/>
-											
-										</div>
-										<div class="settings-value-container">
-											<input type="number" class="data-input" placeholder="Y" name="y"/>
-											
-										</div>
-										<div class="settings-value-container">
-											<input type="number" class="data-input" placeholder="Z" name="z"/>
-											
-										</div>
-									</div>
+								  <img id="camera_12"src="{% static 'common/logothumbnail.png' %}" width="35%">
+								  <img id="camera_22"src="{% static 'common/logothumbnail.png' %}" width="35%">
+								  <img id="camera_3"src="{% static 'common/logothumbnail.png' %}" width="35%">
+								  <img id="camera_4"src="{% static 'common/logothumbnail.png' %}" width="35%">
+								  <img id="camera_5"src="{% static 'common/logothumbnail.png' %}" width="35%">
+		
 								</div>
-								<div class="settings-buttons-box">
-									<div class="set-box">
-										<form class="set-form" action="">
-											<button class="set-button">
-												<span>SET</span>
-											</button>
-										</form>
-									</div>
+								<div class="column">
+								  <img id="camera_6" src="{% static 'common/logothumbnail.png' %}" width="35%">
+								  <img id="camera_7" src="{% static 'common/logothumbnail.png' %}" width="35%"> 
+								  <img id="camera_8" src="{% static 'common/logothumbnail.png' %}" width="35%"> 
+								  <img id="camera_9" src="{% static 'common/logothumbnail.png' %}" width="35%"> 
+								  <img id="camera_10" src="{% static 'common/logothumbnail.png' %}" width="35%"> 
+			
 								</div>
+								
+							  </div>
 
-							</div>-->
-						</div>
+							
 						
-					</div>
-				</div>
-				<!-- cameras grid -->
-				<div class="row">
-					<div class="column">
-						
-					  <img src="{% static 'common/logothumbnail.png' %}" width="17%">
-					  <img src="{% static 'common/logothumbnail.png' %}" width="17%">
-					  <img src="{% static 'common/logothumbnail.png' %}" width="17%">
-					  <img src="{% static 'common/logothumbnail.png' %}" width="17%">
-					  <img src="{% static 'common/logothumbnail.png' %}" width="17%">
-
-					</div>
-					<div class="column">
-					  <img src="{% static 'common/logothumbnail.png' %}" width="17%">
-					  <img src="{% static 'common/logothumbnail.png' %}" width="17%"> 
-					  <img src="{% static 'common/logothumbnail.png' %}" width="17%"> 
-					  <img src="{% static 'common/logothumbnail.png' %}" width="17%"> 
-					  <img src="{% static 'common/logothumbnail.png' %}" width="17%"> 
-
 					</div>
 					
-				  </div>
-			</div>
+				</div>
+				</div>
+				<!-- cameras grid -->
+				
 		</div>
 	</div>
 	<!-- =================================================================================================================== -->
@@ -400,6 +368,17 @@
         ws.onmessage = function(evt) {
             v_data = JSON.parse(evt.data);
             $("#camera_1").attr("src", v_data.message);
+			$("#camera_2").attr("src", v_data.message);
+			$("#camera_3").attr("src", v_data.message);
+			$("#camera_4").attr("src", v_data.message);
+			$("#camera_5").attr("src", v_data.message);
+			$("#camera_6").attr("src", v_data.message);
+			$("#camera_7").attr("src", v_data.message);
+			$("#camera_8").attr("src", v_data.message);
+			$("#camera_9").attr("src", v_data.message);
+			$("#camera_10").attr("src", v_data.message);
+			$("#camera_12").attr("src", v_data.message);
+			$("#camera_22").attr("src", v_data.message);
 
             
         };

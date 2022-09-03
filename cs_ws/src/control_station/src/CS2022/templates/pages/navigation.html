@@ -209,7 +209,10 @@
 										let formData = new FormData();
 										formData.append('x',   document.querySelector("#x").value);
 										formData.append('y',   document.querySelector("#y").value);
-										formData.append('yaw', document.querySelector('#yaw').value)
+										formData.append('yaw', document.querySelector('#yaw').value);
+
+										document.getElementById("xgoal").innerHTML = document.querySelector("#x").value;
+										document.getElementById("ygoal").innerHTML = document.querySelector("#y").value;
 						
 						
 										let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
@@ -270,13 +273,13 @@
 									<div class="data-container">
 										<!-- GOAL'S Y COORDINATE -->
 										<div class="data-line-container">
-											<p class="data-title">X : </p>
-											<p class="data">0</p>
+											<p  class="data-title">X : </p>
+											<p id="xgoal" class="data">0</p>
 										</div>
 										<!-- GOAL'S X COORDINATE -->
 										<div class="data-line-container">
-											<p class="data-title">Y : </p>
-											<p class="data">0</p>
+											<p  class="data-title">Y : </p>
+											<p id="ygoal" class="data">0</p>
 										</div>
 
 									</div>
