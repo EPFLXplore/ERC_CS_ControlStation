@@ -44,8 +44,8 @@ class Rover:
         self.Exception_pub     = rospy.Publisher('ROVER_Exception',               String,          queue_size=1)
         self.TaskProgress      = rospy.Publisher('ROVER_TaskProgress',            Int8,            queue_size=1)
         self.SC_state_pub      = rospy.Publisher('ROVER_SC_state',                String,          queue_size=1)
-        self.SC_humidities_pub = rospy.Publisher('ROVER_SC_measurements_humidity', Int16,           queue_size=1)
-        #self.SC_mass_pub       = rospy.Publisher('ROVER_SC_measurements_mass',     Int16,           queue_size=1)
+        self.SC_infos_pub      = rospy.Publisher('ROVER_SC_info',                 String,          queue_size=1)
+        self.SC_humidities_pub = rospy.Publisher('ROVER_SC_measurements_humidity', Int16,          queue_size=1)
         self.SC_params_pub     = rospy.Publisher('ROVER_SC_params',               Int16MultiArray, queue_size=1)
         self.HD_telemetry_pub  = rospy.Publisher('ROVER_HD_telemetry',            JointState,      queue_size=1)
         self.NAV_odometry_pub  = rospy.Publisher('ROVER_NAV_odometry',            Odometry,        queue_size=1)
@@ -68,11 +68,8 @@ class Rover:
         rospy.Subscriber('Task',              Int8MultiArray,     self.task_instr)
         rospy.Subscriber('CS_HD_mode',        Int8,               self.model.HD.setHDMode)
         rospy.Subscriber('CS_HD_SemiAuto_Id', Int8,               self.model.HD.set_semiAutoID)
-        #rospy.Subscriber('CS_NAV_goal',       MoveBaseActionGoal, self.model.Nav.setGoal)
         rospy.Subscriber('CS_NAV_goal',       PoseStamped,        self.model.Nav.setGoal)
         rospy.Subscriber('CS_Confirm',        Bool,               self.cs_confirm)
-
-        #rospy.Subscriber('CS_NAV_cancel',     GoalID,             self.model.Nav.cancel_goal)
 
 
         self.HD_mode_pub        = rospy.Publisher('HD_mode',           Int8,               queue_size=1)
@@ -81,16 +78,22 @@ class Rover:
         self.Nav_CancelGoal_pub = rospy.Publisher('/move_base/cancel', GoalID,             queue_size=1)
 
         # LOCAL ROS COMMUNICATION
-
-        rospy.Subscriber('Exception',                    String,          self.model.set_exception)
-        rospy.Subscriber('/odometry/filtered',           Odometry,        self.model.Nav.nav_data)
-        rospy.Subscriber('/arm_control/joint_telemetry', JointState,      self.model.HD.set_joint_telemetry)
+        # TODO DO NOT DELETE YET
+        '''rospy.Subscriber('Exception',                    String,          self.model.set_exception)
         rospy.Subscriber('sc_state',                     String,          self.model.SC.set_text_info)
-        rospy.Subscriber('sc_measurements_humidity',      Int16,           self.model.SC.set_humidity)
-        #rospy.Subscriber('sc_measurements_mass',          Int16,           self.model.SC.set_sc_mass)
-        rospy.Subscriber('sc_params',                    Int16MultiArray, self.model.SC.params)
-        rospy.Subscriber('/avionics_ToF',                Int32,           self.model.HD.set_tof)
-        rospy.Subscriber('detection/detected_elements',  Int16MultiArray, self.model.HD.setDetectedElement)
+        rospy.Subscriber('sc_info',                      String,          self.model.SC.set_text_info)
+        rospy.Subscriber('sc_measurements_humidity',     Int16,           self.model.SC.set_humidity)
+        rospy.Subscriber('sc_params',                    Int16MultiArray, self.model.SC.params)'''
+        rospy.Subscriber('sc_state',                     String,          self.model.SC.set_text_info)
+        rospy.Subscriber('sc_info',                      String,          self.model.SC.set_text_info)  #self.SC_infos_pub.publish)
+        rospy.Subscriber('sc_measurements_humidity',     Int16,           self.SC_humidities_pub.publish)
+        rospy.Subscriber('sc_params',                    Int16MultiArray, self.SC_params_pub.publish)
+
+        # IMMEDIATE RETRANSMIT TO CS
+        rospy.Subscriber('/odometry/filtered',           Odometry,        self.NAV_odometry_pub.publish)
+        rospy.Subscriber('/arm_control/joint_telemetry', JointState,      self.HD_telemetry_pub.publish)
+        rospy.Subscriber('/avionics_ToF',                Int32,           self.HD_tof.publish)
+        rospy.Subscriber('detection/detected_elements',  Int16MultiArray, self.HD_element_pub.publish)
 
 
     # receives array: [task, instr]:
@@ -124,26 +127,37 @@ class Rover:
         self.RoverConfirm_pub.publish("Instructions received")
         #self.RoverConfirm_pub.publish(Bool(True))
 
-        if (task == 1):
+        # MANUAL
+        if (task == Task.MANUAL.value):
             self.ROVER_STATE = Task.MANUAL
 
-        elif (task == 2): #Navigation
+        # NAVIGATION
+        elif (task == Task.NAVIGATION.value): 
             self.ROVER_STATE = Task.NAVIGATION
-            if(instr == 2):
+
+            if(instr == Instruction.ABORT.value): 
                 self.model.Nav.cancelGoal()
                 self.ROVER_STATE = Task.IDLE
+
             else:
                 self.Nav_pub.publish(instr)
 
-        elif (task == 3): #Maintenance
+        # MAINTENANCE
+        elif (task == Task.MAINTENANCE.value): 
             self.ROVER_STATE = Task.MAINTENANCE
-            if(instr == 1): 
-                self.HD_SemiAuto_Id_pub.publish(self.model.HD.getId())
-            elif(instr == 2): 
-                self.HD_SemiAuto_Id_pub.publish(-1)
-            self.Maintenance_pub.publish(instr)
 
-        else:  #task == 4, Science
+            if(instr == Instruction.LAUNCH.value): 
+                self.HD_SemiAuto_Id_pub.publish(self.model.HD.getId())
+
+            elif(instr == Instruction.ABORT.value): 
+                self.HD_SemiAuto_Id_pub.publish(-1)
+                self.ROVER_STATE = Task.IDLE
+
+            else:
+                self.Maintenance_pub.publish(instr)
+
+        # SCIENCE
+        else: 
             self.ROVER_STATE = Task.SCIENCE
             self.SC_pub.publish(instr)
         

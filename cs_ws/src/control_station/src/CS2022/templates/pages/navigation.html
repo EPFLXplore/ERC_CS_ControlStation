@@ -174,10 +174,21 @@
 								const map = document.getElementById('navmap'); 
 								const myContext = map.getContext('2d');
 								var imageObj = new Image();
+								var width_map  = 1000;
+								var height_map = 856.12; 
 	
 								imageObj.src = "{% static 'common/mars_yard_2022.png' %}";
 								imageObj.onload = function() {
-									myContext.drawImage(imageObj, 0, 0, 1000, 610);
+									// nav map background 
+									myContext.drawImage(imageObj, 0, 0, width_map, height_map);
+									var x_start = 415.71; 
+									var y_start = 76.99; 
+									// staring point (light green rectangle)
+									myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
+									myContext.fillRect(x_start, y_start, 10, 10); // x, y, width, height
+
+									myContext.beginPath(); 
+									myContext.moveTo(x_start, y_start); // first line => moveTo()
 								};
 								
 	
@@ -259,6 +270,11 @@
 										<div class="data-line-container">
 											<p class="data-title">Z : </p>
 											<p id="Z_coord" class="data"> 0 </p>
+											<p class="data"> &#xA0; m </p>
+										</div>
+										<div class="data-line-container">
+											<p class="data-title">YAW : </p>
+											<p id="YAW_coord" class="data"> 0 </p>
 											<p class="data"> &#xA0; m </p>
 										</div>
 
@@ -358,19 +374,30 @@
 				+ '/'
 			);
 
+			// event listener => parse JSON msg 
 			chatSocket.onmessage = function(e) {
 				const data = JSON.parse(e.data);
 				// console.log(data)
-				//document.getElementById('debug-label').innerHTML = data.Debug2
-				document.getElementById('X_coord').innerHTML    = Math.round((data.x + Number.EPSILON)        * 100) / 100
-				document.getElementById('Y_coord').innerHTML    = Math.round((data.y + Number.EPSILON)        * 100) / 100
+				// document.getElementById('debug-label').innerHTML = data.Debug2
+
+				var x_coord_meters = document.getElementById('X_coord'); 
+				var y_coord_meters = document.getElementById('Y_coord');
+
+				x_coord_map.innerHTML = Math.round((data.x + Number.EPSILON) * 100) / 100
+				y_coord_map.innerHTML = Math.round((data.y + Number.EPSILON) * 100) / 100
 				document.getElementById('Z_coord').innerHTML    = Math.round((data.z + Number.EPSILON)        * 100) / 100
+				document.getElementById('YAW_coord').innerHTML  = Math.round((data.yaw + Number.EPSILON)      * 100) / 100
 				document.getElementById('linVel').innerHTML     = Math.round((data.linVel + Number.EPSILON)   * 100) / 100
 				document.getElementById('angVel').innerHTML     = Math.round((data.angVel + Number.EPSILON)   * 100) / 100
 				document.getElementById('distToGoal').innerHTML = Math.round((data.distance + Number.EPSILON) * 100) / 100
-		
-
-
+		 
+				// draw on nav map canvas (meters to navmap_size proportions)
+				var width_meters  = 38.0553; 
+				var height_meters = 32.58;  
+				
+				myContext.lineTo((x_coord_meters * width_map) / width_meters, (y_coord_meters * height_map) / height_meters); 
+				myContext.strokeStyle = "#008000"; 
+				myContext.stroke();
 				};
 
 				chatSocket.onclose = function(e) {

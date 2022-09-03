@@ -31,6 +31,7 @@ class NavConsumer(RoverConsumer):
         z_pos           = text_data_json['z']
         linearVelocity  = text_data_json['linVel']
         angularVelocity = text_data_json['angVel']
+        yaw             = text_data_json['yaw']
         distance        = text_data_json['distance']
 
         # Send message to room group
@@ -43,6 +44,7 @@ class NavConsumer(RoverConsumer):
                 'z'       : z_pos,
                 'linVel'  : linearVelocity,
                 'angVel'  : angularVelocity,
+                'yaw'     : yaw,
                 'distance': distance
             }
         )
@@ -54,6 +56,7 @@ class NavConsumer(RoverConsumer):
         z_pos           = event['z']
         linearVelocity  = event['linVel']
         angularVelocity = event['angVel']
+        yaw             = event['yaw']
         distance        = event['distance']
 
         # Send message to WebSocket
@@ -63,5 +66,6 @@ class NavConsumer(RoverConsumer):
             'z'       : z_pos,
             'linVel'  : linearVelocity,
             'angVel'  : angularVelocity,
+            'yaw'     : yaw,
             'distance': distance
         }))
