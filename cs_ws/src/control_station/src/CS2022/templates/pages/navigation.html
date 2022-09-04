@@ -185,10 +185,10 @@
 									var y_start = 76.99; 
 									// staring point (light green rectangle)
 									myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
-									myContext.fillRect(x_start, y_start, 10, 10); // x, y, width, height
+									myContext.fillRect(0, 0, 10, 10); // x, y, width, height
 
-									myContext.beginPath(); 
-									myContext.moveTo(x_start, y_start); // first line => moveTo()
+									//myContext.beginPath(); 
+									//myContext.moveTo(x_start, y_start); // first line => moveTo()
 								};
 								
 	
@@ -216,10 +216,13 @@
 									document.querySelector("#nav_set").addEventListener("click", event => {
 										event.preventDefault();
 										
+										let x = document.querySelector("#x").value
+										let y = document.querySelector("#y").value
+
 										/* sending goal coordinates to back-end*/
 										let formData = new FormData();
-										formData.append('x',   document.querySelector("#x").value);
-										formData.append('y',   document.querySelector("#y").value);
+										formData.append('x',  x);
+										formData.append('y',  y);
 										formData.append('yaw', document.querySelector('#yaw').value);
 
 										document.getElementById("xgoal").innerHTML = document.querySelector("#x").value;
@@ -233,6 +236,11 @@
 										fetch(request)
 											.then(response => response.json())
 											.then(result => {})
+											
+
+										myContext.fillStyle = 'red';
+										myContext.fillRect(x, y, 10, 10)
+										
 										})
 
 									
@@ -380,11 +388,6 @@
 				// console.log(data)
 				// document.getElementById('debug-label').innerHTML = data.Debug2
 
-				var x_coord_meters = document.getElementById('X_coord'); 
-				var y_coord_meters = document.getElementById('Y_coord');
-
-				x_coord_map.innerHTML = Math.round((data.x + Number.EPSILON) * 100) / 100
-				y_coord_map.innerHTML = Math.round((data.y + Number.EPSILON) * 100) / 100
 				document.getElementById('Z_coord').innerHTML    = Math.round((data.z + Number.EPSILON)        * 100) / 100
 				document.getElementById('YAW_coord').innerHTML  = Math.round((data.yaw + Number.EPSILON)      * 100) / 100
 				document.getElementById('linVel').innerHTML     = Math.round((data.linVel + Number.EPSILON)   * 100) / 100
@@ -394,10 +397,30 @@
 				// draw on nav map canvas (meters to navmap_size proportions)
 				var width_meters  = 38.0553; 
 				var height_meters = 32.58;  
+
+				var x_coord_meters = document.getElementById('X_coord'); 
+				var y_coord_meters = document.getElementById('Y_coord');
+
+				let x_prev = x_coord_meters.innerHTML;
+				let y_prev = y_coord_meters.innerHTML;
+
+				let x_next = Math.round((data.x + Number.EPSILON) * 100) / 100
+				let y_next = Math.round((data.y + Number.EPSILON) * 100) / 100
+
+				if(x_prev != x_next || y_prev != y_next) {
+					x_coord_meters.innerHTML = x_next
+					y_coord_meters.innerHTML = y_next
+
+					myContext.drawImage(imageObj, 0, 0, width_map, height_map);
+
+					myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
+					myContext.fillRect(x_next, y_next, 10, 10);
+
+				}
 				
-				myContext.lineTo((x_coord_meters * width_map) / width_meters, (y_coord_meters * height_map) / height_meters); 
+				/*myContext.lineTo((x_coord_meters * width_map) / width_meters, (y_coord_meters * height_map) / height_meters); 
 				myContext.strokeStyle = "#008000"; 
-				myContext.stroke();
+				myContext.stroke();*/y
 				};
 
 				chatSocket.onclose = function(e) {
