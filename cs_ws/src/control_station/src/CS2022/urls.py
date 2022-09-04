@@ -10,6 +10,8 @@ urlpatterns = [
     path('handlingdevice/',         views.handlingdevice, name='handlingdevice'),
     path('science/', 		        views.science,		  name='science'),
     path('logs/', 		            views.logs,		      name='logs'),
+    path('capture_image/', 		    views.capture_image,  name='capture_image'),
+    
 
     
     

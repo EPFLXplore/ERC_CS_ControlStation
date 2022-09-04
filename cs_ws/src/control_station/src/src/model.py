@@ -29,7 +29,7 @@ from skimage.measure import regionprops, label
 from scipy import ndimage
 import numpy as np
 import cv2 as cv
-from utils import *
+# from utils import *
 import os
 
 #================================================================================
@@ -528,7 +528,7 @@ class Model:
 	'''
 	def compute_particle_size(name):
 		#change directory
-		os.chdir(SCIENCE_CAPTURE_DIRECTORY)
+		# os.chdir(SCIENCE_CAPTURE_DIRECTORY)
 		# load image
 		image_rgb = plt.imread(name)
 
@@ -574,7 +574,7 @@ class Model:
 	Particle volume computation
 	'''
 	def compute_particle_volume(name):
-		os.chdir(SCIENCE_CAPTURE_DIRECTORY)
+		# os.chdir(SCIENCE_CAPTURE_DIRECTORY)
 		img = cv.imread(name)
 		gray = cv.cvtColor(img,cv.COLOR_BGR2GRAY) # between 0 and 255
 		# print(gray)
@@ -603,7 +603,7 @@ class Model:
 	Mean color Computation
 	'''
 	def compute_mean_color(name):
-		os.chdir(SCIENCE_CAPTURE_DIRECTORY)
+		# os.chdir(SCIENCE_CAPTURE_DIRECTORY)
 		A = cv.imread(name)
 		size_image = A.shape
 		R = A[:, :, 0]

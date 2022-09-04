@@ -292,3 +292,8 @@ def sc_send_cmd(val):
     print("cmd:", cs.rover.SC.getCmd())
     cs.controller.pub_Task(Task.SCIENCE.value, int(cs.rover.SC.getCmd()))
     return JsonResponse({})
+
+
+def capture_image(request):
+
+    return JsonResponse({})

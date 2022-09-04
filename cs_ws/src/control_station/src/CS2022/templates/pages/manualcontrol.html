@@ -276,31 +276,58 @@
 									</div>
 								</div>
 							</div>
-
-							<div class="row">
-								<div class="column">
+							<div class="state-button-container">
+								<form  class="state-button-form" method="POST" style="width: 250px; height:30px;">
+									{% csrf_token %}
+									<input  id="capture_image" class="state-button" type="submit" value="CAPTURE IMAGES">
 									
-								  <img id="camera_12"src="{% static 'common/logothumbnail.png' %}" width="35%">
-								  <img id="camera_22"src="{% static 'common/logothumbnail.png' %}" width="35%">
-								  <img id="camera_3"src="{% static 'common/logothumbnail.png' %}" width="35%">
-								  <img id="camera_4"src="{% static 'common/logothumbnail.png' %}" width="35%">
-								  <img id="camera_5"src="{% static 'common/logothumbnail.png' %}" width="35%">
-		
-								</div>
-								<div class="column">
-								  <img id="camera_6" src="{% static 'common/logothumbnail.png' %}" width="35%">
-								  <img id="camera_7" src="{% static 'common/logothumbnail.png' %}" width="35%"> 
-								  <img id="camera_8" src="{% static 'common/logothumbnail.png' %}" width="35%"> 
-								  <img id="camera_9" src="{% static 'common/logothumbnail.png' %}" width="35%"> 
-								  <img id="camera_10" src="{% static 'common/logothumbnail.png' %}" width="35%"> 
-			
-								</div>
-								
-							  </div>
+								</form>
+							</div>
+							<script>
 
+							document.getElementById('camera_1').setAttribute( 'src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==' );
+
+							// ==============================================================================================================================================================
+									
+				
+							// ==============================================================================================================================================================
+
+								
 							
+						</script>
 						
 					</div>
+					<div class="row">
+						<div class="column">
+							
+						  <img id="camera_12"src="{% static 'common/logothumbnail.png' %}" width="45%">
+						  <img id="camera_22"src="{% static 'common/logothumbnail.png' %}" width="45%">
+						  <img id="camera_3"src="{% static 'common/logothumbnail.png' %}"  width="45%">
+						  <img id="camera_4"src="{% static 'common/logothumbnail.png' %}"  width="45%">
+						  <img id="camera_5"src="{% static 'common/logothumbnail.png' %}"  width="45%">
+
+						</div>
+						<div class="column">
+						  <img id="camera_6" src="{% static 'common/logothumbnail.png' %}" width="45%">
+						  <img id="camera_7" src="{% static 'common/logothumbnail.png' %}" width="45%"> 
+						  <img id="camera_8" src="{% static 'common/logothumbnail.png' %}" width="45%"> 
+						  <img id="camera_9" src="{% static 'common/logothumbnail.png' %}" width="45%"> 
+						  <img id="camera_10" src="{% static 'common/logothumbnail.png' %}" width="45%"> 
+	
+						</div>
+						<script>
+							document.querySelector('#camera_3').onclick = function() {
+
+							
+
+								var src1 = document.querySelector("#camera_1").src
+								document.querySelector("#camera_1").src = document.querySelector("#camera_3").src
+								document.querySelector("#camera_3").src = src1
+
+							}		
+						</script>
+						
+					  </div>
 					
 				</div>
 				</div>
@@ -367,9 +394,9 @@
 
         ws.onmessage = function(evt) {
             v_data = JSON.parse(evt.data);
-            $("#camera_1").attr("src", v_data.message);
+            // $("#camera_1").attr("src", v_data.message);
 			$("#camera_2").attr("src", v_data.message);
-			$("#camera_3").attr("src", v_data.message);
+			// $("#camera_3").attr("src", v_data.message);
 			$("#camera_4").attr("src", v_data.message);
 			$("#camera_5").attr("src", v_data.message);
 			$("#camera_6").attr("src", v_data.message);
