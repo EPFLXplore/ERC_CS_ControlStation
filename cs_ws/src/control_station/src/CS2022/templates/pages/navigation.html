@@ -184,8 +184,16 @@
 									var x_start = 415.71; 
 									var y_start = 76.99; 
 									// staring point (light green rectangle)
+									/*myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
+									myContext.fillRect(0, 0, 10, 10);*/ // x, y, width, height
+
 									myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
-									myContext.fillRect(0, 0, 10, 10); // x, y, width, height
+
+									myContext.beginPath();
+									myContext.moveTo(10, 50);
+									myContext.lineTo(5, 75);
+									myContext.lineTo(15, 75);
+									myContext.fill();
 
 									//myContext.beginPath(); 
 									//myContext.moveTo(x_start, y_start); // first line => moveTo()
@@ -240,7 +248,7 @@
 
 										myContext.fillStyle = 'red';
 										myContext.fillRect(x, y, 10, 10)
-										
+
 										})
 
 									
@@ -283,7 +291,7 @@
 										<div class="data-line-container">
 											<p class="data-title">YAW : </p>
 											<p id="YAW_coord" class="data"> 0 </p>
-											<p class="data"> &#xA0; m </p>
+											<p class="data"> &#xA0; rad </p>
 										</div>
 
 									</div>
@@ -411,10 +419,34 @@
 					x_coord_meters.innerHTML = x_next
 					y_coord_meters.innerHTML = y_next
 
-					myContext.drawImage(imageObj, 0, 0, width_map, height_map);
+					//myContext.drawImage(imageObj, 0, 0, width_map, height_map);
 
 					myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
-					myContext.fillRect(x_next, y_next, 10, 10);
+					//myContext.fillRect(x_next, y_next, 10, 10);
+
+					let yaw = document.getElementById('YAW_coord').innerHTML;
+
+					myContext.beginPath();
+
+					myContext.moveTo(15 * Math.cos(yaw) + x_next, 15 * Math.sin(yaw) + y_next);
+
+					let p1 = [0,0]
+					let p2 = [0,0]
+
+					if(Math.abs(yaw) == Math.PI/2) {
+						p1 = [3, 0]
+						p2 = [-3, 0]
+					} else {
+						let tan = Math.round(Math.tan(yaw)*100)/100 // two decimal precision
+						let factor = Math.round(5/(Math.sqrt(tan*tan + 1)) * 100) / 100
+
+						p1 = [factor*(-tan) + x_next, factor + y_next]
+						p2 = [factor*tan + x_next, -factor + y_next] // [(-factor)*(-tan), -factor]
+					}
+
+					myContext.lineTo(p1[0], p1[1]);
+					myContext.lineTo(p2[0], p2[1]);
+					myContext.fill();
 
 				}
 				

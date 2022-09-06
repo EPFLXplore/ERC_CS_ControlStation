@@ -191,7 +191,7 @@ class Controller():
 
         
 
-
+    # receives an Odometry message from NAVIGATIO
     def nav_data(self, odometry):
         data = odometry
         nav =self.cs.rover.Nav
@@ -221,7 +221,7 @@ class Controller():
 
 
     #TODO on pourrait faire une liste d'exceptions comme ca on a un historique des problèmes qui ont eu lieu
-    #General topic on which subsystems can publish if an unexpected exception was thrown
+    # callback for exceptions thrown from rover or from the CS
     def exception_clbk(self, str): 
         val = str.data
         rospy.loginfo("Exception: " + val)
@@ -236,7 +236,43 @@ class Controller():
 
     # =================================================================================================================
 
-    # TODO STILL NEED TO ADAPT TO NEW SCIENCE COMMANDS
+    # sends array: [task, instr]:
+    #
+    # TASK: 
+    #       - Manual      = 1 
+    #       - Navigation  = 2 
+    #       - Maintenance = 3
+    #       - Science     = 4
+    #
+    # INSTR:  
+    #       - Launch = 1 
+    #       - Abort  = 2 
+    #       - Wait   = 3 
+    #       - Resume = 4 
+    #       - Retry  = 5
+
+    # if task == SCIENCE (4) then:
+        #   - ABORT    = 0
+        #   - RETRY    = 1
+        #   - CONFIRM  = 2
+        #   - HUMIDITY = 3
+        #   - PARAMS   = 4
+        #   - INFO     = 5
+        #   - STATE    = 6
+        #   - TAKE_PIC = 9
+
+        #   - START_SAMPLING_0 = 10
+        #   - START_SAMPLING_1 = 11
+        #   - START_SAMPLING_2 = 12
+
+        #   - ROT_TO_PIC_0   = 20
+        #   - ROT_TO_PIC_1   = 21
+        #   - ROT_TO_PIC_2   = 22
+
+        #   - MASS_MEASURE_0 = 30
+        #   - MASS_MEASURE_1 = 31
+        #   - MASS_MEASURE_2 = 32
+
     def pub_Task(self, task, instr): 
         '''
             publishes task instructions to the self.cs.rover
@@ -251,7 +287,6 @@ class Controller():
 
         self.wait()
 
-        # self.cs.rover.setState(task, instr)
         self.cs.rover.setState(Task(task))
 
         if(task == 1 and instr == 1) : self.launch_Manual() 
@@ -274,11 +309,9 @@ class Controller():
             self.cs.HD_mode_pub.publish(data = mode)
             self.cs.rover.HD.setHDMode(mode)
         else:
-            #rospy.loginfo("Error: HD mode can either 0 or 1 not ")
             rospy.loginfo("Error: HD mode can be either 0 or 1 not %s", mode)
 
-    # Send the id of the element the HD must reach 
-    # when in Autonomous or SemiAutonomous mode
+    # Send the id of the element the HD must reach in Autonomous mode
     def pub_hd_elemId(self, id) :
         rospy.loginfo("HD: object id - %d", id)
         print(type(id))
@@ -290,32 +323,33 @@ class Controller():
     #          NAVIGATION         #
     ###############################
 
-    # give the coordinates the self.cs.
-    # rover must reach
+    # give the coordinates the rover must reach
     def pub_nav_goal(self, x, y, yaw):
         rospy.loginfo("NAV: set goal (%.2f, %.2f) + %.2f (orientation)", x, y, yaw)
-        #moveBaseGoal = MoveBaseGoal(target_pose = Pose(position = Point(x, y, z)))
-        #self.cs.Nav_Goal_pub.publish(MoveBaseActionGoal(goal_id = self.cs.rover.currId, goal = moveBaseGoal))
-        #moveBaseGoal_var = Pose(position = Point(x, y, 0))
         
-        # TODO
-        # self.cs.Nav_Goal_pub.publish(move_base_action_goal(currId = self.cs.rover.currId, moveBaseGoal = moveBaseGoal_var))
         self.cs.rover.Nav.setGoal([x, y, yaw])
 
+        # PoseStamped message construction: Header + Pose
+        # ----- Header -----
         nav = self.cs.rover.Nav
         h = Header()
-        h.frame_id = str(nav.getId())
+        h.frame_id = str(nav.getId()) # goal has an id by which it is recognized
 
+        # ----- Pose: Point + Quaternion -----
         pose = Pose()
 
+        # z = 0.0 (the rover can't fly yet)
         point = Point(x, y, 0.0)
         pose.position = point
 
+        # rover orientation
         q = quaternion_from_euler(0, 0, yaw)
         pose.orientation.x = q[0]
         pose.orientation.y = q[1]
         pose.orientation.z = q[2]
         pose.orientation.w = q[3]
+
+        # -----------------------------------
         
         self.cs.Nav_Goal_pub.publish(PoseStamped(header = h, pose = pose))
 
@@ -350,19 +384,23 @@ class Controller():
     #            SCIENCE         #
     ##############################
 
+    # select tube on which we'll execute a selected operation
     def selectedTube(self, id):
         if(id < 1 or id > 3): raise ValueError("tube ids are: 0, 1, 2")
         self.cs.rover.SC.selectTube(id)
 
+    # select operation to execute on a tube: mass calculation, sampling, rotation to camera
     def selectedOp(self, op):
         self.cs.rover.SC.setOperation(op)
 
-    def setHumidity(self, val):
-        self.cs.rover.SC.setTubeHum(val)
-
+    # set not tube-specific command: take picture, picture analysis, humidity.
+    #(tube-specific commands are updated automatically as you do one of the above operations)
     def set_sc_cmd(self, cmd):
         self.cs.rover.SC.setCmd(cmd)
 
+    # set humidity value of concerned tube
+    def setHumidity(self, val):
+        self.cs.rover.SC.setTubeHum(val)
         
 
     ##############################
@@ -374,28 +412,19 @@ class Controller():
     def launch_Manual(self):
         rospy.loginfo("\nTrying manual controls\n")
 
-        #self.gpad.findJoystick()
-
-        # TODO need to make it so that the control attribute of GamePad activates when plugging in joystick (patron Observateur?)
-        # to avoid raising an Exception (if gamepad was found then launch)
-        # if(self.gpad.control != None) : 
-        #     rospy.loginfo("\nLaunching manual controls\n")
-        #     self.gpad.start()
-
         self.gpad.connect()
         self.gpad.run()
 
-
+    # turns off Gamepad's 'running' flag
     def abort_Manual(self):
         rospy.loginfo("\nAborting manual controls\n")
         self.gpad._running = False
 
 
 
-
+    # TIMEOUT system
+    # invoked after sending a message to the rover and expecting a confirmation
     def wait(self):
-        #time.sleep(1)
-        #print(self.cs.rover.getReceived())
         start = time.time()
         while(not self.cs.rover.getReceived() and ((time.time() - start) < 1)): 
             continue
@@ -424,6 +453,9 @@ class Controller():
             ws_time.send('%s' % message)
 
 
+    # takes a Task enum as argument
+    # invoked at the end of a callback after updating data that came from rover
+    # sends the needed data to the front-end depending on the task
     def sendJson(self, subsyst):
 
         if(ws_man.connected):
