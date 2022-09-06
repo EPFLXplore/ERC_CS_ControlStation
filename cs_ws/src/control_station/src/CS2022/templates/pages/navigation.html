@@ -181,8 +181,8 @@
 								imageObj.onload = function() {
 									// nav map background 
 									myContext.drawImage(imageObj, 0, 0, width_map, height_map);
-									var x_start = 415.71; 
-									var y_start = 76.99; 
+									var x_start = 330; 
+									var y_start = 792.74;//76.99; 
 									// staring point (light green rectangle)
 									/*myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
 									myContext.fillRect(0, 0, 10, 10);*/ // x, y, width, height
@@ -190,9 +190,12 @@
 									myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
 
 									myContext.beginPath();
-									myContext.moveTo(10, 50);
-									myContext.lineTo(5, 75);
-									myContext.lineTo(15, 75);
+									// myContext.moveTo(10, 50);
+									// myContext.lineTo(5, 75);
+									// myContext.lineTo(15, 75);
+									myContext.moveTo(x_start, y_start-25);
+									myContext.lineTo(x_start - 5, y_start);
+									myContext.lineTo(x_start + 5, y_start);
 									myContext.fill();
 
 									//myContext.beginPath(); 
