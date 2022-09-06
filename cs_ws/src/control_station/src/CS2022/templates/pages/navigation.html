@@ -197,14 +197,16 @@
 
 									myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
 
+									// triangle 
 									myContext.beginPath();
 									myContext.moveTo(10, 50);
 									myContext.lineTo(5, 75);
 									myContext.lineTo(15, 75);
 									myContext.fill();
 
-									//myContext.beginPath(); 
-									//myContext.moveTo(x_start, y_start); // first line => moveTo()
+									// move cursor to the staring point, to begin drawing line 
+									pathContext.beginPath(); 
+									pathContext.moveTo(x_start, y_start); // first line => moveTo()
 								};
 								
 	
@@ -428,17 +430,18 @@
 					x_coord_meters.innerHTML = x_next
 					y_coord_meters.innerHTML = y_next
 
-<<<<<<< Updated upstream
 					//myContext.drawImage(imageObj, 0, 0, width_map, height_map);
 
-					myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
+					posContext.clearRect(0, 0, width_map, height_map); 
+
+					posContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
 					//myContext.fillRect(x_next, y_next, 10, 10);
 
 					let yaw = document.getElementById('YAW_coord').innerHTML;
 
-					myContext.beginPath();
+					posContext.beginPath();
 
-					myContext.moveTo(15 * Math.cos(yaw) + x_next, 15 * Math.sin(yaw) + y_next);
+					posContext.moveTo(15 * Math.cos(yaw) + x_next, 15 * Math.sin(yaw) + y_next);
 
 					let p1 = [0,0]
 					let p2 = [0,0]
@@ -454,22 +457,20 @@
 						p2 = [factor*tan + x_next, -factor + y_next] // [(-factor)*(-tan), -factor]
 					}
 
-					myContext.lineTo(p1[0], p1[1]);
-					myContext.lineTo(p2[0], p2[1]);
-					myContext.fill();
-=======
-					posContext.clearRect(0, 0, width_map, height_map); 
-					posContext.drawImage(imageObj, 0, 0, width_map, height_map);
+					// draw new trinagle 
+					posContext.lineTo(p1[0], p1[1]);
+					posContext.lineTo(p2[0], p2[1]);
+					posContext.fill();
 
-					posContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
-					posContext.fillRect(x_next, y_next, 10, 10);
->>>>>>> Stashed changes
-
+					// draw new segment of path 
+					pathContext.lineTo((x_coord_meters * width_map) / width_meters, (y_coord_meters * height_map) / height_meters); 
+					pathContext.strokeStyle = "#008000"; 
+					pathContext.stroke();
 				}
 				
 				/*myContext.lineTo((x_coord_meters * width_map) / width_meters, (y_coord_meters * height_map) / height_meters); 
 				myContext.strokeStyle = "#008000"; 
-				myContext.stroke();*/y
+				myContext.stroke();*/
 				};
 
 				chatSocket.onclose = function(e) {
