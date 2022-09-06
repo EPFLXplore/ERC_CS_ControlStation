@@ -165,9 +165,11 @@
 					<div class="left">
 						<div class="top-left"> 
 
-							<div class="top-left">
+							<div id="canvas_container" class="top-left">
 								<canvas id="navmap" width="1400" height="810" ></canvas>
-								
+								<canvas id="navmap_path" width="1400" height="810" ></canvas>
+								<!--new-->
+								<canvas id="navmap_position" width="1400" height="810" ></canvas>								
 							</div>
 							
 							<script>
@@ -176,6 +178,12 @@
 								var imageObj = new Image();
 								var width_map  = 1000;
 								var height_map = 856.12; 
+
+								const map_path = document.getElementById('navmap_path'); 
+								const pathContext = map_path.getContext('2d');
+
+								const map_pos = document.getElementById('navmap_position'); 
+								const posContext = map_pos.getContext('2d');
 	
 								imageObj.src = "{% static 'common/mars_yard_2022.png' %}";
 								imageObj.onload = function() {
@@ -415,10 +423,12 @@
 				let x_next = Math.round((data.x + Number.EPSILON) * 100) / 100
 				let y_next = Math.round((data.y + Number.EPSILON) * 100) / 100
 
+				// update only if coordinates changed 
 				if(x_prev != x_next || y_prev != y_next) {
 					x_coord_meters.innerHTML = x_next
 					y_coord_meters.innerHTML = y_next
 
+<<<<<<< Updated upstream
 					//myContext.drawImage(imageObj, 0, 0, width_map, height_map);
 
 					myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
@@ -447,6 +457,13 @@
 					myContext.lineTo(p1[0], p1[1]);
 					myContext.lineTo(p2[0], p2[1]);
 					myContext.fill();
+=======
+					posContext.clearRect(0, 0, width_map, height_map); 
+					posContext.drawImage(imageObj, 0, 0, width_map, height_map);
+
+					posContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
+					posContext.fillRect(x_next, y_next, 10, 10);
+>>>>>>> Stashed changes
 
 				}
 				

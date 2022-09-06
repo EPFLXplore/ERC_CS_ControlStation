@@ -262,3 +262,28 @@
 	width: 100%;
 	height: 100%;
 }
+
+
+
+
+#canvas_container {
+    /**
+     * Position relative so that canvas elements
+     * inside of it will be relative to the parent
+     */
+    position: relative;
+}
+
+#canvas_container canvas {
+    /**
+     * Position absolute provides canvases to be able
+     * to be layered on top of each other
+     * Be sure to remember a z-index!
+     */
+    position: absolute;
+
+	/**
+     * Set transparent to let any other canvases render through
+     */
+	 background-color: transparent;
+}
