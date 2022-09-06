@@ -199,12 +199,13 @@
 
 									// triangle 
 									myContext.beginPath();
-									// myContext.moveTo(10, 50);
-									// myContext.lineTo(5, 75);
-									// myContext.lineTo(15, 75);
-									myContext.moveTo(x_start, y_start-25);
-									myContext.lineTo(x_start - 5, y_start);
-									myContext.lineTo(x_start + 5, y_start);
+									myContext.moveTo(10, 50);
+									myContext.lineTo(5, 75);
+									myContext.lineTo(15, 75);
+									
+									// myContext.moveTo(x_start, y_start-25);
+									// myContext.lineTo(x_start - 5, y_start);
+									// myContext.lineTo(x_start + 5, y_start);
 									myContext.fill();
 
 									// move cursor to the staring point, to begin drawing line 
@@ -466,7 +467,10 @@
 					posContext.fill();
 
 					// draw new segment of path 
-					pathContext.lineTo((x_coord_meters * width_map) / width_meters, (y_coord_meters * height_map) / height_meters); 
+					// pathContext.beginPath();
+					//pathContext.lineTo((x_coord_meters * width_map) / width_meters, (y_coord_meters * height_map) / height_meters); 
+
+					pathContext.lineTo(100, 100); 
 					pathContext.strokeStyle = "#008000"; 
 					pathContext.stroke();
 				}

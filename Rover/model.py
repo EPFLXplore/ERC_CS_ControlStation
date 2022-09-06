@@ -123,7 +123,8 @@ class Navigation:
         if(not self.__cancelled): 
             self.setCancelled(True)
             self.__currGoal = np.zeros(0)
-            self.rover.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = self.__currId))
+            #self.rover.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = self.__currId))
+            self.rover.Nav_CancelGoal_pub.publish(GoalID())
 
 
 
