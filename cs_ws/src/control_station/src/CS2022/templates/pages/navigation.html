@@ -422,8 +422,14 @@
 				let x_prev = x_coord_meters.innerHTML;
 				let y_prev = y_coord_meters.innerHTML;
 
+				// TODO 
+				console.log(data.x);
+
 				let x_next = Math.round((data.x + Number.EPSILON) * 100) / 100
 				let y_next = Math.round((data.y + Number.EPSILON) * 100) / 100
+
+				// TODO 
+				console.log(x_next);
 
 				// update only if coordinates changed 
 				if(x_prev != x_next || y_prev != y_next) {
@@ -463,7 +469,7 @@
 					posContext.fill();
 
 					// draw new segment of path 
-					pathContext.lineTo((x_coord_meters * width_map) / width_meters, (y_coord_meters * height_map) / height_meters); 
+					pathContext.lineTo((x_nex * width_map) / width_meters, (y_next * height_map) / height_meters); 
 					pathContext.strokeStyle = "#008000"; 
 					pathContext.stroke();
 				}
