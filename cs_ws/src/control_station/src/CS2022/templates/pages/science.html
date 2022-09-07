@@ -17,10 +17,10 @@
 
 	<script>
 		$(document).ready(function() {
-    		$(document).on('submit', '#launch-form', function() {
+    		/*$(document).on('submit', '#launch-form', function() {
 				window.location.href ="/CS2022/science/launch";
       			return false;
-    		 });
+    		 });*/
     		$(document).on('submit', '#confirm-form', function() {
 				window.location.href ="/CS2022/science/confirm";
       			return false;
@@ -34,6 +34,8 @@
       			return false;
     		 });
 		});
+
+
 	</script>
 	
 	<!-- ICON -->
@@ -100,7 +102,7 @@
 			<div class="state-button-container">
 				<form  class="state-button-form" method="POST">
 					{% csrf_token %}
-					<input id="launch-button" class="state-button" type="submit" value="CONFIRM">
+					<input id="confirm-button" class="state-button" type="submit" data-value="2" value="CONFIRM">
 					
 				</form>
 			</div>
@@ -116,7 +118,7 @@
 			<div class="state-button-container">
 				<form  class="state-button-form" method="POST">
 					{% csrf_token %}
-					<input id="abort-button" class="state-button" type="submit" value="ABORT">
+					<input id="abort-button" class="state-button" type="submit" data-value="0" value="ABORT">
 					
 				</form>
 			</div>
@@ -125,11 +127,48 @@
 			<div class="state-button-container">
 				<form  class="state-button-form" method="POST">
 					{% csrf_token %}
-					<input id="resume-button" class="state-button" type="submit" value="RETRY">
+					<input id="retry-button" class="state-button" type="submit" data-value="1" value="RETRY">
 					
 				</form>
 			</div>
 		</div>
+		<script>
+			document.getElementById('retry-button').addEventListener("click", e => {
+				e.preventDefault()
+	
+				let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+				let request = new Request('retry/', {method: 'POST',
+													body: '',
+													headers: {"X-CSRFToken": csrfTokenValue}})
+				fetch(request)
+					.then(response => response.json())
+					.then(result => {})
+			})
+
+			document.getElementById('abort-button').addEventListener("click", e => {
+				e.preventDefault()
+	
+				let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+				let request = new Request('abort/', {method: 'POST',
+													body: '',
+													headers: {"X-CSRFToken": csrfTokenValue}})
+				fetch(request)
+					.then(response => response.json())
+					.then(result => {})
+			})
+
+			document.getElementById('confirm-button').addEventListener("click", e => {
+				e.preventDefault()
+	
+				let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+				let request = new Request('confirm/', {method: 'POST',
+													body: '',
+													headers: {"X-CSRFToken": csrfTokenValue}})
+				fetch(request)
+					.then(response => response.json())
+					.then(result => {})
+			})
+		</script>
 		
 	</div>
 	

@@ -38,11 +38,11 @@ urlpatterns = [
     path('handlingdevice/set_id/',  views.set_id,         name='set_id'),
     
     #Science
-    path('science/launch/',         views.launch_science, name='launch_science'),
-    #path('science/confirm/',       views.confirm_science,name='confirm_science'),
+    #path('science/launch/',         views.launch_science, name='launch_science'),
+    path('science/confirm/',        views.confirm_science, name='confirm_science'),
     path('science/abort/',          views.abort_science,  name='abort_science'),
     path('science/retry/',          views.retry_science,  name='retry_science'),
-    path('science/wait/',           views.wait_science,   name='wait_science'),
+    #path('science/wait/',           views.wait_science,   name='wait_science'),
     path('science/set_tube_cmd/',   views.set_tube_cmd,   name='set_tube_cmd'),
     path('science/get_humidity/',   views.get_humidity,   name='get_humidity'),
     path('science/get_parameters/', views.get_parameters, name='get_parameters'),

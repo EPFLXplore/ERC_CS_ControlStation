@@ -230,33 +230,36 @@ def set_id(request):
 # Science views
 
 # TODO STILL NEED TO ADAPT TO NEW SCIENCE COMMANDS
-def launch_science(request):
+'''def launch_science(request):
     rospy.loginfo("Science: ???")
     cs.controller.pub_Task(4,1)
     cs.rover.setState(Task.SCIENCE)
-    return JsonResponse({})
+    return JsonResponse({})'''
 
 def abort_science(request):
-    cs.controller.pub_Task(4,2)
+    cs.controller.pub_Task(4,0)
     cs.rover.setState(Task.IDLE)
     print("Aborting Science")
     return JsonResponse({})
 
-def wait_science(request):
+'''def wait_science(request):
     cs.controller.pub_Task(4,3)
+    return JsonResponse({})'''
+
+def confirm_science(request):
+    cs.controller.pub_Task(4,2)
     return JsonResponse({})
 
-def resume_science(request):
+'''def resume_science(request):
     cs.controller.pub_Task(4,4)
-    return JsonResponse({})
+    return JsonResponse({})'''
 
 def retry_science(request):
-    cs.controller.pub_Task(4,5)
+    cs.controller.pub_Task(4,1)
     return JsonResponse({})
 
 def start_timer(request):
 
-    
     # startThread()
     return JsonResponse({})
 
@@ -268,7 +271,7 @@ def set_tube_cmd(request):
     cs.controller.selectedOp(operation)
 
     print("SC: (operation = ", operation, ", tube = ", tube, ")")
-    print("cmd: ", cs.rover.SC.getCmd())
+    cs.rover.setState(Task.SCIENCE)
 
     return sc_send_cmd(cs.rover.SC.getCmd())
 
