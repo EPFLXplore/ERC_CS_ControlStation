@@ -386,7 +386,7 @@ class Controller():
 
     # select tube on which we'll execute a selected operation
     def selectedTube(self, id):
-        if(id < 1 or id > 3): raise ValueError("tube ids are: 0, 1, 2")
+        if(id < 0 or id > 2): raise ValueError("tube ids are: 0, 1, 2")
         self.cs.rover.SC.selectTube(id)
 
     # select operation to execute on a tube: mass calculation, sampling, rotation to camera
