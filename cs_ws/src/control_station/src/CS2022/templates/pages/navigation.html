@@ -176,37 +176,44 @@
 								const map = document.getElementById('navmap'); 
 								const myContext = map.getContext('2d');
 								var imageObj = new Image();
-								var width_map  = 1000;
-								var height_map = 856.12; 
+								var width_map  = 950
+								var height_map = 788.3
+
+								const X_START_PX = 324
+								const Y_START_PX = 711 
 
 								const map_path = document.getElementById('navmap_path'); 
 								const pathContext = map_path.getContext('2d');
 
 								const map_pos = document.getElementById('navmap_position'); 
 								const posContext = map_pos.getContext('2d');
+
+								console.log("canvas width " + map.width)
+								console.log("canvas height " + map.height)
 	
 								imageObj.src = "{% static 'common/mars_yard_2022.png' %}";
 								imageObj.onload = function() {
 									// nav map background 
 									myContext.drawImage(imageObj, 0, 0, width_map, height_map);
-									var x_start = 330; 
-									var y_start = 792.74;//76.99; 
+									//var x_start = 324//330; 
+									//var y_start = 711 //792.74;//76.99; 
 									// staring point (light green rectangle)
-									/*myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
-									myContext.fillRect(x_start, y_start, 10, 10); */ // x, y, width, height
+									myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
+									myContext.fillRect(X_START_PX, Y_START_PX, 10, 10);  // x, y, width, height
 
 									myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
 
 									// triangle 
-									myContext.beginPath();
+									/*myContext.beginPath();
 									myContext.moveTo(10, 50);
 									myContext.lineTo(5, 75);
-									myContext.lineTo(15, 75);
+									myContext.lineTo(15, 75);*/
 									
-									// myContext.moveTo(x_start, y_start-25);
-									// myContext.lineTo(x_start - 5, y_start);
-									// myContext.lineTo(x_start + 5, y_start);
-									myContext.fill();
+									/*myContext.beginPath();
+									myContext.moveTo(x_start, y_start-15);
+									myContext.lineTo(x_start - 5, y_start);
+									myContext.lineTo(x_start + 5, y_start);
+									myContext.fill();*/
 
 									// move cursor to the staring point, to begin drawing line 
 									pathContext.beginPath(); 
@@ -404,18 +411,17 @@
 				+ '/'
 			);
 
-			const YARD_WIDTH_M = 40
-			const YARD_LENGTH_M = 48
-			const START_X_PX = 330
-			const START_Y_PX = 752
+			const YARD_WIDTH_M = 39
+			const YARD_LENGTH_M = 47
+			const START_X_PX = X_START_PX
+			const START_Y_PX = Y_START_PX
 
 
 			// event listener => parse JSON msg 
 			chatSocket.onmessage = function(e) {
 				const data = JSON.parse(e.data);
-				// console.log(data)
-				// document.getElementById('debug-label').innerHTML = data.Debug2
 
+				// UPDATING VALUES COMING FROM ROVER/BACK-END
 				document.getElementById('Z_coord').innerHTML    = Math.round((data.z + Number.EPSILON)        * 100) / 100
 				document.getElementById('YAW_coord').innerHTML  = Math.round((data.yaw + Number.EPSILON)      * 100) / 100
 				document.getElementById('linVel').innerHTML     = Math.round((data.linVel + Number.EPSILON)   * 100) / 100
@@ -423,8 +429,8 @@
 				document.getElementById('distToGoal').innerHTML = Math.round((data.distance + Number.EPSILON) * 100) / 100
 		 
 				// draw on nav map canvas (meters to navmap_size proportions)
-				var width_meters  = 38.0553; 
-				var height_meters = 32.58;  
+				var width_meters  = 47//38.0553; 
+				var height_meters = 39//32.58;
 
 				var x_coord_meters = document.getElementById('X_coord'); 
 				var y_coord_meters = document.getElementById('Y_coord');
@@ -453,26 +459,27 @@
 					posContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
 					//myContext.fillRect(x_next, y_next, 10, 10);
 
-					let yaw = document.getElementById('YAW_coord').innerHTML;
+					let yaw = -(document.getElementById('YAW_coord').innerHTML) - Math.PI/2;
+					
 					let x_px = START_X_PX + x_next*width_map/YARD_WIDTH_M;
 					let y_px = START_Y_PX - y_next*height_map/YARD_LENGTH_M;
 
 					posContext.beginPath();
 
-					posContext.moveTo(15 * Math.cos(yaw) + x_next, 15 * Math.sin(yaw) + y_next);
+					posContext.moveTo(15 * Math.cos(yaw) + x_px, 15 * Math.sin(yaw) + y_px);
 
 					let p1 = [0,0]
 					let p2 = [0,0]
 
 					if(Math.abs(yaw) == Math.PI/2) {
-						p1 = [5, 0]
-						p2 = [5, 0]
+						p1 = [x_px - 5, y_px]
+						p2 = [x_px + 5, y_px]
 					} else {
 						let tan = Math.round(Math.tan(yaw)*100)/100 // two decimal precision
 						let factor = Math.round(5/(Math.sqrt(tan*tan + 1)) * 100) / 100
 
-						p1 = [factor*(-tan) + x_next, factor + y_next]
-						p2 = [factor*tan + x_next, -factor + y_next] // [(-factor)*(-tan), -factor]
+						p1 = [factor*(-tan) + x_px, factor + y_px]
+						p2 = [factor*tan + x_px, -factor + y_px] // [(-factor)*(-tan), -factor]
 					}
 
 					// draw new trinagle 
@@ -484,7 +491,7 @@
 					// pathContext.beginPath();
 					//pathContext.lineTo((x_next * width_map) / width_meters, (y_next * height_map) / height_meters); 
 
-					pathContext.lineTo(x_next, y_next); 
+					pathContext.lineTo(x_px, y_px); 
 					pathContext.strokeStyle = "#008000"; 
 					pathContext.stroke();
 				}
