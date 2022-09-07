@@ -193,7 +193,7 @@
 									var y_start = 792.74;//76.99; 
 									// staring point (light green rectangle)
 									/*myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
-									myContext.fillRect(0, 0, 10, 10);*/ // x, y, width, height
+									myContext.fillRect(x_start, y_start, 10, 10); */ // x, y, width, height
 
 									myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
 
@@ -404,6 +404,12 @@
 				+ '/'
 			);
 
+			const YARD_WIDTH_M = 40
+			const YARD_LENGTH_M = 48
+			const START_X_PX = 330
+			const START_Y_PX = 752
+
+
 			// event listener => parse JSON msg 
 			chatSocket.onmessage = function(e) {
 				const data = JSON.parse(e.data);
@@ -448,6 +454,8 @@
 					//myContext.fillRect(x_next, y_next, 10, 10);
 
 					let yaw = document.getElementById('YAW_coord').innerHTML;
+					let x_px = START_X_PX + x_next*width_map/YARD_WIDTH_M;
+					let y_px = START_Y_PX - y_next*height_map/YARD_LENGTH_M;
 
 					posContext.beginPath();
 
@@ -457,8 +465,8 @@
 					let p2 = [0,0]
 
 					if(Math.abs(yaw) == Math.PI/2) {
-						p1 = [3, 0]
-						p2 = [-3, 0]
+						p1 = [5, 0]
+						p2 = [5, 0]
 					} else {
 						let tan = Math.round(Math.tan(yaw)*100)/100 // two decimal precision
 						let factor = Math.round(5/(Math.sqrt(tan*tan + 1)) * 100) / 100
@@ -480,6 +488,7 @@
 					pathContext.strokeStyle = "#008000"; 
 					pathContext.stroke();
 				}
+
 				
 				/*myContext.lineTo((x_coord_meters * width_map) / width_meters, (y_coord_meters * height_map) / height_meters); 
 				myContext.strokeStyle = "#008000"; 
