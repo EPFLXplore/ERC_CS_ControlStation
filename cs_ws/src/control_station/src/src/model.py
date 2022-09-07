@@ -161,28 +161,32 @@ class Navigation:
     def cancelGoal(self):
         self.__goal = np.zeros(3)
     
-    #------------- Twist Data -------------
-    
+
+    # ========= TWIST DATA =========
+
+    #--------Rover Position--------
     def setPos(self, arr):
         self.__pos = arr
 
-    def setLinVel(self, arr):
-        self.__linVel = arr
-
-    def setAngVel(self, arr):
-        self.__angVel = arr
-
-
     def getPos(self):
         return self.__pos
+
+    #--------Rover Linear Velocity--------
+    def setLinVel(self, arr):
+        self.__linVel = arr
 
     def getLinVel(self):
         #return self.__linVel
         return np.linalg.norm(self.__linVel)
 
+    #--------Rover Angular Velocity--------
+    def setAngVel(self, arr):
+        self.__angVel = arr
+
     def getAngVel(self):
         #return self.__angVel
         return np.linalg.norm(self.__angVel)
+    
 
     #-------------------------------------
 

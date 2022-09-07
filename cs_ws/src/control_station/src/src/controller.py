@@ -78,11 +78,11 @@ class Controller():
     def __init__(self, cs):
         self.cs = cs
         self.gpad = Gamepad(self.cs)
-        # ws_nav.connect("ws://localhost:8000/ws/robot/navigation/")
 
 
-    # =================================================================================================================
-    # CALLBACKS
+    # ===============================
+    #            CALLBACKS
+    # ===============================
 
     def test_joystick(self, twist):
         '''
@@ -94,7 +94,7 @@ class Controller():
         rospy.loginfo("Angular %d %d %d", ta.x, ta.y, ta.z)
 
 
-
+    # callback when received a confirmation from rover after sending an instruction
     def rover_confirmation(self, txt):
         '''
             receives 
@@ -106,7 +106,7 @@ class Controller():
         else:
             rospy.loginfo("Received after timeout: %s\n", txt.data)
 
-#OANDSMADSMAPKMDAMSDPA TODO
+    # receive info on progress of task (SUCCESS/FAIL)
     def task_progress(self, num):
         '''
             Notified on whether task is a:
@@ -122,20 +122,13 @@ class Controller():
             self.cs.exception_clbk(String(str))
             
 
+    # ========= SCIENCE CALLBACKS ========= 
+
+    # callback when receiving tube humidity from SC
     def sc_humidity(self, hum):
         self.cs.rover.SC.setTubeHum(hum.data)
 
-
-    def sc_mass(self, mass):
-        '''
-            receive the total mass of the 3 tubes
-        '''
-        val = mass.data
-        rospy.loginfo("SC mass: %s", val)
-        self.cs.rover.SC.setSCMass(val)
-        #Science.objects.update_or_create(name="Science", defaults={'mass': val})
-
-
+    # receiving information on SC state
     def sc_text_info(self, info):
         '''
             info on what is going on in the Science Bay:
@@ -157,7 +150,7 @@ class Controller():
         print("tqt")
         
 
-
+    # receiving value of tube parameters from SC (open/closed, full, position, mass)
     def sc_params(self, arr):
         rospy.loginfo(arr)
         self.cs.CS_confirm_pub.publish(True)
@@ -166,6 +159,8 @@ class Controller():
         self.cs.rover.SC.setParams(arr.data)
         self.sendJson(Task.SCIENCE)
         
+
+    # ========= HD CALLBACKS ========= 
 
     # TODO
     # receive: [id, x, y, z, a, b, c]    (x,y,z) --> translations and (a,b,c) --> rotations
@@ -177,21 +172,22 @@ class Controller():
 
         self.sendJson(Task.MAINTENANCE)
         
-
+    # receive: joint telemetry (info on angles and velocity of joints)
     def hd_telemetry(self, jointstate):
         self.cs.rover.HD.set_joint_telemetry(jointstate)
         #pos = jointstate.position
         rospy.loginfo("displayed")
         self.sendJson(Task.MAINTENANCE)
 
-
+    # receive: distance to element
     def hd_tof(self, val):
         self.cs.rover.HD.set_tof(val.data)
         self.sendJson(Task.MAINTENANCE)
 
-        
 
-    # receives an Odometry message from NAVIGATIO
+    # ========= NAVIGATION CALLBACKS ========= 
+
+    # receives an Odometry message from NAVIGATION
     def nav_data(self, odometry):
         data = odometry
         nav =self.cs.rover.Nav
@@ -219,8 +215,6 @@ class Controller():
         self.sendJson(Task.NAVIGATION)
             
 
-
-    #TODO on pourrait faire une liste d'exceptions comme ca on a un historique des problèmes qui ont eu lieu
     # callback for exceptions thrown from rover or from the CS
     def exception_clbk(self, str): 
         val = str.data
@@ -280,7 +274,6 @@ class Controller():
         #checkArgs(task, instr)
 
         arr = [task, instr]
-        #if(task == 4): arr[1] = self.cs.rover.SC.getCmd() #if Science then there are a bit more specific cmds
 
         self.cs.rover.setInWait(True)    
         self.cs.Task_pub.publish(Int8MultiArray(data = arr))
@@ -323,7 +316,7 @@ class Controller():
     #          NAVIGATION         #
     ###############################
 
-    # give the coordinates the rover must reach
+    # send the coordinates the rover must reach and the orientation it must reach them in
     def pub_nav_goal(self, x, y, yaw):
         rospy.loginfo("NAV: set goal (%.2f, %.2f) + %.2f (orientation)", x, y, yaw)
         
@@ -458,6 +451,7 @@ class Controller():
     # sends the needed data to the front-end depending on the task
     def sendJson(self, subsyst):
 
+        # Info to display on MANUAL tab
         if(ws_man.connected):
             socket = ws_man
 
@@ -475,6 +469,7 @@ class Controller():
                 'joint_vel' : hd.get_joint_velocities()
             }
 
+        # Info to display on NAVIGATION tab
         elif(subsyst == Task.NAVIGATION):
             socket = ws_nav
 
@@ -490,6 +485,7 @@ class Controller():
                 'yaw'      : nav.getYaw()
             }
 
+        # Info to display on MAINTENANCE/HANDLING DEVICE tab
         elif(subsyst == Task.MAINTENANCE):
             socket = ws_hd
 
@@ -501,6 +497,7 @@ class Controller():
                 'tof'       : hd.get_tof()
             }
 
+        # Info to display on SCIENCE tab
         elif(subsyst == Task.SCIENCE):
             socket = ws_sc
 
@@ -518,14 +515,15 @@ class Controller():
                 
             }
 
+        # Info to display on LOGS tab
         elif(subsyst == Task.LOGS):
             socket = ws_av
-            #l = list(models.Exception.objects.all())
             l = self.cs.rover.getExceptions()
             Dictionary = {
                 'exceptions' : l
             }
 
+        # send info to front-end
         message = json.dumps(Dictionary)
         if(socket.connected):
             print("sent")
