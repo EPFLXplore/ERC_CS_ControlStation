@@ -67,14 +67,14 @@ set(control_station_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(control_station_SOURCE_PREFIX /home/emile/Documents/CS_workspace/cs_ws/src/control_station)
-  set(control_station_DEVEL_PREFIX /home/emile/Documents/CS_workspace/cs_ws/devel)
+  set(control_station_SOURCE_PREFIX /home/rocknd79/Xplore2022/CS_workspace/cs_ws/src/control_station)
+  set(control_station_DEVEL_PREFIX /home/rocknd79/Xplore2022/CS_workspace/cs_ws/devel)
   set(control_station_INSTALL_PREFIX "")
   set(control_station_PREFIX ${control_station_DEVEL_PREFIX})
 else()
   set(control_station_SOURCE_PREFIX "")
   set(control_station_DEVEL_PREFIX "")
-  set(control_station_INSTALL_PREFIX /home/emile/Documents/CS_workspace/cs_ws/install)
+  set(control_station_INSTALL_PREFIX /home/rocknd79/Xplore2022/CS_workspace/cs_ws/install)
   set(control_station_PREFIX ${control_station_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/emile/Documents/CS_workspace/cs_ws/install/lib;/home/emile/Documents/CS_workspace/cs_ws/devel/lib;/opt/ros/noetic/lib)
+    foreach(path /home/rocknd79/Xplore2022/CS_workspace/cs_ws/install/lib;/opt/ros/noetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

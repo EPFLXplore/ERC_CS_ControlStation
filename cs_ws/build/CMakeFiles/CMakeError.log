@@ -1,21 +1,21 @@
 Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
-Change Dir: /home/emile/Documents/CS_workspace/cs_ws/build/CMakeFiles/CMakeTmp
+Change Dir: /home/rocknd79/Xplore2022/CS_workspace/cs_ws/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_866d3/fast && /usr/bin/make -f CMakeFiles/cmTC_866d3.dir/build.make CMakeFiles/cmTC_866d3.dir/build
-make[1]: Entering directory '/home/emile/Documents/CS_workspace/cs_ws/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_866d3.dir/src.c.o
-/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_866d3.dir/src.c.o   -c /home/emile/Documents/CS_workspace/cs_ws/build/CMakeFiles/CMakeTmp/src.c
-Linking C executable cmTC_866d3
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_866d3.dir/link.txt --verbose=1
-/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    -rdynamic CMakeFiles/cmTC_866d3.dir/src.c.o  -o cmTC_866d3 
-/usr/bin/ld: CMakeFiles/cmTC_866d3.dir/src.c.o: in function `main':
+Run Build Command(s):/usr/bin/make cmTC_15314/fast && /usr/bin/make -f CMakeFiles/cmTC_15314.dir/build.make CMakeFiles/cmTC_15314.dir/build
+make[1]: Entering directory '/home/rocknd79/Xplore2022/CS_workspace/cs_ws/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_15314.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_15314.dir/src.c.o   -c /home/rocknd79/Xplore2022/CS_workspace/cs_ws/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_15314
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_15314.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    -rdynamic CMakeFiles/cmTC_15314.dir/src.c.o  -o cmTC_15314 
+/usr/bin/ld: CMakeFiles/cmTC_15314.dir/src.c.o: in function `main':
 src.c:(.text+0x46): undefined reference to `pthread_create'
 /usr/bin/ld: src.c:(.text+0x52): undefined reference to `pthread_detach'
 /usr/bin/ld: src.c:(.text+0x63): undefined reference to `pthread_join'
 collect2: error: ld returned 1 exit status
-make[1]: *** [CMakeFiles/cmTC_866d3.dir/build.make:87: cmTC_866d3] Error 1
-make[1]: Leaving directory '/home/emile/Documents/CS_workspace/cs_ws/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_866d3/fast] Error 2
+make[1]: *** [CMakeFiles/cmTC_15314.dir/build.make:87: cmTC_15314] Error 1
+make[1]: Leaving directory '/home/rocknd79/Xplore2022/CS_workspace/cs_ws/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_15314/fast] Error 2
 
 
 Source file was:
@@ -39,20 +39,20 @@ int main(void)
 }
 
 Determining if the function pthread_create exists in the pthreads failed with the following output:
-Change Dir: /home/emile/Documents/CS_workspace/cs_ws/build/CMakeFiles/CMakeTmp
+Change Dir: /home/rocknd79/Xplore2022/CS_workspace/cs_ws/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_89bf3/fast && /usr/bin/make -f CMakeFiles/cmTC_89bf3.dir/build.make CMakeFiles/cmTC_89bf3.dir/build
-make[1]: Entering directory '/home/emile/Documents/CS_workspace/cs_ws/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_89bf3.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_89bf3.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
-Linking C executable cmTC_89bf3
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_89bf3.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_89bf3.dir/CheckFunctionExists.c.o  -o cmTC_89bf3  -lpthreads 
+Run Build Command(s):/usr/bin/make cmTC_8d62d/fast && /usr/bin/make -f CMakeFiles/cmTC_8d62d.dir/build.make CMakeFiles/cmTC_8d62d.dir/build
+make[1]: Entering directory '/home/rocknd79/Xplore2022/CS_workspace/cs_ws/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8d62d.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_8d62d.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_8d62d
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8d62d.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_8d62d.dir/CheckFunctionExists.c.o  -o cmTC_8d62d  -lpthreads 
 /usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-make[1]: *** [CMakeFiles/cmTC_89bf3.dir/build.make:87: cmTC_89bf3] Error 1
-make[1]: Leaving directory '/home/emile/Documents/CS_workspace/cs_ws/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_89bf3/fast] Error 2
+make[1]: *** [CMakeFiles/cmTC_8d62d.dir/build.make:87: cmTC_8d62d] Error 1
+make[1]: Leaving directory '/home/rocknd79/Xplore2022/CS_workspace/cs_ws/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_8d62d/fast] Error 2
 
 
 

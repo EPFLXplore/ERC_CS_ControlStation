@@ -4,5 +4,5 @@ PROJECT_PKG_CONFIG_INCLUDE_DIRS = "".split(';') if "" != "" else []
 PROJECT_CATKIN_DEPENDS = "".replace(';', ' ')
 PKG_CONFIG_LIBRARIES_WITH_PREFIX = "".split(';') if "" != "" else []
 PROJECT_NAME = "control_station"
-PROJECT_SPACE_DIR = "/home/emile/Documents/CS_workspace/cs_ws/devel"
+PROJECT_SPACE_DIR = "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/devel"
 PROJECT_VERSION = "0.0.0"

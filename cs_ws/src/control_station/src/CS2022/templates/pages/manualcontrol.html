@@ -50,6 +50,7 @@
 <body>
 	{{ tab_name|json_script:"tab-name" }}
 	{{ current_state|json_script:"state"  }}
+	{{ v_name|json_script:"v_name"  }}
 
 	<div id="container">
 		<div id="sidebar" class="box">
@@ -384,11 +385,17 @@
 
 		// --------------------------------------------------------------------------
 		// Cameras
-		let ws = new WebSocket(
+		let ws1 = new WebSocket(
             'ws://'
             + window.location.host
-            + '/ws/video/'
-            + 'wms'
+            + '/ws/cameras/video1'
+            + '/'
+        );
+
+		let ws2 = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/cameras/video2'
             + '/'
         );
 

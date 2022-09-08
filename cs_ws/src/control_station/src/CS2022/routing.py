@@ -14,5 +14,5 @@ websocket_urlpatterns = [
     path('ws/CS2022/science/'       , ScConsumer.SCConsumer.as_asgi()),
     path('ws/CS2022/time/'       , TimeConsumer.TimeConsumer.as_asgi()),
 
-    re_path(r'ws/video/(?P<v_name>\w+)/$', cameras.CameraConsumer.CameraConsumer.as_asgi())
+    re_path(r'ws/cameras/(?P<v_name>\w+)/$', cameras.CameraConsumer.CameraConsumer.as_asgi())
 ]

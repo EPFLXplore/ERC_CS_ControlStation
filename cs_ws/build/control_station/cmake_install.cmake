@@ -1,8 +1,8 @@
-# Install script for directory: /home/emile/Documents/CS_workspace/cs_ws/src/control_station
+# Install script for directory: /home/rocknd79/Xplore2022/CS_workspace/cs_ws/src/control_station
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/emile/Documents/CS_workspace/cs_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,17 +38,17 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/emile/Documents/CS_workspace/cs_ws/build/control_station/catkin_generated/installspace/control_station.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/build/control_station/catkin_generated/installspace/control_station.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/control_station/cmake" TYPE FILE FILES
-    "/home/emile/Documents/CS_workspace/cs_ws/build/control_station/catkin_generated/installspace/control_stationConfig.cmake"
-    "/home/emile/Documents/CS_workspace/cs_ws/build/control_station/catkin_generated/installspace/control_stationConfig-version.cmake"
+    "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/build/control_station/catkin_generated/installspace/control_stationConfig.cmake"
+    "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/build/control_station/catkin_generated/installspace/control_stationConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/control_station" TYPE FILE FILES "/home/emile/Documents/CS_workspace/cs_ws/src/control_station/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/control_station" TYPE FILE FILES "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/src/control_station/package.xml")
 endif()
 

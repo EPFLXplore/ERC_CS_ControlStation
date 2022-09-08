@@ -1,2 +1,2 @@
-control_station
--DCATKIN_DEVEL_PREFIX=/home/emile/Documents/CS_workspace/cs_ws/devel -DCMAKE_INSTALL_PREFIX=/home/emile/Documents/CS_workspace/cs_ws/install -G Unix Makefiles
+control_station:vision_no_ros
+-DCATKIN_DEVEL_PREFIX=/home/rocknd79/Xplore2022/CS_workspace/cs_ws/devel -DCMAKE_INSTALL_PREFIX=/home/rocknd79/Xplore2022/CS_workspace/cs_ws/install -G Unix Makefiles

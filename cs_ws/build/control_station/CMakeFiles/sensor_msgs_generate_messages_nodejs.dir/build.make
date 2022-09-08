@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/emile/Documents/CS_workspace/cs_ws/src
+CMAKE_SOURCE_DIR = /home/rocknd79/Xplore2022/CS_workspace/cs_ws/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/emile/Documents/CS_workspace/cs_ws/build
+CMAKE_BINARY_DIR = /home/rocknd79/Xplore2022/CS_workspace/cs_ws/build
 
 # Utility rule file for sensor_msgs_generate_messages_nodejs.
 
@@ -63,10 +63,10 @@ control_station/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/build: senso
 .PHONY : control_station/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/build
 
 control_station/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/clean:
-	cd /home/emile/Documents/CS_workspace/cs_ws/build/control_station && $(CMAKE_COMMAND) -P CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/cmake_clean.cmake
+	cd /home/rocknd79/Xplore2022/CS_workspace/cs_ws/build/control_station && $(CMAKE_COMMAND) -P CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/cmake_clean.cmake
 .PHONY : control_station/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/clean
 
 control_station/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/depend:
-	cd /home/emile/Documents/CS_workspace/cs_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/emile/Documents/CS_workspace/cs_ws/src /home/emile/Documents/CS_workspace/cs_ws/src/control_station /home/emile/Documents/CS_workspace/cs_ws/build /home/emile/Documents/CS_workspace/cs_ws/build/control_station /home/emile/Documents/CS_workspace/cs_ws/build/control_station/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/rocknd79/Xplore2022/CS_workspace/cs_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/rocknd79/Xplore2022/CS_workspace/cs_ws/src /home/rocknd79/Xplore2022/CS_workspace/cs_ws/src/control_station /home/rocknd79/Xplore2022/CS_workspace/cs_ws/build /home/rocknd79/Xplore2022/CS_workspace/cs_ws/build/control_station /home/rocknd79/Xplore2022/CS_workspace/cs_ws/build/control_station/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : control_station/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/depend
 
