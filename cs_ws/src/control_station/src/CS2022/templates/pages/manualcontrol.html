@@ -392,27 +392,27 @@
             + '/'
         );
 
-		let ws2 = new WebSocket(
-            'ws://'
-            + window.location.host
-            + '/ws/cameras/video2'
-            + '/'
-        );
+		// let ws2 = new WebSocket(
+        //     'ws://'
+        //     + window.location.host
+        //     + '/ws/cameras/video2'
+        //     + '/'
+        // );
 
         ws.onmessage = function(evt) {
             v_data = JSON.parse(evt.data);
-            // $("#camera_1").attr("src", v_data.message);
-			$("#camera_2").attr("src", v_data.message);
-			// $("#camera_3").attr("src", v_data.message);
-			$("#camera_4").attr("src", v_data.message);
-			$("#camera_5").attr("src", v_data.message);
-			$("#camera_6").attr("src", v_data.message);
-			$("#camera_7").attr("src", v_data.message);
-			$("#camera_8").attr("src", v_data.message);
-			$("#camera_9").attr("src", v_data.message);
-			$("#camera_10").attr("src", v_data.message);
-			$("#camera_12").attr("src", v_data.message);
-			$("#camera_22").attr("src", v_data.message);
+            $("#camera_1").attr("src", v_data.message);
+			// $("#camera_2").attr("src", v_data.message);
+			// // $("#camera_3").attr("src", v_data.message);
+			// $("#camera_4").attr("src", v_data.message);
+			// $("#camera_5").attr("src", v_data.message);
+			// $("#camera_6").attr("src", v_data.message);
+			// $("#camera_7").attr("src", v_data.message);
+			// $("#camera_8").attr("src", v_data.message);
+			// $("#camera_9").attr("src", v_data.message);
+			// $("#camera_10").attr("src", v_data.message);
+			// $("#camera_12").attr("src", v_data.message);
+			// $("#camera_22").attr("src", v_data.message);
 
             
         };

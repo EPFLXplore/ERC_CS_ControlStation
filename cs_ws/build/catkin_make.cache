@@ -1,2 +1,0 @@
-control_station:rover:vision_no_ros
--DCATKIN_DEVEL_PREFIX=/home/xplore/Desktop/CS_workspace/cs_ws/devel -DCMAKE_INSTALL_PREFIX=/home/xplore/Desktop/CS_workspace/cs_ws/install -G Unix Makefiles

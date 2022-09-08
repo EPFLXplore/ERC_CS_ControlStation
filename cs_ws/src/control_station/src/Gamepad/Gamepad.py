@@ -9,12 +9,13 @@ from   evdev           import *
 import sys
 
 from   threading       import Thread
-from   time            import sleep
+from   time            import sleep, time
 
 from   Gamepad.keyMap          import *
 
 from geometry_msgs.msg import Twist
 from std_msgs.msg      import Int8MultiArray, Int8, Bool
+import threading
 
 
 '''
@@ -32,6 +33,27 @@ max_val   = 32767
 max_L2_R2 = 255
 scale     = 100
   
+
+class Inft_Timer:
+  """infinity thread timer to run a target function at constant time intervals"""
+
+  def __init__(self, t, target):
+    self.t = t
+    self.target = target
+    self.thread = threading.Timer(self.t, self.handler)
+  
+  def handler(self):
+    self.target()
+    self.thread = threading.Timer(self.t, self.handler)
+    self.thread.start()
+  
+  def start(self):
+    self.thread = threading.Timer(self.t, self.handler)
+    self.thread.start()
+  
+  def cancel(self):
+    self.thread.cancel()
+
 
 class Gamepad(Thread):
 
@@ -76,9 +98,17 @@ class Gamepad(Thread):
     self.homeSet = 0
     self.homeSet_temp = 0 
 
+    self.last_switch_time = time()
+    self.last_hd_mode_switch_time = time()
+
     self.connect()
+    dt = 1/20
+    self.publish_timer = Inft_Timer(dt, self.publish_commands)
 
-
+  def publish_commands(self):
+    if self.mode == "HD":
+      if self.modeHD == "DIR" or self.modeHD == "DEBUG":
+        newAxeVal(self)
 
   def connect(self):
     # ~ connection search gamepad
@@ -94,11 +124,10 @@ class Gamepad(Thread):
         sys.stderr.write('Failed to find the haptic motor.\n')
         self.control = None
 
-
-
   def run (self):
     advance = 0  # control: if advancing can't retreat and vice versa
     retreat = 0
+    self.publish_timer.start()
     for event in self.control.read_loop():
 
       if self.mode == 'NAV':
@@ -110,6 +139,9 @@ class Gamepad(Thread):
       if event.type != 0:
         #if (self._running) == 0: # when self._running == False  run() stops
         if(self._running == False):
+          self.axe_HD_old = [0]*7
+          self.axe_HD_new = [0]*7
+          self.publish_timer.cancel()
           break
         # EV_KEY describes state changes of device
         if event.type == ecodes.EV_KEY:
@@ -117,12 +149,16 @@ class Gamepad(Thread):
 
           #---------------SWITCH NAV <=> HD------------------------------------------------------------------
             if event.code == Keymap.BTN_SHARE.value:    # Share Button => switch NAV <=> HD
-              self.switchNAV_HD()
+              if time()-self.last_switch_time > 0.5:
+                self.last_switch_time = time()
+                self.switchNAV_HD()
 
             # switching  DIR => INV => DEBUG => DIR  only when in HD     
             if event.code == Keymap.BTN_OPTIONS.value:  # Option Button
               if self.mode == 'HD':
-                self.switchHDmode()
+                if time()-self.last_hd_mode_switch_time > 0.5:
+                  self.last_hd_mode_switch_time = time()
+                  self.switchHDmode()
 
 
 
@@ -289,7 +325,7 @@ class Gamepad(Thread):
                 self.setHome()            
             # sends new values if and only if changed from previous
             resetAxe(self)
-            newAxeVal(self)
+            #newAxeVal(self)
 
           #---------------DIRECT---------------------------------------------------------------------------
           elif self.modeHD == 'DIR': 
@@ -297,25 +333,25 @@ class Gamepad(Thread):
               if event.value == 1:
                 #-----------gripper------------
                 if event.code == Keymap.BTN_TRIANGLE.value:   # gripper = +100
-                  self.axe_HD_new[6] = 100.
+                  self.axe_HD_new[6] = -10.
                 elif event.code == Keymap.BTN_CIRCLE.value:   # gripper = +10
                   self.axe_HD_new[6] = 10.
                 elif event.code == Keymap.BTN_CROSS.value:    # gripper = -100
-                  self.axe_HD_new[6] = -100.
+                  self.axe_HD_new[6] = 100.
                 elif event.code == Keymap.BTN_SQUARE.value:   # gripper = -10
-                  self.axe_HD_new[6] = -10.
+                  self.axe_HD_new[6] = -100.
                 #-----------joint 3------------
                 elif event.code == Keymap.BTN_R1.value:       # R1 - joint 3 advance 
-                  self.axe_HD_new[2] = 50.
+                  self.axe_HD_new[3] = 100.
                 elif event.code == Keymap.BTN_L1.value:       # L1 - joint 3 retreat
-                  self.axe_HD_new[2] = -50.              
+                  self.axe_HD_new[3] = -100.              
                 #----------voltmeter------------
                 if event.code == Keymap.BTN_PS.value:         # PS button 
                   self.switchVoltmeter()
               #-----------reset joint 3, gripper------------
               elif event.value == 0:
                 self.axe_HD_new[6] = 0
-                self.axe_HD_new[2] = 0
+                self.axe_HD_new[3] = 0
       
             #---------------velocity---------------  
             if event.type == ecodes.EV_ABS:
@@ -334,10 +370,10 @@ class Gamepad(Thread):
                 self.axe_HD_new[5] = scale * round(absevent.event.value/max_val, 5) # Max value: 32768
               #-----------joint 4------------- 
               if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RZ":  # R2
-                self.axe_HD_new[3] = scale * round(absevent.event.value/max_L2_R2, 5) # Max value: 255
+                self.axe_HD_new[2] = scale * round(absevent.event.value/max_L2_R2, 5) # Max value: 255
               #-----------joint 4------------- 
               if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Z":   # L2 
-                self.axe_HD_new[3] = scale * round(-absevent.event.value/max_L2_R2, 5) # Max value: 255
+                self.axe_HD_new[2] = scale * round(-absevent.event.value/max_L2_R2, 5) # Max value: 255
               #-----------go home-------------
               if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_HAT0Y":  # d-pad y
                 if event.value == 1:
@@ -345,7 +381,11 @@ class Gamepad(Thread):
 
             # sends new values if and only if changed from previous
             resetAxe(self)
-            newAxeVal(self)
+            #newAxeVal(self)
+
+
+            
+    #self.publish_timer.cancel()
         
 
 
@@ -456,15 +496,15 @@ def clear_tab(tab):
   
 
 # Send new Joint velocities for HD
-# if and only if changed from previous
 def newAxeVal(self):
   for k in range(len(self.axe_HD_new)):
     self.axe_HD_old[k] = self.axe_HD_new[k]
 
   #     TODO 
-  print(self.axe_HD_new)
+  print(self.axe_HD_new, "AAAAAAAAAAAAAA")
 
-  self.cs.HD_Angles_pub.publish(Int8MultiArray(data = self.axe_HD_new))
+  print(self.axe_HD_new)
+  self.cs.HD_Angles_pub.publish(Int8MultiArray(data = list(map(int, self.axe_HD_new))))
                                
     
     
