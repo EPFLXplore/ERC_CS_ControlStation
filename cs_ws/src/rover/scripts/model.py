@@ -26,7 +26,7 @@ from actionlib_msgs.msg import GoalID
 from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
 from geometry_msgs.msg  import Pose, Point, PoseStamped
 from sensor_msgs.msg    import JointState
-from std_msgs.msg       import Int8, Int16, Bool, String, Int8MultiArray,  Int16MultiArray, UInt8MultiArray 
+from std_msgs.msg       import Int8, Int16, Bool, String, Int8MultiArray,  Int16MultiArray, UInt8MultiArray, Float32MultiArray 
 
 from rover_node import Rover
 from Globals import *
@@ -264,6 +264,12 @@ class HandlingDevice:
     # we receive these infos progressively as HD scans the control panel and detects new elements
     def setDetectedElement(self, elem):
         self.rover.HD_element_pub(elem)
+
+    def pub_detected_elements(self, obj_list):
+        for i in range(len(obj_list)):
+            panel = obj_list[i]
+            msg = Float32MultiArray(data = [panel.id, panel. x_pos, panel.y_pos, panel.z_pos, panel.x_rot, panel.y_rot, panel.z_rot])
+            self.rover.HD_element_pub.publish(msg)
 
 
 # TASK: 

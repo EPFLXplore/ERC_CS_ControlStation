@@ -4,7 +4,7 @@ import rospy
 
 #from abc import ABC, abstractmethod #Abstract Base Class
 
-from std_msgs.msg       import Int8, Int16, Int32, Bool, String, Int8MultiArray,  Int16MultiArray, UInt8MultiArray 
+from std_msgs.msg       import Int8, Int16, Int32, Bool, String, Int8MultiArray,  Int16MultiArray, Float32MultiArray, UInt8MultiArray 
 from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
 from geometry_msgs.msg  import Twist, PoseStamped
 from actionlib_msgs.msg import GoalID
@@ -52,7 +52,8 @@ class Rover:
         self.HD_telemetry_pub  = rospy.Publisher('ROVER_HD_telemetry',            JointState,      queue_size=1)
         self.NAV_odometry_pub  = rospy.Publisher('ROVER_NAV_odometry',            Odometry,        queue_size=1)
         self.HD_tof            = rospy.Publisher('ROVER_HD_tof',                  Int32,           queue_size=1)
-        self.HD_element_pub    = rospy.Publisher('ROVER_HD_detected_element',     Int16MultiArray, queue_size=3)
+        #self.HD_element_pub    = rospy.Publisher('ROVER_HD_detected_element',     Int16MultiArray, queue_size=3)
+        self.HD_element_pub    = rospy.Publisher('ROVER_HD_detected_element',     Float32MultiArray, queue_size=3)
 
         # publish instruction concerning the Maintenance task  (Rover node --> HD node)
         self.Maintenance_pub = rospy.Publisher('Maintenance', Int8, queue_size=1)
@@ -98,7 +99,7 @@ class Rover:
         rospy.Subscriber('/arm_control/joint_telemetry', JointState,      self.HD_telemetry_pub.publish)
         rospy.Subscriber('/avionics_ToF',                Int32,           self.HD_tof.publish)
         #rospy.Subscriber('detection/detected_elements',  Int16MultiArray, self.HD_element_pub.publish)
-        rospy.Subscriber('/detected_elements',           object_list,    self.HD_element_pub.publish)
+        rospy.Subscriber('/detected_elements',           object_list,     self.model.HD.pub_detected_elements)#self.HD_element_pub.publish)
 
 
     # receives array: [task, instr]:
