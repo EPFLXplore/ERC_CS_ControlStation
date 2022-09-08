@@ -51,8 +51,11 @@ class Gamepad(Thread):
     self.msg_nav_dir.angular.y = 0  # always zero
     self.msg_nav_dir.angular.z = 0
 
-    self.axe_NAV_old = [0., 0., 0.]  # [.linear.x, .linear.y, .angular.z]
-    self.axe_NAV_new = [0., 0., 0.]
+    #self.axe_NAV_old = [0., 0., 0.]  # [.linear.x, .linear.y, .angular.z]
+    self.axe_NAV_new = [0., 0., 0.]  # [.linear.x, .linear.y, .angular.z]
+
+    # cutoff value: within this epsilon around zero, we don't get reliable signals => set signal to 0.
+    self.deadval = 5e-2
 
     #---------------HANDLING DEVICE----------------
     self.zero_HD    = [0, 0, 0, 0, 0, 0, 0]
@@ -99,10 +102,10 @@ class Gamepad(Thread):
     for event in self.control.read_loop():
 
       if self.mode == 'NAV':
-      # TODOmko
-          print(self.axe_NAV_new)
-      # publish values
-          self.cs.Nav_Joystick_pub.publish(self.msg_nav_dir)
+      # TODO
+        print(self.axe_NAV_new)
+        # publish values
+        self.cs.Nav_Joystick_pub.publish(self.msg_nav_dir)
 
       if event.type != 0:
         #if (self._running) == 0: # when self._running == False  run() stops
@@ -156,9 +159,9 @@ class Gamepad(Thread):
                 retreat = 0
 
             # update values of linear.x, linear.y and angular.z
-            self.msg_nav_dir.linear.x = self.axe_NAV_new[0] / 2
-            self.msg_nav_dir.linear.y = self.axe_NAV_new[1] / 2
-            self.msg_nav_dir.angular.z = self.axe_NAV_new[2] / 2
+            self.msg_nav_dir.linear.x  = 0. if abs(self.axe_NAV_new[0] / 2) < self.deadval else (self.axe_NAV_new[0] / 2)
+            self.msg_nav_dir.linear.y  = 0. if abs(self.axe_NAV_new[1] / 2) < self.deadval else (self.axe_NAV_new[1] / 2)
+            self.msg_nav_dir.angular.z = 0. if abs(self.axe_NAV_new[2] / 2) < self.deadval else (self.axe_NAV_new[2] / 2)
               
             #     TODO
           print(self.axe_NAV_new)
