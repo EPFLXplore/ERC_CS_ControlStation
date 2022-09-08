@@ -1,4 +1,4 @@
-prefix=/home/rocknd79/Xplore2022/CS_workspace/cs_ws/devel
+prefix=/home/xplore/Desktop/CS_workspace/cs_ws/devel
 
 Name: control_station
 Description: Description of control_station

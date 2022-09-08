@@ -67,14 +67,14 @@ set(vision_no_ros_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("TRUE" STREQUAL "TRUE")
-  set(vision_no_ros_SOURCE_PREFIX /home/rocknd79/Xplore2022/CS_workspace/cs_ws/src/vision_no_ros)
-  set(vision_no_ros_DEVEL_PREFIX /home/rocknd79/Xplore2022/CS_workspace/cs_ws/devel)
+  set(vision_no_ros_SOURCE_PREFIX /home/xplore/Desktop/CS_workspace/cs_ws/src/vision_no_ros)
+  set(vision_no_ros_DEVEL_PREFIX /home/xplore/Desktop/CS_workspace/cs_ws/devel)
   set(vision_no_ros_INSTALL_PREFIX "")
   set(vision_no_ros_PREFIX ${vision_no_ros_DEVEL_PREFIX})
 else()
   set(vision_no_ros_SOURCE_PREFIX "")
   set(vision_no_ros_DEVEL_PREFIX "")
-  set(vision_no_ros_INSTALL_PREFIX /home/rocknd79/Xplore2022/CS_workspace/cs_ws/install)
+  set(vision_no_ros_INSTALL_PREFIX /home/xplore/Desktop/CS_workspace/cs_ws/install)
   set(vision_no_ros_PREFIX ${vision_no_ros_INSTALL_PREFIX})
 endif()
 
@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(vision_no_ros_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/devel/include " STREQUAL " ")
+if(NOT "/home/xplore/Desktop/CS_workspace/cs_ws/devel/include " STREQUAL " ")
   set(vision_no_ros_INCLUDE_DIRS "")
-  set(_include_dirs "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/devel/include")
+  set(_include_dirs "/home/xplore/Desktop/CS_workspace/cs_ws/devel/include")
   if(NOT " " STREQUAL " ")
     set(_report "Check the issue tracker '' and consider creating a ticket if the problem has not been reported yet.")
   elseif(NOT " " STREQUAL " ")
@@ -110,7 +110,7 @@ if(NOT "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/devel/include " STREQUAL " 
         message(FATAL_ERROR "Project 'vision_no_ros' specifies '${idir}' as an include dir, which is not found.  It does not exist in '${include}'.  ${_report}")
       endif()
     else()
-      message(FATAL_ERROR "Project 'vision_no_ros' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/rocknd79/Xplore2022/CS_workspace/cs_ws/src/vision_no_ros/${idir}'.  ${_report}")
+      message(FATAL_ERROR "Project 'vision_no_ros' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/xplore/Desktop/CS_workspace/cs_ws/src/vision_no_ros/${idir}'.  ${_report}")
     endif()
     _list_append_unique(vision_no_ros_INCLUDE_DIRS ${include})
   endforeach()
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/rocknd79/Xplore2022/CS_workspace/cs_ws/devel/lib;/opt/ros/noetic/lib)
+    foreach(path /home/xplore/Desktop/CS_workspace/cs_ws/devel/lib;/opt/ros/melodic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
@@ -211,7 +211,7 @@ foreach(depend ${depends})
   _unpack_libraries_with_build_configuration(vision_no_ros_LIBRARIES ${vision_no_ros_LIBRARIES})
 
   _list_append_unique(vision_no_ros_LIBRARY_DIRS ${${vision_no_ros_dep}_LIBRARY_DIRS})
-  _list_append_deduplicate(vision_no_ros_EXPORTED_TARGETS ${${vision_no_ros_dep}_EXPORTED_TARGETS})
+  list(APPEND vision_no_ros_EXPORTED_TARGETS ${${vision_no_ros_dep}_EXPORTED_TARGETS})
 endforeach()
 
 set(pkg_cfg_extras "vision_no_ros-msg-extras.cmake")

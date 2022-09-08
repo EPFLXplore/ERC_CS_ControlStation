@@ -123,8 +123,8 @@ catkin_package(
 ## Your package locations should be listed before other locations
 ##set(OpenCV_DIR "/usr/lib/opencv")
 ##set(DEPENDENCIES realsense2)
-#OPENCV 3
-find_package(OpenCV 4 REQUIRED COMPONENTS core imgproc highgui aruco videoio imgcodecs)  ## amybe remove the 4 (version 4 of opencv)
+#OPENCV 4
+find_package(OpenCV 3 REQUIRED COMPONENTS core imgproc highgui aruco videoio imgcodecs)  ## amybe remove the 4 (version 4 of opencv)
 set(DEPENDENCIES realsense2 ${OpenCV_LIBS})
 
 include_directories(

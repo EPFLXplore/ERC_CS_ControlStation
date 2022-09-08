@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/devel/include/vision_no_ros/object_list.h"
-  "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/devel/include/vision_no_ros/panel_object.h"
   "CMakeFiles/vision_no_ros_generate_messages_cpp"
+  "/home/xplore/Desktop/CS_workspace/cs_ws/devel/include/vision_no_ros/object_list.h"
+  "/home/xplore/Desktop/CS_workspace/cs_ws/devel/include/vision_no_ros/panel_object.h"
 )
 
 # Per-language clean rules from dependency scanning.

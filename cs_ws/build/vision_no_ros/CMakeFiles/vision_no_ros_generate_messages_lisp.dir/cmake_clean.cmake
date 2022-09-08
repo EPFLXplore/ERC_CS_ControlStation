@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/devel/share/common-lisp/ros/vision_no_ros/msg/object_list.lisp"
-  "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/devel/share/common-lisp/ros/vision_no_ros/msg/panel_object.lisp"
   "CMakeFiles/vision_no_ros_generate_messages_lisp"
+  "/home/xplore/Desktop/CS_workspace/cs_ws/devel/share/common-lisp/ros/vision_no_ros/msg/object_list.lisp"
+  "/home/xplore/Desktop/CS_workspace/cs_ws/devel/share/common-lisp/ros/vision_no_ros/msg/panel_object.lisp"
 )
 
 # Per-language clean rules from dependency scanning.

@@ -88,16 +88,6 @@ namespace message_traits
 
 
 template <class ContainerAllocator>
-struct IsMessage< ::vision_no_ros::object_list_<ContainerAllocator> >
-  : TrueType
-  { };
-
-template <class ContainerAllocator>
-struct IsMessage< ::vision_no_ros::object_list_<ContainerAllocator> const>
-  : TrueType
-  { };
-
-template <class ContainerAllocator>
 struct IsFixedSize< ::vision_no_ros::object_list_<ContainerAllocator> >
   : FalseType
   { };
@@ -105,6 +95,16 @@ struct IsFixedSize< ::vision_no_ros::object_list_<ContainerAllocator> >
 template <class ContainerAllocator>
 struct IsFixedSize< ::vision_no_ros::object_list_<ContainerAllocator> const>
   : FalseType
+  { };
+
+template <class ContainerAllocator>
+struct IsMessage< ::vision_no_ros::object_list_<ContainerAllocator> >
+  : TrueType
+  { };
+
+template <class ContainerAllocator>
+struct IsMessage< ::vision_no_ros::object_list_<ContainerAllocator> const>
+  : TrueType
   { };
 
 template <class ContainerAllocator>

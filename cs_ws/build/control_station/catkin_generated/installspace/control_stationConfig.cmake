@@ -67,14 +67,14 @@ set(control_station_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(control_station_SOURCE_PREFIX /home/rocknd79/Xplore2022/CS_workspace/cs_ws/src/control_station)
-  set(control_station_DEVEL_PREFIX /home/rocknd79/Xplore2022/CS_workspace/cs_ws/devel)
+  set(control_station_SOURCE_PREFIX /home/xplore/Desktop/CS_workspace/cs_ws/src/control_station)
+  set(control_station_DEVEL_PREFIX /home/xplore/Desktop/CS_workspace/cs_ws/devel)
   set(control_station_INSTALL_PREFIX "")
   set(control_station_PREFIX ${control_station_DEVEL_PREFIX})
 else()
   set(control_station_SOURCE_PREFIX "")
   set(control_station_DEVEL_PREFIX "")
-  set(control_station_INSTALL_PREFIX /home/rocknd79/Xplore2022/CS_workspace/cs_ws/install)
+  set(control_station_INSTALL_PREFIX /home/xplore/Desktop/CS_workspace/cs_ws/install)
   set(control_station_PREFIX ${control_station_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/rocknd79/Xplore2022/CS_workspace/cs_ws/install/lib;/opt/ros/noetic/lib)
+    foreach(path /home/xplore/Desktop/CS_workspace/cs_ws/install/lib;/opt/ros/melodic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
@@ -211,7 +211,7 @@ foreach(depend ${depends})
   _unpack_libraries_with_build_configuration(control_station_LIBRARIES ${control_station_LIBRARIES})
 
   _list_append_unique(control_station_LIBRARY_DIRS ${${control_station_dep}_LIBRARY_DIRS})
-  _list_append_deduplicate(control_station_EXPORTED_TARGETS ${${control_station_dep}_EXPORTED_TARGETS})
+  list(APPEND control_station_EXPORTED_TARGETS ${${control_station_dep}_EXPORTED_TARGETS})
 endforeach()
 
 set(pkg_cfg_extras "")

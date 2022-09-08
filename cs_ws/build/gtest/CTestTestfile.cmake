@@ -1,6 +1,6 @@
 # CMake generated Testfile for 
 # Source directory: /usr/src/googletest
-# Build directory: /home/rocknd79/Xplore2022/CS_workspace/cs_ws/build/gtest
+# Build directory: /home/xplore/Desktop/CS_workspace/cs_ws/build/gtest
 # 
 # This file includes the relevant testing commands required for 
 # testing this directory and lists subdirectories to be tested as well.

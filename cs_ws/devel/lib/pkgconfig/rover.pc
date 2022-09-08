@@ -1,0 +1,8 @@
+prefix=/home/xplore/Desktop/CS_workspace/cs_ws/devel
+
+Name: rover
+Description: Description of rover
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

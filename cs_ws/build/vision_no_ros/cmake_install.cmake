@@ -1,8 +1,8 @@
-# Install script for directory: /home/rocknd79/Xplore2022/CS_workspace/cs_ws/src/vision_no_ros
+# Install script for directory: /home/xplore/Desktop/CS_workspace/cs_ws/src/vision_no_ros
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/xplore/Desktop/CS_workspace/cs_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -39,55 +39,55 @@ endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/vision_no_ros/msg" TYPE FILE FILES
-    "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/src/vision_no_ros/msg/panel_object.msg"
-    "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/src/vision_no_ros/msg/object_list.msg"
+    "/home/xplore/Desktop/CS_workspace/cs_ws/src/vision_no_ros/msg/panel_object.msg"
+    "/home/xplore/Desktop/CS_workspace/cs_ws/src/vision_no_ros/msg/object_list.msg"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/vision_no_ros/cmake" TYPE FILE FILES "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/build/vision_no_ros/catkin_generated/installspace/vision_no_ros-msg-paths.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/vision_no_ros/cmake" TYPE FILE FILES "/home/xplore/Desktop/CS_workspace/cs_ws/build/vision_no_ros/catkin_generated/installspace/vision_no_ros-msg-paths.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/devel/include/vision_no_ros")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/xplore/Desktop/CS_workspace/cs_ws/devel/include/vision_no_ros")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/roseus/ros" TYPE DIRECTORY FILES "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/devel/share/roseus/ros/vision_no_ros")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/roseus/ros" TYPE DIRECTORY FILES "/home/xplore/Desktop/CS_workspace/cs_ws/devel/share/roseus/ros/vision_no_ros")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/common-lisp/ros" TYPE DIRECTORY FILES "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/devel/share/common-lisp/ros/vision_no_ros")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/common-lisp/ros" TYPE DIRECTORY FILES "/home/xplore/Desktop/CS_workspace/cs_ws/devel/share/common-lisp/ros/vision_no_ros")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gennodejs/ros" TYPE DIRECTORY FILES "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/devel/share/gennodejs/ros/vision_no_ros")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gennodejs/ros" TYPE DIRECTORY FILES "/home/xplore/Desktop/CS_workspace/cs_ws/devel/share/gennodejs/ros/vision_no_ros")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  execute_process(COMMAND "/usr/bin/python3" -m compileall "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/devel/lib/python3/dist-packages/vision_no_ros")
+  execute_process(COMMAND "/usr/bin/python2" -m compileall "/home/xplore/Desktop/CS_workspace/cs_ws/devel/lib/python2.7/dist-packages/vision_no_ros")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3/dist-packages" TYPE DIRECTORY FILES "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/devel/lib/python3/dist-packages/vision_no_ros")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python2.7/dist-packages" TYPE DIRECTORY FILES "/home/xplore/Desktop/CS_workspace/cs_ws/devel/lib/python2.7/dist-packages/vision_no_ros")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/build/vision_no_ros/catkin_generated/installspace/vision_no_ros.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/xplore/Desktop/CS_workspace/cs_ws/build/vision_no_ros/catkin_generated/installspace/vision_no_ros.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/vision_no_ros/cmake" TYPE FILE FILES "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/build/vision_no_ros/catkin_generated/installspace/vision_no_ros-msg-extras.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/vision_no_ros/cmake" TYPE FILE FILES "/home/xplore/Desktop/CS_workspace/cs_ws/build/vision_no_ros/catkin_generated/installspace/vision_no_ros-msg-extras.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/vision_no_ros/cmake" TYPE FILE FILES
-    "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/build/vision_no_ros/catkin_generated/installspace/vision_no_rosConfig.cmake"
-    "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/build/vision_no_ros/catkin_generated/installspace/vision_no_rosConfig-version.cmake"
+    "/home/xplore/Desktop/CS_workspace/cs_ws/build/vision_no_ros/catkin_generated/installspace/vision_no_rosConfig.cmake"
+    "/home/xplore/Desktop/CS_workspace/cs_ws/build/vision_no_ros/catkin_generated/installspace/vision_no_rosConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/vision_no_ros" TYPE FILE FILES "/home/rocknd79/Xplore2022/CS_workspace/cs_ws/src/vision_no_ros/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/vision_no_ros" TYPE FILE FILES "/home/xplore/Desktop/CS_workspace/cs_ws/src/vision_no_ros/package.xml")
 endif()
 

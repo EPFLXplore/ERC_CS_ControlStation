@@ -19,7 +19,7 @@
 (defmethod vision_no_ros::object_list
   (:init
    (&key
-    ((:detected_objects __detected_objects) ())
+    ((:detected_objects __detected_objects) (let (r) (dotimes (i 0) (push (instance vision_no_ros::panel_object :init) r)) r))
     )
    (send-super :init)
    (setq _detected_objects __detected_objects)

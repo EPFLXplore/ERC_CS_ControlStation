@@ -153,22 +153,22 @@ namespace message_traits
 
 
 template <class ContainerAllocator>
-struct IsMessage< ::vision_no_ros::panel_object_<ContainerAllocator> >
-  : TrueType
-  { };
-
-template <class ContainerAllocator>
-struct IsMessage< ::vision_no_ros::panel_object_<ContainerAllocator> const>
-  : TrueType
-  { };
-
-template <class ContainerAllocator>
 struct IsFixedSize< ::vision_no_ros::panel_object_<ContainerAllocator> >
   : TrueType
   { };
 
 template <class ContainerAllocator>
 struct IsFixedSize< ::vision_no_ros::panel_object_<ContainerAllocator> const>
+  : TrueType
+  { };
+
+template <class ContainerAllocator>
+struct IsMessage< ::vision_no_ros::panel_object_<ContainerAllocator> >
+  : TrueType
+  { };
+
+template <class ContainerAllocator>
+struct IsMessage< ::vision_no_ros::panel_object_<ContainerAllocator> const>
   : TrueType
   { };
 
