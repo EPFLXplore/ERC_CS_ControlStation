@@ -34,6 +34,7 @@ max_L2_R2 = 255
 scale     = 100
   
 
+
 class Inft_Timer:
   """infinity thread timer to run a target function at constant time intervals"""
 
@@ -53,6 +54,7 @@ class Inft_Timer:
   
   def cancel(self):
     self.thread.cancel()
+
 
 
 class Gamepad(Thread):
@@ -212,75 +214,30 @@ class Gamepad(Thread):
           #---------------INVERSE----------------------------------------------------------------------------
           if self.modeHD == 'INV':
             # buttons
-            # if event.type == ecodes.EV_KEY:
-            #   if event.value == 1: 
-            #     if event.code == Keymap.BTN_R1.value and self.axe_HD_new[4] == 0: # R1 joint 4 = 1
-            #       self.axe_HD_new[3] = 1
-            #     elif event.code == Keymap.BTN_L1.value and self.axe_HD_new[4] == 0: # L1 joint 4 = -1
-            #       self.axe_HD_new[3] = -1
-            #     elif event.code == Keymap.BTN_SQUARE.value and self.axe_HD_new[6] == 0: # Square button open the gripper
-            #       self.axe_HD_new[6] = 1
-            #     elif event.code == Keymap.BTN_CROSS.value and self.axe_HD_new[6] == 0: # Cross button close the gripper
-            #       self.axe_HD_new[6] = -1
-            #     # R2 => gripper rise: positive z
-            #     elif event.code == Keymap.BTN_R2.value: 
-            #       if event.type == ecodes.EV_ABS:
-            #         absevent = categorize(event)
-            #         if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_PRESSURE":  # is this correct? 
-            #           self.gripper_new[2] = eval_axe(absevent.event.value)
-            #     # L2 => gripper drop: negative z
-            #     elif event.code == Keymap.BTN_L2.value: 
-            #       if event.type == ecodes.EV_ABS:
-            #         absevent = categorize(event)
-            #         if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_PRESSURE":
-            #           self.gripper_new[2] = eval_axe(-absevent.event.value)
-            #   # Release
-            #   elif event.value == 0: 
-            #     if event.code == Keymap.BTN_R1.value: # R1 joint 4 = 1
-            #       self.axe_HD_new[3] = 0
-            #     elif event.code == Keymap.BTN_L1.value: # L1 joint 4 = -1
-            #       self.axe_HD_new[3] = 0
-            #     elif event.code == Keymap.BTN_SQUARE.value: # Square button Stop the opening
-            #       self.axe_HD_new[6] = 0
-            #     elif event.code == Keymap.BTN_CROSS.value: # Triangle button Stop the closing
-            #       self.axe_HD_new[6] = 0
-            # # AXE-------------------------
-            # elif event.type == ecodes.EV_ABS:
-            #   absevent = categorize(event)
-            #   if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_X": # joint 5 L3 left & right 
-            #     self.axe_HD_new[4] = eval_axe(absevent.event.value)
-            #   elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Y": # joint 6 L3 up & down
-            #     self.axe_HD_new[5] = eval_axe(absevent.event.value)
-            #   if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RX": # gripper move along x-axis
-            #     self.gripper_new[0] = eval_axe(absevent.event.value)
-            #   elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RY": # gripper move along y-axis
-            #     self.gripper_new[1] = eval_axe(absevent.event.value)
+            if event.type == ecodes.EV_KEY:
+              if event.value == 1: 
+                #----------voltmeter------------
+                if event.code == Keymap.BTN_PS.value:         # PS button 
+                  self.switchVoltmeter()
 
+            if event.type == ecodes.EV_ABS:  
+                absevent = categorize(event) 
+                #-----------x-axis------------- 
+                if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RY":  # R3 up & down 
+                  self.axe_HD_new[0] = -scale * round(absevent.event.value/max_val, 5) # Max value: 32768
+                #-----------y-axis------------- 
+                if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RX":  # R3 left (positive) & right (negative)
+                  self.axe_HD_new[1] = scale * round(absevent.event.value/max_val, 5) # Max value: 32768
+                #-----------z-axis------------- 
+                if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RZ":  # R2 (positive)
+                  self.axe_HD_new[2] = scale * round(absevent.event.value/max_L2_R2, 5) # Max value: 255
+                #-----------z-axis------------- 
+                if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Z":   # L2 (negative)
+                  self.axe_HD_new[2] = scale * round(-absevent.event.value/max_L2_R2, 5) # Max value: 255
 
+            # send 0. when values are close to 0. 
+            resetAxe(self)
 
-              # ~ print(ecodes.bytype[absevent.event.type][absevent.event.code])
-              # if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RX": #Axe 1
-              #   self.axe_HD_new[0] = eval_axe(absevent.event.value)
-              # elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RY":#Axe2
-              #   self.axe_HD_new[1] = eval_axe(absevent.event.value)
-              # elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_X":#Axe3
-              #   self.axe_HD_new[2] = eval_axe(absevent.event.value)
-              # elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Y":#Axe4
-              #   self.axe_HD_new[3] = eval_axe(absevent.event.value)
-              #Axe 6
-              # elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Z":#Axe4
-              #   if absevent.event.value >= 250:
-              #     self.axe_HD_new[5] = 1
-              #   else:
-              #     self.axe_HD_new[5] = 0
-              # elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RZ":#Axe4
-              #   if absevent.event.value >= 250:
-              #     self.axe_HD_new[5] = -1
-              #   else:
-              #     self.axe_HD_new[5] = 0
-
-            # sends new values if and only if changed from previous
-            newAxeVal(self)
 
           #---------------DEBUG----------------------------------------------------------------------------
           elif self.modeHD == 'DEBUG':
@@ -322,10 +279,11 @@ class Gamepad(Thread):
               if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RZ":  # R2
                 self.homeSet_temp = 1  # Max value: 255 
               if (ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Z") and (self.homeSet_temp == 1):   # L2 
-                self.setHome()            
-            # sends new values if and only if changed from previous
+                self.setHome()     
+
+            # send 0. when values are close to 0. 
             resetAxe(self)
-            #newAxeVal(self)
+
 
           #---------------DIRECT---------------------------------------------------------------------------
           elif self.modeHD == 'DIR': 
@@ -379,15 +337,14 @@ class Gamepad(Thread):
                 if event.value == 1:
                     self.goHome()            
 
-            # sends new values if and only if changed from previous
+            # send 0. when values are close to 0. 
             resetAxe(self)
-            #newAxeVal(self)
-
 
             
     #self.publish_timer.cancel()
         
 
+  #-------Gamepad auxiliary methods-------
 
   # Set self.mode
   def cmode(self, mode):
@@ -432,7 +389,6 @@ class Gamepad(Thread):
     self.cs.HD_Angles_pub.publish(Int8MultiArray(data = self.axe_HD_new))
     
 
-
   # Voltmeter:  Extend <=> Retreat
   def switchVoltmeter(self):
     if self.voltmeter == 0:
@@ -462,15 +418,7 @@ class Gamepad(Thread):
     self.homeSet_temp = 0  
     
     
-    
-def eval_axe(axe_value): # Donne le sens de rotation bras robot 32768 est la valeur max renvoyé par la manette
-  if axe_value <= -32700:
-    return -1
-  elif axe_value >= 32700:
-    return 1
-  elif axe_value > -32700 and axe_value < 32700:
-    return 0
-
+#-------External auxiliary methods-------
 
 # Compare 2 arrays with a tolerance 
 def compare_list(list1, list2, tolerance):
@@ -506,8 +454,7 @@ def newAxeVal(self):
   print(self.axe_HD_new)
   self.cs.HD_Angles_pub.publish(Int8MultiArray(data = list(map(int, self.axe_HD_new))))
                                
-    
-    
+      
 # Send new Joint velocities for HD
 # if and only if abs(value) > 2
 def resetAxe(self):
