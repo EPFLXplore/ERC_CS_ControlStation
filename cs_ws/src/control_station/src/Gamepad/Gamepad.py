@@ -99,6 +99,7 @@ class Gamepad(Thread):
     self.homeSet_temp = 0 
 
     self.last_switch_time = time()
+    self.last_hd_mode_switch_time = time()
 
     self.connect()
     dt = 1/20
@@ -138,6 +139,8 @@ class Gamepad(Thread):
       if event.type != 0:
         #if (self._running) == 0: # when self._running == False  run() stops
         if(self._running == False):
+          self.axe_HD_old = [0]*7
+          self.axe_HD_new = [0]*7
           self.publish_timer.cancel()
           break
         # EV_KEY describes state changes of device
@@ -153,7 +156,9 @@ class Gamepad(Thread):
             # switching  DIR => INV => DEBUG => DIR  only when in HD     
             if event.code == Keymap.BTN_OPTIONS.value:  # Option Button
               if self.mode == 'HD':
-                self.switchHDmode()
+                if time()-self.last_hd_mode_switch_time > 0.5:
+                  self.last_hd_mode_switch_time = time()
+                  self.switchHDmode()
 
 
 
