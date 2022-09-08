@@ -25,7 +25,7 @@ import django
 
 
 from CS2022.models         import *
-from std_msgs.msg          import Int8MultiArray    , Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16
+from std_msgs.msg          import Int8MultiArray    , Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16, Float32MultiArray
 
 # TODO
 # from ros_package.src.custom_msg_python.msg     import move_base_action_goal 
@@ -98,7 +98,7 @@ class CS:
         #rospy.Subscriber('ROVER_SC_measurements_mass',     Int16,           self.controller.sc_mass            )
         rospy.Subscriber('ROVER_HD_telemetry',             JointState,      self.controller.hd_telemetry       )
         rospy.Subscriber('ROVER_HD_tof',                   Int32,           self.controller.hd_tof             )
-        rospy.Subscriber('ROVER_HD_detected_element',      Int16MultiArray, self.controller.hd_detected_element)
+        rospy.Subscriber('ROVER_HD_detected_element',      Float32MultiArray, self.controller.hd_detected_element)
 
 
         # TODO

@@ -1,8 +1,0 @@
-prefix=/home/xplore/Desktop/CS_workspace/cs_ws/devel
-
-Name: control_station
-Description: Description of control_station
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

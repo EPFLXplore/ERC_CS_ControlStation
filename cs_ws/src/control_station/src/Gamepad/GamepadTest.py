@@ -329,27 +329,27 @@ class Gamepad(Thread):
               if event.value == 1:
                 #-----------gripper------------
                 if event.code == Keymap.BTN_TRIANGLE.value:   # gripper = +100
-                  self.axe_HD_new[6] = 100.
+                  self.axe_HD_new[6] = -100.
                 elif event.code == Keymap.BTN_CIRCLE.value:   # gripper = +10
                   self.axe_HD_new[6] = 10.
                 elif event.code == Keymap.BTN_CROSS.value:    # gripper = -100
-                  self.axe_HD_new[6] = -100.
+                  self.axe_HD_new[6] = 100.
                 elif event.code == Keymap.BTN_SQUARE.value:   # gripper = -10
                   self.axe_HD_new[6] = -10.
                 #-----------joint 3------------
                 elif event.code == Keymap.BTN_R1.value:       # R1 - joint 3 advance 
                   #self.joint3 = -1
-                    self.axe_HD_new[2] = 50.
+                    self.axe_HD_new[3] = 100.
                 elif event.code == Keymap.BTN_L1.value:       # L1 - joint 3 advance
                   #self.joint4 = -1
-                    self.axe_HD_new[2] = -50.              
+                    self.axe_HD_new[3] = -100.              
                 #----------voltmeter------------
                 if event.code == Keymap.BTN_PS.value:       # PS button 
                   self.switchVoltmeter()
               #-----------reset joint 3, gripper------------
               elif event.value == 0:
                 self.axe_HD_new[6] = 0
-                self.axe_HD_new[2] = 0
+                self.axe_HD_new[3] = 0
                 #if event.code == Keymap.BTN_R1.value:         # R1 - joint 3 retreat
                 #  self.joint3 = 1
                 #elif event.code == Keymap.BTN_L1.value:       # L1 - joint 4 retreat
@@ -373,11 +373,11 @@ class Gamepad(Thread):
               #-----------joint 4------------- 
               if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RZ":  # R2
                 #self.axe_HD_new[2] = scale * round(self.joint3 * absevent.event.value/max_L2_R2, 5) # Max value: 32768
-                self.axe_HD_new[3] = scale * round(absevent.event.value/max_L2_R2, 5) # Max value: 255
+                self.axe_HD_new[2] = scale * round(absevent.event.value/max_L2_R2, 5) # Max value: 255
               #-----------joint 4------------- 
               if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Z":   # L2 
                 #self.axe_HD_new[3] = scale * round(self.joint4 * absevent.event.value/max_L2_R2, 5) # Max value: 32768
-                self.axe_HD_new[3] = scale * round(-absevent.event.value/max_L2_R2, 5) # Max value: 255
+                self.axe_HD_new[2] = scale * round(-absevent.event.value/max_L2_R2, 5) # Max value: 255
               #-----------go home-------------
               if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_HAT0Y":  # d-pad y
                 if event.value == 1:

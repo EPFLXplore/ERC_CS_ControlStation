@@ -1,5 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+cs_ws/build/
+cs_ws/devel/
 *.pyc
 
 # Redis Backup file

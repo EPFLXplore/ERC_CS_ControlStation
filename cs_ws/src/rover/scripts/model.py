@@ -229,7 +229,7 @@ class HandlingDevice:
             self.rover.Exception_pub.publish("Invalid ID, must be between 0 and 14")
         else:
             self.__semiAutoId = id
-            self.rover.HD_SemiAuto_Id_pub.publish(id)
+            #self.rover.HD_SemiAuto_Id_pub.publish(id)
 
     def getId(self):
         return self.__semiAutoId

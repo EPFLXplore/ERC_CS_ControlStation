@@ -36,6 +36,7 @@ from actionlib_msgs.msg                   import GoalID
 from tf.transformations import quaternion_from_euler, euler_from_quaternion
 
 from Gamepad.Gamepad                      import Gamepad
+#from Gamepad.GamepadTest import Gamepad
 from src.model                            import *
 
 # TODO new (Twist too)
