@@ -134,7 +134,6 @@ class Controller():
             info on what is going on in the Science Bay:
             ex: LED turned on, Picture taken, ...
         '''
-        
         self.cs.CS_confirm_pub.publish(True)
 
         str = info.data
@@ -158,6 +157,10 @@ class Controller():
         rospy.loginfo(arr.data)
         self.cs.rover.SC.setParams(arr.data)
         self.sendJson(Task.SCIENCE)
+
+    def sc_image(self, im):
+        self.cs.CS_confirm_pub.publish(True)
+        self.cs.rover.SC.addImage(im)
         
 
     # ========= HD CALLBACKS ========= 
@@ -176,7 +179,7 @@ class Controller():
     def hd_telemetry(self, jointstate):
         self.cs.rover.HD.set_joint_telemetry(jointstate)
         #pos = jointstate.position
-        rospy.loginfo("displayed")
+        #rospy.loginfo("displayed")
         self.sendJson(Task.MAINTENANCE)
 
     # receive: distance to element

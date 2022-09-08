@@ -221,6 +221,8 @@ class Science:
         self.__particleSizes = [-1,-1,-1] #[0,0,0]
         self.__densities = [-1,-1,-1] #[0,0,0]
 
+        self.__images = []
+
         self.__info = []
 
 
@@ -379,6 +381,13 @@ class Science:
         self.__trap_closed = np.array(save_list[7]).astype(bool).tolist()
         self.__masses = save_list[8:]
 
+
+    #--------IMAGE--------
+    def addImage(self, im):
+        self.__images.append(im)
+
+    def getImages(self):
+        return self.__images
 
 
 class HandlingDevice:

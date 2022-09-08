@@ -46,6 +46,7 @@ class Model:
         self.__state = np.zeros(2)
         self.__received = False
 
+    #--------ROVER STATE--------
     def setState(self, task, instr):
         self.__state = np.array([task, instr])
 
@@ -55,13 +56,16 @@ class Model:
     def getTask(self):
         return self.__state[0]
 
-
+    #--------Exception--------
+    # callback for received exceptions (transmits directly to CS)
     def set_exception(self, exception):
         #self.rover.waiting = True
         self.rover.wait(self.rover.Exception_pub, exception)
         self.rover.Exception_pub.publish(exception.data)
 
+    # callback for task progress (success/fail) and transmits it to CS
     def setProgress(self, val):
+        #if NAV task then topic 'TaskProgress' received a success msg => goal is basically cancelled (??? TODO)
         if(self.getTask() == Task.NAVIGATION.value):
             self.Nav.setCancelled(True)
         
@@ -92,6 +96,7 @@ class Navigation:
     def setCancelled(self, bool):
         self.__cancelled = bool
 
+    # callback for received PoseStamped from the CS
     def setGoal(self, goal):
 
         #self.__cancelled = False
@@ -104,20 +109,16 @@ class Navigation:
         #self.__currGoal = goal
         #self.rover.Nav_Goal_pub.publish(goal)
         
-
+    # get goal id
     def getId(self):
         return self.__currId
 
+    # get the PoseStamped msg
     def getGoal(self):
         return self.__currGoal
 
-    '''def cancelGoal(self, given_id):
-        self.__currGoal = np.zeros(0)
-        self.__currId = -1
-        self.rover.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = given_id))
-    '''
+    # called when CS sends an ABORT instruction to NAV task --> it cancels the goal and the rover stops
     def cancelGoal(self):
-
         self.rover.RoverConfirm_pub.publish("received NAV goal cancellation")
 
         if(not self.__cancelled): 
@@ -151,6 +152,7 @@ class Science:
         self.__info = "info"
         self.__state = "state"
 
+    # text info from SC
     def set_text_info(self, str_ros):
         self.__info = str_ros.data
         self.rover.wait(self.rover.SC_infos_pub, str_ros)
@@ -158,6 +160,7 @@ class Science:
     def get_text_info(self):
         return self.__info
 
+    # state of SC's FSM
     def set_state_info(self, str_ros):
         self.__state = str_ros.data
         self.rover.wait(self.rover.SC_infos_pub, str_ros)
@@ -165,7 +168,7 @@ class Science:
     def get_state_info(self):
         return self.__state
 
-
+    # SC tube humidity
     def set_humidity(self, humidities_ros):
         humidity = humidities_ros.data
         self.__tubeHum = humidity
@@ -173,6 +176,7 @@ class Science:
     def get_tube_hum(self):
         return self.__tubeHum
 
+    # array of infos:
 
     def params(self, arr):
         self.__params = arr.data
@@ -198,6 +202,7 @@ class HandlingDevice:
 
         self.__distToElem = 0
 
+    # HD mode: autonomous, direct manual, inverse manual
     def setHDMode(self, mode_ros):
 
         self.rover.RoverConfirm_pub.publish("HD mode set")
@@ -213,7 +218,7 @@ class HandlingDevice:
     def getHDMode(self):
         return self.__hd_mode
 
-
+    # ID of element we want to manipulate autonomously
     def set_semiAutoID(self, id_ros):
 
         self.rover.RoverConfirm_pub.publish("received HD element ID")
@@ -226,37 +231,37 @@ class HandlingDevice:
             self.__semiAutoId = id
             self.rover.HD_SemiAuto_Id_pub.publish(id)
 
-
     def getId(self):
         return self.__semiAutoId
 
-
+    # HD joints' positions (rad) and velocity (rad/s ??? TODO)
     def set_joint_telemetry(self, telemetry_ros):
         telemetry = telemetry_ros.data
         self.set_joint_positions(telemetry.position)
         self.set_joint_velocities(telemetry.velocity)
         self.rover.HD_telemetry_pub.publish(telemetry)
 
-
+    # HD joints' positions
     def set_joint_positions(self, positions):
         self.__joint_positions = positions
 
     def get_joint_positions(self):
         return self.__joint_positions
 
-
+    # HD joints' velocities
     def set_joint_velocities(self, velocities):
         self.__joint_velocities = velocities
 
     def get_joint_velocities(self):
         return self.__joint_velocities
 
-    
+    # ToF (time of flight): distance to element
     def set_tof(self, val):
         self.__distToElem = val.data
         self.rover.HD_tof_pub.publish(val.data)
 
-
+    # retransmit info of an element of the control panel: [id, x, y, z, a, b, c] 
+    # we receive these infos progressively as HD scans the control panel and detects new elements
     def setDetectedElement(self, elem):
         self.rover.HD_element_pub(elem)
 

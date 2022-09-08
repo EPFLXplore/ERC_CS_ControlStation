@@ -639,7 +639,9 @@
 		console.log("at least log something my guy")
 		console.log(data.infos)
 		/* DIALOG BOX */
-		document.getElementById('dialog').value = data.infos.join("\n - ")
+		/*let infos = data.infos
+		infos.push("\n ------------------ ")*/
+		document.getElementById('dialog').value = data.infos.join("\n - ") //infos.join("\n - ")
 
 	};
 

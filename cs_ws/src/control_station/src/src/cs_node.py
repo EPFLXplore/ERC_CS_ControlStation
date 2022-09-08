@@ -34,7 +34,7 @@ from geometry_msgs.msg     import Twist, PoseStamped
 from actionlib_msgs.msg    import GoalID
 from nav_msgs.msg          import Odometry
 from src.controller        import *
-from sensor_msgs.msg       import JointState
+from sensor_msgs.msg       import JointState, Image
 
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
@@ -107,6 +107,7 @@ class CS:
         # rospy.Subscriber('detection/RGB_intel', Image, ...)
         # rospy.Subscriber('detection/RGB_webcam_1', Image, ...)
         # rospy.Subscriber('detection/RGB_webcam_2', Image, ...)
+        rospy.Subscriber('sc_camera', Image, self.controller.sc_image)
         
 
         rospy.Subscriber('/cmd_vel',           Twist,    self.controller.test_joystick)
