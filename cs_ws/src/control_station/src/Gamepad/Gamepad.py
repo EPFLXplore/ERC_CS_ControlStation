@@ -197,9 +197,9 @@ class Gamepad(Thread):
                 retreat = 0
 
             # update values of linear.x, linear.y and angular.z
-            self.msg_nav_dir.linear.x  = 0. if abs(self.axe_NAV_new[0] / 2) < self.deadval else (self.axe_NAV_new[0] / 2)
-            self.msg_nav_dir.linear.y  = 0. if abs(self.axe_NAV_new[1] / 2) < self.deadval else (self.axe_NAV_new[1] / 2)
-            self.msg_nav_dir.angular.z = 0. if abs(self.axe_NAV_new[2] / 2) < self.deadval else (self.axe_NAV_new[2] / 2)
+            self.msg_nav_dir.linear.x  = 0. if abs(self.axe_NAV_new[0] / 3) < self.deadval else (self.axe_NAV_new[0] / 3)
+            self.msg_nav_dir.linear.y  = 0. if abs(self.axe_NAV_new[1] / 3) < self.deadval else (self.axe_NAV_new[1] / 3)
+            self.msg_nav_dir.angular.z = 0. if abs(self.axe_NAV_new[2] / 3) < self.deadval else (self.axe_NAV_new[2] / 3)
               
             #     TODO
           print(self.axe_NAV_new)

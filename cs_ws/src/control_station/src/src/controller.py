@@ -91,8 +91,8 @@ class Controller():
         '''
         tl = twist.linear
         ta = twist.angular
-        rospy.loginfo("Linear %d %d %d", tl.x, tl.y, tl.z)
-        rospy.loginfo("Angular %d %d %d", ta.x, ta.y, ta.z)
+        #rospy.loginfo("Linear %d %d %d", tl.x, tl.y, tl.z)
+        #rospy.loginfo("Angular %d %d %d", ta.x, ta.y, ta.z)
 
 
     # callback when received a confirmation from rover after sending an instruction

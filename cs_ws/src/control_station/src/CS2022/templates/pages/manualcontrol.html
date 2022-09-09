@@ -14,33 +14,35 @@
 	<!-- SCRIPT -->
 	<script src="{% static 'common/border.js' %}"></script> 
 	<script src="{% static 'manualcontrol/manualcontrol.js' %}"></script> 
-	<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+	<!-- <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script> -->
 	
 	<script>
-		$(document).ready(function() {
-    		$(document).on('submit', '#launch-form', function() {
-				window.location.href ="/CS2022/manualcontrol/launch";
-      			return false;
-    		 });
-    		$(document).on('submit', '#wait-form', function() {
-				window.location.href ="/CS2022/manualcontrol/wait";
-      			return false;
-    		 });
-    		$(document).on('submit', '#abort-form', function() {
-				window.location.href ="/CS2022/manualcontrol/abort";
-      			return false;
-    		 });
-    		$(document).on('submit', '#resume-form', function() {
-				window.location.href ="/CS2022/manualcontrol/resume";
-      			return false;
-    		 });
-    		$(document).on('submit', '#direct-form', function() {
-      			return false;
-    		 });
-    		$(document).on('submit', '#inverse-form', function() {
-      			return false;
-    		 });
-		});
+
+
+		// $(document).ready(function() {
+    	// 	$(document).on('submit', '#launch-form', function() {
+		// 		window.location.href ="/CS2022/manualcontrol/launch";
+      	// 		return false;
+    	// 	 });
+    	// 	$(document).on('submit', '#wait-form', function() {
+		// 		window.location.href ="/CS2022/manualcontrol/wait";
+      	// 		return false;
+    	// 	 });
+    	// 	$(document).on('submit', '#abort-form', function() {
+		// 		window.location.href ="/CS2022/manualcontrol/abort";
+      	// 		return false;
+    	// 	 });
+    	// 	$(document).on('submit', '#resume-form', function() {
+		// 		window.location.href ="/CS2022/manualcontrol/resume";
+      	// 		return false;
+    	// 	 });
+    	// 	$(document).on('submit', '#direct-form', function() {
+      	// 		return false;
+    	// 	 });
+    	// 	$(document).on('submit', '#inverse-form', function() {
+      	// 		return false;
+    	// 	 });
+		// });
 	</script>
 	
 	<!-- ICON -->
@@ -50,7 +52,6 @@
 <body>
 	{{ tab_name|json_script:"tab-name" }}
 	{{ current_state|json_script:"state"  }}
-	{{ v_name|json_script:"v_name"  }}
 
 	<div id="container">
 		<div id="sidebar" class="box">
@@ -94,7 +95,7 @@
 					<p style="color: white; margin-top: 15px; font-weight: bold;">ELAPSED TIME</p>
 					<p id="elapsed" style="color: white; margin-bottom: 10px; ">00 : 00 : 00</p>
 
-					<img src="{% static 'common/ok.png' %}" alt="" width="48" height="48" style="margin-top: 10px; margin-right: 10px; opacity: 1;">
+					<img src="{% static 'common/ok.png' %}" alt="" width="48" height="48" style="margin-top: 10px; margin-right: 10px; opacity: 1; ">
 					<img src="{% static 'common/warning.png' %}" alt="" width="40" height="40" style="margin-top: 10px; opacity: 0.2;">
 					<img src="{% static 'common/error.png' %}" alt="" width="42" height="42" style="margin-top: 10px; opacity: 0.2; margin-left:15px;">
 
@@ -198,7 +199,7 @@
 
 					<div class="bottom-left">
 					
-						<img id="camera_2" src="{% static 'common/logothumbnail.png' %}" height="100%" width="100%">
+						<img id="camera_2" src="{% static 'common/logothumbnail.png' %}" height="100%" width="100%" style="transform: rotateX(180deg)">
 						<p id="envmap-title">CAMERA 2</p>
 
 					</div>
@@ -298,37 +299,7 @@
 						</script>
 						
 					</div>
-					<div class="row">
-						<div class="column">
-							
-						  <img id="camera_12"src="{% static 'common/logothumbnail.png' %}" width="45%">
-						  <img id="camera_22"src="{% static 'common/logothumbnail.png' %}" width="45%">
-						  <img id="camera_3"src="{% static 'common/logothumbnail.png' %}"  width="45%">
-						  <img id="camera_4"src="{% static 'common/logothumbnail.png' %}"  width="45%">
-						  <img id="camera_5"src="{% static 'common/logothumbnail.png' %}"  width="45%">
-
-						</div>
-						<div class="column">
-						  <img id="camera_6" src="{% static 'common/logothumbnail.png' %}" width="45%">
-						  <img id="camera_7" src="{% static 'common/logothumbnail.png' %}" width="45%"> 
-						  <img id="camera_8" src="{% static 'common/logothumbnail.png' %}" width="45%"> 
-						  <img id="camera_9" src="{% static 'common/logothumbnail.png' %}" width="45%"> 
-						  <img id="camera_10" src="{% static 'common/logothumbnail.png' %}" width="45%"> 
-	
-						</div>
-						<script>
-							document.querySelector('#camera_3').onclick = function() {
-
-							
-
-								var src1 = document.querySelector("#camera_1").src
-								document.querySelector("#camera_1").src = document.querySelector("#camera_3").src
-								document.querySelector("#camera_3").src = src1
-
-							}		
-						</script>
-						
-					  </div>
+					
 					
 				</div>
 				</div>
@@ -385,34 +356,38 @@
 
 		// --------------------------------------------------------------------------
 		// Cameras
-		let ws1 = new WebSocket(
+		let ws = new WebSocket(
             'ws://'
             + window.location.host
-            + '/ws/cameras/video1'
-            + '/'
+            + '/ws/cameras/'
+			+ 'video6/'
+            // + 'wms'
+            // + '/'
         );
 
-		// let ws2 = new WebSocket(
-        //     'ws://'
-        //     + window.location.host
-        //     + '/ws/cameras/video2'
-        //     + '/'
-        // );
+		let ws2 = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/cameras/'
+			+ 'video2/'
+            // + 'wms'
+            // + '/'
+        );
+
 
         ws.onmessage = function(evt) {
             v_data = JSON.parse(evt.data);
-            $("#camera_1").attr("src", v_data.message);
-			// $("#camera_2").attr("src", v_data.message);
-			// // $("#camera_3").attr("src", v_data.message);
-			// $("#camera_4").attr("src", v_data.message);
-			// $("#camera_5").attr("src", v_data.message);
-			// $("#camera_6").attr("src", v_data.message);
-			// $("#camera_7").attr("src", v_data.message);
-			// $("#camera_8").attr("src", v_data.message);
-			// $("#camera_9").attr("src", v_data.message);
-			// $("#camera_10").attr("src", v_data.message);
-			// $("#camera_12").attr("src", v_data.message);
-			// $("#camera_22").attr("src", v_data.message);
+            // $("#camera_1").attr("src", v_data.message);
+			document.getElementById('camera_1').src = v_data.message;
+			
+
+            
+        };
+
+		ws2.onmessage = function(evt) {
+            v_data = JSON.parse(evt.data);
+            document.getElementById('camera_2').src = v_data.message;
+			
 
             
         };
