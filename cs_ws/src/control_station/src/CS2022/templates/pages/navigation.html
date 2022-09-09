@@ -201,7 +201,8 @@
 									myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
 									myContext.fillRect(X_START_PX, Y_START_PX, 10, 10);  // x, y, width, height
 
-									myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
+									//myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
+									myContext.fillStyle = 'rgba(247, 202, 24, 1)'; 
 
 									// triangle 
 									/*myContext.beginPath();
@@ -217,8 +218,152 @@
 
 									// move cursor to the staring point, to begin drawing line 
 									pathContext.beginPath(); 
-									pathContext.moveTo(x_start, y_start); // first line => moveTo()
+									pathContext.moveTo(X_START_PX, Y_START_PX); // first line => moveTo()
+
+
+
+									var grid_size = 21.27;
+									var x_axis_distance_grid_lines = 33;
+									var y_axis_distance_grid_lines = 15;
+									var x_axis_starting_point = { number: 1, suffix: '\u03a0' };
+									var y_axis_starting_point = { number: 1, suffix: '' };
+
+
+									// canvas width
+									var canvas_width = map.width-440;
+
+									// canvas height
+									var canvas_height = map.height-30;
+
+									// no of vertical grid lines
+									var num_lines_x = Math.floor(canvas_height/grid_size);
+
+									// no of horizontal grid lines
+									var num_lines_y = Math.floor(canvas_width/grid_size);
+
+
+									// Draw grid lines along X-axis
+									for(var i=0; i<=num_lines_x; i++) {
+										myContext.beginPath();
+										myContext.lineWidth = 1;
+										
+										// If line represents X-axis draw in different color
+										if(i == x_axis_distance_grid_lines) 
+											myContext.strokeStyle = "#000000";
+										else
+											myContext.strokeStyle = "#e9e9e9";
+										
+										if(i == num_lines_x) {
+											myContext.moveTo(0, grid_size*i);
+											myContext.lineTo(canvas_width, grid_size*i);
+										}
+										else {
+											myContext.moveTo(0, grid_size*i+0.5);
+											myContext.lineTo(canvas_width, grid_size*i+0.5);
+										}
+										myContext.stroke();
+									}
+
+
+
+									// Draw grid lines along Y-axis
+									for(i=0; i<=num_lines_y; i++) {
+										myContext.beginPath();
+										myContext.lineWidth = 1;
+										
+										// If line represents Y-axis draw in different color
+										if(i == y_axis_distance_grid_lines) 
+											myContext.strokeStyle = "#000000";
+										else
+											myContext.strokeStyle = "#e9e9e9";
+										
+										if(i == num_lines_y) {
+											myContext.moveTo(grid_size*i, 0);
+											myContext.lineTo(grid_size*i, canvas_height);
+										}
+										else {
+											myContext.moveTo(grid_size*i+0.5, 0);
+											myContext.lineTo(grid_size*i+0.5, canvas_height);
+										}
+										myContext.stroke();
+									}
+
+
+									myContext.translate(y_axis_distance_grid_lines*grid_size, x_axis_distance_grid_lines*grid_size);
+
+									// Ticks marks along the positive X-axis
+								for(i=1; i<(num_lines_y - y_axis_distance_grid_lines); i++) {
+									myContext.beginPath();
+									myContext.lineWidth = 1;
+									myContext.strokeStyle = "#000000";
+
+									// Draw a tick mark 6px long (-3 to 3)
+									myContext.moveTo(grid_size*i+0.5, -3);
+									myContext.lineTo(grid_size*i+0.5, 3);
+									myContext.stroke();
+
+									// Text value at that point
+									myContext.font = '9px Arial';
+									myContext.textAlign = 'start';
+									myContext.fillText(x_axis_starting_point.number*i + x_axis_starting_point.suffix, grid_size*i-2, 15);
+								}
+
+								// Ticks marks along the negative X-axis
+								for(i=1; i<y_axis_distance_grid_lines; i++) {
+									myContext.beginPath();
+									myContext.lineWidth = 1;
+									myContext.strokeStyle = "#000000";
+
+									// Draw a tick mark 6px long (-3 to 3)
+									myContext.moveTo(-grid_size*i+0.5, -3);
+									myContext.lineTo(-grid_size*i+0.5, 3);
+									myContext.stroke();
+
+									// Text value at that point
+									myContext.font = '9px Arial';
+									myContext.textAlign = 'end';
+									myContext.fillText(-x_axis_starting_point.number*i + x_axis_starting_point.suffix, -grid_size*i+3, 15);
+								}
+
+
+								// Ticks marks along the positive Y-axis
+								// Positive Y-axis of graph is negative Y-axis of the canvas
+								for(i=1; i<(num_lines_x - x_axis_distance_grid_lines); i++) {
+									myContext.beginPath();
+									myContext.lineWidth = 1;
+									myContext.strokeStyle = "#000000";
+
+									// Draw a tick mark 6px long (-3 to 3)
+									myContext.moveTo(-3, grid_size*i+0.5);
+									myContext.lineTo(3, grid_size*i+0.5);
+									myContext.stroke();
+
+									// Text value at that point
+									myContext.font = '9px Arial';
+									myContext.textAlign = 'start';
+									myContext.fillText(-y_axis_starting_point.number*i + y_axis_starting_point.suffix, 8, grid_size*i+3);
+								}
+
+								// Ticks marks along the negative Y-axis
+								// Negative Y-axis of graph is positive Y-axis of the canvas
+								for(i=1; i<x_axis_distance_grid_lines; i++) {
+									myContext.beginPath();
+									myContext.lineWidth = 1;
+									myContext.strokeStyle = "#000000";
+
+									// Draw a tick mark 6px long (-3 to 3)
+									myContext.moveTo(-3, -grid_size*i+0.5);
+									myContext.lineTo(3, -grid_size*i+0.5);
+									myContext.stroke();
+
+									// Text value at that point
+									myContext.font = '9px Arial';
+									myContext.textAlign = 'start';
+									myContext.fillText(y_axis_starting_point.number*i + y_axis_starting_point.suffix, 8, -grid_size*i+3);
+								}
 								};
+
+								
 								
 	
 							</script>
@@ -461,8 +606,10 @@
 
 					let yaw = -(document.getElementById('YAW_coord').innerHTML) - Math.PI/2;
 					
-					let x_px = START_X_PX + x_next*width_map/YARD_WIDTH_M;
-					let y_px = START_Y_PX - y_next*height_map/YARD_LENGTH_M;
+					//let x_px = START_X_PX + x_next*width_map/YARD_WIDTH_M;
+					//let y_px = START_Y_PX - y_next*height_map/YARD_LENGTH_M;
+					let x_px = START_X_PX - y_next*width_map/YARD_WIDTH_M;
+					let y_px = START_Y_PX - x_next*height_map/YARD_LENGTH_M;
 
 					posContext.beginPath();
 
