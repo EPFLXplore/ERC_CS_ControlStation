@@ -332,6 +332,18 @@
 							</div> 
 
 							
+							<div class="state-button-container"; style="display: -webkit-box;">
+								<form  class="state-button-form" method="POST" style="width: 250px; height:30px;">
+									{% csrf_token %}
+									<input  id="capture_image" class="state-button" type="submit" value="CAPTURE IMAGES">
+
+								</form>
+								<p id="mode-title" style="color: white; padding-left: 10px;">HD Mode : </p>
+								<p id="hd_man_mode" style="color: white;">DIR</p>
+								<div class="mode-container" style="float:left;">
+
+								</div>
+							</div>
 							
 							<script>
 
@@ -403,7 +415,7 @@
 			let sliders = document.querySelectorAll('#joint1_slider, #joint2_slider, #joint3_slider, #joint4_slider, #joint5_slider, #joint6_slider');
 			let f = 0;
 			sliders.forEach(slider => {
-				document.getElementById(slider.id).value = (Math.round((data.joint_pos[f] + Number.EPSILON) * 180 / Math.PI * 100) / 100) * 180 / Math.PI;
+				document.getElementById(slider.id).value = (Math.round((data.joint_pos[f] + Number.EPSILON) * 180 / Math.PI * 100) / 100);
 				f += 1;
 			 })
 	

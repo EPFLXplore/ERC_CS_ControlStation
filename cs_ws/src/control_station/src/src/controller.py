@@ -462,6 +462,9 @@ class Controller():
             nav = self.cs.rover.Nav
             hd = self.cs.rover.HD
 
+            #mode = self.gpad.modeHD
+            #if(mode is None): mode = "None"
+
             pos = nav.getPos()
             Dictionary = {
                 'x'         : pos[0], 
@@ -470,8 +473,8 @@ class Controller():
                 'linVel'    : nav.getLinVel(), 
                 'angVel'    : nav.getAngVel(),
                 'joint_pos' : hd.get_joint_positions(),
-                'joint_vel' : hd.get_joint_velocities()
-                # 'hd_mode'   : self.gpad.modeHD
+                'joint_vel' : hd.get_joint_velocities(),
+                'hd_mode'   : self.gpad.modeHD
             }
 
         # Info to display on NAVIGATION tab
