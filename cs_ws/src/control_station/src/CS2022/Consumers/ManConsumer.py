@@ -30,6 +30,7 @@ class MANConsumer(RoverConsumer):
         angularVelocity = text_data_json['angVel']
         joint_position  = text_data_json['joint_pos']
         joint_velocity  = text_data_json['joint_vel']
+        hd_mode         = text_data_json['hd_mode']
 
         # Send message to room group
         await self.channel_layer.group_send(
@@ -41,7 +42,8 @@ class MANConsumer(RoverConsumer):
                 'linVel'   : linearVelocity,
                 'angVel'   : angularVelocity,
                 'joint_pos': joint_position,
-                'joint_vel': joint_velocity
+                'joint_vel': joint_velocity,
+                'hd_mode'  : hd_mode
             }
         )
 
@@ -53,6 +55,7 @@ class MANConsumer(RoverConsumer):
         angularVelocity = event['angVel']
         joint_position  = event['joint_pos']
         joint_velocity  = event['joint_vel']
+        hd_mode         = event['hd_mode']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
@@ -61,5 +64,6 @@ class MANConsumer(RoverConsumer):
             'linVel'   : linearVelocity,
             'angVel'   : angularVelocity,
             'joint_pos': joint_position,
-            'joint_vel': joint_velocity
+            'joint_vel': joint_velocity,
+            'hd_mode'  : hd_mode
         }))

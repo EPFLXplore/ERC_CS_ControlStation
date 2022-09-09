@@ -17,6 +17,8 @@ from geometry_msgs.msg import Twist
 from std_msgs.msg      import Int8MultiArray, Int8, Bool
 import threading
 
+from src.model import Task
+
 
 '''
 Class Gamepad
@@ -109,7 +111,7 @@ class Gamepad(Thread):
 
   def publish_commands(self):
     if self.mode == "HD":
-      if self.modeHD == "DIR" or self.modeHD == "DEBUG":
+      #if self.modeHD == "DIR" or self.modeHD == "DEBUG":
         newAxeVal(self)
 
   def connect(self):
@@ -227,7 +229,7 @@ class Gamepad(Thread):
                   self.axe_HD_new[0] = -scale * round(absevent.event.value/max_val, 5) # Max value: 32768
                 #-----------y-axis------------- 
                 if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RX":  # R3 left (positive) & right (negative)
-                  self.axe_HD_new[1] = scale * round(absevent.event.value/max_val, 5) # Max value: 32768
+                  self.axe_HD_new[1] = -scale * round(absevent.event.value/max_val, 5) # Max value: 32768
                 #-----------z-axis------------- 
                 if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_RZ":  # R2 (positive)
                   self.axe_HD_new[2] = scale * round(absevent.event.value/max_L2_R2, 5) # Max value: 255
@@ -381,6 +383,9 @@ class Gamepad(Thread):
       self.modeHDmsg = 2
       print('DIR')
       self.modeHD = 'DIR'  
+
+    # ====== DISPLAY NEW HD MODE ON GUI ======
+    self.cs.controller.sendJson(Task.MAINTENANCE)
 
     self.axe_HD_old = clear_tab(self.axe_HD_old)
     self.axe_HD_new = clear_tab(self.axe_HD_new)

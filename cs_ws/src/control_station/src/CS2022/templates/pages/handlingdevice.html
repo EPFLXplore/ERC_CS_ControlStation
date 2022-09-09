@@ -414,7 +414,7 @@
 
 							<div class="joint-data-pos" style="display: grid;" >
 								<div class="title-container">
-									<p class="data-title"> Joint Positions (rad): </p>
+									<p class="data-title"> Joint Positions (deg): </p>
 								</div>
 							
 								<div class="container" style="display: grid; margin-left: 50px;">
@@ -449,7 +449,7 @@
 										<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
 											<p id="joint5_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
 											<p class="data" style="margin-right: 10px; margin-bottom: 0px;">0</p>
-											<input type="range" min="0" max="100" value="50" style="width: 400px;">
+											<input id="joint5_slider" type="range" min="0" max="100" value="50" style="width: 400px;">
 											<p class="data" style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">100</p>
 										</div>
 
@@ -547,25 +547,24 @@
 		);
 
 		chatSocket.onmessage = function (e) {
+
 			const data = JSON.parse(e.data);
 
 			/* display joint coordinates */
 			let coordinates = document.querySelectorAll('#joint1_coord, #joint2_coord, #joint3_coord, #joint4_coord, #joint5_coord, #joint6_coord, #joint7_coord');
 			let i = 0;
 			coordinates.forEach(coord => {
-				let coordvalue = (Math.round((data.joint_pos[i] + Number.EPSILON) * 100) / 100) * 180 / Math.PI;
-				document.getElementById(coord.id).innerHTML = coordvalue;
-				document.getElementById('joint' + i + '_slider').value = coordvalue;
+				document.getElementById(coord.id).innerHTML = (Math.round((data.joint_pos[i] + Number.EPSILON) * 180 / Math.PI * 100) / 100);
 				i += 1;
+				
 			})
 
-			/* display joint velocities */
-			let velocities = document.querySelectorAll('#joint1_vel, #joint2_vel, #joint3_vel, #joint4_vel, #joint5_vel, #joint6_vel, #joint7_vel');
-			let j = 0;
-			velocities.forEach(vel => {
-				document.getElementById(vel.id).innerHTML = Math.round((data.joint_vel[j] + Number.EPSILON) * 100) / 100;
-				j += 1;
-			})
+			let sliders = document.querySelectorAll('#joint1_slider, #joint2_slider, #joint3_slider, #joint4_slider, #joint5_slider, #joint6_slider, #joint7_slider');
+			let f = 0;
+			sliders.forEach(slider => {
+				document.getElementById(slider.id).value = (Math.round((data.joint_pos[f] + Number.EPSILON) * 180 / Math.PI * 100) / 100);
+				f += 1;
+			 })
 
 			/* display ToF */
 			document.getElementById('tof').innerHTML = Math.round((data.tof + Number.EPSILON) * 100) / 100000 //divide by 100000 to convert into meters
@@ -574,7 +573,6 @@
 			let elements = document.querySelectorAll("td:not(.element-title)");
 			let k = 0;
 			elements.forEach(e => {
-				console.log(e.innerHTML)
 				e.innerHTML = data.detected_elems[k];
 				//console.log(Math.round((data.detected_elems[k] + Number.EPSILON) * 100) / 100)
 				
