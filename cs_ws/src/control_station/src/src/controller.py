@@ -91,8 +91,8 @@ class Controller():
         '''
         tl = twist.linear
         ta = twist.angular
-        rospy.loginfo("Linear %d %d %d", tl.x, tl.y, tl.z)
-        rospy.loginfo("Angular %d %d %d", ta.x, ta.y, ta.z)
+        #rospy.loginfo("Linear %d %d %d", tl.x, tl.y, tl.z)
+        #rospy.loginfo("Angular %d %d %d", ta.x, ta.y, ta.z)
 
 
     # callback when received a confirmation from rover after sending an instruction
@@ -470,7 +470,8 @@ class Controller():
                 'linVel'    : nav.getLinVel(), 
                 'angVel'    : nav.getAngVel(),
                 'joint_pos' : hd.get_joint_positions(),
-                'joint_vel' : hd.get_joint_velocities()
+                'joint_vel' : hd.get_joint_velocities(),
+                'hd_mode'   : self.gpad.modeHD
             }
 
         # Info to display on NAVIGATION tab

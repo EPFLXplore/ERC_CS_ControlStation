@@ -249,7 +249,89 @@
 
 						<div class="settings-bottom">
 
-							<div id="interactive_box" class="settings">
+							<div class="joint-data-pos" style="display: grid;">
+
+								<div class="title-container">
+									<p class="data-title"> Joint Velocities (m/s): </p>
+								</div>
+
+								<div class="container" >
+									<p id="joint1_vel" class="data" style="float: left;"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint2_vel" class="data" style="float: left;"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint3_vel" class="data" style="float: left;"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint4_vel" class="data" style="float: left;"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint5_vel" class="data" style="float: left;"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint6_vel" class="data" style="float: left;"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint7_vel" class="data" style="float: left;"> 0 </p>
+									<p class="data"> &#xA0; </p>
+								</div>
+							</div>
+
+							<div class="joint-data-pos" style="display: grid;" >
+								<div class="title-container">
+									<p class="data-title"> Joint Positions (deg): </p>
+								</div>
+							
+								<div class="container" style="display: grid; margin-left: 50px;">
+										<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
+											<p id="joint1_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
+											<p class="data" style="margin-right: 10px; margin-bottom: 0px;">0</p>
+											<input id="joint1_slider" type="range" min="0" max="100" value="50" style="width: 400px;">
+											<p class="data" style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">100</p>
+										</div>
+
+										<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
+											<p id="joint2_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
+											<p class="data" style="margin-right: 10px; margin-bottom: 0px;">0</p>
+											<input id="joint2_slider" type="range" min="0" max="100" value="50" style="width: 400px;">
+											<p class="data" style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">100</p>
+										</div>
+
+										<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
+											<p id="joint3_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
+											<p class="data" style="margin-right: 10px; margin-bottom: 0px;">0</p>
+											<input id="joint3_slider" type="range" min="0" max="100" value="50" style="width: 400px;">
+											<p class="data" style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">100</p>
+										</div>
+
+										<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
+											<p id="joint4_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
+											<p class="data" style="margin-right: 10px; margin-bottom: 0px;">0</p>
+											<input id="joint4_slider" type="range" min="0" max="100" value="50" style="width: 400px;">
+											<p class="data" style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">100</p>
+										</div>
+
+										<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
+											<p id="joint5_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
+											<p class="data" style="margin-right: 10px; margin-bottom: 0px;">0</p>
+											<input id="joint5_slider" type="range" min="0" max="100" value="50" style="width: 400px;">
+											<p class="data" style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">100</p>
+										</div>
+
+										<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
+											<p id="joint6_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
+											<p class="data" style="margin-right: 10px; margin-bottom: 0px;">0</p>
+											<input id="joint6_slider" type="range" min="0" max="100" value="50" style="width: 400px;">
+											<p class="data" style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">100</p>
+										</div>
+
+										<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
+											<p id="joint7_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
+											<p class="data" style="margin-right: 10px; margin-bottom: 0px;">0</p>
+											<input id="joint7_slider" type="range" min="0" max="100" value="50" style="width: 400px;">
+											<p class="data" style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">100</p>
+										</div>
+										
+								</div>
+							</div> 
+
+							<!-- <div id="interactive_box" class="settings">
 								<div id="direct_box" class="settings_box">
 									<div class="settings-title-box">
 										<p class="settings-title">ENCODERS DATA:</p>
@@ -276,14 +358,20 @@
 										</ul>
 									</div>
 								</div>
-							</div>
-							<div class="state-button-container">
+							</div> -->
+							<div class="state-button-container"; style="display: -webkit-box;">
 								<form  class="state-button-form" method="POST" style="width: 250px; height:30px;">
 									{% csrf_token %}
 									<input  id="capture_image" class="state-button" type="submit" value="CAPTURE IMAGES">
 									
 								</form>
+								<p id="mode-title" style="color: white; padding-left: 10px;">HD Mode : </p>
+								<p id="hd_man_mode" style="color: white;">DIR</p>
+								<div class="mode-container" style="float:left;">
+									
+								</div>
 							</div>
+							
 							<script>
 
 							document.getElementById('camera_1').setAttribute( 'src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==' );
@@ -293,7 +381,7 @@
 				
 							// ==============================================================================================================================================================
 
-								
+							
 							
 						</script>
 						
@@ -361,21 +449,32 @@
 			document.getElementById('linVel').innerHTML     = Math.round((data.linVel + Number.EPSILON)   * 100) / 100
 			document.getElementById('angVel').innerHTML     = Math.round((data.angVel + Number.EPSILON)   * 100) / 100
 
-			document.getElementById('joint1_coord').innerHTML = Math.round((data.joint_pos[0] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint2_coord').innerHTML = Math.round((data.joint_pos[1] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint3_coord').innerHTML = Math.round((data.joint_pos[2] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint4_coord').innerHTML = Math.round((data.joint_pos[3] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint5_coord').innerHTML = Math.round((data.joint_pos[4] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint6_coord').innerHTML = Math.round((data.joint_pos[5] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint7_coord').innerHTML = Math.round((data.joint_pos[6] + Number.EPSILON) * 100) / 100
+			console.log(data.hd_mode)
+			document.getElementById('hd_man_mode').innerHTML = data.hd_mode
 
-			document.getElementById('joint1_vel').innerHTML = Math.round((data.joint_vel[0] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint2_vel').innerHTML = Math.round((data.joint_vel[1] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint3_vel').innerHTML = Math.round((data.joint_vel[2] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint4_vel').innerHTML = Math.round((data.joint_vel[3] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint5_vel').innerHTML = Math.round((data.joint_vel[4] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint6_vel').innerHTML = Math.round((data.joint_vel[5] + Number.EPSILON) * 100) / 100
-			document.getElementById('joint7_vel').innerHTML = Math.round((data.joint_vel[6] + Number.EPSILON) * 100) / 100
+			/* display joint velocities */
+			let velocities = document.querySelectorAll('#joint1_vel, #joint2_vel, #joint3_vel, #joint4_vel, #joint5_vel, #joint6_vel, #joint7_vel');
+			let j = 0;
+			velocities.forEach(vel => {
+				document.getElementById(vel.id).innerHTML = Math.round((data.joint_vel[j] + Number.EPSILON) * 100) / 100;
+				j += 1;
+			})
+
+			/* display joint coordinates */
+			let coordinates = document.querySelectorAll('#joint1_coord, #joint2_coord, #joint3_coord, #joint4_coord, #joint5_coord, #joint6_coord, #joint7_coord');
+			let i = 0;
+			coordinates.forEach(coord => {
+				document.getElementById(coord.id).innerHTML = (Math.round((data.joint_pos[i] + Number.EPSILON) * 180 / Math.PI * 100) / 100);
+				i += 1;
+				
+			})
+
+			let sliders = document.querySelectorAll('#joint1_slider, #joint2_slider, #joint3_slider, #joint4_slider, #joint5_slider, #joint6_slider, #joint7_slider');
+			let f = 0;
+			sliders.forEach(slider => {
+				document.getElementById(slider.id).value = (Math.round((data.joint_pos[f] + Number.EPSILON) * 180 / Math.PI * 100) / 100) * 180 / Math.PI;
+				f += 1;
+			 })
 	
 		};
 	
