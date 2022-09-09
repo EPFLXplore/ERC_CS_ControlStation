@@ -214,7 +214,7 @@ class Controller():
         twistAng = data.twist.twist.angular
         nav.setAngVel([twistAng.x, twistAng.y, twistAng.z])
 
-        rospy.loginfo("linvel %d", nav.getLinVel())
+        #rospy.loginfo("linvel %d", nav.getLinVel())
 
         self.sendJson(Task.NAVIGATION)
             
@@ -534,7 +534,7 @@ class Controller():
         # send info to front-end
         message = json.dumps(Dictionary)
         if(socket.connected):
-            print("sent")
+            #print("sent")
             socket.send('%s' % message)
 
             

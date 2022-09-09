@@ -396,7 +396,7 @@
 										/* sending goal coordinates to back-end*/
 										let formData = new FormData();
 										formData.append('x',  x);
-										formData.append('y',  y);
+										formData.append('y',  -y);
 										formData.append('yaw', document.querySelector('#yaw').value);
 
 										document.getElementById("xgoal").innerHTML = document.querySelector("#x").value;
@@ -566,6 +566,7 @@
 			chatSocket.onmessage = function(e) {
 				const data = JSON.parse(e.data);
 
+				console.log("yow")
 				// UPDATING VALUES COMING FROM ROVER/BACK-END
 				document.getElementById('Z_coord').innerHTML    = Math.round((data.z + Number.EPSILON)        * 100) / 100
 				document.getElementById('YAW_coord').innerHTML  = Math.round((data.yaw + Number.EPSILON)      * 100) / 100
