@@ -19,7 +19,6 @@
 # Libraries
 
 import os
-from turtle import st
 import rospy
 import django
 

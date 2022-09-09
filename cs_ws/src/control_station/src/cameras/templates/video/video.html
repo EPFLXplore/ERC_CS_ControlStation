@@ -1,38 +1,253 @@
+{% load static %}
+
 <!--video.html-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Video</title>
+    <link href="{% static 'manualcontrol/manualcontrol.css' %}" rel="stylesheet">
 </head>
 <body>
 
-<div>
-    <h1>Video</h1>
-<div>
-<div>
-    <img id="resImg" src="" />
+{{ v_name|json_script:"v-name"}}
+
+<div class="row">
+    <div class="column" style="height: 50%;">
+        
+      <img id="resImg"src="{% static 'common/logothumbnail.png' %}" width="50%">
+      <img id="resImg2"src="{% static 'common/logothumbnail.png' %}"width="50%">
+      
+
+    </div>
+    <div class="column">
+      <img id="resImg3" src="{% static 'common/logothumbnail.png' %}" width="50%">
+      <img id="resImg4" src="{% static 'common/logothumbnail.png' %}" width="50%"> 
+      
+
+    </div>
+    <div class="column">
+        <img id="resImg7" src="{% static 'common/logothumbnail.png' %}" width="50%">
+        <img id="resImg5" src="{% static 'common/logothumbnail.png' %}" width="50%"> 
+        
+  
+      </div>
+      <div class="column">
+        <img id="resImg6" src="{% static 'common/logothumbnail.png' %}" width="50%">
+        <img id="resImg8" src="{% static 'common/logothumbnail.png' %}" width="50%"> 
+        
+  
+      </div>
+    <!-- <script>
+        document.querySelector('#camera_3').onclick = function() {
+
+        
+
+            var src1 = document.querySelector("#camera_1").src
+            document.querySelector("#camera_1").src = document.querySelector("#camera_3").src
+            document.querySelector("#camera_3").src = src1
+
+        }		
+    </script> -->
+    
+  </div>
+
+<!-- <div>
+    <h1>CAMERAS</h1>
 </div>
 
+<div>
+    <img id="resImg" src="" />
+</div> -->
+
+<!-- ============================================================================ -->
 <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js" ></script>
+
 <script>
+        const vname = JSON.parse(document.getElementById('v-name').textContent);
+
+        console.log(vname);
+
+
         let ws = new WebSocket(
             'ws://'
             + window.location.host
-            + '/ws/video/'
-            + 'wms'
+            // + '172.20.10.7:8000'
+            // + '/ws/video1'
+            + '/ws/cameras/'
+            + vname
+            // + '/wms'
             + '/'
         );
 
         ws.onmessage = function(evt) {
             v_data = JSON.parse(evt.data);
-            $("#resImg").attr("src", v_data.message);
+            // $("#resImg").attr("src", v_data.message);
+            document.getElementById('resImg').src = v_data.message;
+            // $("#resImg2").attr("src", v_data.message);
+            // $("#resImg3").attr("src", v_data.message);
+            // $("#resImg4").attr("src", v_data.message);
             
         };
 
-        ws.onclose = function(evt) {
-            console.log("Connection closed.");
+
+        let ws2 = new WebSocket(
+            'ws://'
+            + window.location.host
+            // + '172.20.10.7:8000'
+            // + '/ws/video1'
+            + '/ws/cameras/video2'
+            // + vname
+            // + '/wms'
+            + '/'
+        );
+
+        ws2.onmessage = function(evt) {
+            v_data = JSON.parse(evt.data);
+            // $("#resImg").attr("src", v_data.message);
+            document.getElementById('resImg2').src = v_data.message;
+            // $("#resImg2").attr("src", v_data.message);
+            // $("#resImg3").attr("src", v_data.message);
+            // $("#resImg4").attr("src", v_data.message);
+            
         };
+
+
+        let ws3 = new WebSocket(
+            'ws://'
+            + window.location.host
+            // + '172.20.10.7:8000'
+            // + '/ws/video1'
+            + '/ws/cameras/video3'
+            // + vname
+            // + '/wms'
+            + '/'
+        );
+
+        ws3.onmessage = function(evt) {
+            v_data = JSON.parse(evt.data);
+            // $("#resImg").attr("src", v_data.message);
+            document.getElementById('resImg3').src = v_data.message;
+            // $("#resImg2").attr("src", v_data.message);
+            // $("#resImg3").attr("src", v_data.message);
+            // $("#resImg4").attr("src", v_data.message);
+            
+        };
+
+
+        let ws4 = new WebSocket(
+            'ws://'
+            + window.location.host
+            // + '172.20.10.7:8000'
+            // + '/ws/video1'
+            + '/ws/cameras/video4'
+            // + vname
+            // + '/wms'
+            + '/'
+        );
+
+        ws4.onmessage = function(evt) {
+            v_data = JSON.parse(evt.data);
+            // $("#resImg").attr("src", v_data.message);
+            document.getElementById('resImg4').src = v_data.message;
+            // $("#resImg2").attr("src", v_data.message);
+            // $("#resImg3").attr("src", v_data.message);
+            // $("#resImg4").attr("src", v_data.message);
+            
+        };
+
+
+        let ws5 = new WebSocket(
+            'ws://'
+            + window.location.host
+            // + '172.20.10.7:8000'
+            // + '/ws/video1'
+            + '/ws/cameras/video5'
+            // + vname
+            // + '/wms'
+            + '/'
+        );
+
+        ws5.onmessage = function(evt) {
+            v_data = JSON.parse(evt.data);
+            // $("#resImg").attr("src", v_data.message);
+            document.getElementById('resImg5').src = v_data.message;
+            // $("#resImg2").attr("src", v_data.message);
+            // $("#resImg3").attr("src", v_data.message);
+            // $("#resImg4").attr("src", v_data.message);
+            
+        };
+
+
+        let ws6 = new WebSocket(
+            'ws://'
+            + window.location.host
+            // + '172.20.10.7:8000'
+            // + '/ws/video1'
+            + '/ws/cameras/video6'
+            // + vname
+            // + '/wms'
+            + '/'
+        );
+
+        ws6.onmessage = function(evt) {
+            v_data = JSON.parse(evt.data);
+            // $("#resImg").attr("src", v_data.message);
+            document.getElementById('resImg6').src = v_data.message;
+            // $("#resImg2").attr("src", v_data.message);
+            // $("#resImg3").attr("src", v_data.message);
+            // $("#resImg4").attr("src", v_data.message);
+            
+        };
+
+
+        let ws7 = new WebSocket(
+            'ws://'
+            + window.location.host
+            // + '172.20.10.7:8000'
+            // + '/ws/video1'
+            + '/ws/cameras/video7'
+            // + vname
+            // + '/wms'
+            + '/'
+        );
+
+        ws7.onmessage = function(evt) {
+            v_data = JSON.parse(evt.data);
+            // $("#resImg").attr("src", v_data.message);
+            document.getElementById('resImg7').src = v_data.message;
+            // $("#resImg2").attr("src", v_data.message);
+            // $("#resImg3").attr("src", v_data.message);
+            // $("#resImg4").attr("src", v_data.message);
+            
+        };
+
+
+        let ws8 = new WebSocket(
+            'ws://'
+            + window.location.host
+            // + '172.20.10.7:8000'
+            // + '/ws/video1'
+            + '/ws/cameras/video8'
+            // + vname
+            // + '/wms'
+            + '/'
+        );
+
+        ws8.onmessage = function(evt) {
+            v_data = JSON.parse(evt.data);
+            // $("#resImg").attr("src", v_data.message);
+            document.getElementById('resImg8').src = v_data.message;
+            // $("#resImg2").attr("src", v_data.message);
+            // $("#resImg3").attr("src", v_data.message);
+            // $("#resImg4").attr("src", v_data.message);
+            
+        };
+
+
+        // ws.onclose = function(evt) {
+        //     console.log("Connection closed.");
+        // };
 
 
 </script>
