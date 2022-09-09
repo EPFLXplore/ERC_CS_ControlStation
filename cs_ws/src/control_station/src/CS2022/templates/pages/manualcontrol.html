@@ -199,7 +199,7 @@
 
 					<div class="bottom-left">
 					
-						<img id="camera_2" src="{% static 'common/logothumbnail.png' %}" height="100%" width="100%" style="transform: rotateX(180deg)">
+						<img id="camera_2" src="{% static 'common/logothumbnail.png' %}" height="100%" width="100%" style=" transform: rotateY(180deg) rotateX(180deg);">
 						<p id="envmap-title">CAMERA 2</p>
 
 					</div>
@@ -330,48 +330,11 @@
 										</div>
 										
 								</div>
+								<img id="camera_3" src="{% static 'common/logothumbnail.png' %}" height="60%" width="100%">
+								<p id="envmap-title">CAMERA 1</p>
 							</div> 
 
-							<!-- <div id="interactive_box" class="settings">
-								<div id="direct_box" class="settings_box">
-									<div class="settings-title-box">
-										<p class="settings-title">ENCODERS DATA:</p>
-									</div>
-									<div class="encoders">
-										<ul class="joints" >
-											<li id="joint1_coord">e1: </li>
-											<li id="joint2_coord">e2: </li>
-											<li id="joint3_coord">e3: </li>
-											<li id="joint4_coord">e4: </li>
-											<li id="joint5_coord">e5: </li>
-											<li id="joint6_coord">e6: </li>
-											<li id="joint7_coord">e7: </li>
-										</ul>
-
-										<ul class="joints" >
-											<li id="joint1_vel">e1: </li>
-											<li id="joint2_vel">e2: </li>
-											<li id="joint3_vel">e3: </li>
-											<li id="joint4_vel">e4: </li>
-											<li id="joint5_vel">e5: </li>
-											<li id="joint6_vel">e6: </li>
-											<li id="joint7_vel">e7: </li>
-										</ul>
-									</div>
-								</div>
-							</div> -->
-							<div class="state-button-container"; style="display: -webkit-box;">
-								<form  class="state-button-form" method="POST" style="width: 250px; height:30px;">
-									{% csrf_token %}
-									<input  id="capture_image" class="state-button" type="submit" value="CAPTURE IMAGES">
-									
-								</form>
-								<p id="mode-title" style="color: white; padding-left: 10px;">HD Mode : </p>
-								<p id="hd_man_mode" style="color: white;">DIR</p>
-								<div class="mode-container" style="float:left;">
-									
-								</div>
-							</div>
+							
 							
 							<script>
 
@@ -472,6 +435,14 @@
             // + 'wms'
             // + '/'
         );
+		let ws3 = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/cameras/'
+			+ 'video/'
+            // + 'wms'
+            // + '/'
+        );
 
 
         ws.onmessage = function(evt) {
@@ -486,6 +457,13 @@
 		ws2.onmessage = function(evt) {
             v_data = JSON.parse(evt.data);
             document.getElementById('camera_2').src = v_data.message;
+			
+
+            
+        };
+		ws3.onmessage = function(evt) {
+            v_data = JSON.parse(evt.data);
+            document.getElementById('camera_3').src = v_data.message;
 			
 
             

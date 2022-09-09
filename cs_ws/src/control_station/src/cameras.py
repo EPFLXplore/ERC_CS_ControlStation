@@ -32,6 +32,8 @@ CAMERA3_WS_URL = 'ws://127.0.0.1:8000/ws/cameras/video3/'
 CAMERA4_WS_URL = 'ws://127.0.0.1:8000/ws/cameras/video4/'
 CAMERA5_WS_URL = 'ws://127.0.0.1:8000/ws/cameras/video5/'
 CAMERA6_WS_URL = 'ws://127.0.0.1:8000/ws/cameras/video6/'
+CAMERA7_WS_URL = 'ws://127.0.0.1:8000/ws/cameras/video7/'
+CAMERA8_WS_URL = 'ws://127.0.0.1:8000/ws/cameras/video8/'
 
 ws1 = websocket.WebSocket()
 ws1.connect(CAMERA1_WS_URL)
@@ -51,6 +53,12 @@ ws5.connect(CAMERA5_WS_URL)
 ws6 = websocket.WebSocket()
 ws6.connect(CAMERA6_WS_URL)
 
+ws7 = websocket.WebSocket()
+ws7.connect(CAMERA7_WS_URL)
+
+ws8 = websocket.WebSocket()
+ws8.connect(CAMERA7_WS_URL)
+
 encode_param=[int(cv2.IMWRITE_JPEG_QUALITY),95]
 
 bridge = CvBridge()  # bridge between OpenCV and ROS
@@ -62,6 +70,7 @@ im_3 = np.zeros((300, 300, 3))
 im_4 = np.zeros((300, 300, 3))
 im_5 = np.zeros((300, 300, 3))
 im_6 = np.zeros((300, 300, 3))
+im_7 = np.zeros((300, 300, 3))
 
 # ==================================================================
 # callback functions definition
@@ -167,6 +176,25 @@ def display_cam_6(msg):
     ws6.send("data:image/jpg;base64,"+ img)
 
 
+def display_cam_7(msg):
+    global im7 
+    im7 = bridge.compressed_imgmsg_to_cv2(msg)
+
+    img = encode_stream(im7)
+    
+    ws7.send("data:image/jpg;base64,"+ img)
+
+
+def display_cam_8(msg):
+    global im8 
+    im8 = bridge.compressed_imgmsg_to_cv2(msg)
+
+    img = encode_stream(im8)
+    
+    ws8.send("data:image/jpg;base64,"+ img)
+
+
+
 
 
 # ==================================================================
@@ -177,8 +205,9 @@ rospy.init_node("cameras_reciever", anonymous=False)
 # ims = images()
 
 # ROS subscribers
-# rospy.Subscriber('/intel_D405/color_image/compressed',                CompressedImage, display_cam_1) 
 
+rospy.Subscriber('/intel_D405/color_image/compressed',               CompressedImage, display_cam_7) 
+rospy.Subscriber('/intel_D405/color_image_detection/compressed',     CompressedImage, display_cam_8)
 rospy.Subscriber('camera_1',                CompressedImage, display_cam_1 )
 rospy.Subscriber('camera_2',                CompressedImage, display_cam_2 )
 rospy.Subscriber('camera_3',                CompressedImage, display_cam_3 )
