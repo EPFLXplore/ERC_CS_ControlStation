@@ -72,12 +72,9 @@
 						<p style="color: white; margin-top: 15px; font-weight: bold;">ELAPSED TIME</p>
 						<p id="elapsed" style="color: white; margin-bottom: 10px; ">00 : 00 : 00</p>
 
-
-
 						<img src="{% static 'common/ok.png' %}" alt="" width="48" height="48" style="margin-top: 10px; margin-right: 10px; opacity: 1;">
 						<img src="{% static 'common/warning.png' %}" alt="" width="40" height="40" style="margin-top: 10px; opacity: 0.2;">
 						<img src="{% static 'common/error.png' %}" alt="" width="42" height="42" style="margin-top: 10px; opacity: 0.2; margin-left:15px;">
-
 						
 					</div>
 				</div>
@@ -117,7 +114,6 @@
 						</form>
 					</div>
 					<script>
-				
 						document.querySelector("#launch-button").addEventListener("click", event => {
 							event.preventDefault();
 			
@@ -132,7 +128,6 @@
 							elem3.style.opacity = 0.2;
 							elem4.style.opacity = 0.2;
 							elem5.style.opacity = 0.2;
-			
 			
 							let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
 							let request = new Request('launch/', {method: 'POST',
@@ -168,17 +163,23 @@
 							<div id="canvas_container" class="top-left">
 								<canvas id="navmap" width="1400" height="810" ></canvas>
 								<canvas id="navmap_path" width="1400" height="810" ></canvas>
-								<!--new-->
 								<canvas id="navmap_position" width="1400" height="810" ></canvas>								
 							</div>
 							
+							<!-- ========================================================== -->
+							<!-- IMPORTANT: AXES OF NAVMAP -> Y points down, X points right -->
+							<!--			AXES OF ROVER  -> Y points left, X points up    -->
+							<!-- ========================================================== -->
+
 							<script>
+								// create navigation map canvas
 								const map = document.getElementById('navmap'); 
 								const myContext = map.getContext('2d');
 								var imageObj = new Image();
 								var width_map  = 950
 								var height_map = 788.3
 
+								// starting points in pixels on the nav map
 								const X_START_PX = 324
 								const Y_START_PX = 711 
 
@@ -195,39 +196,26 @@
 								imageObj.onload = function() {
 									// nav map background 
 									myContext.drawImage(imageObj, 0, 0, width_map, height_map);
-									//var x_start = 324//330; 
-									//var y_start = 711 //792.74;//76.99; 
-									// staring point (light green rectangle)
+
+									// starting point (light green rectangle)
 									myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
 									myContext.fillRect(X_START_PX, Y_START_PX, 10, 10);  // x, y, width, height
 
-									//myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
+
+									/* ===== DRAWING THE GRID + AXES ON THE NAV MAP ===== */
+									// https://usefulangle.com/post/19/html5-canvas-tutorial-how-to-draw-graphical-coordinate-system-with-grids-and-axis 
+									
 									myContext.fillStyle = 'rgba(247, 202, 24, 1)'; 
 
-									// triangle 
-									/*myContext.beginPath();
-									myContext.moveTo(10, 50);
-									myContext.lineTo(5, 75);
-									myContext.lineTo(15, 75);*/
-									
-									/*myContext.beginPath();
-									myContext.moveTo(x_start, y_start-15);
-									myContext.lineTo(x_start - 5, y_start);
-									myContext.lineTo(x_start + 5, y_start);
-									myContext.fill();*/
-
-									// move cursor to the staring point, to begin drawing line 
+									// move cursor to the starting point, to begin drawing line 
 									pathContext.beginPath(); 
 									pathContext.moveTo(X_START_PX, Y_START_PX); // first line => moveTo()
-
-
 
 									var grid_size = 21.27;
 									var x_axis_distance_grid_lines = 33;
 									var y_axis_distance_grid_lines = 15;
 									var x_axis_starting_point = { number: 1, suffix: '\u03a0' };
 									var y_axis_starting_point = { number: 1, suffix: '' };
-
 
 									// canvas width
 									var canvas_width = map.width-440;
@@ -240,7 +228,6 @@
 
 									// no of horizontal grid lines
 									var num_lines_y = Math.floor(canvas_width/grid_size);
-
 
 									// Draw grid lines along X-axis
 									for(var i=0; i<=num_lines_x; i++) {
@@ -264,8 +251,6 @@
 										myContext.stroke();
 									}
 
-
-
 									// Draw grid lines along Y-axis
 									for(i=0; i<=num_lines_y; i++) {
 										myContext.beginPath();
@@ -288,10 +273,9 @@
 										myContext.stroke();
 									}
 
-
 									myContext.translate(y_axis_distance_grid_lines*grid_size, x_axis_distance_grid_lines*grid_size);
 
-									// Ticks marks along the positive X-axis
+								// Ticks marks along the positive X-axis
 								for(i=1; i<(num_lines_y - y_axis_distance_grid_lines); i++) {
 									myContext.beginPath();
 									myContext.lineWidth = 1;
@@ -562,7 +546,7 @@
 			const START_Y_PX = Y_START_PX
 
 
-			// event listener => parse JSON msg 
+			// on receiving a json message from the back-end
 			chatSocket.onmessage = function(e) {
 				const data = JSON.parse(e.data);
 
@@ -574,70 +558,67 @@
 				document.getElementById('distToGoal').innerHTML = Math.round((data.distance + Number.EPSILON) * 100) / 100
 		 
 				// draw on nav map canvas (meters to navmap_size proportions)
-				var width_meters  = 47//38.0553; 
-				var height_meters = 39//32.58;
+				var width_meters  = 47
+				var height_meters = 39
 
+				// ======== CODE FOR THE TRIANGLE ON THE MAP + THE PATH IT TOOK ========
+				// html divs of x and y coordinates
 				var x_coord_meters = document.getElementById('X_coord'); 
 				var y_coord_meters = document.getElementById('Y_coord');
 
+				// previous values before receiving update from back-end
 				let x_prev = x_coord_meters.innerHTML;
 				let y_prev = y_coord_meters.innerHTML;
 
-				// TODO 
-				console.log(data.x);
-
+				// new current coordinates received from back-end
 				let x_next = Math.round((data.x + Number.EPSILON) * 100) / 100
 				let y_next = Math.round((data.y + Number.EPSILON) * 100) / 100
 
-				// TODO 
-				console.log(x_next);
-
 				// update only if coordinates changed 
+				//TODO yaw_prev != yaw_next
 				if(x_prev != x_next || y_prev != y_next) {
 					x_coord_meters.innerHTML = x_next
 					y_coord_meters.innerHTML = y_next
-
-					//myContext.drawImage(imageObj, 0, 0, width_map, height_map);
-
+					// ??????????? ASK EMMA
 					posContext.clearRect(0, 0, width_map, height_map); 
-
 					posContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
-					//myContext.fillRect(x_next, y_next, 10, 10);
-
+				
+					// new yaw value from back-end
 					let yaw = -(document.getElementById('YAW_coord').innerHTML) - Math.PI/2;
 					
-					//let x_px = START_X_PX + x_next*width_map/YARD_WIDTH_M;
-					//let y_px = START_Y_PX - y_next*height_map/YARD_LENGTH_M;
+					// transform the (x,y) coordinates from meters to distance in pixels (to display on screen)
 					let x_px = START_X_PX - y_next*width_map/YARD_WIDTH_M;
 					let y_px = START_Y_PX - x_next*height_map/YARD_LENGTH_M;
 
 					posContext.beginPath();
 
-					posContext.moveTo(15 * Math.cos(yaw) + x_px, 15 * Math.sin(yaw) + y_px);
-
+					// ======= code of the triangle representing the rover on the map =======
+					// the triangle is isosceles with two sides of length 15 and third side of length 10
 					let p1 = [0,0]
 					let p2 = [0,0]
+					// top point of the triangle
+					// here and later on, adding x_px and y_px is done to reposition the triangle correctly on the map (shifting)
+					posContext.moveTo(15 * Math.cos(yaw) + x_px, 15 * Math.sin(yaw) + y_px);
 
+					// p1 and p2 are the points of the two other angles of the triangle
 					if(Math.abs(yaw) == Math.PI/2) {
 						p1 = [x_px - 5, y_px]
 						p2 = [x_px + 5, y_px]
 					} else {
 						let tan = Math.round(Math.tan(yaw)*100)/100 // two decimal precision
 						let factor = Math.round(5/(Math.sqrt(tan*tan + 1)) * 100) / 100
-
+						
 						p1 = [factor*(-tan) + x_px, factor + y_px]
-						p2 = [factor*tan + x_px, -factor + y_px] // [(-factor)*(-tan), -factor]
+						p2 = [factor*tan + x_px, -factor + y_px]
 					}
 
-					// draw new trinagle 
+					// draw triangle 
+					// JS draws two lines from the moveTo() method (see above) to the points p1 and p2 and then fills up the drawn object
 					posContext.lineTo(p1[0], p1[1]);
 					posContext.lineTo(p2[0], p2[1]);
 					posContext.fill();
 
-					// draw new segment of path 
-					// pathContext.beginPath();
-					//pathContext.lineTo((x_next * width_map) / width_meters, (y_next * height_map) / height_meters); 
-
+					// draw new segment of the path 
 					pathContext.lineTo(x_px, y_px); 
 					pathContext.strokeStyle = "#008000"; 
 					pathContext.stroke();

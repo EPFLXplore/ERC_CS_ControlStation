@@ -29,22 +29,15 @@ import websocket
 import time
 
 from std_msgs.msg                         import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray, Header
-# TODO
-# from ros_package.src.custom_msg_python    import move_base_action_goal
-from geometry_msgs.msg                    import Pose, Point, Twist, PoseStamped, Quaternion
-from actionlib_msgs.msg                   import GoalID
+from geometry_msgs.msg  import Pose, Point, Twist, PoseStamped, Quaternion
+from actionlib_msgs.msg import GoalID
 from tf.transformations import quaternion_from_euler, euler_from_quaternion
 
-from Gamepad.Gamepad                      import Gamepad
-#from Gamepad.GamepadTest import Gamepad
-from src.model                            import *
+from Gamepad.Gamepad import Gamepad
+from src.model       import *
 
-# TODO new (Twist too)
-# from threading              import Thread
-from nav_msgs.msg           import Odometry
-from CS2022                 import models
-
-#from src_ros_msg.custom_msg_python.msg import move_base_action_goal
+from nav_msgs.msg import Odometry
+from CS2022       import models
 
 #================================================================================
 # Webscokets for ASGI
@@ -57,7 +50,7 @@ MAN_WS_URL  = "ws://localhost:8000/ws/CS2022/manual/"
 HP_WS_URL   = "ws://localhost:8000/ws/CS2022/homepage/"
 TIME_WS_URL = "ws://localhost:8000/ws/CS2022/time/"
 
-
+# WEB SOCKETS used to publish info to front-end depending on the tab
 ws_nav  = websocket.WebSocket()
 ws_hd   = websocket.WebSocket()
 ws_sc   = websocket.WebSocket()
@@ -95,12 +88,8 @@ class Controller():
         #rospy.loginfo("Angular %d %d %d", ta.x, ta.y, ta.z)
 
 
-    # callback when received a confirmation from rover after sending an instruction
+    # receiving a confirmation from rover after sending an instruction
     def rover_confirmation(self, txt):
-        '''
-            receives 
-            rover confirmation
-        '''
         if(self.cs.rover.getInWait()):
             rospy.loginfo("Rover Confirmation: %s\n", txt.data)
             self.cs.rover.setReceived(True)
@@ -108,13 +97,8 @@ class Controller():
             rospy.loginfo("Received after timeout: %s\n", txt.data)
 
     # receive info on progress of task (SUCCESS/FAIL)
+    # TODO HASN'T BEEN USED ONCE => NEED TO TELL OTHER SUBSYSTEMS TO PUBLISH ON TaskProgress
     def task_progress(self, num):
-        '''
-            Notified on whether task is a:
-            failure (0)
-            success (1) 
-            checkpoint (2)
-        '''
         val = num.data
         if (0 <= val and val < 3):
             TaskProgress.objects.update_or_create(name="TaskProgress", defaults={'state': val})
@@ -125,11 +109,13 @@ class Controller():
 
     # ========= SCIENCE CALLBACKS ========= 
 
-    # callback when receiving tube humidity from SC
+    # receiving tube humidity from SC
     def sc_humidity(self, hum):
         self.cs.rover.SC.setTubeHum(hum.data)
+        # publish to front-end
+        self.sendJson(Task.SCIENCE)
 
-    # receiving information on SC state
+    # receiving info from SC bay + state of SC (all in the form of Strings)
     def sc_text_info(self, info):
         '''
             info on what is going on in the Science Bay:
@@ -141,6 +127,7 @@ class Controller():
         #Science.objects.update_or_create(name="Science", defaults = {'sc_text': str})
         rospy.loginfo("Science: " + str)
         self.cs.rover.SC.addInfo(str)
+        # publish to front-end
         self.sendJson(Task.SCIENCE)
 
 
@@ -154,11 +141,12 @@ class Controller():
     def sc_params(self, arr):
         rospy.loginfo(arr)
         self.cs.CS_confirm_pub.publish(True)
-        #self.cs.rover.SC.deSerializeState(arr.data)
         rospy.loginfo(arr.data)
         self.cs.rover.SC.setParams(arr.data)
+        # publish to front-end
         self.sendJson(Task.SCIENCE)
 
+    # receiving an image from science bay after taking a picture
     def sc_image(self, im):
         self.cs.CS_confirm_pub.publish(True)
         self.cs.rover.SC.addImage(im)
@@ -166,26 +154,25 @@ class Controller():
 
     # ========= HD CALLBACKS ========= 
 
-    # TODO
     # receive: [id, x, y, z, a, b, c]    (x,y,z) --> translations and (a,b,c) --> rotations
     def hd_detected_element(self, arr):
         elements = arr.data
         self.cs.rover.HD.setDetectedElement(elements)
 
         rospy.loginfo("received HD element info [%d, %d, %d, %d, %d, %d, %d]", elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6])
-
+        # publish to front-end
         self.sendJson(Task.MAINTENANCE)
         
     # receive: joint telemetry (info on angles and velocity of joints)
     def hd_telemetry(self, jointstate):
         self.cs.rover.HD.set_joint_telemetry(jointstate)
-        #pos = jointstate.position
-        #rospy.loginfo("displayed")
+        # publish to front-end
         self.sendJson(Task.MAINTENANCE)
 
     # receive: distance to element
     def hd_tof(self, val):
         self.cs.rover.HD.set_tof(val.data)
+        # publish to front-end
         self.sendJson(Task.MAINTENANCE)
 
 
@@ -216,6 +203,7 @@ class Controller():
 
         rospy.loginfo("linvel %d", nav.getLinVel())
 
+        # publish to front-end
         self.sendJson(Task.NAVIGATION)
             
 
@@ -223,18 +211,17 @@ class Controller():
     def exception_clbk(self, str): 
         val = str.data
         rospy.loginfo("Exception: " + val)
-        #Exception.objects.update_or_create(name="Exception", defaults={'string': val})
-        #e = models.Exception(string=val).save()
         self.cs.rover.addException(val)
 
+        # confirm msg reception to rover
         self.cs.CS_confirm_pub.publish(True)
-
+        # publish to front-end
         self.sendJson(Task.LOGS)
 
 
     # =================================================================================================================
 
-    # sends array: [task, instr]:
+    # sends array to rover: [task, instr]:
     #
     # TASK: 
     #       - Manual      = 1 
@@ -347,7 +334,7 @@ class Controller():
         pose.orientation.w = q[3]
 
         # -----------------------------------
-        
+        # publish goal to rover
         self.cs.Nav_Goal_pub.publish(PoseStamped(header = h, pose = pose))
 
 
@@ -412,7 +399,10 @@ class Controller():
         self.gpad.connect()
         self.gpad.run()
 
-    # turns off Gamepad's 'running' flag
+    # turns off Gamepad's 'running' flag => stops reading commands from the gamepad
+    # TODO this is not enough. When running manual and accidentally unplugging the joystick, 
+    # aborting didn't stop the gamepad from publishing the last remembered instruction
+    # the problem could come from the abort or due to how the gamepad was coded
     def abort_Manual(self):
         rospy.loginfo("\nAborting manual controls\n")
         self.gpad._running = False
@@ -422,6 +412,7 @@ class Controller():
     # TIMEOUT system
     # invoked after sending a message to the rover and expecting a confirmation
     def wait(self):
+        # see if any confirmation was received within 1 second
         start = time.time()
         while(not self.cs.rover.getReceived() and ((time.time() - start) < 1)): 
             continue
@@ -433,9 +424,7 @@ class Controller():
         
         self.cs.rover.setReceived(False)
 
-
-
-
+    # JSON msg describing the timer
     def elapsed_time(self, data):
         TimeDict = {
             'hor': data.data[0],
@@ -456,14 +445,11 @@ class Controller():
     def sendJson(self, subsyst):
 
         # Info to display on MANUAL tab
-        if(ws_man.connected):
+        if(ws_man.connected): # if a socket is connected it means that the concerned tab is opened
             socket = ws_man
 
             nav = self.cs.rover.Nav
             hd = self.cs.rover.HD
-
-            #mode = self.gpad.modeHD
-            #if(mode is None): mode = "None"
 
             pos = nav.getPos()
             Dictionary = {

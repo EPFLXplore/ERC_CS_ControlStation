@@ -138,10 +138,11 @@
 					</form>
 				</div>
 				<script>
-				
+					/* code when launching MANUAL */					
 					document.querySelector("#launch-button").addEventListener("click", event => {
 						event.preventDefault();
 		
+						// dim the states on top of the GUI and highlight Manual
 						var elem1 = document.getElementById('navigation-state');
 						var elem2 = document.getElementById('idle-state');
 						var elem3 = document.getElementById('hd-state');
@@ -154,7 +155,7 @@
 						elem4.style.opacity = 1;
 						elem5.style.opacity = 0.2;
 		
-		
+						// request back-end to launch manual
 						let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
 						let request = new Request("launch/", {method: 'POST',
 															body: '',
@@ -213,6 +214,7 @@
 					<div class="settings-container">
 						<div class="settings-top-bar">
 							<div class="currentpos-container">
+								<!-- ROVER POSITION -->
 								<div class="pos-title-c">
 									<p class="pos-title">CURRENT POSITION:</p>
 								</div>
@@ -231,15 +233,19 @@
 									</div>
 								</div>
 							</div>
+
+							<!-- ROVER VELOCITY -->
 							<div class="velocity-container">
 								<div class="velocity-title-c">
 									<p class="velocity-title">VELOCITY:</p>
 								</div>
 								<div class="velocity-type-container">
+									<!-- LINEAR VEL -->
 									<div class="velocity-type-c">
 										<p class="velocity-type">Linear:</p>
 										<p id="linVel" class="velocity">0.00</p>
 									</div>
+									<!-- ANGULAR VEL -->
 									<div class="velocity-type-c">
 										<p class="velocity-type">Angular:</p>
 										<p id="angVel" class="velocity">0.00</p>
@@ -251,6 +257,8 @@
 						<div class="settings-bottom">
 
 							<div class="joint-data-pos" style="display: grid;">
+
+								<!-- ======= JOINT VELOCITIES ======= -->
 
 								<div class="title-container">
 									<p class="data-title"> Joint Velocities (m/s): </p>
@@ -279,6 +287,8 @@
 									<p class="data-title"> Joint Positions (deg): </p>
 								</div>
 							
+								<!-- ======= DISPLAY THE JOINTS' ANGLES + SLIDERS FOR BETTER VISUALISATION OF THE LIMITS -->
+
 								<div class="container" style="display: grid; margin-left: 10px;">
 									<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
 										<p class="data" style="margin-right: 10px; margin-bottom: 0px;">-232</p>
@@ -331,13 +341,15 @@
 								<p id="envmap-title">CAMERA 1</p>
 							</div> 
 
-							
+							<!-- not used so do what you want-->
 							<div class="state-button-container"; style="display: -webkit-box;">
 								<form  class="state-button-form" method="POST" style="width: 250px; height:30px;">
 									{% csrf_token %}
 									<input  id="capture_image" class="state-button" type="submit" value="CAPTURE IMAGES">
 
 								</form>
+
+								<!-- display current HD mode: Direct, Debug, Inverse -->
 								<p id="mode-title" style="color: white; padding-left: 10px;">HD Mode : </p>
 								<p id="hd_man_mode" style="color: white;">DIR</p>
 								<div class="mode-container" style="float:left;">
@@ -382,17 +394,18 @@
 			+ '/'
 		);
 	
+		// on receiving json message from back-end
 		chatSocket.onmessage = function(e) {
 			const data = JSON.parse(e.data);
 			
 			console.log("debug")
-	
+			// update x and y coordinates + linear and angular velocities
 			document.getElementById('X_coord').innerHTML    = Math.round((data.x + Number.EPSILON)        * 100) / 100
 			document.getElementById('Y_coord').innerHTML    = Math.round((data.y + Number.EPSILON)        * 100) / 100
 			document.getElementById('linVel').innerHTML     = Math.round((data.linVel + Number.EPSILON)   * 100) / 100
 			document.getElementById('angVel').innerHTML     = Math.round((data.angVel + Number.EPSILON)   * 100) / 100
 
-			console.log(data.hd_mode)
+			// update hd mode
 			document.getElementById('hd_man_mode').innerHTML = data.hd_mode
 
 			/* display joint velocities */
@@ -412,6 +425,7 @@
 				
 			})
 
+			/* sliders to illustrate the joints' angle openings*/
 			let sliders = document.querySelectorAll('#joint1_slider, #joint2_slider, #joint3_slider, #joint4_slider, #joint5_slider, #joint6_slider');
 			let f = 0;
 			sliders.forEach(slider => {

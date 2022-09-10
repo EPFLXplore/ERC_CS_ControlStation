@@ -46,8 +46,11 @@ class Task(IntEnum):
     MAINTENANCE = 3
     SCIENCE     = 4
     WAITING     = 5
-    LOGS        = 6 #not really a task. Here just to display exceptions on GUI
+    LOGS        = 6 #not really a task. Here just to display exceptions on GUI (it was convenient ;))
 
+# =================================
+#              ROVER
+# =================================
 class Rover:
     '''
         Monitoring of the state of the rover
@@ -55,15 +58,20 @@ class Rover:
 
     def __init__(self):
 
+        # initialize each subsystem
         self.Nav = Navigation()
         self.HD  = HandlingDevice()
         self.SC  = Science()
         
-
+        # current rover FSM state
         self.__state    = Task.IDLE
+
+        # these two variables are useful in the wait() function of the controller
+        # TODO (i think it'd be better to initialise them in the controller)
         self.__inWait   = False
         self.__received = False
 
+        # array of infos on the exceptions thrown (in the form of a String)
         self.__exceptions = []
 
     #--------State--------
@@ -98,6 +106,10 @@ class Rover:
     def getExceptions(self):
         return self.__exceptions
 
+
+# =================================
+#            NAVIGATION
+# =================================
 class Navigation:
     '''
         Monitoring of the navigation Data
@@ -127,11 +139,16 @@ class Navigation:
         np.append(self.__goals, arr)
         self.incrementId()
     '''
+    # ---------GOAL----------
     def setGoal(self, arr):
         self.__goal[0] = arr[0]
         self.__goal[1] = arr[1]
         self.__goal[2] = arr[2]
 
+    def cancelGoal(self):
+        self.__goal = np.zeros(3)
+
+    # increase id number by 1 (should be used when defining a new goal in order to assign it a new id)
     def incrementId(self):
         self.__nextId += 1
 
@@ -157,9 +174,6 @@ class Navigation:
         len = len(self.__goals)
         if (id < 0 or id > len): raise ValueError("Invalid navigation goal id")
         np.delete(self.__goals, id, 0)'''
-
-    def cancelGoal(self):
-        self.__goal = np.zeros(3)
     
 
     # ========= TWIST DATA =========
@@ -188,17 +202,16 @@ class Navigation:
         return np.linalg.norm(self.__angVel)
     
 
-    #-------------------------------------
-
-    '''def distToGoal(self, id):
-        diff = self.getGoal(id) - self.getPos()
-        return np.linalg.norm(diff)'''
-
+    #----------Distance to Goal----------
     def distToGoal(self):
         pos = self.getPos()
         diff = np.array([self.getGoal()[0], self.getGoal()[1]]) - np.array([pos[0], pos[1]])
         return np.linalg.norm(diff)
 
+
+# ==================================
+#              SCIENCE 
+# ==================================
 class Science:
     '''
         Monitoring Science Data
@@ -207,26 +220,31 @@ class Science:
     def __init__(self):
         # humidity of the specific tube
         self.__tubeHum = -1
-        # total sample mass
-
-        '''self.__masses = np.zeros(3)
-        self.__tubes_closed = np.zeros(3)
-        self.__empty = np.zeros(3)
-        self.__trap_closed = True '''
-
+        
+        # parameters (11 elements):
+        #   - disc position
+        #   - whether tubes 0 to 2 are closed
+        #   - whether tubes 0 to 2 are empty
+        #   - whether trap is closed
+        #   - mass of each tube
         self.__params = []
 
-        self.__volumes = [-1,-1,-1] #[0,0,0]
-        self.__colors = [-1,-1,-1] #[0,0,0]
-        self.__particleSizes = [-1,-1,-1] #[0,0,0]
-        self.__densities = [-1,-1,-1] #[0,0,0]
+        # smthg to do with the picture analysis of images from the science bay
+        # unfortunately it wasn't implemented this year
+        self.__volumes = [0,0,0]
+        self.__colors = [0,0,0]
+        self.__particleSizes = [0,0,0]
+        self.__densities = [0,0,0]
 
         self.__images = []
 
+        # array of infos coming from the SC (in the form of Strings)
         self.__info = []
 
-
+        # variable to know what operation we'd like to execute on which tube: [op, tube]
+        # operations: 10 = sampling, 20 = rotation to camera, 30 = mass measurement
         self.__op_tube = np.zeros(2)
+        # command we'd like the science bay to execute (in the case of a tube-specific operation: op + tube)
         self.__cmd = -1
 
     #--------SC Mass--------
@@ -390,6 +408,9 @@ class Science:
         return self.__images
 
 
+# ==================================
+#          HANDLING DEVICE 
+# ==================================
 class HandlingDevice:
     '''
         Monitoring Handling Device Data
@@ -398,12 +419,17 @@ class HandlingDevice:
         # HD mode: Inverse, Direct, Debug TODO
         self.__hd_mode = -1
 
+        # id of element we'd like to manipulate (inverse autonomous)
         self.__elemId = -1
+        # ToF (time of flight)
         self.__distToElem = 0
 
+        # the 6 joints + gripper
         self.__joint_positions = [0,0,0,0,0,0,0]
         self.__joint_velocities = [0,0,0,0,0,0,0]
 
+        # matrix containing info on the movements each joint must do in order to reach an element
+        # [x,y,z,a,b,c] (3 translations and 3 rotations)
         self.__elements = np.zeros((NBR_BUTTONS, ELEMENT_DATA_SIZE)) # 14x6 matrix
 
     #--------HD mode--------
@@ -462,7 +488,6 @@ class HandlingDevice:
     #--------Detected Elements--------
     
     def setDetectedElement(self, arr):
-        print("AHHHHHHHHHHHHHHHHHHHH")
         data = np.zeros(ELEMENT_DATA_SIZE)
         for i in range(6):
             data[i] = arr[i+1]
@@ -493,15 +518,10 @@ def checkArgs(task, instr):
         if(task != 3 and task != 4): raise ValueError("This task can't run Retry")
 
 
-# TODO smthg to do with HD ... ?
-def extract_bit(index, num):
-    mask = 1
-    mask = mask << index
-    return num and mask
-
-
-
-
+# ==================================
+#        SC - PICTURE ANALYSIS 
+# ==================================
+# code to run picture analysis on images from the science bay, but I never used it and don't know how it works ;)
 class Model:
 
 
