@@ -96,7 +96,7 @@ class Navigation:
     def setCancelled(self, bool):
         self.__cancelled = bool
 
-    # callback for received PoseStamped from the CS
+    # -------callback for received PoseStamped from the CS-------
     def setGoal(self, goal):
 
         #self.__cancelled = False
@@ -105,19 +105,16 @@ class Navigation:
         self.rover.RoverConfirm_pub.publish("received NAV goal")
         self.__currId = goal.header.frame_id
         self.__currGoal = goal
-
-        #self.__currGoal = goal
-        #self.rover.Nav_Goal_pub.publish(goal)
         
-    # get goal id
+    # -------get goal id-------
     def getId(self):
         return self.__currId
 
-    # get the PoseStamped msg
+    # -------get the PoseStamped msg-------
     def getGoal(self):
         return self.__currGoal
 
-    # called when CS sends an ABORT instruction to NAV task --> it cancels the goal and the rover stops
+    # -------called when CS sends an ABORT instruction to NAV task --> it cancels the goal and the rover stops-------
     def cancelGoal(self):
         self.rover.RoverConfirm_pub.publish("received NAV goal cancellation")
 
@@ -127,14 +124,7 @@ class Navigation:
             #self.rover.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = self.__currId))
             self.rover.Nav_CancelGoal_pub.publish(GoalID())
 
-
-
     #-------------------------------------
-
-    '''def nav_data(self, odometry_ros):
-        odometry = odometry_ros.data
-
-        self.rover.NAV_odometry_pub.publish(odometry)'''
 
 
 class Science:
@@ -148,11 +138,11 @@ class Science:
 
         # tube humidity
         self.__tubeHum = 0
-        self.__params = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        self.__params = [0]*11
         self.__info = "info"
         self.__state = "state"
 
-    # text info from SC
+    # -------text info from SC-------
     def set_text_info(self, str_ros):
         self.__info = str_ros.data
         self.rover.wait(self.rover.SC_infos_pub, str_ros)
@@ -160,7 +150,7 @@ class Science:
     def get_text_info(self):
         return self.__info
 
-    # state of SC's FSM
+    # -------state of SC's FSM-------
     def set_state_info(self, str_ros):
         self.__state = str_ros.data
         self.rover.wait(self.rover.SC_infos_pub, str_ros)
@@ -168,7 +158,7 @@ class Science:
     def get_state_info(self):
         return self.__state
 
-    # SC tube humidity
+    # -------SC tube humidity-------
     def set_humidity(self, humidities_ros):
         humidity = humidities_ros.data
         self.__tubeHum = humidity
@@ -176,8 +166,12 @@ class Science:
     def get_tube_hum(self):
         return self.__tubeHum
 
-    # array of infos:
-
+    # -------parameters (11 elements):-------
+        #   - disc position
+        #   - whether tubes 0 to 2 are closed
+        #   - whether tubes 0 to 2 are empty
+        #   - whether trap is closed
+        #   - mass of each tube
     def params(self, arr):
         self.__params = arr.data
         self.rover.wait(self.rover.SC_params_pub, arr)
@@ -202,7 +196,7 @@ class HandlingDevice:
 
         self.__distToElem = 0
 
-    # HD mode: autonomous, direct manual, inverse manual
+    # -------HD mode: autonomous, direct manual, inverse manual-------
     def setHDMode(self, mode_ros):
 
         self.rover.RoverConfirm_pub.publish("HD mode set")
@@ -218,7 +212,7 @@ class HandlingDevice:
     def getHDMode(self):
         return self.__hd_mode
 
-    # ID of element we want to manipulate autonomously
+    # -------ID of element we want to manipulate autonomously-------
     def set_semiAutoID(self, id_ros):
 
         self.rover.RoverConfirm_pub.publish("received HD element ID")
@@ -234,14 +228,14 @@ class HandlingDevice:
     def getId(self):
         return self.__semiAutoId
 
-    # HD joints' positions (rad) and velocity (rad/s ??? TODO)
+    # -------HD joints' positions (rad) and velocity (rad/s ??? TODO)-------
     def set_joint_telemetry(self, telemetry_ros):
         telemetry = telemetry_ros.data
         self.set_joint_positions(telemetry.position)
         self.set_joint_velocities(telemetry.velocity)
         self.rover.HD_telemetry_pub.publish(telemetry)
 
-    # HD joints' positions
+    # -------HD joints' positions-------
     def set_joint_positions(self, positions):
         self.__joint_positions = positions
 
@@ -265,6 +259,7 @@ class HandlingDevice:
     def setDetectedElement(self, elem):
         self.rover.HD_element_pub(elem)
 
+    # transmit id + translations + rotations in the form of a Float32MultiArray to the CS
     def pub_detected_elements(self, obj_list):
         for i in range(len(obj_list)):
             panel = obj_list[i]
