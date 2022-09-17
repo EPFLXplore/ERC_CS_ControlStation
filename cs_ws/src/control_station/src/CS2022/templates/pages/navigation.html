@@ -176,8 +176,11 @@
 								const map = document.getElementById('navmap'); 
 								const myContext = map.getContext('2d');
 								var imageObj = new Image();
-								var width_map  = 950
-								var height_map = 788.3
+								const width_map  = 950
+								const height_map = 788.3
+
+								const YARD_WIDTH_M = 39
+								const YARD_LENGTH_M = 47
 
 								// starting points in pixels on the nav map
 								const X_START_PX = 324
@@ -201,6 +204,41 @@
 									myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
 									myContext.fillRect(X_START_PX, Y_START_PX, 10, 10);  // x, y, width, height
 
+									// AR tag
+									const Wt_X = X_START_PX + 0*width_map/YARD_WIDTH_M;
+									const Wt_Y = Y_START_PX - 9*height_map/YARD_LENGTH_M;
+									myContext.fillStyle = 'rgba(0, 0, 255, 0.5)'; 
+									myContext.fillRect(Wt_X, Wt_Y, 10, 10);  
+
+									// way points for NAV task 
+									// #1
+									const WH_X = X_START_PX + 14.56*width_map/YARD_WIDTH_M;
+									const WH_Y = Y_START_PX - 16.58*height_map/YARD_LENGTH_M;
+									myContext.fillStyle = 'rgba(255, 0, 0, 0.5)'; 
+									myContext.fillRect(WH_X, WH_Y, 10, 10);  
+
+									//let x_px = X_START_PX - y_next*width_map/YARD_WIDTH_M;
+									//let y_px = START_Y_PX - x_next*height_map/YARD_LENGTH_M;
+
+									// #2
+									const WG_X = X_START_PX + 10.63*width_map/YARD_WIDTH_M; 
+									const WG_Y = Y_START_PX - 5.54*height_map/YARD_LENGTH_M; 
+									myContext.fillStyle = 'rgba(255, 0, 0, 0.5)'; 
+									myContext.fillRect(WG_X, WG_Y, 10, 10);
+									// #3
+									const WQ_X = X_START_PX + (-3.12)*width_map/YARD_WIDTH_M; 
+									const WQ_Y = Y_START_PX - 12.75*height_map/YARD_LENGTH_M; 
+									myContext.fillStyle = 'rgba(255, 0, 0, 0.5)'; 
+									myContext.fillRect(WQ_X, WQ_Y, 10, 10);
+									// #4
+									const WC_X = X_START_PX + 3.67*width_map/YARD_WIDTH_M; 
+									const WC_Y = Y_START_PX - 19.00*height_map/YARD_LENGTH_M;  
+									myContext.fillStyle = 'rgba(255, 0, 0, 0.5)'; 
+									myContext.fillRect(WC_X, WC_Y, 10, 10); 
+
+
+									//myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
+									myContext.fillStyle = 'rgba(247, 202, 24, 1)'; 
 
 									/* ===== DRAWING THE GRID + AXES ON THE NAV MAP ===== */
 									// https://usefulangle.com/post/19/html5-canvas-tutorial-how-to-draw-graphical-coordinate-system-with-grids-and-axis 
@@ -380,7 +418,7 @@
 										/* sending goal coordinates to back-end*/
 										let formData = new FormData();
 										formData.append('x',  x);
-										formData.append('y',  y);
+										formData.append('y',  -y);
 										formData.append('yaw', document.querySelector('#yaw').value);
 
 										document.getElementById("xgoal").innerHTML = document.querySelector("#x").value;
@@ -540,8 +578,8 @@
 				+ '/'
 			);
 
-			const YARD_WIDTH_M = 39
-			const YARD_LENGTH_M = 47
+			//const YARD_WIDTH_M = 39
+			//const YARD_LENGTH_M = 47
 			const START_X_PX = X_START_PX
 			const START_Y_PX = Y_START_PX
 
