@@ -204,6 +204,12 @@
 									myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
 									myContext.fillRect(X_START_PX, Y_START_PX, 10, 10);  // x, y, width, height
 
+									// AR tag
+									const Wt_X = X_START_PX + 0*width_map/YARD_WIDTH_M;
+									const Wt_Y = Y_START_PX - 9*height_map/YARD_LENGTH_M;
+									myContext.fillStyle = 'rgba(0, 0, 255, 0.5)'; 
+									myContext.fillRect(Wt_X, Wt_Y, 10, 10);  
+
 									// way points for NAV task 
 									// #1
 									const WH_X = X_START_PX + 14.56*width_map/YARD_WIDTH_M;
