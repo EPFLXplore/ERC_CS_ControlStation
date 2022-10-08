@@ -1,0 +1,35 @@
+running egg_info
+creating ../../build/control_station_pkg/control_station_pkg.egg-info
+writing ../../build/control_station_pkg/control_station_pkg.egg-info/PKG-INFO
+writing dependency_links to ../../build/control_station_pkg/control_station_pkg.egg-info/dependency_links.txt
+writing entry points to ../../build/control_station_pkg/control_station_pkg.egg-info/entry_points.txt
+writing requirements to ../../build/control_station_pkg/control_station_pkg.egg-info/requires.txt
+writing top-level names to ../../build/control_station_pkg/control_station_pkg.egg-info/top_level.txt
+writing manifest file '../../build/control_station_pkg/control_station_pkg.egg-info/SOURCES.txt'
+reading manifest file '../../build/control_station_pkg/control_station_pkg.egg-info/SOURCES.txt'
+writing manifest file '../../build/control_station_pkg/control_station_pkg.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/zedrichu/Xplore|CS/control/cs_ws/build/control_station_pkg/build
+creating /home/zedrichu/Xplore|CS/control/cs_ws/build/control_station_pkg/build/lib
+creating /home/zedrichu/Xplore|CS/control/cs_ws/build/control_station_pkg/build/lib/control_station_pkg
+copying control_station_pkg/__init__.py -> /home/zedrichu/Xplore|CS/control/cs_ws/build/control_station_pkg/build/lib/control_station_pkg
+copying control_station_pkg/control_station.py -> /home/zedrichu/Xplore|CS/control/cs_ws/build/control_station_pkg/build/lib/control_station_pkg
+running install
+running install_lib
+creating /home/zedrichu/Xplore|CS/control/cs_ws/install/control_station_pkg/lib/python3.10/site-packages/control_station_pkg
+copying /home/zedrichu/Xplore|CS/control/cs_ws/build/control_station_pkg/build/lib/control_station_pkg/__init__.py -> /home/zedrichu/Xplore|CS/control/cs_ws/install/control_station_pkg/lib/python3.10/site-packages/control_station_pkg
+copying /home/zedrichu/Xplore|CS/control/cs_ws/build/control_station_pkg/build/lib/control_station_pkg/control_station.py -> /home/zedrichu/Xplore|CS/control/cs_ws/install/control_station_pkg/lib/python3.10/site-packages/control_station_pkg
+byte-compiling /home/zedrichu/Xplore|CS/control/cs_ws/install/control_station_pkg/lib/python3.10/site-packages/control_station_pkg/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/zedrichu/Xplore|CS/control/cs_ws/install/control_station_pkg/lib/python3.10/site-packages/control_station_pkg/control_station.py to control_station.cpython-310.pyc
+running install_data
+creating /home/zedrichu/Xplore|CS/control/cs_ws/install/control_station_pkg/share/ament_index
+creating /home/zedrichu/Xplore|CS/control/cs_ws/install/control_station_pkg/share/ament_index/resource_index
+creating /home/zedrichu/Xplore|CS/control/cs_ws/install/control_station_pkg/share/ament_index/resource_index/packages
+copying resource/control_station_pkg -> /home/zedrichu/Xplore|CS/control/cs_ws/install/control_station_pkg/share/ament_index/resource_index/packages
+copying package.xml -> /home/zedrichu/Xplore|CS/control/cs_ws/install/control_station_pkg/share/control_station_pkg
+running install_egg_info
+Copying ../../build/control_station_pkg/control_station_pkg.egg-info to /home/zedrichu/Xplore|CS/control/cs_ws/install/control_station_pkg/lib/python3.10/site-packages/control_station_pkg-0.0.0-py3.10.egg-info
+running install_scripts
+Installing control_station script to /home/zedrichu/Xplore|CS/control/cs_ws/install/control_station_pkg/lib/control_station_pkg
+writing list of installed files to '/home/zedrichu/Xplore|CS/control/cs_ws/build/control_station_pkg/install.log'
