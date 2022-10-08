@@ -1,0 +1,209 @@
+{% extends "../base.html" %}
+{% load static %}
+
+
+{% comment %} 
+			Style Block
+Contains the reference to the page stylesheet.
+{% endcomment %}
+
+{% block page_style %}{% static 'navigation/navigation.css' %}{% endblock %}
+
+
+{% comment %} 
+							Script Block
+Contains global scripts for the page, that do not need the content to be loaded yet.
+{% endcomment %}
+
+{% block scripts_start %}
+
+	<!-- SCRIPT -->
+	<script src="{% static 'common/border.js' %}"></script> 
+	<script src="common/jquery/jquery-2.2.1.min.js"></script>
+
+{% endblock %}
+	
+{% block menu %}
+		
+		{% include '../components/rover_status.html' %}
+		
+		{% include '../components/menu_controls.html' %}
+
+		<script src="{% static 'navigation/launch_navigation.js' %}"></script> 
+			
+		</div>
+	</div>
+{% endblock %}
+		
+{% block body %}
+		
+			<!-- horizontal navbar -->
+			<div id="right-side" class="box">
+				{% include '../components/top_bar.html' %}
+				
+				<div id="page" class="page">
+					<!--LEFT SIDE-->
+					<div class="left">
+						<div class="top-left"> 
+							<div id="canvas_container" class="top-left">
+								<canvas id="navmap" width="1400" height="810" ></canvas>
+								<canvas id="navmap_path" width="1400" height="810" ></canvas>
+								<canvas id="navmap_position" width="1400" height="810" ></canvas>								
+							</div>
+							
+							<!-- ========================================================== -->
+							<!-- IMPORTANT: AXES OF NAVMAP -> Y points down, X points right -->
+							<!--			AXES OF ROVER  -> Y points left, X points up    -->
+							<!-- ========================================================== -->
+							<script>
+								// Set the url of the image used by ma_display script with django static
+								const image_url = "{% static 'common/mars_yard_2022.png' %}";
+							</script>
+
+							<script src="{% static 'navigation/map_display.js' %}"></script>
+						</div>
+						
+						<div class="h-separator"></div>
+						<div class="bottom-left">
+							<div class="user-input-container">
+								<form class="input-form" action="" method="POST">{% csrf_token %}
+										
+									{% csrf_token %}
+									<div class="input-container">
+										<input id="x" type="number" class="input" placeholder="X" name="x"/>
+										<input id="y" type="number" class="input" placeholder="Y" name="y"/>
+										<input id="yaw" type="number" class="input" placeholder="YAW" name="yaw">
+		
+										<input id="nav_set" class="set-button" type="submit" value="SET">
+										
+									</div>
+								</form>
+								<script src="{% static 'navigation/set_nav_goal.js' %}"></script>
+							</div>
+						</div>
+					</div>
+				
+					<!--RIGHT SIDE-->
+					<div class="v-separator"></div>
+					<div class="right">
+						<div class="top-right">
+							<div class="left-panel">
+								<div class="subject-container">
+									<div class="title-container">
+										<p class="title">CURRENT POSITION</p>
+									</div>
+									<div class="data-container">
+										<!-- ROVER X COORDINATE -->
+										<div class="data-line-container">
+											<p class="data-title">X : </p>
+											<p id="X_coord" class="data"> 0 </p>
+											<p class="data"> &#xA0; m </p>
+										</div>
+										<!-- ROVER Y COORDINATE -->
+										<div class="data-line-container">
+											<p class="data-title">Y : </p>
+											<p id="Y_coord" class="data"> 0 </p>
+											<p class="data"> &#xA0; m </p>
+										</div>
+										<div class="data-line-container">
+											<p class="data-title">Z : </p>
+											<p id="Z_coord" class="data"> 0 </p>
+											<p class="data"> &#xA0; m </p>
+										</div>
+										<div class="data-line-container">
+											<p class="data-title">YAW : </p>
+											<p id="YAW_coord" class="data"> 0 </p>
+											<p class="data"> &#xA0; rad </p>
+										</div>
+									</div>
+								</div>
+								
+								<div class="subject-container">
+									
+									<div class="title-container">
+										<p class="title">GOAL </p>
+									</div>
+									<div class="data-container">
+										<!-- GOAL'S Y COORDINATE -->
+										<div class="data-line-container">
+											<p  class="data-title">X : </p>
+											<p id="xgoal" class="data">0</p>
+										</div>
+										<!-- GOAL'S X COORDINATE -->
+										<div class="data-line-container">
+											<p  class="data-title">Y : </p>
+											<p id="ygoal" class="data">0</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="right-panel">
+								<div class="subject-container">
+									<div class="title-container">
+										<p class="title">COURSE DATA</p>
+									</div>
+									<div class="data-container">
+										<!-- DISTANCE TO GOAL -->
+										<div class="data-line-container">
+											<p class="data-title">Distance to goal: </p>
+											<p id="distToGoal" class="data"> 0 </p>
+											<p class="data"> &#xA0; m </p>
+										</div>
+										<!-- ROUTE TO GOAL -->
+										<div class="data-line-container">
+											<p id="debug-label" class="data-title">Route to goal: </p>
+											<p class="data"> 0 </p>
+											<p class="data"> &#xA0; m </p>
+										</div>
+										
+									</div>
+									<div class="title-container">
+										<p class="title">VELOCITY</p>
+									</div>
+									<div class="data-container">
+										<!-- LINEAR VELOCITY -->
+										<div class="data-line-container">
+											<p class="data-title">Linear: </p>
+											<p id="linVel" class="data">0</p>
+											<p class="data"> &#xA0; m/s </p>
+										</div>
+										<!-- ANGULAR VELOCITY -->
+										<div class="data-line-container">
+											<p class="data-title">Angular: </p>
+											<p id="angVel" class="data">0</p> 
+											<p class = "data"> &#xA0; rad/s</p>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+							
+						</div>
+						
+						<div class="h-separator-s"></div>
+					</div>
+					
+					<div class="bottom-right">
+						
+						
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+
+{% comment %} 
+					Script Block
+Contains local scripts that need the content to be loaded.
+They implement the websocket connection to update the data.
+{% endcomment %}
+
+{% block scripts_end %}
+		
+		<script src="{% static 'navigation/navigation_socket.js' %}"></script>
+		<script src="{% static 'common/common.js' %}"></script>
+
+{% endblock %}
