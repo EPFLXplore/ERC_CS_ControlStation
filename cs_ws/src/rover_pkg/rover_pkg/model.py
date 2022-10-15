@@ -22,13 +22,13 @@ import numpy as np
 from multiprocessing.sharedctypes import Value
 from unittest.loader    import VALID_MODULE_NAME
 from actionlib_msgs.msg import GoalID
-from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
+#from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
 from geometry_msgs.msg  import Pose, Point, PoseStamped
 from sensor_msgs.msg    import JointState
 from std_msgs.msg       import Int8, Int16, Bool, String, Int8MultiArray,  Int16MultiArray, UInt8MultiArray, Float32MultiArray 
 
-from rover import Rover
-from Globals import *
+#from .rover import Rover
+from .Globals import *
 
 
 class Model:

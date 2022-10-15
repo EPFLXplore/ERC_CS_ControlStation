@@ -2,6 +2,8 @@
 __pycache__/
 cs_ws/build/
 cs_ws/devel/
+cs_ws/log/
+cs_ws/install/
 *.pyc
 
 # Redis Backup file
