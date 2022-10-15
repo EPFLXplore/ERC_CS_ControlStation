@@ -18,7 +18,6 @@
 # Libraries
 
 import numpy as np 
-import rospy
 
 from multiprocessing.sharedctypes import Value
 from unittest.loader    import VALID_MODULE_NAME
@@ -28,7 +27,7 @@ from geometry_msgs.msg  import Pose, Point, PoseStamped
 from sensor_msgs.msg    import JointState
 from std_msgs.msg       import Int8, Int16, Bool, String, Int8MultiArray,  Int16MultiArray, UInt8MultiArray, Float32MultiArray 
 
-from rover_node import Rover
+from rover import Rover
 from Globals import *
 
 
@@ -59,7 +58,6 @@ class Model:
     #--------Exception--------
     # callback for received exceptions (transmits directly to CS)
     def set_exception(self, exception):
-        #self.rover.waiting = True
         self.rover.wait(self.rover.Exception_pub, exception)
         self.rover.Exception_pub.publish(exception.data)
 
@@ -121,7 +119,6 @@ class Navigation:
         if(not self.__cancelled): 
             self.setCancelled(True)
             self.__currGoal = np.zeros(0)
-            #self.rover.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = self.__currId))
             self.rover.Nav_CancelGoal_pub.publish(GoalID())
 
     #-------------------------------------
