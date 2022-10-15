@@ -1,0 +1,524 @@
+#
+# @date:    27/11/2021
+#
+# @authors: Emile Hreich
+#           emile.janhodithreich@epfl.ch
+#           
+#           Roman Danylovych
+#           roman.danylovych@epfl.ch
+# 
+#           Emma Gaia Poggiolini
+#           emmagaia.poggiolini@epfl.ch
+#
+# @brief: This file contains the Controller (following the Model View Controller
+#         design pattern)
+#         Here are created all the methods that define the I/O behavior with the
+#         user.
+# 
+#-------------------------------------------------------------------------------
+
+
+#================================================================================
+# Libraries
+
+from turtle import pos
+import rclpy
+import sys
+import json
+import websocket  
+import time
+
+from std_msgs.msg                         import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray, Header
+from geometry_msgs.msg  import Pose, Point, Twist, PoseStamped, Quaternion
+from actionlib_msgs.msg import GoalID
+from tf.transformations import quaternion_from_euler, euler_from_quaternion
+
+from Gamepad.Gamepad import Gamepad
+from .model       import Task 
+
+from nav_msgs.msg import Odometry
+from CS2022       import models
+
+#================================================================================
+# Webscokets for ASGI
+
+NAV_WS_URL  = "ws://127.0.0.1:8000/ws/CS2022/navigation/"
+HD_WS_URL   = "ws://localhost:8000/ws/CS2022/handlingdevice/"
+SC_WS_URL   = "ws://localhost:8000/ws/CS2022/science/"
+AV_WS_URL   = "ws://localhost:8000/ws/CS2022/logs/"
+MAN_WS_URL  = "ws://localhost:8000/ws/CS2022/manual/"
+HP_WS_URL   = "ws://localhost:8000/ws/CS2022/homepage/"
+TIME_WS_URL = "ws://localhost:8000/ws/CS2022/time/"
+
+# WEB SOCKETS used to publish info to front-end depending on the tab
+ws_nav  = websocket.WebSocket()
+ws_hd   = websocket.WebSocket()
+ws_sc   = websocket.WebSocket()
+ws_av   = websocket.WebSocket()
+ws_man  = websocket.WebSocket()
+ws_hp   = websocket.WebSocket()
+ws_time = websocket.WebSocket()
+
+# ===============================================================================
+# Controller (MVC)
+
+
+class Controller():
+
+    '''
+        Controller (Model View Controller (MVC) template)
+    '''
+
+    def __init__(self, cs):
+        self.cs = cs
+        self.gpad = Gamepad(self.cs)
+
+
+    # ===============================
+    #            CALLBACKS
+    # ===============================
+
+    def test_joystick(self, twist):
+        '''
+            debug joystick
+        '''
+        tl = twist.linear
+        ta = twist.angular
+        #self.cs.node.get_logger().info("Linear %d %d %d", tl.x, tl.y, tl.z)
+        #self.cs.node.get_logger().info("Angular %d %d %d", ta.x, ta.y, ta.z)
+
+
+    # receiving a confirmation from rover after sending an instruction
+    def rover_confirmation(self, txt):
+        if(self.cs.rover.getInWait()):
+            self.cs.node.get_logger().info("Rover Confirmation: %s\n", txt.data)
+            self.cs.rover.setReceived(True)
+        else:
+            self.cs.node.get_logger().info("Received after timeout: %s\n", txt.data)
+
+    # receive info on progress of task (SUCCESS/FAIL)
+    #TODO HASN'T BEEN USED ONCE => NEED TO TELL OTHER SUBSYSTEMS TO PUBLISH ON TaskProgress
+    def task_progress(self, num):
+        val = num.data
+        if (0 <= val and val < 3):
+            TaskProgress.objects.update_or_create(name="TaskProgress", defaults={'state': val})
+        else:
+            str = "Impossible progress state: %s" % (val)
+            self.cs.exception_clbk(String(str))
+            
+
+    # ========= SCIENCE CALLBACKS ========= 
+
+    # receiving tube humidity from SC
+    def sc_humidity(self, hum):
+        self.cs.rover.SC.setTubeHum(hum.data)
+        # publish to front-end
+        self.sendJson(Task.SCIENCE)
+
+    # receiving info from SC bay + state of SC (all in the form of Strings)
+    def sc_text_info(self, info):
+        '''
+            info on what is going on in the Science Bay:
+            ex: LED turned on, Picture taken, ...
+        '''
+        self.cs.CS_confirm_pub.publish(True)
+
+        str = info.data
+        #Science.objects.update_or_create(name="Science", defaults = {'sc_text': str})
+        self.cs.node.get_logger().info("Science: " + str)
+        self.cs.rover.SC.addInfo(str)
+        # publish to front-end
+        self.sendJson(Task.SCIENCE)
+
+
+    #TODO
+    def sc_state(self, state):
+        #self.sc_text_info(state)
+        print("tqt")
+        
+
+    # receiving value of tube parameters from SC (open/closed, full, position, mass)
+    def sc_params(self, arr):
+        self.cs.node.get_logger().info(arr)
+        self.cs.CS_confirm_pub.publish(True)
+        self.cs.node.get_logger().info(arr.data)
+        self.cs.rover.SC.setParams(arr.data)
+        # publish to front-end
+        self.sendJson(Task.SCIENCE)
+
+    # receiving an image from science bay after taking a picture
+    def sc_image(self, im):
+        self.cs.CS_confirm_pub.publish(True)
+        self.cs.rover.SC.addImage(im)
+        
+
+    # ========= HD CALLBACKS ========= 
+
+    # receive: [id, x, y, z, a, b, c]    (x,y,z) --> translations and (a,b,c) --> rotations
+    def hd_detected_element(self, arr):
+        elements = arr.data
+        self.cs.rover.HD.setDetectedElement(elements)
+
+        self.cs.node.get_logger().info("received HD element info [%d, %d, %d, %d, %d, %d, %d]", elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6])
+        # publish to front-end
+        self.sendJson(Task.MAINTENANCE)
+        
+    # receive: joint telemetry (info on angles and velocity of joints)
+    def hd_telemetry(self, jointstate):
+        self.cs.rover.HD.set_joint_telemetry(jointstate)
+        # publish to front-end
+        self.sendJson(Task.MAINTENANCE)
+
+    # receive: distance to element
+    def hd_tof(self, val):
+        self.cs.rover.HD.set_tof(val.data)
+        # publish to front-end
+        self.sendJson(Task.MAINTENANCE)
+
+
+    # ========= NAVIGATION CALLBACKS ========= 
+
+    # receives an Odometry message from NAVIGATION
+    def nav_data(self, odometry):
+        data = odometry
+        nav =self.cs.rover.Nav
+
+        # position (x,y,z)
+        pos = data.pose.pose.position
+        nav.setPos([pos.x, pos.y, pos.z])
+
+        # orientation
+        quaternion = data.pose.pose.orientation
+        explicit_quat = [quaternion.x, quaternion.y, quaternion.z, quaternion.w]
+        roll, pitch, yaw = euler_from_quaternion(explicit_quat)
+        nav.setYaw(yaw)
+
+        # linear velocity
+        twistLin = data.twist.twist.linear
+        nav.setLinVel([twistLin.x, twistLin.y, twistLin.z])
+
+        # angular velocity
+        twistAng = data.twist.twist.angular
+        nav.setAngVel([twistAng.x, twistAng.y, twistAng.z])
+
+        #self.cs.node.get_logger().info("linvel %d", nav.getLinVel())
+
+        # publish to front-end
+        self.sendJson(Task.NAVIGATION)
+            
+
+    # callback for exceptions thrown from rover or from the CS
+    def exception_clbk(self, str): 
+        val = str.data
+        self.cs.node.get_logger().info("Exception: " + val)
+        self.cs.rover.addException(val)
+
+        # confirm msg reception to rover
+        self.cs.CS_confirm_pub.publish(True)
+        # publish to front-end
+        self.sendJson(Task.LOGS)
+
+
+    # =================================================================================================================
+
+    # sends array to rover: [task, instr]:
+    #
+    # TASK: 
+    #       - Manual      = 1 
+    #       - Navigation  = 2 
+    #       - Maintenance = 3
+    #       - Science     = 4
+    #
+    # INSTR:  
+    #       - Launch = 1 
+    #       - Abort  = 2 
+    #       - Wait   = 3 
+    #       - Resume = 4 
+    #       - Retry  = 5
+
+    # if task == SCIENCE (4) then:
+        #   - ABORT    = 0
+        #   - RETRY    = 1
+        #   - CONFIRM  = 2
+        #   - HUMIDITY = 3
+        #   - PARAMS   = 4
+        #   - INFO     = 5
+        #   - STATE    = 6
+        #   - TAKE_PIC = 9
+
+        #   - START_SAMPLING_0 = 10
+        #   - START_SAMPLING_1 = 11
+        #   - START_SAMPLING_2 = 12
+
+        #   - ROT_TO_PIC_0   = 20
+        #   - ROT_TO_PIC_1   = 21
+        #   - ROT_TO_PIC_2   = 22
+
+        #   - MASS_MEASURE_0 = 30
+        #   - MASS_MEASURE_1 = 31
+        #   - MASS_MEASURE_2 = 32
+
+    def pub_Task(self, task, instr): 
+        '''
+            publishes task instructions to the self.cs.rover
+        '''
+        #checkArgs(task, instr)
+
+        arr = [task, instr]
+
+        self.cs.rover.setInWait(True)    
+        self.cs.Task_pub.publish(Int8MultiArray(data = arr))
+
+        self.wait()
+
+        self.cs.rover.setState(Task(task))
+
+        if(task == 1 and instr == 1) : self.launch_Manual() 
+        if(task == 1 and instr == 2) : self.abort_Manual()
+
+
+    ###############################
+    #       HANDLING DEVICE       #
+    ###############################
+
+    # Set HD mode:
+    #  - 0 Autonomous
+    #  - 1 SemiAutonomous
+    #  - 2 Inverse Manual
+    #  - 3 Direct Manual
+
+    def pub_hd_mode(self, mode) :
+        if(mode == 0 or mode == 1):
+            self.cs.node.get_logger().info("Set HD mode %d", mode)
+            self.cs.HD_mode_pub.publish(data = mode)
+            self.cs.rover.HD.setHDMode(mode)
+        else:
+            self.cs.node.get_logger().info("Error: HD mode can be either 0 or 1 not %s", mode)
+
+    # Send the id of the element the HD must reach in Autonomous mode
+    def pub_hd_elemId(self, id) :
+        self.cs.node.get_logger().info("HD: object id - %d", id)
+        print(type(id))
+        self.cs.rover.HD.setElemId(id)
+        self.cs.HD_SemiAuto_Id_pub.publish(data = id)
+
+
+    ###############################
+    #          NAVIGATION         #
+    ###############################
+
+    # send the coordinates the rover must reach and the orientation it must reach them in
+    def pub_nav_goal(self, x, y, yaw):
+        self.cs.node.get_logger().info("NAV: set goal (%.2f, %.2f) + %.2f (orientation)", x, y, yaw)
+        
+        self.cs.rover.Nav.setGoal([x, y, yaw])
+
+        # PoseStamped message construction: Header + Pose
+        # ----- Header -----
+        nav = self.cs.rover.Nav
+        h = Header()
+        h.frame_id = str(nav.getId()) # goal has an id by which it is recognized
+
+        # ----- Pose: Point + Quaternion -----
+        pose = Pose()
+
+        # z = 0.0 (the rover can't fly yet)
+        point = Point(x, y, 0.0)
+        pose.position = point
+
+        # rover orientation
+        q = quaternion_from_euler(0, 0, yaw)
+        pose.orientation.x = q[0]
+        pose.orientation.y = q[1]
+        pose.orientation.z = q[2]
+        pose.orientation.w = q[3]
+
+        # -----------------------------------
+        # publish goal to rover
+        self.cs.Nav_Goal_pub.publish(PoseStamped(header = h, pose = pose))
+
+
+    # cancel a specific Navigation goal by giving the goal's id
+    def pub_cancel_nav_goal(self, given_id):
+        self.cs.node.get_logger().info("NAV: cancel goal %d", given_id)
+        self.cs.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = given_id))
+        self.cs.rover.Nav.cancelGoal(given_id)
+
+
+    # Debugging commands to individual wheels. Only use in "emergencies".
+    
+    #  Message : 
+    #  [ [wheel_ID] [rotation_velocity] [steering_angle] ]
+
+    #  Wheel_ID : 
+    #  1 : FL | 2 : FR | 3 : HR | 4 : HL
+    
+    #  rotation_veloctiy (in RPM):
+    #  range: -60 and +60
+    
+    #  steering_angle (in degrees) : 
+    #  range: -180 and +180
+
+    def pub_debug_wheels(self, wheel_id, rot_vel, range):
+        self.cs.node.get_logger().info("Debug wheels")
+        self.cs.Nav_DebugWheels_pub(Int16MultiArray(data = [wheel_id, rot_vel, range]))
+
+
+    ##############################
+    #            SCIENCE         #
+    ##############################
+
+    # select tube on which we'll execute a selected operation
+    def selectedTube(self, id):
+        if(id < 0 or id > 2): raise ValueError("tube ids are: 0, 1, 2")
+        self.cs.rover.SC.selectTube(id)
+
+    # select operation to execute on a tube: mass calculation, sampling, rotation to camera
+    def selectedOp(self, op):
+        self.cs.rover.SC.setOperation(op)
+
+    # set not tube-specific command: take picture, picture analysis, humidity.
+    #(tube-specific commands are updated automatically as you do one of the above operations)
+    def set_sc_cmd(self, cmd):
+        self.cs.rover.SC.setCmd(cmd)
+
+    # set humidity value of concerned tube
+    def setHumidity(self, val):
+        self.cs.rover.SC.setTubeHum(val)
+        
+
+    ##############################
+    #            MANUAL          #
+    ##############################
+
+    # launches Gamepad => enables Manual controls
+    # is automatically launched from pub_Task when publishing Manual
+    def launch_Manual(self):
+        self.cs.node.get_logger().info("\nTrying manual controls\n")
+
+        self.gpad.connect()
+        self.gpad.run()
+
+    # turns off Gamepad's 'running' flag => stops reading commands from the gamepad
+    # TODO this is not enough. When running manual and accidentally unplugging the joystick, 
+    # aborting didn't stop the gamepad from publishing the last remembered instruction
+    # the problem could come from the abort or due to how the gamepad was coded
+    def abort_Manual(self):
+        self.cs.node.get_logger().info("\nAborting manual controls\n")
+        self.gpad._running = False
+
+
+
+    # TIMEOUT system
+    # invoked after sending a message to the rover and expecting a confirmation
+    def wait(self):
+        # see if any confirmation was received within 1 second
+        start = time.time()
+        while(not self.cs.rover.getReceived() and ((time.time() - start) < 1)): 
+            continue
+
+        self.cs.rover.setInWait(False)
+
+        if(not self.cs.rover.getReceived()):
+            self.cs.node.get_logger().info("Answer not received: TIMEOUT")
+        
+        self.cs.rover.setReceived(False)
+
+    # JSON msg describing the timer
+    def elapsed_time(self, data):
+        TimeDict = {
+            'hor': data.data[0],
+            'min': data.data[1],
+            'sec': data.data[2]
+        }
+
+        message = json.dumps(TimeDict)
+
+        if ws_time.connected:
+
+            ws_time.send('%s' % message)
+
+
+    # takes a Task enum as argument
+    # invoked at the end of a callback after updating data that came from rover
+    # sends the needed data to the front-end depending on the task
+    def sendJson(self, subsyst):
+
+        # Info to display on MANUAL tab
+        if(ws_man.connected): # if a socket is connected it means that the concerned tab is opened
+            socket = ws_man
+
+            nav = self.cs.rover.Nav
+            hd = self.cs.rover.HD
+
+            pos = nav.getPos()
+            Dictionary = {
+                'x'         : pos[0], 
+                'y'         : pos[1], 
+                'z'         : pos[2],
+                'linVel'    : nav.getLinVel(), 
+                'angVel'    : nav.getAngVel(),
+                'joint_pos' : hd.get_joint_positions(),
+                'joint_vel' : hd.get_joint_velocities(),
+                'hd_mode'   : self.gpad.modeHD
+            }
+
+        # Info to display on NAVIGATION tab
+        elif(subsyst == Task.NAVIGATION):
+            socket = ws_nav
+
+            nav = self.cs.rover.Nav
+            pos = nav.getPos()
+            Dictionary = {
+                'x'        : pos[0], 
+                'y'        : pos[1], 
+                'z'        : pos[2],
+                'linVel'   : nav.getLinVel(), 
+                'angVel'   : nav.getAngVel(),
+                'distance' : nav.distToGoal(),
+                'yaw'      : nav.getYaw()
+            }
+
+        # Info to display on MAINTENANCE/HANDLING DEVICE tab
+        elif(subsyst == Task.MAINTENANCE):
+            socket = ws_hd
+
+            hd = self.cs.rover.HD
+            Dictionary = {
+                'joint_pos' : hd.get_joint_positions(),
+                'joint_vel' : hd.get_joint_velocities(),
+                'detected_elems' : hd.getElements().flatten().tolist(),
+                'tof'       : hd.get_tof()
+            }
+
+        # Info to display on SCIENCE tab
+        elif(subsyst == Task.SCIENCE):
+            socket = ws_sc
+
+            sc = self.cs.rover.SC
+            Dictionary = {
+                'params'        : sc.getParams(),
+                'particle_sizes' : sc.getParticleSizes(),
+                'volumes'       : sc.getVolumes(),
+                'densities'     : sc.getDensities(),
+                'colors'        : sc.getColors(),
+                'humidity'      : sc.getTubeHum(),
+                #'pics'          : sc.getPics(),
+                'infos'          : sc.getInfos()
+                #'state'         : sc.getState()
+                
+            }
+
+        # Info to display on LOGS tab
+        elif(subsyst == Task.LOGS):
+            socket = ws_av
+            l = self.cs.rover.getExceptions()
+            Dictionary = {
+                'exceptions' : l
+            }
+
+        # send info to front-end
+        message = json.dumps(Dictionary)
+        if(socket.connected):
+            #print("sent")
+            socket.send('%s' % message)
