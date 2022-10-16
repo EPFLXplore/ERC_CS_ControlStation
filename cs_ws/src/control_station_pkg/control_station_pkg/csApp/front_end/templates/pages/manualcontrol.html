@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>CS2022</title>
+	<title>csApp</title>
   
 	<!-- STYLE -->
 	<link href="{% static 'common/border.css' %}" rel="stylesheet">
@@ -21,19 +21,19 @@
 
 		// $(document).ready(function() {
     	// 	$(document).on('submit', '#launch-form', function() {
-		// 		window.location.href ="/CS2022/manualcontrol/launch";
+		// 		window.location.href ="/csApp/manualcontrol/launch";
       	// 		return false;
     	// 	 });
     	// 	$(document).on('submit', '#wait-form', function() {
-		// 		window.location.href ="/CS2022/manualcontrol/wait";
+		// 		window.location.href ="/csApp/manualcontrol/wait";
       	// 		return false;
     	// 	 });
     	// 	$(document).on('submit', '#abort-form', function() {
-		// 		window.location.href ="/CS2022/manualcontrol/abort";
+		// 		window.location.href ="/csApp/manualcontrol/abort";
       	// 		return false;
     	// 	 });
     	// 	$(document).on('submit', '#resume-form', function() {
-		// 		window.location.href ="/CS2022/manualcontrol/resume";
+		// 		window.location.href ="/csApp/manualcontrol/resume";
       	// 		return false;
     	// 	 });
     	// 	$(document).on('submit', '#direct-form', function() {
@@ -56,37 +56,37 @@
 	<div id="container">
 		<div id="sidebar" class="box">
 			<div class="logo">
-				<form class="logo-form" action="http://127.0.0.1:8000/CS2022/homepage">
+				<form class="logo-form" action="http://127.0.0.1:8000/csApp/homepage">
 					<input id="imagelogo" type="image" src="{% static 'common/Xplore-logo-white.png' %}" alt="My image">
 				</form>
 			</div>
 		
 			<div class="page-button-container">
-				<form action="http://127.0.0.1:8000/CS2022/navigation">
+				<form action="http://127.0.0.1:8000/csApp/navigation">
 					<button id="navigation" class="page-button">
 						<span>NAVIGATION</span>
 					</button>
 				</form>
 					
-				<form action="http://127.0.0.1:8000/CS2022/handlingdevice">
+				<form action="http://127.0.0.1:8000/csApp/handlingdevice">
 					<button id="handlingdevice" class="page-button">
 						<span>HANDLING DEVICE</span>
 					</button>
 				</form>
 				
-				<form action="http://127.0.0.1:8000/CS2022/science">
+				<form action="http://127.0.0.1:8000/csApp/science">
 					<button id="science" class="page-button">
 						<span>SCIENCE</span>
 					</button>
 				</form>
 			
-				<form action="http://127.0.0.1:8000/CS2022/manualcontrol">
+				<form action="http://127.0.0.1:8000/csApp/manualcontrol">
 					<button id="manualcontrol" class="current-page-button" disabled="true">
 						<span>MANUAL CONTROL</span>
 					</button>
 				</form>
 				
-				<form action="http://127.0.0.1:8000/CS2022/logs">
+				<form action="http://127.0.0.1:8000/csApp/logs">
 					<button id="logs" class="page-button">
 						<span>LOGS</span>
 					</button>
@@ -389,7 +389,7 @@
 		const chatSocket = new WebSocket(
 			'ws://'
 			+ window.location.host
-			+ '/ws/CS2022/'
+			+ '/ws/csApp/'
 			+ tabName
 			+ '/'
 		);
@@ -499,7 +499,7 @@
 		const timeSocket = new WebSocket(
 		'ws://'
 		+ window.location.host
-		+ '/ws/CS2022/'
+		+ '/ws/csApp/'
 		+ 'time'
 		+ '/'
 		);

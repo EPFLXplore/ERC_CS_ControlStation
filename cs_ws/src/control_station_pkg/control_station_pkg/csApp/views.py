@@ -20,7 +20,7 @@ from django.shortcuts       import render
 from django.shortcuts       import redirect
 
 import MVC_node.cs_node         
-import MVC_node.controller 
+from MVC_node.controller import *
 from MVC_node.model  import Task      
 from manage          import setup
 

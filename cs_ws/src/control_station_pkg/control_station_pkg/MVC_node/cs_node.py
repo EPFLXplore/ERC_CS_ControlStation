@@ -25,7 +25,7 @@ from .controller import Controller
 from .model import Rover
 
 
-from CS2022.models         import *
+from csApp.models         import *
 from std_msgs.msg          import Int8MultiArray    , Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16, Float32MultiArray
 
 # TODO
@@ -51,7 +51,7 @@ class CS:
     def __init__(self):
 
         rclpy.init(args=sys.argv)
-        self.node = rclpy.create_node("CS2022")
+        self.node = rclpy.create_node("csApp")
 
         # MVC pattern => model, view (front-end), controller
         self.controller = Controller(self) # controller

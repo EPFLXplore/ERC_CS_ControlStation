@@ -34,21 +34,21 @@ from actionlib_msgs.msg import GoalID
 from tf.transformations import quaternion_from_euler, euler_from_quaternion
 
 from Gamepad.Gamepad import Gamepad
-from .model       import Task 
+from .model       import Task, TaskProgress
 
 from nav_msgs.msg import Odometry
-from CS2022       import models
+from csApp       import models
 
 #================================================================================
 # Webscokets for ASGI
 
-NAV_WS_URL  = "ws://127.0.0.1:8000/ws/CS2022/navigation/"
-HD_WS_URL   = "ws://localhost:8000/ws/CS2022/handlingdevice/"
-SC_WS_URL   = "ws://localhost:8000/ws/CS2022/science/"
-AV_WS_URL   = "ws://localhost:8000/ws/CS2022/logs/"
-MAN_WS_URL  = "ws://localhost:8000/ws/CS2022/manual/"
-HP_WS_URL   = "ws://localhost:8000/ws/CS2022/homepage/"
-TIME_WS_URL = "ws://localhost:8000/ws/CS2022/time/"
+NAV_WS_URL  = "ws://127.0.0.1:8000/ws/csApp/navigation/"
+HD_WS_URL   = "ws://localhost:8000/ws/csApp/handlingdevice/"
+SC_WS_URL   = "ws://localhost:8000/ws/csApp/science/"
+AV_WS_URL   = "ws://localhost:8000/ws/csApp/logs/"
+MAN_WS_URL  = "ws://localhost:8000/ws/csApp/manual/"
+HP_WS_URL   = "ws://localhost:8000/ws/csApp/homepage/"
+TIME_WS_URL = "ws://localhost:8000/ws/csApp/time/"
 
 # WEB SOCKETS used to publish info to front-end depending on the tab
 ws_nav  = websocket.WebSocket()
@@ -341,7 +341,7 @@ class Controller():
     # cancel a specific Navigation goal by giving the goal's id
     def pub_cancel_nav_goal(self, given_id):
         self.cs.node.get_logger().info("NAV: cancel goal %d", given_id)
-        self.cs.Nav_CancelGoal_pub.publish(GoalID(stamp = rospy.get_time(), id = given_id))
+        self.cs.Nav_CancelGoal_pub.publish(GoalID(stamp = self.cs.node.get_clock().now().to_msg(), id = given_id))
         self.cs.rover.Nav.cancelGoal(given_id)
 
 

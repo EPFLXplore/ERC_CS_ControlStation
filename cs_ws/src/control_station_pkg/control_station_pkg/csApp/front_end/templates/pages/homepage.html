@@ -25,37 +25,37 @@
 	<div id="container">
 		<div id="sidebar" class="box">
 		<div class="logo">
-			<form class="logo-form" action="http://127.0.0.1:8000/CS2022/homepage">
+			<form class="logo-form" action="http://127.0.0.1:8000/csApp/homepage">
 				<input id="imagelogo" type="image" src="{% static 'common/Xplore-logo-white.png' %}" alt="My image">
 			</form>
 		</div>
 		
 		<div class="page-button-container">
-			<form action="http://127.0.0.1:8000/CS2022/navigation">
+			<form action="http://127.0.0.1:8000/csApp/navigation">
 				<button id="navigation" class="page-button">
 					<span>NAVIGATION</span>
 				</button>
 			</form>
 					
-			<form action="http://127.0.0.1:8000/CS2022/handlingdevice">
+			<form action="http://127.0.0.1:8000/csApp/handlingdevice">
 				<button id="handlingdevice" class="page-button">
 					<span>HANDLING DEVICE</span>
 				</button>
 			</form>
 			
-			<form action="http://127.0.0.1:8000/CS2022/science">
+			<form action="http://127.0.0.1:8000/csApp/science">
 				<button id="science" class="page-button">
 					<span>SCIENCE</span>
 				</button>
 			</form>
 			
-			<form action="http://127.0.0.1:8000/CS2022/manualcontrol">
+			<form action="http://127.0.0.1:8000/csApp/manualcontrol">
 				<button id="manualcontrol" class="page-button">
 					<span>MANUAL CONTROL</span>
 				</button>
 			</form>
 			
-			<form action="http://127.0.0.1:8000/CS2022/logs">
+			<form action="http://127.0.0.1:8000/csApp/logs">
 				<button id="logs" class="page-button">
 					<span>LOGS</span>
 				</button>
@@ -74,7 +74,7 @@
 	const chatSocket = new WebSocket(
 		'ws://'
 		+ window.location.host
-		+ '/ws/CS2022/'
+		+ '/ws/csApp/'
 		+ tabName
 		+ '/'
 	);
