@@ -1,0 +1,521 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CS2022</title>
+  
+	<!-- STYLE -->
+	<link href="{% static 'common/border.css' %}" rel="stylesheet">
+	<link href="{% static 'manualcontrol/manualcontrol.css' %}" rel="stylesheet">
+	<link href="{% static 'common/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+	<!-- SCRIPT -->
+	<script src="{% static 'common/border.js' %}"></script> 
+	<script src="{% static 'manualcontrol/manualcontrol.js' %}"></script> 
+	<!-- <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script> -->
+	
+	<script>
+
+
+		// $(document).ready(function() {
+    	// 	$(document).on('submit', '#launch-form', function() {
+		// 		window.location.href ="/CS2022/manualcontrol/launch";
+      	// 		return false;
+    	// 	 });
+    	// 	$(document).on('submit', '#wait-form', function() {
+		// 		window.location.href ="/CS2022/manualcontrol/wait";
+      	// 		return false;
+    	// 	 });
+    	// 	$(document).on('submit', '#abort-form', function() {
+		// 		window.location.href ="/CS2022/manualcontrol/abort";
+      	// 		return false;
+    	// 	 });
+    	// 	$(document).on('submit', '#resume-form', function() {
+		// 		window.location.href ="/CS2022/manualcontrol/resume";
+      	// 		return false;
+    	// 	 });
+    	// 	$(document).on('submit', '#direct-form', function() {
+      	// 		return false;
+    	// 	 });
+    	// 	$(document).on('submit', '#inverse-form', function() {
+      	// 		return false;
+    	// 	 });
+		// });
+	</script>
+	
+	<!-- ICON -->
+	<link rel="icon" type="image/x-icon" href="{% static 'common/Xplore-icon.ico' %}">
+</head>
+
+<body>
+	{{ tab_name|json_script:"tab-name" }}
+	{{ current_state|json_script:"state"  }}
+
+	<div id="container">
+		<div id="sidebar" class="box">
+			<div class="logo">
+				<form class="logo-form" action="http://127.0.0.1:8000/CS2022/homepage">
+					<input id="imagelogo" type="image" src="{% static 'common/Xplore-logo-white.png' %}" alt="My image">
+				</form>
+			</div>
+		
+			<div class="page-button-container">
+				<form action="http://127.0.0.1:8000/CS2022/navigation">
+					<button id="navigation" class="page-button">
+						<span>NAVIGATION</span>
+					</button>
+				</form>
+					
+				<form action="http://127.0.0.1:8000/CS2022/handlingdevice">
+					<button id="handlingdevice" class="page-button">
+						<span>HANDLING DEVICE</span>
+					</button>
+				</form>
+				
+				<form action="http://127.0.0.1:8000/CS2022/science">
+					<button id="science" class="page-button">
+						<span>SCIENCE</span>
+					</button>
+				</form>
+			
+				<form action="http://127.0.0.1:8000/CS2022/manualcontrol">
+					<button id="manualcontrol" class="current-page-button" disabled="true">
+						<span>MANUAL CONTROL</span>
+					</button>
+				</form>
+				
+				<form action="http://127.0.0.1:8000/CS2022/logs">
+					<button id="logs" class="page-button">
+						<span>LOGS</span>
+					</button>
+				</form>
+				<div>
+					<p style="color: white; margin-top: 15px; font-weight: bold;">ELAPSED TIME</p>
+					<p id="elapsed" style="color: white; margin-bottom: 10px; ">00 : 00 : 00</p>
+
+					<img src="{% static 'common/ok.png' %}" alt="" width="48" height="48" style="margin-top: 10px; margin-right: 10px; opacity: 1; ">
+					<img src="{% static 'common/warning.png' %}" alt="" width="40" height="40" style="margin-top: 10px; opacity: 0.2;">
+					<img src="{% static 'common/error.png' %}" alt="" width="42" height="42" style="margin-top: 10px; opacity: 0.2; margin-left:15px;">
+
+
+				</div>
+			</div>
+		
+			<div class="square-state-button-box" style="margin-top: 780px;">
+
+				<div class="state-button-container">
+					<form  class="state-button-form" method="POST">
+						{% csrf_token %}
+						<input id="launch-button" class="state-button" type="submit" value="LAUNCH">
+						
+					</form>
+				</div>
+				
+				<div class="state-button-container">
+					<form  class="state-button-form" method="POST">
+						{% csrf_token %}
+						<input id="wait-button" class="state-button" type="submit" value="WAIT">
+						
+					</form>
+				</div>
+				
+				<div class="state-button-container">
+					<form  class="state-button-form" method="POST">
+						{% csrf_token %}
+						<input id="abort-button" class="state-button" type="submit" value="ABORT">
+						
+					</form>
+				</div>
+
+
+				<div class="state-button-container">
+					<form  class="state-button-form" method="POST">
+						{% csrf_token %}
+						<input id="resume-button" class="state-button" type="submit" value="RESUME">
+						
+					</form>
+				</div>
+				<script>
+					/* code when launching MANUAL */					
+					document.querySelector("#launch-button").addEventListener("click", event => {
+						event.preventDefault();
+		
+						// dim the states on top of the GUI and highlight Manual
+						var elem1 = document.getElementById('navigation-state');
+						var elem2 = document.getElementById('idle-state');
+						var elem3 = document.getElementById('hd-state');
+						var elem4 = document.getElementById('manual-state');
+						var elem5 = document.getElementById('waiting-state');
+
+						elem1.style.opacity = 0.2;
+						elem2.style.opacity = 0.2;
+						elem3.style.opacity = 0.2;
+						elem4.style.opacity = 1;
+						elem5.style.opacity = 0.2;
+		
+						// request back-end to launch manual
+						let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+						let request = new Request("launch/", {method: 'POST',
+															body: '',
+															headers: {"X-CSRFToken": csrfTokenValue}})
+						fetch(request)
+							.then(response => response.json())
+							.then(result => {})
+					})
+		
+					
+				</script>
+
+			</div>
+
+			
+
+			
+		</div>
+		
+		<div id="right-side" class="box">
+
+			<div class="top-bar">
+				<label id="idle-state" class="neon-label">IDLE</label>
+				<label id="navigation-state" class="neon-label">NAVIGATION</label>
+				<label id="hd-state" class="neon-label">HANDLING DEVICE</label>
+				<label id="science-state" class="neon-label">SCIENCE</label>
+				<label id="manual-state" class="neon-label">MANUAL CONTROL</label>
+				<label id="waiting-state" class="neon-label">WAITING</label>		
+			</div>
+			
+			<div id="page" class="page">
+					
+				<div class="left">
+					<div class="top-left">
+					
+						<img id="camera_1" src="{% static 'common/logothumbnail.png' %}" height="100%" width="100%">
+						<p id="envmap-title">CAMERA 1</p>
+						
+					</div>
+
+					<div class="h-separator"></div>
+
+					<div class="bottom-left">
+					
+						<img id="camera_2" src="{% static 'common/logothumbnail.png' %}" height="100%" width="100%" style=" transform: rotateY(180deg) rotateX(180deg);">
+						<p id="envmap-title">CAMERA 2</p>
+
+					</div>
+
+				</div>
+
+				<div class="v-separator"></div>
+
+				<div class="right">
+			
+					<div class="settings-container">
+						<div class="settings-top-bar">
+							<div class="currentpos-container">
+								<!-- ROVER POSITION -->
+								<div class="pos-title-c">
+									<p class="pos-title">CURRENT POSITION:</p>
+								</div>
+								<div class="pos-coord">
+									<div class="coord-c">
+										<p class="coord-type">X</p>
+										<p id="X_coord" class="coordinate">0.00</p>
+									</div>
+									<div class="coord-c">
+										<p class="coord-type">Y</p>
+										<p id="Y_coord" class="coordinate">0.00</p>
+									</div>
+									<div class="coord-c">
+										<p class="coord-type">Z</p>
+										<p class="coordinate">0.00</p>
+									</div>
+								</div>
+							</div>
+
+							<!-- ROVER VELOCITY -->
+							<div class="velocity-container">
+								<div class="velocity-title-c">
+									<p class="velocity-title">VELOCITY:</p>
+								</div>
+								<div class="velocity-type-container">
+									<!-- LINEAR VEL -->
+									<div class="velocity-type-c">
+										<p class="velocity-type">Linear:</p>
+										<p id="linVel" class="velocity">0.00</p>
+									</div>
+									<!-- ANGULAR VEL -->
+									<div class="velocity-type-c">
+										<p class="velocity-type">Angular:</p>
+										<p id="angVel" class="velocity">0.00</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="settings-bottom">
+
+							<div class="joint-data-pos" style="display: grid;">
+
+								<!-- ======= JOINT VELOCITIES ======= -->
+
+								<div class="title-container">
+									<p class="data-title"> Joint Velocities (m/s): </p>
+								</div>
+
+								<div class="container" >
+									<p id="joint1_vel" class="data" style="float: left;"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint2_vel" class="data" style="float: left;"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint3_vel" class="data" style="float: left;"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint4_vel" class="data" style="float: left;"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint5_vel" class="data" style="float: left;"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint6_vel" class="data" style="float: left;"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint7_vel" class="data" style="float: left;"> 0 </p>
+									<p class="data"> &#xA0; </p>
+								</div>
+							</div>
+
+							<div class="joint-data-pos" style="display: grid;" >
+								<div class="title-container">
+									<p class="data-title"> Joint Positions (deg): </p>
+								</div>
+							
+								<!-- ======= DISPLAY THE JOINTS' ANGLES + SLIDERS FOR BETTER VISUALISATION OF THE LIMITS -->
+
+								<div class="container" style="display: grid; margin-left: 10px;">
+									<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
+										<p class="data" style="margin-right: 10px; margin-bottom: 0px;">-232</p>
+										<input id="joint1_slider" type="range" min="-232" max="221" value="0" style="width: 400px;">
+										<p class="data" style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">+221</p>
+										<p id="joint1_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
+									</div>
+
+									<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
+										<p class="data" style="margin-right: 10px; margin-bottom: 0px;">-56</p>
+										<input id="joint2_slider" type="range" min="-56" max="123" value="0" style="width: 400px;">
+										<p class="data" style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">+123</p>
+										<p id="joint2_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
+									</div>
+
+									<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
+										<p class="data" style="margin-right: 10px; margin-bottom: 0px;">-32 </p>
+										<input id="joint3_slider" type="range" min="-32" max="37" value="0" style="width: 400px;">
+										<p class="data" style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">37</p>
+										<p id="joint3_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
+									</div>
+
+									<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
+										<p class="data" style="margin-right: 10px; margin-bottom: 0px;">-92      </p>
+										<input id="joint4_slider" type="range" min="-92" max="91" value="0" style="width: 400px;">  
+										<p class="data" style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">+91</p>
+										<p id="joint4_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
+									</div>
+
+									<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
+										<p class="data" style="margin-right: 10px; margin-bottom: 0px;">-72</p>
+										<input id="joint5_slider" type="range" min="-72" max="88" value="0" style="width: 400px;">
+										<p class="data" style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">+88</p>
+										<p id="joint5_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
+									</div>
+
+									<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
+										<p class="data" style="margin-right: 10px; margin-bottom: 0px;">-150</p>
+										<input id="joint6_slider" type="range" min="-150" max="163" value="0" style="width: 400px;">
+										<p class="data" style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">+163</p>
+										<p id="joint6_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
+									</div>
+
+									<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
+										<p id="joint7_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
+									</div>
+										
+								</div>
+								<img id="camera_3" src="{% static 'common/logothumbnail.png' %}" height="60%" width="100%">
+								<p id="envmap-title">CAMERA 1</p>
+							</div> 
+
+							<!-- not used so do what you want-->
+							<div class="state-button-container"; style="display: -webkit-box;">
+								<form  class="state-button-form" method="POST" style="width: 250px; height:30px;">
+									{% csrf_token %}
+									<input  id="capture_image" class="state-button" type="submit" value="CAPTURE IMAGES">
+
+								</form>
+
+								<!-- display current HD mode: Direct, Debug, Inverse -->
+								<p id="mode-title" style="color: white; padding-left: 10px;">HD Mode : </p>
+								<p id="hd_man_mode" style="color: white;">DIR</p>
+								<div class="mode-container" style="float:left;">
+
+								</div>
+							</div>
+							
+							<script>
+
+							document.getElementById('camera_1').setAttribute( 'src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==' );
+
+							// ==============================================================================================================================================================
+									
+				
+							// ==============================================================================================================================================================
+
+							
+							
+						</script>
+						
+					</div>
+					
+					
+				</div>
+				</div>
+				<!-- cameras grid -->
+				
+		</div>
+	</div>
+	<!-- =================================================================================================================== -->
+	<script>
+
+		const tabName = JSON.parse(document.getElementById('tab-name').textContent);
+
+		// ----------------------------------------------------------------------
+		// Data
+		const chatSocket = new WebSocket(
+			'ws://'
+			+ window.location.host
+			+ '/ws/CS2022/'
+			+ tabName
+			+ '/'
+		);
+	
+		// on receiving json message from back-end
+		chatSocket.onmessage = function(e) {
+			const data = JSON.parse(e.data);
+			
+			console.log("debug")
+			// update x and y coordinates + linear and angular velocities
+			document.getElementById('X_coord').innerHTML    = Math.round((data.x + Number.EPSILON)        * 100) / 100
+			document.getElementById('Y_coord').innerHTML    = Math.round((data.y + Number.EPSILON)        * 100) / 100
+			document.getElementById('linVel').innerHTML     = Math.round((data.linVel + Number.EPSILON)   * 100) / 100
+			document.getElementById('angVel').innerHTML     = Math.round((data.angVel + Number.EPSILON)   * 100) / 100
+
+			// update hd mode
+			document.getElementById('hd_man_mode').innerHTML = data.hd_mode
+
+			/* display joint velocities */
+			let velocities = document.querySelectorAll('#joint1_vel, #joint2_vel, #joint3_vel, #joint4_vel, #joint5_vel, #joint6_vel, #joint7_vel');
+			let j = 0;
+			velocities.forEach(vel => {
+				document.getElementById(vel.id).innerHTML = Math.round((data.joint_vel[j] + Number.EPSILON) * 100) / 100;
+				j += 1;
+			})
+
+			/* display joint coordinates */
+			let coordinates = document.querySelectorAll('#joint1_coord, #joint2_coord, #joint3_coord, #joint4_coord, #joint5_coord, #joint6_coord, #joint7_coord');
+			let i = 0;
+			coordinates.forEach(coord => {
+				document.getElementById(coord.id).innerHTML = (Math.round((data.joint_pos[i] + Number.EPSILON) * 180 / Math.PI * 100) / 100);
+				i += 1;
+				
+			})
+
+			/* sliders to illustrate the joints' angle openings*/
+			let sliders = document.querySelectorAll('#joint1_slider, #joint2_slider, #joint3_slider, #joint4_slider, #joint5_slider, #joint6_slider');
+			let f = 0;
+			sliders.forEach(slider => {
+				document.getElementById(slider.id).value = (Math.round((data.joint_pos[f] + Number.EPSILON) * 180 / Math.PI * 100) / 100);
+				f += 1;
+			 })
+	
+		};
+	
+		chatSocket.onclose = function(e) {
+			console.log('Switched Tab');
+		};
+
+		// --------------------------------------------------------------------------
+		// Cameras
+		let ws = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/cameras/'
+			+ 'video6/'
+            // + 'wms'
+            // + '/'
+        );
+
+		let ws2 = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/cameras/'
+			+ 'video2/'
+            // + 'wms'
+            // + '/'
+        );
+		let ws3 = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/cameras/'
+			+ 'video/'
+            // + 'wms'
+            // + '/'
+        );
+
+
+        ws.onmessage = function(evt) {
+            v_data = JSON.parse(evt.data);
+            // $("#camera_1").attr("src", v_data.message);
+			document.getElementById('camera_1').src = v_data.message;
+			
+
+            
+        };
+
+		ws2.onmessage = function(evt) {
+            v_data = JSON.parse(evt.data);
+            document.getElementById('camera_2').src = v_data.message;
+			
+
+            
+        };
+		ws3.onmessage = function(evt) {
+            v_data = JSON.parse(evt.data);
+            document.getElementById('camera_3').src = v_data.message;
+			
+
+            
+        };
+
+        ws.onclose = function(evt) {
+            console.log("Connection closed.");
+        };
+	
+		const timeSocket = new WebSocket(
+		'ws://'
+		+ window.location.host
+		+ '/ws/CS2022/'
+		+ 'time'
+		+ '/'
+		);
+
+		timeSocket.onmessage = function(e) {
+			const data = JSON.parse(e.data);
+			
+			console.log("debug timer");
+			var time = `${data.hor} : ${data.min} : ${data.sec}`;
+			document.getElementById('elapsed').innerHTML    = time;
+
+		};
+	</script>
+	<script src="{% static 'common/common.js' %}"></script>
+
+	<!-- ================================================================================================================= -->
+</body>
+
+</html>
