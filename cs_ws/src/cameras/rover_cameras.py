@@ -13,7 +13,8 @@
 # ==================================================================
 # libraries
 import cv2
-import rospy
+import rclpy
+import sys
 
 
 from sensor_msgs.msg import Image, CompressedImage
@@ -73,6 +74,14 @@ def publish_frame(publisher, image, compression_type='jpg'):
     publisher.publish(bridge.cv2_to_compressed_imgmsg(image, compression_type))
 
 # ==================================================================
+# ROS Node definition
+
+rclpy.init(args = sys.args)
+node = rclpy.create_node('rover_cameras')
+rate = node.create_rate(ROS_LOOP_RATE)
+bridge = CvBridge()                 # bridge between OpenCV and ROS
+
+# ==================================================================
 # camera captures
 
 # #########################################################################
@@ -90,26 +99,19 @@ camera_6 = cv2.VideoCapture(gstreamer_pipeline(5))
 
 
 # ==================================================================
-# ROS Publishers definition
+# ROS2 publishers definition
 
-cam_1_pub = rospy.Publisher('camera_1', CompressedImage, queue_size=1)
-cam_2_pub = rospy.Publisher('camera_2', CompressedImage, queue_size=1)
-cam_3_pub = rospy.Publisher('camera_3', CompressedImage, queue_size=1)
-cam_4_pub = rospy.Publisher('camera_4', CompressedImage, queue_size=1)
-cam_5_pub = rospy.Publisher('camera_5', CompressedImage, queue_size=1)
-cam_6_pub = rospy.Publisher('camera_6', CompressedImage, queue_size=1)
+cam_1_pub = node.create_publisher(CompressedImage, 'camera_1', 1)
+cam_2_pub = node.create_publisher(CompressedImage, 'camera_2', 1)
+cam_3_pub = node.create_publisher(CompressedImage, 'camera_3', 1)
+cam_4_pub = node.create_publisher(CompressedImage, 'camera_4', 1)
+cam_5_pub = node.create_publisher(CompressedImage, 'camera_5', 1)
+cam_6_pub = node.create_publisher(CompressedImage, 'camera_6', 1)
 
 
 # TODO add 2 intels
 
 
-# ==================================================================
-# ROS Node definition
-
-rospy.init_node('rover_cameras')
-
-rate = rospy.Rate(ROS_LOOP_RATE)
-bridge = CvBridge()                 # bridge between OpenCV and ROS
 
 # ==================================================================
 # feed compression and publishing
@@ -123,7 +125,7 @@ This functions
 
 def publish_feeds():
 
-    while not rospy.is_shutdown():
+    while rclpy.ok():
 
         ret_1, frame_cam_1 = camera_1.read()
         if ret_1:

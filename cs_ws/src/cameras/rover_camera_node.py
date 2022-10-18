@@ -13,14 +13,14 @@
 # ==================================================================
 # libraries
 import cv2
-import rospy
+import rclpy
 
 
 from sensor_msgs.msg import Image, CompressedImage
 from cv_bridge import CvBridge
 
-device = rospy.get_param('device')
-pub_topic = rospy.get_param('pubtopic')
+device = rclpy.get_param('device')
+pub_topic = rclpy.get_param('pubtopic')
 print("----------------- device:", device, "------- type:", type(device))
 print("----------------- pub_topic:", pub_topic, "------- type:", type(pub_topic))
 
@@ -83,16 +83,17 @@ def publish_frame(publisher, image, compression_type='jpg'):
 camera = cv2.VideoCapture(gstreamer_pipeline(device))
 
 # ==================================================================
-# ROS Publishers definition
-
-cam_pub = rospy.Publisher(pub_topic, CompressedImage, queue_size=1)
-
+# ROS Node definition
+rclpy.init(args = sys.args)
+node = rclpy.create_node('camera_node')
+rate   = node.create_rate(ROS_LOOP_RATE)
+bridge = CvBridge()                 # bridge between OpenCV and ROS
 
 # ==================================================================
-# ROS Node definition
+# ROS Publishers definition
+cam_pub = node.create_publisher(CompressedImage, pub_topic, 1)
 
-rate   = rospy.Rate(ROS_LOOP_RATE)
-bridge = CvBridge()                 # bridge between OpenCV and ROS
+
 
 # ==================================================================
 # feed compression and publishing
@@ -104,7 +105,7 @@ This functions
 '''
 def publish_feeds():
 
-    while not rospy.is_shutdown():
+    while rclpy.ok():
 
         ret, frame_cam = camera.read()
         if ret :

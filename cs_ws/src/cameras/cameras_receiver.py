@@ -13,7 +13,7 @@
 # ==================================================================
 # libraries
 import cv2
-import rospy
+import rclpy
 import numpy as np
 import base64
 
@@ -29,7 +29,8 @@ from cv_bridge import CvBridge
 # ==================================================================
 # ROS Node definition (to verify)
 
-rospy.init_node('cameras_reciever')
+rclpy.init
+node = create_node('cameras_reciever')
 
 bridge = CvBridge()                 # bridge between OpenCV and ROS
 
@@ -88,12 +89,12 @@ def display_cam_7(msg):
     im7 = bridge.compressed_imgmsg_to_cv2(msg)
 
 
-rospy.Subscriber('camera_1', CompressedImage, display_cam_1)
-rospy.Subscriber('camera_2', CompressedImage, display_cam_2)
-rospy.Subscriber('camera_3', CompressedImage, display_cam_3)
-rospy.Subscriber('camera_4', CompressedImage, display_cam_4)
-rospy.Subscriber('camera_5', CompressedImage, display_cam_5)
-rospy.Subscriber('camera_6', CompressedImage, display_cam_6)
+node.create_subscriber(CompressedImage, 'camera_1', display_cam_1)
+node.create_subscriber(CompressedImage, 'camera_2', display_cam_2)
+node.create_subscriber(CompressedImage, 'camera_3', display_cam_3)
+node.create_subscriber(CompressedImage, 'camera_4', display_cam_4)
+node.create_subscriber(CompressedImage, 'camera_5', display_cam_5)
+node.create_subscriber(CompressedImage, 'camera_6', display_cam_6)
 
 
 # ==================================================================
