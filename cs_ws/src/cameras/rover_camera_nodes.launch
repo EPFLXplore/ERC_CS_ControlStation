@@ -1,0 +1,25 @@
+<launch>
+    <!-- Camera 1 -->
+    <arg name="gstreamer_pipeline_1" default="0"/>
+    <arg name="topic_name_1" default="camera_1"/>
+    <node name="camera_1" pkg="node_pkg_name" type="rover_camera_node.py" output="screen" clear_params="true">
+            <param name="device" value="$(arg gstreamer_pipeline_1)" />
+            <param name="pub_topic" value="$(arg topic_name_1)" /> 
+    </node>
+
+    <!-- Camera 2 -->
+    <arg name="gstreamer_pipeline_2" default="1"/>
+    <arg name="topic_name_2" default="camera_3"/>
+    <node name="camera_2" pkg="node_pkg_name" type="rover_camera_node.py" output="screen" clear_params="true">
+            <param name="device" value="$(arg gstreamer_pipeline_2)" />
+            <param name="pub_topic" value="$(arg topic_name_2)" />
+    </node>
+
+    <!-- Camera 3 -->
+    <arg name="gstreamer_pipeline_3" default="2"/>
+    <arg name="topic_name_3" default="camera_3"/>
+    <node name="camera_3" pkg="node_pkg_name" type="rover_camera_node.py" output="screen" clear_params="true">
+            <param name="device" value="$(arg gstreamer_pipeline_3)" />
+            <param name="pub_topic" value="$(arg topic_name_3)" />
+    </node>
+</launch>
