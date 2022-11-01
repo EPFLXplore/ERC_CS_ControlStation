@@ -48,63 +48,10 @@
 	
 {% block menu %}
 
-				<div>
-					<p style="color: white; margin-top: 15px; font-weight: bold;">ELAPSED TIME</p>
-					<p id = "elapsed" style="color: white; margin-bottom: 10px; ">00 : 00 : 00</p>
+	{% include '../components/rover_status.html' %}
+				
+	{% include '../components/menu_controls.html' %}
 
-					<img src="{% static 'common/ok.png' %}" alt="" width="48" height="48"
-						style="margin-top: 10px; margin-right: 10px; opacity: 1;">
-					<img src="{% static 'common/warning.png' %}" alt="" width="40" height="40"
-						style="margin-top: 10px; opacity: 0.2;">
-					<img src="{% static 'common/error.png' %}" alt="" width="42" height="42"
-						style="margin-top: 10px; opacity: 0.2; margin-left:15px;">
-
-
-				</div>
-
-			</div>
-
-			<div class="long-state-button-box" style="margin-top: 680px;">
-				<div class="state-button-container">
-					<form class="state-button-form" method="POST">
-						{% csrf_token %}
-						<input id="launch-button" class="state-button" type="submit" value="LAUNCH">
-
-					</form>
-				</div>
-
-				<div class="state-button-container">
-					<form class="state-button-form" method="POST">
-						{% csrf_token %}
-						<input id="wait-button" class="state-button" type="submit" value="WAIT">
-
-					</form>
-				</div>
-
-				<div class="state-button-container">
-					<form class="state-button-form" method="POST">
-						{% csrf_token %}
-						<input id="abort-button" class="state-button" type="submit" value="ABORT">
-
-					</form>
-				</div>
-
-
-				<div class="state-button-container">
-					<form class="state-button-form" method="POST">
-						{% csrf_token %}
-						<input id="resume-button" class="state-button" type="submit" value="RESUME">
-
-					</form>
-				</div>
-
-				<div class="state-button-container">
-					<form class="state-button-form" method="POST">
-						{% csrf_token %}
-						<input id="resume-button" class="state-button" type="submit" value="RETRY">
-
-					</form>
-				</div>
 				<script>
 					document.querySelector("#launch-button").addEventListener("click", event => {
 						event.preventDefault();
@@ -138,14 +85,7 @@
 
 {% block body %}
 		<div id="right-side" class="box">
-			<div class="top-bar">
-				<label id="idle-state" class="neon-label">IDLE</label>
-				<label id="navigation-state" class="neon-label">NAVIGATION</label>
-				<label id="hd-state" class="neon-label">HANDLING DEVICE</label>
-				<label id="science-state" class="neon-label">SCIENCE</label>
-				<label id="manual-state" class="neon-label">MANUAL CONTROL</label>
-				<label id="waiting-state" class="neon-label">WAITING</label>
-			</div>
+			{% include '../components/top_bar.html' %}
 
 			<div id="page" class="page">
 				<!--LEFT SIDE-->

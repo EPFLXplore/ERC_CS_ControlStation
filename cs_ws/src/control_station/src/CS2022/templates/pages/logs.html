@@ -4,33 +4,15 @@
 {% block page_style %}{% static 'logs/logs.css' %}{% endblock %}
 
 {% block menu %}
-			<div>
-				<p style="color: white; margin-top: 15px; font-weight: bold;">ELAPSED TIME</p>
-				<p id="elapsed" style="color: white; margin-bottom: 10px; ">00 : 00 : 00</p>
 
-				
-
-				<img src="{% static 'common/ok.png' %}" alt="" width="48" height="48" style="margin-top: 10px; margin-right: 10px; opacity: 1;">
-				<img src="{% static 'common/warning.png' %}" alt="" width="40" height="40" style="margin-top: 10px; opacity: 0.2;">
-				<img src="{% static 'common/error.png' %}" alt="" width="42" height="42" style="margin-top: 10px; opacity: 0.2; margin-left:15px;">
-
-
-			</div>
-		</div>
-		
+	{% include '../components/rover_status.html' %}
+	
 {% endblock %}
 
 {% block body %}
 		
 		<div id="right-side" class="box">
-			<div class="top-bar">
-				<label id="idle-state" class="neon-label">IDLE</label>
-				<label id="navigation-state" class="neon-label">NAVIGATION</label>
-				<label id="hd-state" class="neon-label">HANDLING DEVICE</label>
-				<label id="science-state" class="neon-label">SCIENCE</label>
-				<label id="manual-state" class="neon-label">MANUAL CONTROL</label>
-				<label id="waiting-state" class="neon-label">WAITING</label>		
-			</div>
+			{% include '../components/top_bar.html' %}
 			
 			<div id="page" class="page">
 				<div class="top">
