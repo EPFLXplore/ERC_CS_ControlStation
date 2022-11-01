@@ -1,64 +1,9 @@
+{% extends "../base.html" %}
 {% load static %}
-<!DOCTYPE html>
 
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>CS2022</title>
+{% block page_style %}{% static 'logs/logs.css' %}{% endblock %}
 
-	<!-- STYLE -->
-	<link href="{% static 'common/border.css' %}" rel="stylesheet">
-	<link href="{% static 'logs/logs.css' %}" rel="stylesheet">
-	<link href="{% static 'common/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-	
-	<!-- ICON -->
-	<link rel="icon" type="image/x-icon" href="{% static 'common/Xplore-icon.ico' %}">
-
-</head>
-
-<body>
-
-	{{ tab_name|json_script:"tab-name" }}
-	{{ current_state|json_script:"state"  }}
-
-	<div id="container">
-		<div id="sidebar" class="box">
-		<div class="logo">
-			<form class="logo-form" action="http://127.0.0.1:8000/CS2022/homepage">
-				<input id="imagelogo" type="image" src="{% static 'common/Xplore-logo-white.png' %}" alt="My image">
-			</form>
-		</div>
-		
-		<div class="page-button-container">
-			<form action="http://127.0.0.1:8000/CS2022/navigation">
-				<button id="navigation" class="page-button">
-					<span>NAVIGATION</span>
-				</button>
-			</form>
-					
-			<form action="http://127.0.0.1:8000/CS2022/handlingdevice">
-				<button id="handlingdevice" class="page-button">
-					<span>HANDLING DEVICE</span>
-				</button>
-			</form>
-			
-			<form action="http://127.0.0.1:8000/CS2022/science">
-				<button id="science" class="page-button">
-					<span>SCIENCE</span>
-				</button>
-			</form>
-			
-			<form action="http://127.0.0.1:8000/CS2022/manualcontrol">
-				<button id="manualcontrol" class="page-button">
-					<span>MANUAL CONTROL</span>
-				</button>
-			</form>
-			
-			<form action="http://127.0.0.1:8000/CS2022/logs">
-				<button id="logs" class="current-page-button" disabled="true">
-					<span>LOGS</span>
-				</button>
-			</form>
+{% block menu %}
 			<div>
 				<p style="color: white; margin-top: 15px; font-weight: bold;">ELAPSED TIME</p>
 				<p id="elapsed" style="color: white; margin-bottom: 10px; ">00 : 00 : 00</p>
@@ -73,8 +18,9 @@
 			</div>
 		</div>
 		
-		
-		</div>
+{% endblock %}
+
+{% block body %}
 		
 		<div id="right-side" class="box">
 			<div class="top-bar">
@@ -210,7 +156,9 @@
   		</div>
   	</div>
   	
-  </div>
+{% endblock %}
+
+{% block scripts_end %}
   <script>
 
 	const tabName = JSON.parse(document.getElementById('tab-name').textContent);
@@ -287,6 +235,4 @@
 	}
 </script>
 
-</body>
-
-</html>
+{% endblock %}

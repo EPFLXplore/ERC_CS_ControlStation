@@ -1,17 +1,9 @@
+{% extends "../base.html" %}
 {% load static %}
-<!DOCTYPE html>
 
-<html lang="en">
+{% block page_style %}{% static 'handlingdevice/handlingdevice.css' %}{% endblock %}
 
-<head>
-	<meta charset="UTF-8">
-	<title>CS2022</title>
-
-	<!-- STYLE -->
-	<link href="{% static 'common/border.css' %}" rel="stylesheet">
-	<link href="{% static 'handlingdevice/handlingdevice.css' %}" rel="stylesheet">
-	<link href="{% static 'common/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-
+{% block scripts %}
 	<!-- SCRIPT -->
 	<script src="{% static 'common/border.js' %}"></script>
 	<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
@@ -40,53 +32,21 @@
 			});
 		});*/
 	</script>
+{% endblock %}
+
+	
 
 	<!-- ICON -->
 	<link rel="icon" type="image/x-icon" href="{% static 'common/Xplore-icon.ico' %}">
 </head>
 
-<body>
+{% block json_script %}
 	{{ tab_name|json_script:"tab-name" }}
-	{{ current_state|json_script:"state" }}
+	{{ current_state|json_script:"state"  }}
+{% endblock %}
 
-	<div id="container">
-		<div id="sidebar" class="box">
-			<div class="logo">
-				<form class="logo-form" action="http://127.0.0.1:8000/CS2022/homepage">
-					<input id="imagelogo" type="image" src="{% static 'common/Xplore-logo-white.png' %}" alt="My image">
-				</form>
-			</div>
-
-			<div class="page-button-container">
-				<form action="http://127.0.0.1:8000/CS2022/navigation">
-					<button id="navigation" class="page-button">
-						<span>NAVIGATION</span>
-					</button>
-				</form>
-
-				<form action="http://127.0.0.1:8000/CS2022/handlingdevice">
-					<button id="handlingdevice" class="current-page-button" disabled="true">
-						<span>HANDLING DEVICE</span>
-					</button>
-				</form>
-
-				<form action="http://127.0.0.1:8000/CS2022/science">
-					<button id="science" class="page-button">
-						<span>SCIENCE</span>
-					</button>
-				</form>
-
-				<form action="http://127.0.0.1:8000/CS2022/manualcontrol">
-					<button id="manualcontrol" class="page-button">
-						<span>MANUAL CONTROL</span>
-					</button>
-				</form>
-
-				<form action="http://127.0.0.1:8000/CS2022/logs">
-					<button id="logs" class="page-button">
-						<span>LOGS</span>
-					</button>
-				</form>
+	
+{% block menu %}
 
 				<div>
 					<p style="color: white; margin-top: 15px; font-weight: bold;">ELAPSED TIME</p>
@@ -174,8 +134,9 @@
 					})
 				</script>
 			</div>
-		</div>
+{% endblock %}
 
+{% block body %}
 		<div id="right-side" class="box">
 			<div class="top-bar">
 				<label id="idle-state" class="neon-label">IDLE</label>
@@ -531,7 +492,9 @@
 			</div>
 		</div>
 
-	</div>
+	{% endblock %}
+
+	{% block scripts_end %}
 	<script>
 
 		const tabName = JSON.parse(document.getElementById('tab-name').textContent);
@@ -595,6 +558,4 @@
 	</script>
 	<script src="{% static 'common/common.js' %}"></script>
 
-</body>
-
-</html>
+	{% endblock %}
