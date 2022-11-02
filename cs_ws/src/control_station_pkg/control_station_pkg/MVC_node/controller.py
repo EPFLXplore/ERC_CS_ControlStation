@@ -28,13 +28,13 @@ import json
 import websocket  
 import time
 
-from std_msgs.msg                         import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray, Header
+from std_msgs.msg       import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray, Header
 from geometry_msgs.msg  import Pose, Point, Twist, PoseStamped, Quaternion
 from actionlib_msgs.msg import GoalID
-from tf.transformations import quaternion_from_euler, euler_from_quaternion
+from transforms3d.euler import euler2quat, quat2euler
 
 from Gamepad.Gamepad import Gamepad
-from .model       import Task, TaskProgress
+from .model       import Task
 
 from nav_msgs.msg import Odometry
 from csApp       import models
@@ -98,13 +98,13 @@ class Controller():
 
     # receive info on progress of task (SUCCESS/FAIL)
     #TODO HASN'T BEEN USED ONCE => NEED TO TELL OTHER SUBSYSTEMS TO PUBLISH ON TaskProgress
-    def task_progress(self, num):
-        val = num.data
-        if (0 <= val and val < 3):
-            TaskProgress.objects.update_or_create(name="TaskProgress", defaults={'state': val})
-        else:
-            str = "Impossible progress state: %s" % (val)
-            self.cs.exception_clbk(String(str))
+    # def task_progress(self, num):
+    #     val = num.data
+    #     if (0 <= val and val < 3):
+    #       #  TaskProgress.objects.update_or_create(name="TaskProgress", defaults={'state': val})
+    #     #else:
+    #         str = "Impossible progress state: %s" % (val)
+    #         self.cs.exception_clbk(String(str))
             
 
     # ========= SCIENCE CALLBACKS ========= 
@@ -189,8 +189,8 @@ class Controller():
 
         # orientation
         quaternion = data.pose.pose.orientation
-        explicit_quat = [quaternion.x, quaternion.y, quaternion.z, quaternion.w]
-        roll, pitch, yaw = euler_from_quaternion(explicit_quat)
+        explicit_quat = [quaternion.w, quaternion.x, quaternion.y, quaternion.z]
+        roll, pitch, yaw = quat2euler(explicit_quat)
         nav.setYaw(yaw)
 
         # linear velocity
@@ -327,11 +327,12 @@ class Controller():
         pose.position = point
 
         # rover orientation
-        q = quaternion_from_euler(0, 0, yaw)
-        pose.orientation.x = q[0]
-        pose.orientation.y = q[1]
-        pose.orientation.z = q[2]
-        pose.orientation.w = q[3]
+        q = euler2quat(0, 0, yaw)
+        pose.orientation.w = q[0]
+        pose.orientation.x = q[1]
+        pose.orientation.y = q[2]
+        pose.orientation.z = q[3]
+        
 
         # -----------------------------------
         # publish goal to rover

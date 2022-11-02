@@ -28,7 +28,6 @@ from manage          import setup
 # ===============================================================
 # Control Station setup
 
-
 cs = setup().CONTROL_STATION
 
 

@@ -26,7 +26,7 @@ class setup:
     
     def __init__(self):
         try:
-            from src.cs_node import CS
+            from MVC_node.cs_node import CS
         except:
             print("import error")
 
