@@ -37,7 +37,7 @@ from nav_msgs.msg          import Odometry
 from sensor_msgs.msg       import JointState, Image
 
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djSettings.settings')
 django.setup()
 
 #================================================================================
