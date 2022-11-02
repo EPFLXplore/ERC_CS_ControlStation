@@ -20,7 +20,7 @@
 from enum import IntEnum
 from syslog import LOG_SYSLOG
 
-from .systems import *
+import systems
 
 import time
 import matplotlib.pyplot as plt

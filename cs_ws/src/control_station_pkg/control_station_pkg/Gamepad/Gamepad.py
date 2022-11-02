@@ -15,7 +15,7 @@ from std_msgs.msg      import Int8MultiArray, Int8, Bool
 import threading
 
 from MVC_node.model import Task
-from .keyMap import *
+import keyMap
 
 
 '''
