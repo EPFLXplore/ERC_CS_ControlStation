@@ -89,7 +89,7 @@ class CS:
         # ===== Subscribers =====
         self.node.create_subscription(String,           'ROVER_RoverConfirm',              self.controller.rover_confirmation , 10)
         self.node.create_subscription(String,           'ROVER_Exception',                 self.controller.exception_clbk     , 10)
-        self.node.create_subscription(Int8,             'ROVER_TaskProgress',              self.controller.task_progress      , 10)
+        #self.node.create_subscription(Int8,             'ROVER_TaskProgress',              self.controller.task_progress      , 10)
         
         # SC messages
         self.node.create_subscription(String,           'ROVER_SC_state',                  self.controller.sc_text_info       , 10) #self.sc_state
