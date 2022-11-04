@@ -50,7 +50,7 @@ class CS:
     
     def __init__(self):
 
-        if(not rlcpy.ok()):
+        if(not rclpy.ok()):
             rclpy.init(args=sys.argv)
             
             self.node = rclpy.create_node("csApp")
