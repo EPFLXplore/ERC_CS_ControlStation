@@ -53,7 +53,7 @@ class CS:
         if(not rclpy.ok()):
             rclpy.init(args=sys.argv)
             
-            self.node = rclpy.create_node("csApp")
+        self.node = rclpy.create_node("csApp")
 
         # MVC pattern => model, view (front-end), controller
         self.controller = Controller(self) # controller
