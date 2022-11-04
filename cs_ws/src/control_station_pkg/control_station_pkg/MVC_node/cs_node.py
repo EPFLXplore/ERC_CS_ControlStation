@@ -87,25 +87,25 @@ class CS:
 
         # ---------------------------------------------------
         # ===== Subscribers =====
-        self.node.create_subscription(String,           'ROVER_RoverConfirm',              self.controller.rover_confirmation )
-        self.node.create_subscription(String,           'ROVER_Exception',                 self.controller.exception_clbk     )
-        self.node.create_subscription(Int8,             'ROVER_TaskProgress',              self.controller.task_progress      )
+        self.node.create_subscription(String,           'ROVER_RoverConfirm',              self.controller.rover_confirmation , 10)
+        self.node.create_subscription(String,           'ROVER_Exception',                 self.controller.exception_clbk     , 10)
+        self.node.create_subscription(Int8,             'ROVER_TaskProgress',              self.controller.task_progress      , 10)
         
         # SC messages
-        self.node.create_subscription(String,           'ROVER_SC_state',                  self.controller.sc_text_info       ) #self.sc_state
-        self.node.create_subscription(String,           'ROVER_SC_info',                   self.controller.sc_text_info       )
-        self.node.create_subscription(Int16MultiArray,  'ROVER_SC_params',                 self.controller.sc_params          )
-        self.node.create_subscription(Int16,            'ROVER_SC_measurements_humidity',  self.controller.sc_humidity        )
-        self.node.create_subscription(Image,            'sc_camera',                       self.controller.sc_image                     )
+        self.node.create_subscription(String,           'ROVER_SC_state',                  self.controller.sc_text_info       , 10) #self.sc_state
+        self.node.create_subscription(String,           'ROVER_SC_info',                   self.controller.sc_text_info       , 10)
+        self.node.create_subscription(Int16MultiArray,  'ROVER_SC_params',                 self.controller.sc_params          , 10)
+        self.node.create_subscription(Int16,            'ROVER_SC_measurements_humidity',  self.controller.sc_humidity        , 10)
+        self.node.create_subscription(Image,            'sc_camera',                       self.controller.sc_image           , 10)
 
         # HD messages
-        self.node.create_subscription(JointState,       'ROVER_HD_telemetry',              self.controller.hd_telemetry       )
-        self.node.create_subscription(Int32,            'ROVER_HD_tof',                    self.controller.hd_tof             )
-        self.node.create_subscription(Float32MultiArray,'ROVER_HD_detected_element',       self.controller.hd_detected_element)
+        self.node.create_subscription(JointState,       'ROVER_HD_telemetry',              self.controller.hd_telemetry       , 10)
+        self.node.create_subscription(Int32,            'ROVER_HD_tof',                    self.controller.hd_tof             , 10)
+        self.node.create_subscription(Float32MultiArray,'ROVER_HD_detected_element',       self.controller.hd_detected_element, 10)
 
         # NAV messages
-        self.node.create_subscription(Twist,            '/cmd_vel',                        self.controller.test_joystick) # TODO i forgot why we subcribed to this...
-        self.node.create_subscription(Odometry,         'ROVER_NAV_odometry',              self.controller.nav_data     )
+        self.node.create_subscription(Twist,            '/cmd_vel',                        self.controller.test_joystick      , 10) # TODO i forgot why we subcribed to this...
+        self.node.create_subscription(Odometry,         'ROVER_NAV_odometry',              self.controller.nav_data           , 10)
 
         # TODO
         # self.node.create_subscription('detection/state', UInt8, detection_state)
@@ -115,6 +115,6 @@ class CS:
         # self.node.create_subscription('detection/RGB_webcam_2', Image, ...)
         
         # Elpased time
-        self.node.create_subscription(Int32MultiArray,  'Time',                            self.controller.elapsed_time )
+        self.node.create_subscription(Int32MultiArray,  'Time',                            self.controller.elapsed_time       , 10)
 
     
