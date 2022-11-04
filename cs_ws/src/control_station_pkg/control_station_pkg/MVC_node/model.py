@@ -54,9 +54,9 @@ class Rover:
     def __init__(self):
 
         # initialize each subsystem
-        self.Nav = systems.Navigation()
-        self.HD  = systems.HandlingDevice()
-        self.SC  = systems.Science()
+        self.Nav = Navigation()
+        self.HD  = HandlingDevice()
+        self.SC  = Science()
         
         # current rover FSM state
         self.__state    = Task.IDLE

@@ -65,12 +65,12 @@ class Gamepad(Thread):
     #------------------NAVIGATION------------------
     # declare and initialize msg_nav_dir
     self.msg_nav_dir = Twist()
-    self.msg_nav_dir.linear.x  = 0
-    self.msg_nav_dir.linear.y  = 0  # always zero
-    self.msg_nav_dir.linear.z  = 0  # always zero
-    self.msg_nav_dir.angular.x = 0  # always zero
-    self.msg_nav_dir.angular.y = 0  # always zero
-    self.msg_nav_dir.angular.z = 0
+    self.msg_nav_dir.linear.x  = 0.0
+    self.msg_nav_dir.linear.y  = 0.0  # always zero
+    self.msg_nav_dir.linear.z  = 0.0  # always zero
+    self.msg_nav_dir.angular.x = 0.0  # always zero
+    self.msg_nav_dir.angular.y = 0.0  # always zero
+    self.msg_nav_dir.angular.z = 0.0
 
     #self.axe_NAV_old = [0., 0., 0.]  # [.linear.x, .linear.y, .angular.z]
     self.axe_NAV_new = [0., 0., 0.]  # [.linear.x, .linear.y, .angular.z]
