@@ -1,0 +1,387 @@
+:root{
+    --log-font: sans-serif;
+    --log-size: 15px;
+}
+
+.top-science-box{
+    width: 50%;
+    height: 45%;
+}
+
+.bottom-science-box{
+    width: 100%;
+    height: 100%;
+}
+
+.buttons-box{
+    float: left;
+    width: 30%;
+    height: 100%;
+}
+
+.tube-submit-box{
+    float: left;
+    width: 100px;
+    height: 100%;
+}
+
+.log-box{
+    float: left;
+    width: 30%;
+    height: 100%;
+    background-color: white;
+}
+
+.log-container{
+    margin: 10px;
+    width: 100%;
+    height: 90%;
+}
+
+.tube-box{
+    float: left;
+    width: 49%;
+    height: 100%;
+}
+
+.trap-box{
+    float: left;
+    width: 20%;
+    margin-left: 10%;
+    padding-top: 20%;
+    height: 100%;
+    text-align: center;
+}
+
+.tube-info-box{
+    float: left;
+    width: 70%;
+    height: 100%;
+}
+
+.submit-column{
+    float: left;
+    text-align: center;
+    width: 30%;
+    height: 80%;
+}
+
+.rotation-box{
+    width: 80%;
+    height: 17%;
+    margin-top: 50%;
+}
+
+.fill-box{
+    width: 80%;
+    height: 25%;
+    margin-top: 20%;
+}
+
+.tube-form-check{
+    height: 30%;
+    width: 100%;
+    padding-top: 20%;
+}
+
+.gallery-box{
+    /* float: left; */
+    /* position: fixed; */
+    width: 25%;
+    height: 85%;
+    overflow: hidden;
+    overflow-y: scroll;
+    /* right: 0; */
+    float: left;
+    /* top: 10; */
+}
+
+.scrollable-gallery{
+    height: 100%;
+    width: 100%;
+}
+
+.picture-container{
+    float: left;
+    width: 20em;
+    height: 42em;
+    margin: 1.5em;
+    background-image: url(image-background.jpg);
+    border-radius: 10px;
+}
+
+.trap-image-container{
+    width: 100%;
+    height: 20%;
+    text-align: center;
+}
+
+.tube-info-line{
+    width: 100%;
+    height: 30%;
+    background-color: rgb(56, 56, 56);
+}
+
+#top-line{
+    margin-top: 20%;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#bottom-line{
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.tube-container{
+    margin-top: 4%;
+    float: left;
+    height: 5em;
+    width: 5em;
+}
+
+.tube-display{
+
+    margin-top: 4%;
+    width: 6em;
+    height: 5em;
+    float: left;
+    margin-left: 14%;
+    background-color: #212529;
+}
+
+#tube-1{
+    margin-left: 40%;
+}
+
+#tube-2{
+    margin-left: 10%;
+}
+
+#tube-3{
+    margin-left: 14%;
+}
+
+
+
+.dialog-box {
+    float:left;
+    margin-top:20px;
+    height: 50%; 
+    width:50%; 
+    color:rgba(0,0,0,0.6);
+}
+
+.dialog{
+    color:rgba(0,0,0,0.6);
+}
+
+/*==========================================================================
+=====================| BUTTONS  |==========================================*/
+.science-button{
+    float: left;
+    width: 25%;
+    height: 10%;
+    margin-top: 20%;
+    margin-left: 10%;
+    margin-right: 5%;
+    color: white;
+    border: 3px solid white;
+    border-radius: 10px;
+    background-color: inherit;
+    font-family: var(--font);
+    font-size: 12px;
+}
+
+.send-button{
+    width: 70%;
+    height: 10%;
+    margin-top: 80%;
+    margin-left: 15%;
+    color: green;
+    background-color: inherit;
+    border: 5px solid green;
+    border-radius: 10px;
+}
+
+.fill-button{
+    width: 80%;
+    height: 50%;
+    margin-top: 25%;
+    color: green;
+    background-color: inherit;
+    border: 5px solid green;
+    border-radius: 10px;
+}
+
+/*==========================================================================
+=====================| P  |===============================================*/
+.log-title{
+    width: 100%;
+    height: 10%;
+    color: white;
+    padding-top: 1%;
+    padding-left: 2%;
+    background-color: black;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.log{
+    color: black;
+    font-family: var(--log-font);
+    font-size: var(--log-size);
+}
+
+.rotation-title{
+    text-align: center;
+    width: 100%;
+    height: 40%;
+    padding-top: 0%;
+    margin: 0%;
+    color: white;
+    font-size: 15px;
+    font-family: var(--font);
+}
+
+.trap-title{
+    color: white;
+    font-family: var(--font);
+    font-size: 15px;
+}
+
+/*==========================================================================
+=====================| LABEL  |===============================================*/
+.tube-form-check-label{
+    color: white;
+    margin-left: 5%;
+    margin-top: 5.5%;
+    font-size: smaller;
+}
+
+/*==========================================================================
+=====================| INPUT |===============================================*/
+.rotation-input{
+    text-align: center;
+    border-radius: 10px;
+    background-color: grey;
+    width: 100%;
+    height: 60%;
+}
+
+.tube-form{
+    width: 100%;
+    height: 100%;
+}
+
+.tube-form-check-input{
+    width: 2.5em;
+    height: 2.5em;
+    margin-top: .25em;
+    vertical-align: top;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border: 1px solid rgba(0,0,0,.25);
+    border-top-color: rgba(0, 0, 0, 0.25);
+    border-right-color: rgba(0, 0, 0, 0.25);
+    border-bottom-color: rgba(0, 0, 0, 0.25);
+    border-left-color: rgba(0, 0, 0, 0.25);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* -webkit-print-color-adjust: exact;
+    color-adjust: exact; */
+}
+
+.tube-form-check-input[type="radio"] {
+    border-radius: 50%;
+}
+
+.tube-form-check-input:checked {
+    background-color: #0d3a7d;
+    border-color: #0d3a7d;
+}
+
+.tube-form-check-input:checked[type="radio"] {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e");
+}
+
+/*==========================================================================
+=====================| IMAGE |===============================================*/
+#trap-open{
+    width: 60%;
+}
+
+#tube-image{
+    height: 100%;
+    width: 60%
+}
+
+/* ==================================== */
+/* switch */
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, ".SFNSText-Regular", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
+}
+
+.toggle {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.toggle-switch {
+  display: inline-block;
+  background: #ccc;
+  border-radius: 16px;
+  width: 58px;
+  height: 32px;
+  position: relative;
+  vertical-align: middle;
+  transition: background 0.25s;
+}
+.toggle-switch:before, .toggle-switch:after {
+  content: "";
+}
+.toggle-switch:before {
+  display: block;
+  background: linear-gradient(to bottom, #fff 0%, #eee 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  transition: left 0.25s;
+}
+.toggle:hover .toggle-switch:before {
+  background: linear-gradient(to bottom, #fff 0%, #fff 100%);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+}
+.toggle-checkbox:checked + .toggle-switch {
+  background: #56c080;
+}
+.toggle-checkbox:checked + .toggle-switch:before {
+  left: 30px;
+}
+
+.toggle-checkbox {
+  position: absolute;
+  visibility: hidden;
+}
+
+.toggle-label {
+  margin-left: 5px;
+  position: relative;
+  top: 2px;
+  color: white;
+}

@@ -1,0 +1,698 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+	<!-- HEADER -->
+	<head>
+		<meta charset="UTF-8">
+		<title>csApp</title>
+
+		<!-- -------------------------------------------------------------------------------------------- -->
+		<!-- STYLE -->
+		<link href="{% static 'common/border.css' %}" rel="stylesheet">
+		<link href="{% static 'navigation/navigation.css' %}" rel="stylesheet">
+		<link href="{% static 'common/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+		<!-- <link rel="stylesheet" href="{% static 'navigation/Main.css' %}""> -->
+		<!-- --------------------------------------------------------------------------------------------- -->
+		<!-- SCRIPT -->
+		<script src="{% static 'common/border.js' %}"></script> 
+		<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+		<!-- <script src="{% static 'common/common.js' %}"></script> -->
+			
+	</head>
+	<!-- BODY -->
+	<body>
+
+
+		{{ tab_name|json_script:"tab-name" }}
+		{{ current_state|json_script:"state"  }}
+
+
+		<div id="container">
+		<!-- vertical navbar -->
+			<div id="sidebar" class="box">
+				<div class="logo">
+					<form class="logo-form" action="http://127.0.0.1:8000/csApp/homepage">
+						<input id="imagelogo" type="image" src="{% static 'common/Xplore-logo-white.png' %}" alt="My image">
+					</form>
+				</div>
+			
+				<div class="page-button-container">
+					<form action="http://127.0.0.1:8000/csApp/navigation">
+						<button id="navigation" class="current-page-button" disabled="true">
+							<span>NAVIGATION</span>
+						</button>
+					</form>
+						
+					<form action="http://127.0.0.1:8000/csApp/handlingdevice">
+						<button id="handlingdevice" class="page-button">
+							<span>HANDLING DEVICE</span>
+						</button>
+					</form>
+					
+					<form action="http://127.0.0.1:8000/csApp/science">
+						<button id="science" class="page-button">
+							<span>SCIENCE</span>
+						</button>
+					</form>
+					
+					<form action="http://127.0.0.1:8000/csApp/manualcontrol">
+						<button id="manualcontrol" class="page-button">
+							<span>MANUAL CONTROL</span>
+						</button>
+					</form>
+					
+					<form action="http://127.0.0.1:8000/csApp/logs">
+						<button id="logs" class="page-button">
+							<span>LOGS</span>
+						</button>
+					</form>
+
+					<div>
+						<p style="color: white; margin-top: 15px; font-weight: bold;">ELAPSED TIME</p>
+						<p id="elapsed" style="color: white; margin-bottom: 10px; ">00 : 00 : 00</p>
+
+						<img src="{% static 'common/ok.png' %}" alt="" width="48" height="48" style="margin-top: 10px; margin-right: 10px; opacity: 1;">
+						<img src="{% static 'common/warning.png' %}" alt="" width="40" height="40" style="margin-top: 10px; opacity: 0.2;">
+						<img src="{% static 'common/error.png' %}" alt="" width="42" height="42" style="margin-top: 10px; opacity: 0.2; margin-left:15px;">
+						
+					</div>
+				</div>
+				
+				<div class="square-state-button-box" style="margin-top: 780px;">
+					
+					<div class="state-button-container">
+						<form  class="state-button-form" method="POST">
+							{% csrf_token %}
+							<input id="launch-button" class="state-button" type="submit" value="LAUNCH">
+							
+						</form>
+					</div>
+					
+					<div class="state-button-container">
+						<form  class="state-button-form" method="POST">
+							{% csrf_token %}
+							<input id="wait-button" class="state-button" type="submit" value="WAIT">
+							
+						</form>
+					</div>
+					
+					<div class="state-button-container">
+						<form  class="state-button-form" method="POST">
+							{% csrf_token %}
+							<input id="abort-button" class="state-button" type="submit" value="ABORT">
+							
+						</form>
+					</div>
+
+
+					<div class="state-button-container">
+						<form  class="state-button-form" method="POST">
+							{% csrf_token %}
+							<input id="resume-button" class="state-button" type="submit" value="RESUME">
+							
+						</form>
+					</div>
+					<script>
+						document.querySelector("#launch-button").addEventListener("click", event => {
+							event.preventDefault();
+			
+							var elem1 = document.getElementById('navigation-state');
+							var elem2 = document.getElementById('idle-state');
+							var elem3 = document.getElementById('hd-state');
+							var elem4 = document.getElementById('manual-state');
+							var elem5 = document.getElementById('waiting-state');
+
+							elem1.style.opacity = 1;
+							elem2.style.opacity = 0.2;
+							elem3.style.opacity = 0.2;
+							elem4.style.opacity = 0.2;
+							elem5.style.opacity = 0.2;
+			
+							let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+							let request = new Request('launch/', {method: 'POST',
+																body: '',
+																headers: {"X-CSRFToken": csrfTokenValue}})
+							fetch(request)
+								.then(response => response.json())
+								.then(result => {})
+						})
+
+			
+						
+					</script>
+				</div>
+			</div>
+			
+			<!-- horizontal navbar -->
+			<div id="right-side" class="box">
+				<div class="top-bar">
+					<label id="idle-state" class="neon-label">IDLE</label>
+					<label id="navigation-state" class="neon-label">NAVIGATION</label>
+					<label id="hd-state" class="neon-label">HANDLING DEVICE</label>
+					<label id="science-state" class="neon-label">SCIENCE</label>
+					<label id="manual-state" class="neon-label">MANUAL CONTROL</label>
+					<label id="waiting-state" class="neon-label">WAITING</label>		
+				</div>
+				
+				<div id="page" class="page">
+					<!--LEFT SIDE-->
+					<div class="left">
+						<div class="top-left"> 
+
+							<div id="canvas_container" class="top-left">
+								<canvas id="navmap" width="1400" height="810" ></canvas>
+								<canvas id="navmap_path" width="1400" height="810" ></canvas>
+								<canvas id="navmap_position" width="1400" height="810" ></canvas>								
+							</div>
+							
+							<!-- ========================================================== -->
+							<!-- IMPORTANT: AXES OF NAVMAP -> Y points down, X points right -->
+							<!--			AXES OF ROVER  -> Y points left, X points up    -->
+							<!-- ========================================================== -->
+
+							<script>
+								// create navigation map canvas
+								const map = document.getElementById('navmap'); 
+								const myContext = map.getContext('2d');
+								var imageObj = new Image();
+								const width_map  = 950
+								const height_map = 788.3
+
+								const YARD_WIDTH_M = 39
+								const YARD_LENGTH_M = 47
+
+								// starting points in pixels on the nav map
+								const X_START_PX = 324
+								const Y_START_PX = 711 
+
+								const map_path = document.getElementById('navmap_path'); 
+								const pathContext = map_path.getContext('2d');
+
+								const map_pos = document.getElementById('navmap_position'); 
+								const posContext = map_pos.getContext('2d');
+
+								console.log("canvas width " + map.width)
+								console.log("canvas height " + map.height)
+	
+								imageObj.src = "{% static 'common/mars_yard_2022.png' %}";
+								imageObj.onload = function() {
+									// nav map background 
+									myContext.drawImage(imageObj, 0, 0, width_map, height_map);
+
+									// starting point (light green rectangle)
+									myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
+									myContext.fillRect(X_START_PX, Y_START_PX, 10, 10);  // x, y, width, height
+
+									// AR tag
+									const Wt_X = X_START_PX + 0*width_map/YARD_WIDTH_M;
+									const Wt_Y = Y_START_PX - 9*height_map/YARD_LENGTH_M;
+									myContext.fillStyle = 'rgba(0, 0, 255, 0.5)'; 
+									myContext.fillRect(Wt_X, Wt_Y, 10, 10);  
+
+									// way points for NAV task 
+									// #1
+									const WH_X = X_START_PX + 14.56*width_map/YARD_WIDTH_M;
+									const WH_Y = Y_START_PX - 16.58*height_map/YARD_LENGTH_M;
+									myContext.fillStyle = 'rgba(255, 0, 0, 0.5)'; 
+									myContext.fillRect(WH_X, WH_Y, 10, 10);  
+
+									//let x_px = X_START_PX - y_next*width_map/YARD_WIDTH_M;
+									//let y_px = START_Y_PX - x_next*height_map/YARD_LENGTH_M;
+
+									// #2
+									const WG_X = X_START_PX + 10.63*width_map/YARD_WIDTH_M; 
+									const WG_Y = Y_START_PX - 5.54*height_map/YARD_LENGTH_M; 
+									myContext.fillStyle = 'rgba(255, 0, 0, 0.5)'; 
+									myContext.fillRect(WG_X, WG_Y, 10, 10);
+									// #3
+									const WQ_X = X_START_PX + (-3.12)*width_map/YARD_WIDTH_M; 
+									const WQ_Y = Y_START_PX - 12.75*height_map/YARD_LENGTH_M; 
+									myContext.fillStyle = 'rgba(255, 0, 0, 0.5)'; 
+									myContext.fillRect(WQ_X, WQ_Y, 10, 10);
+									// #4
+									const WC_X = X_START_PX + 3.67*width_map/YARD_WIDTH_M; 
+									const WC_Y = Y_START_PX - 19.00*height_map/YARD_LENGTH_M;  
+									myContext.fillStyle = 'rgba(255, 0, 0, 0.5)'; 
+									myContext.fillRect(WC_X, WC_Y, 10, 10); 
+
+
+									//myContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
+									myContext.fillStyle = 'rgba(247, 202, 24, 1)'; 
+
+									/* ===== DRAWING THE GRID + AXES ON THE NAV MAP ===== */
+									// https://usefulangle.com/post/19/html5-canvas-tutorial-how-to-draw-graphical-coordinate-system-with-grids-and-axis 
+									
+									myContext.fillStyle = 'rgba(247, 202, 24, 1)'; 
+
+									// move cursor to the starting point, to begin drawing line 
+									pathContext.beginPath(); 
+									pathContext.moveTo(X_START_PX, Y_START_PX); // first line => moveTo()
+
+									var grid_size = 21.27;
+									var x_axis_distance_grid_lines = 33;
+									var y_axis_distance_grid_lines = 15;
+									var x_axis_starting_point = { number: 1, suffix: '\u03a0' };
+									var y_axis_starting_point = { number: 1, suffix: '' };
+
+									// canvas width
+									var canvas_width = map.width-440;
+
+									// canvas height
+									var canvas_height = map.height-30;
+
+									// no of vertical grid lines
+									var num_lines_x = Math.floor(canvas_height/grid_size);
+
+									// no of horizontal grid lines
+									var num_lines_y = Math.floor(canvas_width/grid_size);
+
+									// Draw grid lines along X-axis
+									for(var i=0; i<=num_lines_x; i++) {
+										myContext.beginPath();
+										myContext.lineWidth = 1;
+										
+										// If line represents X-axis draw in different color
+										if(i == x_axis_distance_grid_lines) 
+											myContext.strokeStyle = "#000000";
+										else
+											myContext.strokeStyle = "#e9e9e9";
+										
+										if(i == num_lines_x) {
+											myContext.moveTo(0, grid_size*i);
+											myContext.lineTo(canvas_width, grid_size*i);
+										}
+										else {
+											myContext.moveTo(0, grid_size*i+0.5);
+											myContext.lineTo(canvas_width, grid_size*i+0.5);
+										}
+										myContext.stroke();
+									}
+
+									// Draw grid lines along Y-axis
+									for(i=0; i<=num_lines_y; i++) {
+										myContext.beginPath();
+										myContext.lineWidth = 1;
+										
+										// If line represents Y-axis draw in different color
+										if(i == y_axis_distance_grid_lines) 
+											myContext.strokeStyle = "#000000";
+										else
+											myContext.strokeStyle = "#e9e9e9";
+										
+										if(i == num_lines_y) {
+											myContext.moveTo(grid_size*i, 0);
+											myContext.lineTo(grid_size*i, canvas_height);
+										}
+										else {
+											myContext.moveTo(grid_size*i+0.5, 0);
+											myContext.lineTo(grid_size*i+0.5, canvas_height);
+										}
+										myContext.stroke();
+									}
+
+									myContext.translate(y_axis_distance_grid_lines*grid_size, x_axis_distance_grid_lines*grid_size);
+
+								// Ticks marks along the positive X-axis
+								for(i=1; i<(num_lines_y - y_axis_distance_grid_lines); i++) {
+									myContext.beginPath();
+									myContext.lineWidth = 1;
+									myContext.strokeStyle = "#000000";
+
+									// Draw a tick mark 6px long (-3 to 3)
+									myContext.moveTo(grid_size*i+0.5, -3);
+									myContext.lineTo(grid_size*i+0.5, 3);
+									myContext.stroke();
+
+									// Text value at that point
+									myContext.font = '9px Arial';
+									myContext.textAlign = 'start';
+									myContext.fillText(x_axis_starting_point.number*i + x_axis_starting_point.suffix, grid_size*i-2, 15);
+								}
+
+								// Ticks marks along the negative X-axis
+								for(i=1; i<y_axis_distance_grid_lines; i++) {
+									myContext.beginPath();
+									myContext.lineWidth = 1;
+									myContext.strokeStyle = "#000000";
+
+									// Draw a tick mark 6px long (-3 to 3)
+									myContext.moveTo(-grid_size*i+0.5, -3);
+									myContext.lineTo(-grid_size*i+0.5, 3);
+									myContext.stroke();
+
+									// Text value at that point
+									myContext.font = '9px Arial';
+									myContext.textAlign = 'end';
+									myContext.fillText(-x_axis_starting_point.number*i + x_axis_starting_point.suffix, -grid_size*i+3, 15);
+								}
+
+
+								// Ticks marks along the positive Y-axis
+								// Positive Y-axis of graph is negative Y-axis of the canvas
+								for(i=1; i<(num_lines_x - x_axis_distance_grid_lines); i++) {
+									myContext.beginPath();
+									myContext.lineWidth = 1;
+									myContext.strokeStyle = "#000000";
+
+									// Draw a tick mark 6px long (-3 to 3)
+									myContext.moveTo(-3, grid_size*i+0.5);
+									myContext.lineTo(3, grid_size*i+0.5);
+									myContext.stroke();
+
+									// Text value at that point
+									myContext.font = '9px Arial';
+									myContext.textAlign = 'start';
+									myContext.fillText(-y_axis_starting_point.number*i + y_axis_starting_point.suffix, 8, grid_size*i+3);
+								}
+
+								// Ticks marks along the negative Y-axis
+								// Negative Y-axis of graph is positive Y-axis of the canvas
+								for(i=1; i<x_axis_distance_grid_lines; i++) {
+									myContext.beginPath();
+									myContext.lineWidth = 1;
+									myContext.strokeStyle = "#000000";
+
+									// Draw a tick mark 6px long (-3 to 3)
+									myContext.moveTo(-3, -grid_size*i+0.5);
+									myContext.lineTo(3, -grid_size*i+0.5);
+									myContext.stroke();
+
+									// Text value at that point
+									myContext.font = '9px Arial';
+									myContext.textAlign = 'start';
+									myContext.fillText(y_axis_starting_point.number*i + y_axis_starting_point.suffix, 8, -grid_size*i+3);
+								}
+								};
+
+								
+								
+	
+							</script>
+						</div>
+						
+						<div class="h-separator"></div>
+
+						<div class="bottom-left">
+
+							<div class="user-input-container">
+								<form class="input-form" action="" method="POST">{% csrf_token %}
+										
+									{% csrf_token %}
+									<div class="input-container">
+										<input id="x" type="number" class="input" placeholder="X" name="x"/>
+										<input id="y" type="number" class="input" placeholder="Y" name="y"/>
+										<input id="yaw" type="number" class="input" placeholder="YAW" name="yaw">
+		
+										<input id="nav_set" class="set-button" type="submit" value="SET">
+										
+									</div>
+								</form>
+								<script>
+									document.querySelector("#nav_set").addEventListener("click", event => {
+										event.preventDefault();
+										
+										let x = document.querySelector("#x").value
+										let y = document.querySelector("#y").value
+
+										/* sending goal coordinates to back-end*/
+										let formData = new FormData();
+										formData.append('x',  x);
+										formData.append('y',  -y);
+										formData.append('yaw', document.querySelector('#yaw').value);
+
+										document.getElementById("xgoal").innerHTML = document.querySelector("#x").value;
+										document.getElementById("ygoal").innerHTML = document.querySelector("#y").value;
+						
+						
+										let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+										let request = new Request('set_goal/', {method: 'POST',
+																			body: formData,
+																			headers: {"X-CSRFToken": csrfTokenValue}})
+										fetch(request)
+											.then(response => response.json())
+											.then(result => {})
+											
+
+										myContext.fillStyle = 'red';
+										myContext.fillRect(x, y, 10, 10)
+
+										})
+
+									
+								</script>
+							</div>
+
+						</div>
+					</div>
+				
+
+					<!--RIGHT SIDE-->
+					<div class="v-separator"></div>
+
+
+					<div class="right">
+						<div class="top-right">
+							<div class="left-panel">
+								<div class="subject-container">
+									<div class="title-container">
+										<p class="title">CURRENT POSITION</p>
+									</div>
+									<div class="data-container">
+										<!-- ROVER X COORDINATE -->
+										<div class="data-line-container">
+											<p class="data-title">X : </p>
+											<p id="X_coord" class="data"> 0 </p>
+											<p class="data"> &#xA0; m </p>
+										</div>
+										<!-- ROVER Y COORDINATE -->
+										<div class="data-line-container">
+											<p class="data-title">Y : </p>
+											<p id="Y_coord" class="data"> 0 </p>
+											<p class="data"> &#xA0; m </p>
+										</div>
+										<div class="data-line-container">
+											<p class="data-title">Z : </p>
+											<p id="Z_coord" class="data"> 0 </p>
+											<p class="data"> &#xA0; m </p>
+										</div>
+										<div class="data-line-container">
+											<p class="data-title">YAW : </p>
+											<p id="YAW_coord" class="data"> 0 </p>
+											<p class="data"> &#xA0; rad </p>
+										</div>
+
+									</div>
+								</div>
+								
+								<div class="subject-container">
+									
+									<div class="title-container">
+										<p class="title">GOAL </p>
+									</div>
+									<div class="data-container">
+										<!-- GOAL'S Y COORDINATE -->
+										<div class="data-line-container">
+											<p  class="data-title">X : </p>
+											<p id="xgoal" class="data">0</p>
+										</div>
+										<!-- GOAL'S X COORDINATE -->
+										<div class="data-line-container">
+											<p  class="data-title">Y : </p>
+											<p id="ygoal" class="data">0</p>
+										</div>
+
+									</div>
+								</div>
+							</div>
+							<div class="right-panel">
+								<div class="subject-container">
+									<div class="title-container">
+										<p class="title">COURSE DATA</p>
+									</div>
+									<div class="data-container">
+										<!-- DISTANCE TO GOAL -->
+										<div class="data-line-container">
+											<p class="data-title">Distance to goal: </p>
+											<p id="distToGoal" class="data"> 0 </p>
+											<p class="data"> &#xA0; m </p>
+										</div>
+										<!-- ROUTE TO GOAL -->
+										<div class="data-line-container">
+											<p id="debug-label" class="data-title">Route to goal: </p>
+											<p class="data"> 0 </p>
+											<p class="data"> &#xA0; m </p>
+										</div>
+										
+									</div>
+									<div class="title-container">
+										<p class="title">VELOCITY</p>
+									</div>
+									<div class="data-container">
+										<!-- LINEAR VELOCITY -->
+										<div class="data-line-container">
+											<p class="data-title">Linear: </p>
+											<p id="linVel" class="data">0</p>
+											<p class="data"> &#xA0; m/s </p>
+										</div>
+										<!-- ANGULAR VELOCITY -->
+										<div class="data-line-container">
+											<p class="data-title">Angular: </p>
+											<p id="angVel" class="data">0</p> 
+											<p class = "data"> &#xA0; rad/s</p>
+										</div>
+
+										</div>
+									</div>
+								</div>
+								
+							</div>
+
+							<div class="h-separator-s"></div>
+						</div>
+
+						<div class="bottom-right">
+
+							
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- ========================================================================================================= -->
+		<script>
+			/* Prevents a prompt from appearing if you refresh after entering values*/
+			if ( window.history.replaceState ) {
+				window.history.replaceState( null, null, window.location.href );
+			}
+			
+			// -----------------------------------------------------------------------------
+			// DataSocket
+			const tabName = JSON.parse(document.getElementById('tab-name').textContent);
+			const chatSocket = new WebSocket(
+				'ws://'
+				+ window.location.host
+				+ '/ws/csApp/'
+				+ tabName
+				+ '/'
+			);
+
+			//const YARD_WIDTH_M = 39
+			//const YARD_LENGTH_M = 47
+			const START_X_PX = X_START_PX
+			const START_Y_PX = Y_START_PX
+
+
+			// on receiving a json message from the back-end
+			chatSocket.onmessage = function(e) {
+				const data = JSON.parse(e.data);
+
+				// UPDATING VALUES COMING FROM ROVER/BACK-END
+				document.getElementById('Z_coord').innerHTML    = Math.round((data.z + Number.EPSILON)        * 100) / 100
+				document.getElementById('YAW_coord').innerHTML  = Math.round((data.yaw + Number.EPSILON)      * 100) / 100
+				document.getElementById('linVel').innerHTML     = Math.round((data.linVel + Number.EPSILON)   * 100) / 100
+				document.getElementById('angVel').innerHTML     = Math.round((data.angVel + Number.EPSILON)   * 100) / 100
+				document.getElementById('distToGoal').innerHTML = Math.round((data.distance + Number.EPSILON) * 100) / 100
+		 
+				// draw on nav map canvas (meters to navmap_size proportions)
+				var width_meters  = 47
+				var height_meters = 39
+
+				// ======== CODE FOR THE TRIANGLE ON THE MAP + THE PATH IT TOOK ========
+				// html divs of x and y coordinates
+				var x_coord_meters = document.getElementById('X_coord'); 
+				var y_coord_meters = document.getElementById('Y_coord');
+
+				// previous values before receiving update from back-end
+				let x_prev = x_coord_meters.innerHTML;
+				let y_prev = y_coord_meters.innerHTML;
+
+				// new current coordinates received from back-end
+				let x_next = Math.round((data.x + Number.EPSILON) * 100) / 100
+				let y_next = Math.round((data.y + Number.EPSILON) * 100) / 100
+
+				// update only if coordinates changed 
+				//TODO yaw_prev != yaw_next
+				if(x_prev != x_next || y_prev != y_next) {
+					x_coord_meters.innerHTML = x_next
+					y_coord_meters.innerHTML = y_next
+					// ??????????? ASK EMMA
+					posContext.clearRect(0, 0, width_map, height_map); 
+					posContext.fillStyle = 'rgba(0, 255, 0, 0.5)'; 
+				
+					// new yaw value from back-end
+					let yaw = -(document.getElementById('YAW_coord').innerHTML) - Math.PI/2;
+					
+					// transform the (x,y) coordinates from meters to distance in pixels (to display on screen)
+					let x_px = START_X_PX - y_next*width_map/YARD_WIDTH_M;
+					let y_px = START_Y_PX - x_next*height_map/YARD_LENGTH_M;
+
+					posContext.beginPath();
+
+					// ======= code of the triangle representing the rover on the map =======
+					// the triangle is isosceles with two sides of length 15 and third side of length 10
+					let p1 = [0,0]
+					let p2 = [0,0]
+					// top point of the triangle
+					// here and later on, adding x_px and y_px is done to reposition the triangle correctly on the map (shifting)
+					posContext.moveTo(15 * Math.cos(yaw) + x_px, 15 * Math.sin(yaw) + y_px);
+
+					// p1 and p2 are the points of the two other angles of the triangle
+					if(Math.abs(yaw) == Math.PI/2) {
+						p1 = [x_px - 5, y_px]
+						p2 = [x_px + 5, y_px]
+					} else {
+						let tan = Math.round(Math.tan(yaw)*100)/100 // two decimal precision
+						let factor = Math.round(5/(Math.sqrt(tan*tan + 1)) * 100) / 100
+						
+						p1 = [factor*(-tan) + x_px, factor + y_px]
+						p2 = [factor*tan + x_px, -factor + y_px]
+					}
+
+					// draw triangle 
+					// JS draws two lines from the moveTo() method (see above) to the points p1 and p2 and then fills up the drawn object
+					posContext.lineTo(p1[0], p1[1]);
+					posContext.lineTo(p2[0], p2[1]);
+					posContext.fill();
+
+					// draw new segment of the path 
+					pathContext.lineTo(x_px, y_px); 
+					pathContext.strokeStyle = "#008000"; 
+					pathContext.stroke();
+				}
+
+				
+				/*myContext.lineTo((x_coord_meters * width_map) / width_meters, (y_coord_meters * height_map) / height_meters); 
+				myContext.strokeStyle = "#008000"; 
+				myContext.stroke();*/
+				};
+
+				chatSocket.onclose = function(e) {
+					console.log('Switched Tab');
+				};
+
+				const timeSocket = new WebSocket(
+					'ws://'
+					+ window.location.host
+					+ '/ws/csApp/'
+					+ 'time'
+					+ '/'
+				);
+
+				timeSocket.onmessage = function(e) {
+					const data = JSON.parse(e.data);
+					
+					console.log("debug timer");
+					var time = `${data.hor} : ${data.min} : ${data.sec}`;
+					document.getElementById('elapsed').innerHTML    = time;
+
+				};
+			
+
+			
+
+		</script>
+		<script src="{% static 'common/common.js' %}"></script>
+	</body>
+</html>

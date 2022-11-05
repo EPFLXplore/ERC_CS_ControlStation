@@ -1,0 +1,292 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>csApp</title>
+
+	<!-- STYLE -->
+	<link href="{% static 'common/border.css' %}" rel="stylesheet">
+	<link href="{% static 'logs/logs.css' %}" rel="stylesheet">
+	<link href="{% static 'common/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+	
+	<!-- ICON -->
+	<link rel="icon" type="image/x-icon" href="{% static 'common/Xplore-icon.ico' %}">
+
+</head>
+
+<body>
+
+	{{ tab_name|json_script:"tab-name" }}
+	{{ current_state|json_script:"state"  }}
+
+	<div id="container">
+		<div id="sidebar" class="box">
+		<div class="logo">
+			<form class="logo-form" action="http://127.0.0.1:8000/csApp/homepage">
+				<input id="imagelogo" type="image" src="{% static 'common/Xplore-logo-white.png' %}" alt="My image">
+			</form>
+		</div>
+		
+		<div class="page-button-container">
+			<form action="http://127.0.0.1:8000/csApp/navigation">
+				<button id="navigation" class="page-button">
+					<span>NAVIGATION</span>
+				</button>
+			</form>
+					
+			<form action="http://127.0.0.1:8000/csApp/handlingdevice">
+				<button id="handlingdevice" class="page-button">
+					<span>HANDLING DEVICE</span>
+				</button>
+			</form>
+			
+			<form action="http://127.0.0.1:8000/csApp/science">
+				<button id="science" class="page-button">
+					<span>SCIENCE</span>
+				</button>
+			</form>
+			
+			<form action="http://127.0.0.1:8000/csApp/manualcontrol">
+				<button id="manualcontrol" class="page-button">
+					<span>MANUAL CONTROL</span>
+				</button>
+			</form>
+			
+			<form action="http://127.0.0.1:8000/csApp/logs">
+				<button id="logs" class="current-page-button" disabled="true">
+					<span>LOGS</span>
+				</button>
+			</form>
+			<div>
+				<p style="color: white; margin-top: 15px; font-weight: bold;">ELAPSED TIME</p>
+				<p id="elapsed" style="color: white; margin-bottom: 10px; ">00 : 00 : 00</p>
+
+				
+
+				<img src="{% static 'common/ok.png' %}" alt="" width="48" height="48" style="margin-top: 10px; margin-right: 10px; opacity: 1;">
+				<img src="{% static 'common/warning.png' %}" alt="" width="40" height="40" style="margin-top: 10px; opacity: 0.2;">
+				<img src="{% static 'common/error.png' %}" alt="" width="42" height="42" style="margin-top: 10px; opacity: 0.2; margin-left:15px;">
+
+
+			</div>
+		</div>
+		
+		
+		</div>
+		
+		<div id="right-side" class="box">
+			<div class="top-bar">
+				<label id="idle-state" class="neon-label">IDLE</label>
+				<label id="navigation-state" class="neon-label">NAVIGATION</label>
+				<label id="hd-state" class="neon-label">HANDLING DEVICE</label>
+				<label id="science-state" class="neon-label">SCIENCE</label>
+				<label id="manual-state" class="neon-label">MANUAL CONTROL</label>
+				<label id="waiting-state" class="neon-label">WAITING</label>		
+			</div>
+			
+			<div id="page" class="page">
+				<div class="top">
+					<div class="top-left">
+						<!--<div id="column-1" class="column">
+			
+
+							<div id="gyroscope-box" class="data-box">
+								<div class="values-title-container">
+									<p class="box-title">GYROSCOPE</p>
+								</div>
+								<div class="values-container">
+									<data-line>
+										<data-title>G1 : </data-title>
+										<data>00.00</data>
+									</data-line>
+									<data-line>
+										<data-title>G2 : </data-title>
+										<data>00.00</data>
+									</data-line>
+									<data-line>
+										<data-title>G3 : </data-title>
+										<data>00.00</data>
+									</data-line>
+								</div>
+							</div>
+						</div>
+						
+						<div id="column-2" class="column">
+							<div id="accelerometer-box" class="data-box">
+								<div class="values-title-container">
+									<p class="box-title">ACCELEROMETER</p>
+								</div>
+								<div class="values-container">
+									<data-line>
+										<data-title>A1 : </data-title>
+										<data>00.00</data>
+									</data-line>
+									<data-line>
+										<data-title>A2 : </data-title>
+										<data>00.00</data>
+									</data-line>
+									<data-line>
+										<data-title>A3 : </data-title>
+										<data>00.00</data>
+									</data-line>
+								</div>
+							</div>
+
+						</div>
+						
+						<div id="column-3" class="column">
+							<div id="current-box" class="data-box">
+								<div class="values-title-container">
+									<p class="box-title">CURRENTS</p>
+								</div>
+								<div class="values-container">
+									<data-line>
+										<data-title>name</data-title>
+										<data>00.00</data>
+									</data-line>
+									<data-line>
+										<data-title>name</data-title>
+										<data>00.00</data>
+									</data-line>
+									<data-line>
+										<data-title>name</data-title>
+										<data>00.00</data>
+									</data-line>
+									<data-line>
+										<data-title>name</data-title>
+										<data>00.00</data>
+									</data-line>
+								</div>
+							</div>
+
+							<div id="voltage-box" class="data-box">
+								<div class="values-title-container">
+									<p class="box-title">VOLTAGES</p>
+								</div>
+								<div class="values-container">
+									<data-line>
+										<data-title>name</data-title>
+										<data>00.00</data>
+									</data-line>
+									<data-line>
+										<data-title>name</data-title>
+										<data>00.00</data>
+									</data-line>
+									<data-line>
+										<data-title>name</data-title>
+										<data>00.00</data>
+									</data-line>
+									<data-line>
+										<data-title>name</data-title>
+										<data>00.00</data>
+									</data-line>
+								</div>
+							</div>
+						</div>-->
+						<div class="dialog-box">
+							<textarea id="dialog" readonly name="dialog" rows="30" cols="70" style="color:rgba(0,0,0,0.8)">AHHHHHHHHHHH</textarea>
+						</div>
+					</div>
+
+					<div class="v-separator"></div>
+
+					<div class="top-right">
+						
+
+						<div class="h-separator"></div>
+						<div class="circle-led-container">
+							
+				  	</div>
+				</div>
+			</div>
+
+			<div class="h-separator"></div>
+
+			<div class="bottom">
+				
+			</div>
+  		</div>
+  	</div>
+  	
+  </div>
+  <script>
+
+	const tabName = JSON.parse(document.getElementById('tab-name').textContent);
+	const chatSocket = new WebSocket(
+	 	'ws://'
+	 	+ window.location.host
+	 	+ '/ws/csApp/'
+	 	+ tabName
+	 	+ '/'
+	);
+	
+
+	chatSocket.onmessage = function(e) {
+	 	const data = JSON.parse(e.data);
+		console.log(data)
+	 	//console.log("debug")
+
+		document.getElementById("dialog").value = data.exceptions.join("\n - ")
+
+
+	};
+
+	// chatSocket.onclose = function(e) {
+	// 	console.log('Switched Tab');
+	// };
+
+	// // -----------------------------------------------------------------------------
+	// // TimeSocket
+	const timeSocket = new WebSocket(
+		'ws://'
+		+ window.location.host
+		+ '/ws/csApp/'
+		+ 'time'
+		+ '/'
+	);
+
+	timeSocket.onmessage = function(e) {
+		const data = JSON.parse(e.data);
+		
+		console.log("debug timer");
+		var time = `${data.hor} : ${data.min} : ${data.sec}`;
+		document.getElementById('elapsed').innerHTML    = time;
+
+	};
+
+	
+
+</script>
+<script>
+
+
+	var test = JSON.parse(document.getElementById('state').textContent);
+
+	if (test == "Idle"){
+		var elem = document.getElementById('idle-state');
+		elem.style.opacity = 1;
+	}else if(test == "Navigation"){
+		var elem = document.getElementById('navigation-state');
+		elem.style.opacity = 1;
+	}else if(test == "Maintenance"){
+		var elem = document.getElementById('hd-state');
+		console.log(0)
+		elem.style.opacity = 1;
+	}else if(test == "Waiting"){
+		var elem = document.getElementById('waiting-state');
+		elem.style.opacity = 1;
+	}else if(test == "Manual"){
+		var elem = document.getElementById('manual-state');
+		elem.style.opacity = 1;
+	}
+	else if(test == "Science"){
+		var elem = document.getElementById('science-state');
+		elem.style.opacity = 1;
+	}
+</script>
+
+</body>
+
+</html>
