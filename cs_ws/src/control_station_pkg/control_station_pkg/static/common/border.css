@@ -1,0 +1,270 @@
+/*==========================================================================
+=====================| VARS  |============================================*/
+:root{
+	--clr-neon: #0000ff;
+	--clr-y   : yellow;
+	--clr-gb  : #121212;
+	--clr-sep : #07142d;
+
+	--xplore-blue: #0d2043;
+	--font: sans-serif;
+}
+
+/*==========================================================================
+=====================| DIVS  |============================================*/
+#container{
+	margin-left: 0px;
+	margin-top: 0px;
+	background-color: var(--xplore-blue);
+}
+
+.box{
+	position: fixed;
+	float: left;
+	height: 100%;
+}
+
+#sidebar{
+	padding-left: 0.3%;
+	width: 250px;
+	background-color: #000000;
+	text-align: center;
+}
+
+.logo{
+	height: 60px;
+	background-color: black;
+	margin-top: 15px;
+	/* margin-left: -2.5%; */
+	cursor: pointer;
+}
+
+.page-button-container{
+	margin-top: 10px;
+	position: fixed;
+}
+
+
+.square-state-button-box{
+	position: fixed;
+	height: 202px;
+	width: 230px;
+	margin-top: 380px;
+	margin-left: 5px;
+	border-radius: 5px;
+	
+	background-color: black;
+}
+
+.long-state-button-box{
+	position: fixed;
+	height: 300px;
+	width: 230px;
+	margin-top: 330px;
+	margin-left: 5px;
+	border-radius: 5px;
+	
+	background-color: black;
+}
+
+.state-button-container{
+	width: 95px;
+	height: 80px;
+	margin: 8px;
+	float: left;
+}
+
+.top-bar{
+	width: 100%;
+	height: 80px;
+	padding-top: 0.75%;
+	background-color: inherit;
+}
+
+#right-side{
+	background-color: black;
+	margin-left: 250px;
+	width: 87%;
+}
+
+.page{
+	background-color: #121212;
+	width: 100%;
+	height: 100%;
+}
+
+
+/*==========================================================================
+=====================| BUTTONS |==========================================*/
+.page-button{
+	text-align: left;
+	background-color: #000000;
+	color: #eeeeee;
+	border-radius: 10px;
+	border: 0px;
+	font-size: 18px;
+	width: 230px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	margin-top: 5px;
+	transition: all 0.5s;
+	cursor: pointer;
+}
+
+.current-page-button{
+	text-align: left;
+	background-color: #000000;
+	color: white;
+	border-left-color: blue;
+	border-top-color: black;
+	font-size: 18px;
+	width: 230px;
+	padding-top: 10px;
+	padding-left: 20px;
+	padding-bottom: 10px;
+	margin-top: 5px;
+	transition: all 0.5s;
+	cursor: pointer;
+}
+
+.page-button:hover {
+	background-color: var(--xplore-blue);
+	font-size: 18px;
+}
+
+.state-button-form{
+	width: 100%;
+	height: 100%;
+}
+
+.state-button{
+	background-color: black;
+	border-radius: 10px;
+	border: 2px solid;
+	width: 100%;
+	height: 100%;
+	font-size: 17px;
+	color: white;
+	transition: all 0.5s;
+	border-color: blue;
+	/* border-color: blue; */
+}
+
+.state-button:hover {
+	background-color: #13135c;
+}
+
+#large-launch-box{width: 210px; height: 80px;}
+
+
+/*==========================================================================
+=====================| INPUTS  |==========================================*/
+.logo-form{
+	margin-top: 15px;
+	height: 100%;
+	width: 100%;
+	cursor: pointer;
+}
+
+
+.logo-form:hover{
+	background-color: #141515;
+	border-top-right-radius: 5%;
+	border-bottom-right-radius: 5%;
+}
+
+/*==========================================================================
+=====================| LABELS  |==========================================*/
+.page-title{
+	color: white;
+}
+
+.neon-label{
+	float: left;
+	text-align: center;
+
+	margin-left: 1.45%;
+	width: 15%;
+
+	height: 35px;
+	font-size: 1.2rem;
+	
+	cursor: pointer;
+	text-decoration: none;
+	border-radius: 0.25em;
+		
+	position: relative;
+}
+
+.neon-label-lit{
+	float: left;
+	text-align: center;
+
+	margin-left: 1.45%;
+	width: 15%;
+
+	height: 35px;
+	font-size: 1.2rem;
+	
+	cursor: pointer;
+	text-decoration: none;
+	border-radius: 0.25em;
+
+	background: black;
+	color: black;
+	text-shadow: none;
+}
+
+#idle-state, #navigation-state, #hd-state, #science-state, #manual-state, #waiting-state{
+	margin-top: 10px;
+	color: white;
+	border: var(--xplore-blue) solid 3px;
+	opacity: 0.5;
+	
+}
+
+
+
+/*==========================================================================
+=====================| IMAGES  |==========================================*/
+#imagelogo{
+	height: 95%;
+	padding-top: 1.5%;
+	padding-bottom: 1.5%;
+}
+
+#imagerover{
+	height: 100%;
+}
+
+/*==========================================================================
+=====================|SEPARATORS|==========================================*/
+
+.v-separator-s{
+	float: left;
+	background-color: var(--clr-sep);
+	height: 100%;
+	width: 10px;
+}
+
+.v-separator{
+	float: left;
+	background-color: var(--clr-sep);
+	height: 100%;
+	width: 0.2%;
+}
+
+.h-separator{
+	background-color: var(--clr-sep);
+	height:0.4%;
+	width: 100%;
+}
+
+.h-separator-s{
+	float: left;
+	background-color: var(--clr-sep);
+	height: 4px;
+	width: 100%;
+}
+
