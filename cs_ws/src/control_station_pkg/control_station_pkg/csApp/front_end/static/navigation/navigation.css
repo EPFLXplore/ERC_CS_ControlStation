@@ -1,0 +1,289 @@
+/*==========================================================================
+=====================| LOCAL VARS  |======================================*/
+:root{
+	--height: 72%;
+
+	--left-width : 59.9%;
+	--right-width: 39.9%;
+	
+	--top-left-height: 100%;
+	--bottom-left-height: 5.8%;
+
+	--top-right-height: 49.8%;
+	--bottom-right-height: 49.8%;
+
+	--xplore-blue: #07142d;
+}
+/*==========================================================================
+								NAVIGATION
+==========================================================================*/
+.left{
+	float: left;
+	width: var(--left-width);
+	height: var(--height);
+}
+
+.top-left{
+	background-color: var(--clr-gb);
+	width: 100%;
+	height: var(--top-left-height);
+}
+
+.bottom-left{
+	background-color: var(--clr-gb);
+	width: 100%;
+	/*height: var(--bottom-left-height);*/
+	height: 10%;
+	/*border: 2px solid red;*/
+
+	position: relative;
+}
+
+.right{
+	float: left;
+	background-color: var(--clr-gb);
+	width: var(--right-width);
+	height: var(--height);
+}
+
+.top-right{
+	background-color: var(--clr-gb);
+	width: 100%;
+	height: var(--top-right-height);
+}
+
+.bottom-right{
+	background-color: var(--clr-gb);
+	width: 100%;
+	height: var(--bottom-right-height);
+	text-align: center;
+}
+
+.widgets{
+	float: left;
+	width: 50%;
+	height: 100%;
+	
+}
+
+.circle-led-container{
+	text-align: center;
+	width: 100%;
+	height: 100%;
+}
+
+/*==========================================================================
+=====================|    DATA   |==========================================*/
+.left-panel{
+	float: left;
+	width:40%;
+	height: 95%;
+	margin-top: 7px;
+	margin-left: 3.33%;
+	border: var(--xplore-blue) 0.125em solid;
+	border-radius: 30px;
+}
+
+.right-panel{
+	float: left;
+	width:50%;
+	height: 95%;
+	margin-top: 7px;
+	margin-left: 3.33%;
+	border: var(--xplore-blue) 0.125em solid;
+	border-radius: 30px;
+}
+
+.subject-container{
+	width: 100%;
+	height: 60%;
+}
+
+.title-container{
+	width: 100%;
+	height: 20%;
+}
+
+.data-container{
+	height: 90%;
+	width: 100%;
+}
+
+.data-line-container{
+	width: 100%;
+	height: 20%;
+}
+
+/*==========================================================================
+=====================|  INPUTS  |==========================================*/
+
+.user-input-container{
+	width: 100%;
+	height: 70%;
+	margin-left: 3%;
+	
+	position: absolute;
+	bottom: 0;
+}
+
+.input-title-container{
+	width: 100%;
+	height: 20%;
+}
+
+.input-container{
+	width: 30%;
+	height: 30%;
+	/*border: 2px solid purple;*/
+
+	position: absolute;
+	bottom: 0;
+}
+
+.input-title{
+	text-align: left;
+	font-family: var(--font);
+	color: white;
+	font-size: 20px;
+	padding-top: 5%;
+	color: white;
+}
+
+.input-container .input{
+	float: left;
+	width: 20%;
+    height: 40%;
+	margin-right: 6%;
+	text-align: center;
+	padding-top: 17px;
+	padding-bottom: 17px;
+    background-color: black;
+	border-radius: 5px;
+	font-size: 15px;
+    color: white;
+    border-color: var(--xplore-blue);
+}
+
+.input-form{
+	width: 100%;
+	height: 100%;
+}
+
+.set-button{
+	float: left;
+	width: 72%;
+	margin-top: 3%;
+
+	border-radius: 5px;
+
+	color: white;
+	background-color: transparent;
+	font-family: var(--font);
+	font-size: 20px;
+
+	transition: all 0.1s;
+	cursor: pointer;
+}
+
+
+#cancel{
+	border: 2px solid red;
+}
+
+#cancel:hover{
+	background-color: red;
+}
+
+#nav_set{
+	border: 2px solid blue;
+}
+
+#nav_set:hover{
+	background-color: blue;
+}
+
+/*==========================================================================
+=====================|    SVG   |==========================================*/
+.circle-led{
+	float: left;
+	text-align: center;
+	width: 8%;
+	margin-left: 19%;
+	margin-top: 2.5%;
+}
+
+
+/*==========================================================================
+=====================|    P    |==========================================*/
+#envmap-title{
+	text-align: center;
+	color: white;
+	font-size: 15px;
+	font-family: var(--font);
+	margin-top:-4%;
+}
+
+.title{
+	text-align: center;
+	color: rgb(196, 196, 196);
+	font-size: 15px;
+	font-family: var(--font);
+    font-weight: bold;
+}
+
+.data-title{
+	float: left;
+	text-align: center;
+	color: rgb(196, 196, 196);
+	font-size: 15px;
+	font-family: var(--font);
+	width: 50%;
+	margin-top: 0%;
+}
+
+.data{
+	float: left;
+	/* padding-left: 10%; */
+	color: rgb(255, 255, 255);
+	font-size: 15px;
+	font-family: var(--font);
+}
+
+/*==========================================================================
+=====================| IMAGES  |==========================================*/
+#imagerover{
+	height: 100%;
+}
+
+/*==========================================================================
+=====================| VIDEOS  |==========================================*/
+.envmap{
+	background-color: black;
+	width: 100%;
+	height: 100%;
+}
+
+
+
+
+#canvas_container {
+    /**
+     * Position relative so that canvas elements
+     * inside of it will be relative to the parent
+     */
+    position: relative;
+}
+
+#canvas_container canvas {
+    /**
+     * Position absolute provides canvases to be able
+     * to be layered on top of each other
+     * Be sure to remember a z-index!
+     */
+    position: absolute;
+
+	/**
+     * Set transparent to let any other canvases render through
+     */
+	 background-color: transparent;
+}

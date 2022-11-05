@@ -1,0 +1,295 @@
+/*==========================================================================
+=====================| VARS  |============================================*/
+:root{
+	--clr-neon: #0000ff;
+	--clr-y   : yellow;
+	--clr-gb  : #121212;
+	--clr-sep : #07142d;
+
+	--input-background: #d8d8d8;
+	--input-color: black;
+
+	--xplore-blue: #07142d;
+	--font: sans-serif;
+}
+
+/*==========================================================================
+						DIVS
+==========================================================================*/
+.left{
+	float: left;
+	width: 49.9%;
+	height: 90%;
+}
+
+.top-left{
+	background-color: var(--clr-gb);
+	width: 100%;
+	height: 49.9%;
+}
+
+.bottom-left{
+	background-color: var(--clr-gb);
+	width: 100%;
+	height: 49.9%;
+	text-align: center;
+}
+
+.right{
+	float: left;
+	background-color: var(--clr-gb);
+	width: 49.9%;
+	height: 90%;
+}
+
+.top-right{
+	background-color: var(--clr-gb);
+	width: 100%;
+	height: 49.9%;
+}
+
+.bottom-right{
+	background-color: var(--clr-gb);
+	width: 100%;
+	height: 49.9%;
+
+	position: relative;
+}
+
+.table-container{
+	width: 100%; 
+	height: 100%;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+
+.table-title-container{
+	width: 100%;
+	height: 10%;
+	margin-top: 1%;
+}
+
+.user-input-container{
+	width: 50%;
+	height: 70%;
+	
+	margin-left: 30px;
+	position: absolute;
+	bottom: 0;
+}
+
+.circle-led-container{
+	width: 50%;
+	height: 30%;
+}
+
+.input-title-container{
+	width: 100%;
+	height: 20%;
+}
+
+.input-container{
+	width: 100%;
+	height: 20%;
+}
+
+.button-dropdown-container{
+	width: 100%;
+	height: 20%;
+}
+
+.coord-name-container{
+	width: 100%;
+	height: 9%;
+	margin-top: 3%;
+}
+
+
+
+
+.bottom-right .joints {
+	margin-left: 40px;
+	padding-top: 40px;
+	font-family: var(--font);
+}
+
+.joints .joint-data-pos{
+	clear:both;
+}
+
+.joint-data-pos .container {
+	margin-left: 180px;
+}
+
+.container .data{
+	
+	margin-left: 10px;
+	padding-left: 10px;
+	float:left;
+	color: rgb(255, 255, 255);
+}
+
+.title-container .data-title{
+	float: left;
+	color:white;
+	font-weight: bold;
+}
+
+
+
+/*
+.data{
+	float: left;
+	padding-left: 30px; 
+	color: rgb(255, 255, 255);
+	font-size: 15px;
+	font-family: var(--font);
+}
+
+.data-line-container{
+	width: 70%;
+	height: 30%;
+	margin-top: 3%;
+}
+
+.data-title{
+	float: left;
+	text-align: left;
+	color: rgb(196, 196, 196);
+	font-size: 15px;
+	font-family: var(--font);
+	width: 50%;
+	margin-top: 1%;
+} */
+
+
+/*==========================================================================
+=====================|    P    |==========================================*/
+.table-title{
+	text-align: center;
+	color: white;
+	font-family: var(--font);
+	font-size: 20px;
+	margin-top: 2.5%;
+}
+
+.input-title{
+	text-align: left;
+	font-family: var(--font);
+	color: white;
+	font-size: 20px;
+	padding-top: 5%;
+}
+
+.coord-name{
+	float: left;
+	font-family: var(--font);
+	color: #d8d8d8;
+	font-size: 20px;
+}
+#x{margin-left: 5%;} #y{margin-left: 17%;} #z{margin-left: 17%;}
+
+.dropdown-title{
+	float:left;
+	margin-top: 5%;
+
+	font-size: 15px;
+	color: white;
+	font-family: var(--font);
+}
+
+/*==========================================================================
+=====================|    SVG   |==========================================*/
+.circle-led{
+	float: left;
+	text-align: center;
+	height: 50%;
+	margin-left: 10%;
+	margin-top: 10%;
+}
+
+/*==========================================================================
+=====================| IMAGES  |==========================================*/
+#imagehd{
+	height: 100%;
+}
+
+/*==========================================================================
+=====================| VIDEOS  |==========================================*/
+
+.camera{
+	width: 100%;
+	height: 100%;
+	background-color: black;
+}
+
+/*==========================================================================
+=====================| INPUT |==========================================*/
+.input{
+	float: left;
+	width: 15%;
+    height: 50%;
+	margin-right: 6%;
+	text-align: center;
+	padding-top: 17px;
+	padding-bottom: 17px;
+    background-color: black;
+	border-radius: 5px;
+	font-size: 15px;
+    color: white;
+    border-color: var(--xplore-blue);
+}
+
+.input-form{
+	width: 100%;
+	height: 40%;
+
+	position: absolute;
+	bottom: 0;
+}
+
+.dropdown{
+	float: left;
+	margin-top: 2.5%;
+	margin-left: 2%;
+	
+	padding-left: 3%;
+	padding-top: 3%;
+	padding-bottom: 3%;
+    border-color: rgb(48, 47, 47);
+	border-radius: 5px;
+	background-color: var(--input-background);
+	color: white;
+    background-color: black;
+	font-size: 15px;
+}
+
+/*==========================================================================
+=====================| BUTTONS |==========================================*/
+.set-button{
+	float: left;
+	width: 20%;
+	margin: 3.5%;
+
+	border: 2px solid blue;
+	border-radius: 5px;
+
+	color: white;
+	background-color: transparent;
+	font-family: var(--font);
+	font-size: 20px;
+
+	transition: all 0.1s;
+	cursor: pointer;
+}
+
+.set-button:hover{
+	background-color: blue;
+}
+
+
+/*==========================================================================
+=====================| BOOTSTRAP MODIFICATIONS |==========================*/
+#scroll-body{
+	margin-bottom: 0em;
+}
