@@ -699,11 +699,32 @@ ul.joints{
 	font-weight: bold;
 }
 
+.velocity-div {
+	display: grid;
+}
 
+.velocity-data {
+	float: left;
+}
 
+.state-button-container {
+	display: -webkit-box;
+}
 
+.state-button-form {
+	width: 250px; 
+	height:30px;
+}
 
+#mode-title {
+	color: white; 
+	padding-left: 10px;
+}
 
+#hd_man_mode {
+	color: white;
+}
 
-
-
+.mode-container {
+	float:left;
+}

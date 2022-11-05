@@ -1,6 +1,11 @@
 {% extends "../base.html" %}
 {% load static %}
 
+
+{% comment %} 
+			Style Block
+Contains the reference to the page stylesheet.
+{% endcomment %}
 {% block page_style %}{% static 'logs/logs.css' %}{% endblock %}
 
 {% block menu %}
@@ -141,80 +146,8 @@
 {% endblock %}
 
 {% block scripts_end %}
-  <script>
 
-	const tabName = JSON.parse(document.getElementById('tab-name').textContent);
-	const chatSocket = new WebSocket(
-	 	'ws://'
-	 	+ window.location.host
-	 	+ '/ws/CS2022/'
-	 	+ tabName
-	 	+ '/'
-	);
-	
-
-	chatSocket.onmessage = function(e) {
-	 	const data = JSON.parse(e.data);
-		console.log(data)
-	 	//console.log("debug")
-
-		document.getElementById("dialog").value = data.exceptions.join("\n - ")
-
-
-	};
-
-	// chatSocket.onclose = function(e) {
-	// 	console.log('Switched Tab');
-	// };
-
-	// // -----------------------------------------------------------------------------
-	// // TimeSocket
-	const timeSocket = new WebSocket(
-		'ws://'
-		+ window.location.host
-		+ '/ws/CS2022/'
-		+ 'time'
-		+ '/'
-	);
-
-	timeSocket.onmessage = function(e) {
-		const data = JSON.parse(e.data);
-		
-		console.log("debug timer");
-		var time = `${data.hor} : ${data.min} : ${data.sec}`;
-		document.getElementById('elapsed').innerHTML    = time;
-
-	};
-
-	
-
-</script>
-<script>
-
-
-	var test = JSON.parse(document.getElementById('state').textContent);
-
-	if (test == "Idle"){
-		var elem = document.getElementById('idle-state');
-		elem.style.opacity = 1;
-	}else if(test == "Navigation"){
-		var elem = document.getElementById('navigation-state');
-		elem.style.opacity = 1;
-	}else if(test == "Maintenance"){
-		var elem = document.getElementById('hd-state');
-		console.log(0)
-		elem.style.opacity = 1;
-	}else if(test == "Waiting"){
-		var elem = document.getElementById('waiting-state');
-		elem.style.opacity = 1;
-	}else if(test == "Manual"){
-		var elem = document.getElementById('manual-state');
-		elem.style.opacity = 1;
-	}
-	else if(test == "Science"){
-		var elem = document.getElementById('science-state');
-		elem.style.opacity = 1;
-	}
-</script>
+  	<script src="{% static 'logs/logs_socket.js' %}"></script>
+	<script src="{% static 'logs/rover_state.js' %}"></script>
 
 {% endblock %}

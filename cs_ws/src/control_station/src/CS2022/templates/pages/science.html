@@ -1,9 +1,18 @@
 {% extends "../base.html" %}
 {% load static %}
 
+
+{% comment %} 
+			Style Block
+Contains the reference to the page stylesheet.
+{% endcomment %}
 {% block page_style %}{% static 'science/science.css' %}{% endblock %}
 
 
+{% comment %} 
+							Script Block
+Contains global scripts for the page, that do not need the content to be loaded yet.
+{% endcomment %}
 
 {% block scripts_start %}
 	<!-- SCRIPT -->
@@ -520,6 +529,13 @@
 
 {% endblock %}
   	
+
+{% comment %} 
+					Script Block
+Contains local scripts that need the content to be loaded.
+They implement the websocket connection to update the data.
+{% endcomment %}
+
 {% block scripts_end %}
   <script>
 	/* Prevents a prompt from appearing if you refresh after entering values*/

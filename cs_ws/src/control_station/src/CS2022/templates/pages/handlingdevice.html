@@ -1,49 +1,31 @@
 {% extends "../base.html" %}
 {% load static %}
 
+
+{% comment %} 
+			Style Block
+Contains the reference to the page stylesheet.
+{% endcomment %}
 {% block page_style %}{% static 'handlingdevice/handlingdevice.css' %}{% endblock %}
 
-{% block scripts %}
+
+{% comment %} 
+							Script Block
+Contains global scripts for the page, that do not need the content to be loaded yet.
+{% endcomment %}
+
+{% block scripts_start %}
+
 	<!-- SCRIPT -->
 	<script src="{% static 'common/border.js' %}"></script>
 	<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
 
-	<script>
-		/*$(document).ready(function () {
-			$(document).on('submit', '#launch-form', function () {
-				window.location.href = "/CS2022/handlingdevice/launch";
-				return false;
-			});
-			$(document).on('submit', '#wait-form', function () {
-				window.location.href = "/CS2022/handlingdevice/wait";
-				return false;
-			});
-			$(document).on('submit', '#abort-form', function () {
-				window.location.href = "/CS2022/handlingdevice/abort";
-				return false;
-			});
-			$(document).on('submit', '#resume-form', function () {
-				window.location.href = "/CS2022/handlingdevice/resume";
-				return false;
-			});
-			$(document).on('submit', '#retry-form', function () {
-				window.location.href = "/CS2022/handlingdevice/retry";
-				return false;
-			});
-		});*/
-	</script>
 {% endblock %}
-
-	
 
 	<!-- ICON -->
 	<link rel="icon" type="image/x-icon" href="{% static 'common/Xplore-icon.ico' %}">
-</head>
 
-{% block json_script %}
-	{{ tab_name|json_script:"tab-name" }}
-	{{ current_state|json_script:"state"  }}
-{% endblock %}
+</head>
 
 	
 {% block menu %}
@@ -52,34 +34,7 @@
 				
 	{% include '../components/menu_controls.html' %}
 
-				<script>
-					document.querySelector("#launch-button").addEventListener("click", event => {
-						event.preventDefault();
-
-						var elem1 = document.getElementById('navigation-state');
-						var elem2 = document.getElementById('idle-state');
-						var elem3 = document.getElementById('hd-state');
-						var elem4 = document.getElementById('manual-state');
-						var elem5 = document.getElementById('waiting-state');
-
-						elem1.style.opacity = 0.2;
-						elem2.style.opacity = 0.2;
-						elem3.style.opacity = 1;
-						elem4.style.opacity = 0.2;
-						elem5.style.opacity = 0.2;
-
-
-						let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
-						let request = new Request("launch/", {
-							method: 'POST',
-							body: '',
-							headers: { "X-CSRFToken": csrfTokenValue }
-						})
-						fetch(request)
-							.then(response => response.json())
-							.then(result => { })
-					})
-				</script>
+				<script src="{% static 'handlingdevice/launch_handlingdevice.js' %}"></script>
 			</div>
 {% endblock %}
 
@@ -313,60 +268,8 @@
 								</div>
 							</div>
 
-							<div class="joint-data-pos" style="display: grid;" >
-								<div class="title-container">
-									<p class="data-title"> Joint Positions (deg): </p>
-								</div>
-							
-								<div class="container" style="display: grid; margin-left: 10px;">
-									<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
-										<p class="data" style="margin-right: 10px; margin-bottom: 0px;">-232</p>
-										<input id="joint1_slider" type="range" min="-232" max="221" value="0" style="width: 400px;">
-										<p class="data" style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">+221</p>
-										<p id="joint1_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
-									</div>
+							{% include '../components/joint_slider_pos.html' %}
 
-									<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
-										<p class="data" style="margin-right: 10px; margin-bottom: 0px;">-56</p>
-										<input id="joint2_slider" type="range" min="-56" max="123" value="0" style="width: 400px;">
-										<p class="data" style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">+123</p>
-										<p id="joint2_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
-									</div>
-
-									<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
-										<p class="data" style="margin-right: 10px; margin-bottom: 0px;">-32 </p>
-										<input id="joint3_slider" type="range" min="-32" max="37" value="0" style="width: 400px;">
-										<p class="data" style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">37</p>
-										<p id="joint3_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
-									</div>
-
-									<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
-										<p class="data" style="margin-right: 10px; margin-bottom: 0px;">-92      </p>
-										<input id="joint4_slider" type="range" min="-92" max="91" value="0" style="width: 400px;">  
-										<p class="data" style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">+91</p>
-										<p id="joint4_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
-									</div>
-
-									<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
-										<p class="data" style="margin-right: 10px; margin-bottom: 0px;">-72</p>
-										<input id="joint5_slider" type="range" min="-72" max="88" value="0" style="width: 400px;">
-										<p class="data" style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">+88</p>
-										<p id="joint5_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
-									</div>
-
-									<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
-										<p class="data" style="margin-right: 10px; margin-bottom: 0px;">-150</p>
-										<input id="joint6_slider" type="range" min="-150" max="163" value="0" style="width: 400px;">
-										<p class="data" style="margin-left: 0px; margin-right: 10px; margin-bottom: 0px;">+163</p>
-										<p id="joint6_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
-									</div>
-
-									<div class="joint_slider" style="margin-bottom: 0px; display: flex;">
-										<p id="joint7_coord" class="data" style="margin-right: 100px; margin-bottom: 0px;">0</p>
-									</div>
-										
-								</div>
-							</div> 
 						</div>
 
 
@@ -398,33 +301,9 @@
 									<input id="set_id" class="set-button" type="submit" value="SET"> <!-- set-button -->
 								</div>
 
-							<!-- 
-							<div class="input-container">{% csrf_token %}
-								<input type="number" class="input" placeholder="X" name="x"/>
-								<input type="number" class="input" placeholder="Y" name="y"/>
-								<input type="number" class="input" placeholder="Z" name="z"/>
-							</div>
-							-->
-
 							</form>
 
-							<script>
-								document.querySelector("#set_id").addEventListener("click", event => {
-										event.preventDefault();
-										
-										/* sending goal coordinates to back-end*/
-										let formData = new FormData();
-										formData.append('id', document.querySelector("#dropdown_id").value);
-						
-										let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
-										let request = new Request('set_id/', {method: 'POST',
-																			body: formData,
-																			headers: {"X-CSRFToken": csrfTokenValue}})
-										fetch(request)
-											.then(response => response.json())
-											.then(result => {})
-										})
-							</script>
+							<script src="{% static 'handlingdevice/set_button_task.js' %}"></script>
 
 						</div>
 					</div>
@@ -432,70 +311,11 @@
 			</div>
 		</div>
 
-	{% endblock %}
+{% endblock %}
 
-	{% block scripts_end %}
-	<script>
+{% block scripts_end %}
 
-		const tabName = JSON.parse(document.getElementById('tab-name').textContent);
-		const chatSocket = new WebSocket(
-			'ws://'
-			+ window.location.host
-			+ '/ws/CS2022/'
-			+ tabName
-			+ '/'
-		);
-
-		chatSocket.onmessage = function (e) {
-
-			const data = JSON.parse(e.data);
-
-			/* display joint coordinates */
-			let coordinates = document.querySelectorAll('#joint1_coord, #joint2_coord, #joint3_coord, #joint4_coord, #joint5_coord, #joint6_coord, #joint7_coord');
-			let i = 0;
-			coordinates.forEach(coord => {
-				document.getElementById(coord.id).innerHTML = (Math.round((data.joint_pos[i] + Number.EPSILON) * 180 / Math.PI * 100) / 100);
-				i += 1;
-				
-			})
-
-			let sliders = document.querySelectorAll('#joint1_slider, #joint2_slider, #joint3_slider, #joint4_slider, #joint5_slider, #joint6_slider');
-			let f = 0;
-			sliders.forEach(slider => {
-				document.getElementById(slider.id).value = (Math.round((data.joint_pos[f] + Number.EPSILON) * 180 / Math.PI * 100) / 100);
-				f += 1;
-			 })
-
-			/* display ToF */
-			document.getElementById('tof').innerHTML = Math.round((data.tof + Number.EPSILON) * 100) / 100000 //divide by 100000 to convert into meters
-
-
-			let elements = document.querySelectorAll("td:not(.element-title)");
-			let k = 0;
-			elements.forEach(e => {
-				e.innerHTML = data.detected_elems[k];
-				//console.log(Math.round((data.detected_elems[k] + Number.EPSILON) * 100) / 100)
-				
-				k += 1;
-			})
-
-		};
-
-		chatSocket.onclose = function (e) {
-			console.log('Switched Tab');
-		};
-
-
-		/* WHEN SETTING A NEW ID */
-		let dropdownList = document.getElementById('dropdown_id');
-		//let setButton = document.getElementById('set')
-		/*setButton.onclick = (v) => {
-			console.log("Selected value is: " + dropdownList.value);
-		}*/
-		
-
-
-	</script>
+	<script src="{% static 'handlingdevice/handlingdevice_socket.js' %}"></script>
 	<script src="{% static 'common/common.js' %}"></script>
 
-	{% endblock %}
+{% endblock %}

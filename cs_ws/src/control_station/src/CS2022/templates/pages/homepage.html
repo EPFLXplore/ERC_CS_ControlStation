@@ -1,41 +1,25 @@
 {% extends "../base.html" %}
 {% load static %}
 
-{% comment %} Style Block {% endcomment %}
+
+{% comment %} 
+			Style Block
+Contains the reference to the page stylesheet.
+{% endcomment %}
 {% block page_style %} {% static 'homepage/homepage.css'%} {% endblock %}
 
-{% block menu %}{{ block.super }}{% endblock %}
-
+{% comment %} Body Block {% endcomment %}
 {% block body %}
 {% endblock %}
 
+
+{% comment %} 
+					Script Block
+Contains local scripts that need the content to be loaded.
+They implement the websocket connection to update the data.
+{% endcomment %}
+
 {% block scripts_end %}
-	<script>
-
-		const tabName = JSON.parse(document.getElementById('tab-name').textContent);
-		console.log(tabName)
-		const chatSocket = new WebSocket(
-			'ws://'
-			+ window.location.host
-			+ '/ws/CS2022/'
-			+ tabName
-			+ '/'
-		);
-
-		chatSocket.onmessage = function(e) {
-			const data = JSON.parse(e.data);
-			
-			console.log("debug")
-
-
-		};
-
-		chatSocket.onclose = function(e) {
-			console.error('Chat socket closed unexpectedly');
-		};
-
-
-
-	</script>
+	<script src="{% static 'homepage/homepage_socket.js' %}"></script>
 	<script src="{% static 'common/common.js' %}"></script>
 {% endblock %}
