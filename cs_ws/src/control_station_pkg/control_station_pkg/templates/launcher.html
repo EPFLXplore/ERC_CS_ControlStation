@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Xplore</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+
+	<!-- STYLE -->
+    <link rel="stylesheet" href="{% static 'launcher/styles.css' %}" type="text/css"/>
+
+	<!-- ICON -->
+	<link rel="icon" type="image/x-icon" href="{% static 'common/Xplore-icon.ico' %}">
+</head>
+
+<div class="bg"></div>
+
+
+<body>
+<div style="text-align: center">
+	<img id="xplore" src="{% static 'common/Xplore-logo-white.png' %}" alt="My image">
+    
+
+	
+	<form id="button_gui" action="http://127.0.0.1:8000/csApp/homepage">
+		<button class="prim_button">
+		<span>START</span>
+		</button>
+	</form>
+
+	<form id="button_config" action="http://127.0.0.1:8000/admin/" target="_blank">
+		<button class="sec_button" hover="background-color: #505050">
+		<span>configuration</span>
+		</button>
+	</form>
+	
+</div>
+
+</body>
+</html>
+

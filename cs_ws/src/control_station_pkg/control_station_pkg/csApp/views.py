@@ -66,8 +66,8 @@ def parseState():
 def handlingdevice(request):
 
     state = parseState()
-   # ws_hd.connect(HD_WS_URL)
-   # ws_time.connect(TIME_WS_URL)
+    ws_hd.connect(HD_WS_URL)
+    ws_time.connect(TIME_WS_URL)
     return render(request, 'pages/handlingdevice.html', { 
         'tab_name': "handlingdevice",
         'current_state' : state
