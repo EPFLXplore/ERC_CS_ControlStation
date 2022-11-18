@@ -53,7 +53,7 @@ document.querySelector("#abort-button").addEventListener("click", event => {
     var elem5 = document.getElementById('waiting-state');
     var elem6 = document.getElementById('science-state');
 
-    elem6.style.opacity = 0;
+    elem6.style.opacity = 0.2;
     elem1.style.opacity = 0.2;
     elem2.style.opacity = 1;
     elem3.style.opacity = 0.2;
