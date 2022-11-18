@@ -5,7 +5,7 @@ const tabName = JSON.parse(document.getElementById('tab-name').textContent);
 const chatSocket = new WebSocket(
     'ws://'
     + window.location.host
-    + '/ws/CS2022/'
+    + '/ws/csApp/'
     + tabName
     + '/'
 );
@@ -115,7 +115,7 @@ ws.onclose = function (evt) {
 const timeSocket = new WebSocket(
     'ws://'
     + window.location.host
-    + '/ws/CS2022/'
+    + '/ws/csApp/'
     + 'time'
     + '/'
 );

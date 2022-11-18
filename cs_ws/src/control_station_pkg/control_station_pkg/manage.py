@@ -18,7 +18,7 @@ def main():
     print("http://127.0.0.1:8000/launcher")
     execute_from_command_line(sys.argv)
     
-    # rospy.init_node("CS2022", anonymous=False)
+    # rospy.init_node("csApp", anonymous=False)
 
 # ============================================================================
 # DEBUG
