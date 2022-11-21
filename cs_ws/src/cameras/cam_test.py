@@ -29,6 +29,8 @@ def gstreamer_pipeline(
         "nvvidconv ! xvimagesink -e"
 	    "video/x-raw, width=(int)%d, height=(int)%d, format=(string)BGRx ! "
         "videoconvert ! "
+        "x264enc pass=qual quantizer=20 tune=zerolatency ! "
+        "rtph264pay ! "
         "video/x-raw, format=(string)BGR2RGB ! appsink"
         % (
             sensor_id,
