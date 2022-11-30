@@ -37,7 +37,6 @@ def gstreamer_pipeline(
             capture_width,
             capture_height,
             framerate,
-            #flip_method,
             display_width,
             display_height,
         )

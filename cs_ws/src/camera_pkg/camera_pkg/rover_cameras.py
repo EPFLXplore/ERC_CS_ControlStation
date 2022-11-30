@@ -16,27 +16,13 @@ import cv2
 import rclpy
 import sys
 
-
 from sensor_msgs.msg import Image, CompressedImage
-from cv_bridge import CvBridge
+form cv_bridge import CvBridge
 
-# ==================================================================
-# Constants
+# ============= Constants
 ROS_LOOP_RATE = 30
 
-# ==================================================================
-# utils
-
-'''
-This functions generates the command to launch the cameras.
-
-sensor_id     :
-capture_width :
-...
-
-'''
-
-
+# ============= Utilities
 def gstreamer_pipeline(
     sensor_id=0,
     capture_width=300,
@@ -64,12 +50,6 @@ def gstreamer_pipeline(
         )
     )
 
-
-'''
-
-'''
-
-
 def publish_frame(publisher, image, compression_type='jpg'):
     publisher.publish(bridge.cv2_to_compressed_imgmsg(image, compression_type))
 
@@ -77,18 +57,12 @@ def publish_frame(publisher, image, compression_type='jpg'):
 # ROS Node definition
 
 rclpy.init(args = sys.args)
-node = rclpy.create_node('rover_cameras')
+node = rclpy.create_node('cameras')
 rate = node.create_rate(ROS_LOOP_RATE)
 bridge = CvBridge()                 # bridge between OpenCV and ROS
 
 # ==================================================================
 # camera captures
-
-# #########################################################################
-# debug
-# camera_1 = cv2.VideoCapture(0)
-# #########################################################################
-
 
 camera_1 = cv2.VideoCapture(gstreamer_pipeline(0))
 camera_2 = cv2.VideoCapture(gstreamer_pipeline(1))
@@ -96,7 +70,6 @@ camera_3 = cv2.VideoCapture(gstreamer_pipeline(2))
 camera_4 = cv2.VideoCapture(gstreamer_pipeline(3))
 camera_5 = cv2.VideoCapture(gstreamer_pipeline(4))
 camera_6 = cv2.VideoCapture(gstreamer_pipeline(5))
-
 
 # ==================================================================
 # ROS2 publishers definition
@@ -108,20 +81,8 @@ cam_4_pub = node.create_publisher(CompressedImage, 'camera_4', 1)
 cam_5_pub = node.create_publisher(CompressedImage, 'camera_5', 1)
 cam_6_pub = node.create_publisher(CompressedImage, 'camera_6', 1)
 
-
-# TODO add 2 intels
-
-
-
 # ==================================================================
-# feed compression and publishing
-
-
-'''
-This functions 
-
-'''
-
+# feed publishing
 
 def publish_feeds():
 
@@ -156,11 +117,7 @@ def publish_feeds():
         if ret_6:
             cam_6_pub.publish(bridge.cv2_to_compressed_imgmsg(frame_cam_6))
         #    publish_frame(cam_6_pub, frame_cam_6, 'jpg')
-
-
-# ==================================================================
-# Main
-
+            
 if (__name__ == "__main__"):
 
     # starts publishing

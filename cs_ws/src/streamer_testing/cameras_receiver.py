@@ -29,8 +29,8 @@ from cv_bridge import CvBridge
 # ==================================================================
 # ROS Node definition (to verify)
 
-rclpy.init
-node = create_node('cameras_reciever')
+rclpy.init(args = sys.args)
+node = rclpy.create_node('cameras_receiver')
 
 bridge = CvBridge()                 # bridge between OpenCV and ROS
 
@@ -82,11 +82,6 @@ def display_cam_5(msg):
 def display_cam_6(msg):
     global im6, bridge
     im6 = bridge.compressed_imgmsg_to_cv2(msg)
-
-
-def display_cam_7(msg):
-    global im6, bridge
-    im7 = bridge.compressed_imgmsg_to_cv2(msg)
 
 
 node.create_subscriber(CompressedImage, 'camera_1', display_cam_1)

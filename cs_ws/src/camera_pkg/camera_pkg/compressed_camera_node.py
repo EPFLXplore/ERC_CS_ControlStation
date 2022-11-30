@@ -28,16 +28,17 @@ def gstreamer_pipeline(
     return (
         "nvarguscamerasrc sensor-id=%d !"
         "video/x-raw(memory:NVMM), width=(int)%d, height=(int)%d, framerate=(fraction)%d/1 ! "
-        "nvvidconv flip-method=%d ! "
+        "nvvidconv ! xvimagesink -e"
         "video/x-raw, width=(int)%d, height=(int)%d, format=(string)BGRx ! "
         "videoconvert ! "
-        "video/x-raw, format=(string)BGR ! appsink"
+        "x264enc pass=qual quantizer=20 tune=zerolatency ! "
+        "rtph264pay ! "
+        "video/x-raw, format=(string)BGR2RGB ! appsink"
         % (
             sensor_id,
             capture_width,
             capture_height,
             framerate,
-            flip_method,
             display_width,
             display_height
         )
@@ -46,7 +47,7 @@ def gstreamer_pipeline(
 def publish_frame(publisher, image, compression_type='jpg'):
     publisher.publish(bridge.cv2_to_compressed_imgmsg(image, compression_type))
 
-camera = cv2.VideoCapture(gstreamer_pipeline(device))
+camera = cv2.VideoCapture(gstreamer_pipeline(device), cv2.CAP_GSTREAMER)
 
 # ROS Node 
 rclpy.init(args = sys.args)
@@ -68,6 +69,7 @@ def publish_feeds():
             cam_pub.publish(bridge.cv2_to_compressed_imgmsg(frame_cam))
 
 if __name__ == '__main__':
+    
     # Start publishing
     publish_feeds()
     
