@@ -1,0 +1,112 @@
+:root{
+    --bg-color-1: #6c3;
+    --bg-color-2: #09f;
+    --bg-color-3: #790000;
+    --bg-color-4: #131c2e;
+    --bg-color-5: #0051ff;
+    --bg-color-6: #0099ff;
+    --bg-color-7: #061a41;
+    --bg-color-8: #0055ff;
+}
+
+
+html {
+    height:100%;
+}
+  
+body {
+    margin:0;
+}
+  
+.bg {
+    
+    /* background: radial-gradient(circle at 24.1% 68.8%, rgb(50, 50, 50) 0%, rgb(0, 0, 0) 99.4%); */
+    /* background: linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%); */
+    background-color: black;
+    bottom:0;
+    left:-50%;
+    position:fixed;
+    right:-50%;
+    top:0;
+    z-index:-1;
+}
+  
+  
+h1 {
+    font-family:monospace;
+}
+  
+@keyframes slide {
+    0% {
+      transform:translateX(-25%);
+    }
+    100% {
+      transform:translateX(25%);
+    }
+}
+
+
+.prim_button {
+
+    background-color: black;
+    border-radius: 10px;
+    /* border-color: var(--bg-color-7);
+    border-width: 3px; */
+    border: 3px solid var(--bg-color-7);
+    color: #eeeeee;
+    text-align: center;
+    font-size: 28px;
+    padding: 10px;
+    width: 300px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin-top: 150px;
+    
+}
+.sec_button {
+    background-color: black;
+    border-radius: 10px;
+    border: 3px solid var(--bg-color-3);
+    color: #eeeeee;
+    text-align: center;
+    font-size: 28px;
+    padding: 10px;
+    width: 300px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 50px;
+}
+
+.prim_button:hover {
+    background-color: var(--bg-color-7);
+}
+.sec_button:hover {
+    background-color: #000000;
+}
+
+button span {
+    cursor: pointer;
+    position: relative;
+    transition: 0.5s;
+}
+button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+button:hover span {
+    padding-right: 25px;
+}
+button:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+#xplore{
+    margin-top: 5%;
+}
+

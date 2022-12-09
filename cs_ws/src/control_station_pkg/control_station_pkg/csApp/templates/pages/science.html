@@ -1,0 +1,630 @@
+{% extends "../base.html" %}
+{% load static %}
+
+
+{% comment %} 
+			Style Block
+Contains the reference to the page stylesheet.
+{% endcomment %}
+{% block page_style %}{% static 'science/science.css' %}{% endblock %}
+
+
+{% comment %} 
+							Script Block
+Contains global scripts for the page, that do not need the content to be loaded yet.
+{% endcomment %}
+
+{% block scripts_start %}
+	<!-- SCRIPT -->
+	<script src="{% static 'common/border.js' %}"></script> 
+	<script src="common/jquery/jquery-2.2.1.min.js"></script>
+
+	<script>
+		$(document).ready(function() {
+			/*$(document).on('submit', '#launch-form', function() {
+				window.location.href ="/csApp/science/launch";
+				  return false;
+			 });*/
+			$(document).on('submit', '#confirm-form', function() {
+				window.location.href ="/csApp/science/confirm";
+				  return false;
+			 });
+			$(document).on('submit', '#abort-form', function() {
+				window.location.href ="/csApp/science/abort";
+				  return false;
+			 });
+			$(document).on('submit', '#retry-form', function() {
+				window.location.href ="/csApp/science/retry";
+				  return false;
+			 });
+		});
+	</script>
+{% endblock %}
+
+{% block menu %}
+		
+	{% include '../components/rover_status.html' %}
+	
+		<div class="square-state-button-box" style="margin-top: 780px;">
+			<div class="state-button-container">
+				<form  class="state-button-form" method="POST">
+					{% csrf_token %}
+					<input id="confirm-button" class="state-button" type="submit" data-value="2" value="CONFIRM">
+					
+				</form>
+			</div>
+			
+			<!--<div class="state-button-container">
+				<form  class="state-button-form" method="POST">
+					{% csrf_token %}
+					<input id="wait-button" class="state-button" type="submit" value="WAIT">
+					
+				</form>
+			</div>-->
+			
+			<div class="state-button-container">
+				<form  class="state-button-form" method="POST">
+					{% csrf_token %}
+					<input id="abort-button" class="state-button" type="submit" data-value="0" value="ABORT">
+					
+				</form>
+			</div>
+
+
+			<div class="state-button-container">
+				<form  class="state-button-form" method="POST">
+					{% csrf_token %}
+					<input id="retry-button" class="state-button" type="submit" data-value="1" value="RETRY">
+					
+				</form>
+			</div>
+		</div>
+		<script>
+			document.getElementById('retry-button').addEventListener("click", e => {
+				e.preventDefault()
+	
+				let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+				let request = new Request('retry/', {method: 'POST',
+													body: '',
+													headers: {"X-CSRFToken": csrfTokenValue}})
+				fetch(request)
+					.then(response => response.json())
+					.then(result => {})
+			})
+
+			document.getElementById('abort-button').addEventListener("click", e => {
+				e.preventDefault()
+	
+				let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+				let request = new Request('abort/', {method: 'POST',
+													body: '',
+													headers: {"X-CSRFToken": csrfTokenValue}})
+				fetch(request)
+					.then(response => response.json())
+					.then(result => {})
+			})
+
+			document.getElementById('confirm-button').addEventListener("click", e => {
+				e.preventDefault()
+	
+				let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+				let request = new Request('confirm/', {method: 'POST',
+													body: '',
+													headers: {"X-CSRFToken": csrfTokenValue}})
+				fetch(request)
+					.then(response => response.json())
+					.then(result => {})
+			})
+		</script>
+		
+{% endblock %}
+
+{% block body %}
+	
+  	<div id="right-side" class="box">
+  		{% include '../components/top_bar.html' %}
+		
+  		<script>
+				
+			document.querySelector("#launch-button").addEventListener("click", event => {
+				event.preventDefault();
+
+				var elem1 = document.getElementById('navigation-state');
+				var elem2 = document.getElementById('idle-state');
+				var elem3 = document.getElementById('hd-state');
+				var elem4 = document.getElementById('manual-state');
+				var elem5 = document.getElementById('waiting-state');
+				var elem6 = document.getElementById('science-state');
+
+				elem1.style.opacity = 0.2;
+				elem2.style.opacity = 0.2;
+				elem3.style.opacity = 0.2;
+				elem4.style.opacity = 0.2;
+				elem5.style.opacity = 0.2;
+				elem6.style.opacity = 1;
+
+
+
+				let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+				let request = new Request('launch/', {method: 'POST',
+													body: '',
+													headers: {"X-CSRFToken": csrfTokenValue}})
+				fetch(request)
+					.then(response => response.json())
+					.then(result => {})
+			})
+
+			
+		</script>
+  		<div id="page" class="page">
+			<div style="float: left;  width: 75%; height: 80%; border-style: solid; ">
+
+				<div style="width: 600px; height: 50%; float: left;">
+
+					<div class= "tube1"style="float: left; width: 150px; color: white; font-weight: bold; margin-top: 20px; margin-left: 20px;">
+						<p>TUBE 1</p>
+
+						<div>
+							<p style="font-size: small; float:left;">humidity    :</p>
+							<p id="humidity" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div >
+							<p style="font-size: small; float: left;">close    :</p>
+							<p id="closed" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div >
+							<p style="font-size: small; float: left;">color    :</p>
+							<p id="tube-color" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">mass	    :</p>
+							<p id="tube-mass" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">particle size:</p>
+							<p id="particle-size" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">volume    :</p>
+							<p id="tube-volume" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">density    :</p>
+							<p id="tube-density" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">empty    :</p>
+							<p id="tube-empty" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						
+
+					</div>
+
+					<div style=" border-left: 2px solid rgb(75, 75, 81); height: 250px; float:left; padding-right: 30px; margin-top: 30px;"> </div>
+
+					<div class="tube2" style="float: left; width: 150px; color: white; font-weight: bold; margin-top: 20px; margin-left: 20px;">
+						<p>TUBE 2</p>
+						<div >
+							<p style="font-size: small; float: left;">close    :</p>
+							<p id="closed" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div >
+							<p style="font-size: small; float: left;">color    :</p>
+							<p id="tube-color" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">mass	    :</p>
+							<p id="tube-mass" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">particle size:</p>
+							<p id="particle-size" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">volume    :</p>
+							<p id="tube-volume" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">density    :</p>
+							<p id="tube-density" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">empty    :</p>
+							<p id="tube-empty" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+					
+					</div>
+
+					<div style=" border-left: 2px solid rgb(75, 75, 81); height: 250px; float:left; padding-right: 30px; margin-top: 30px;"> </div>
+
+					<div class="tube3" style="float: left; width: 150px; color: white; font-weight: bold; margin-top: 20px; margin-top: 20px;">
+						<p>TUBE 3</p>
+						<div >
+							<p style="font-size: small; float: left;">close    :</p>
+							<p id="closed" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div >
+							<p style="font-size: small; float: left;">color    :</p>
+							<p id="tube-color" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">mass	    :</p>
+							<p id="tube-mass" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">particle size:</p>
+							<p id="particle-size" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">volume    :</p>
+							<p id="tube-volume" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">density    :</p>
+							<p id="tube-density" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+						<div style="float: left;">
+							<p style="font-size: small; float: left; ">empty    :</p>
+							<p id="tube-empty" style="font-size: small;  padding-left: 100px;">0</p>
+						</div>
+					</div>
+
+					<br style="clear: left;" />
+				</div>
+
+
+
+				<!-- <div class="dialog-box"></div> -->
+				<div class="dialog-box">
+					<textarea id="dialog" readonly name="dialog" rows="15" cols="50" style="color:rgba(0,0,0,0.6)">AHHHHHHHHHHH</textarea>
+					<div style="float: left; color:white;">
+						<p style="font-size: medium; float: left; ">trap    :</p>
+						<p id="trap-closed" style="font-size: medium;  padding-left: 80px;">CLOSED</p>
+					</div>
+				</div>
+				
+				
+
+				<div style="width: 450px;  height: 50%; float: left; color: white;">
+					
+					<div style="margin-top: 0px; ">
+						<p style="font-weight: bold; margin-left:10px">TUBE</p>
+						<div class="tube-submit-box" style="float: left; margin-left:10px" >
+							<form action="" method="POST" class="tube-form"> 
+								
+								<div class="submit-column">
+									<div class="tube-form-check">
+										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube1" value="0">
+										<label class="tube-form-check-label" for="inlineRadio1">0</label>
+									</div>
+									<div class="tube-form-check">
+										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube2" value="1">
+										<label class="tube-form-check-label" for="inlineRadio2">1</label>
+									</div>
+									<div class="tube-form-check">
+										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube3" value="2">
+										<label class="tube-form-check-label" for="inlineRadio3">2</label>
+									</div>
+								</div>
+								
+							</form>
+						</div>
+					</div>
+					<div style="margin-bottom: 20px; ">
+						<p style="font-weight: bold;">OPERATION</p>
+						<div class="tube-submit-box" style="float: left;">
+							<form action="" method="POST" class="tube-form"> 
+								
+								<div class="submit-column">
+									<div class="tube-form-check">
+										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube3" value="10">
+										<label class="tube-form-check-label" for="inlineRadio3">SAMPLING</label>
+									</div>
+									<div class="tube-form-check">
+										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube2" value="20">
+										<label class="tube-form-check-label" for="inlineRadio2">CAMERA</label>
+									</div>
+									<div class="tube-form-check">
+										<input class="tube-form-check-input" type="radio" name="tubeSelect" id="check-tube1" value="30">
+										<label class="tube-form-check-label" for="inlineRadio1">MASS</label>
+									</div>
+								</div>
+								
+							</form>
+							
+
+						</div>
+					</div>
+					<div style="float:left;">
+						<P style="font-weight: bold;">VALIDATION</P>
+						<form  class="state-button-form" method="POST">
+							{% csrf_token %}
+							<input id="set-ok" class="state-button" type="submit" value="OK">
+							
+						</form>
+
+						<script>
+
+							document.querySelector("#set-ok").addEventListener("click", event => {
+								event.preventDefault();
+									
+								let selected = document.querySelectorAll("input[type=radio]:checked")
+								
+								if(selected.length != 2) {
+									throw "Must select tube + operation"
+								}
+								
+								let formData = new FormData();
+								formData.append('tube', selected.item(0).value);
+								formData.append('operation', selected.item(1).value);
+					
+					
+								let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+								let request = new Request('set_tube_cmd/', {method: 'POST',
+																	body: formData,
+																	headers: {"X-CSRFToken": csrfTokenValue}})
+								fetch(request)
+									.then(response => response.json())
+									.then(result => {})
+								})
+
+						</script>
+						
+					</div>
+					
+					
+				</div>
+
+				<div style="width: 600px; height: 40%; float: left; position:relative;">
+					<div style="position: absolute; bottom:0px;">
+
+						<form  class="state-button-form" style="margin-left:20px; margin-bottom:5px" method="POST" >
+							{% csrf_token %}
+							<input id="get_infos" class="state-button" type="submit" value="INFO">
+							
+						</form>
+
+						<form  class="state-button-form" style="margin-left:20px; margin-bottom:5px" method="POST" >
+							{% csrf_token %}
+							<input id="get_state" class="state-button" type="submit" value="STATE">
+							
+						</form>
+
+						<form  class="state-button-form" style="margin-left:20px; margin-bottom:5px" method="POST" >
+							{% csrf_token %}
+							<input id="get_parameters" class="state-button" type="submit" value="PARAMETERS">
+							
+						</form>
+
+						<form  class="state-button-form" style="margin-left:20px; margin-bottom:5px" method="POST" >
+							{% csrf_token %}
+							<input id="get_humidity" class="state-button" type="submit" value="HUMIDITY">
+							
+						</form>
+
+						<form  class="state-button-form" style="margin-left:20px; margin-bottom:20px" method="POST" >
+							{% csrf_token %}
+							<input id="take-pic" class="state-button" type="submit" value="TAKE PIC">
+							
+						</form>
+
+						<p style="font-weight: bold; color:white; margin-left: 20px;">ANALYSIS</p>
+						<div style="width: 100%; margin-left: 20px;">
+							<form  class="state-button-form" method="POST" >
+								{% csrf_token %}
+								<input id="l" class="state-button" type="submit" value="PARTICLE SIZE">
+								
+							</form>
+							<form  class="state-button-form" method="POST">
+								{% csrf_token %}
+								<input id="l" class="state-button" type="submit" value="COLOR ANALYSIS">
+								
+							</form>
+							<form  class="state-button-form" method="POST">
+								{% csrf_token %}
+								<input id="l" class="state-button" type="submit" value="DENSITY">
+								
+							</form>
+						</div>
+					</div>
+					<script>
+
+						document.querySelector("#get_humidity").addEventListener("click", event => {
+							event.preventDefault();
+							
+							let formData = new FormData();
+				
+							let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+							let request = new Request('get_humidity/', {method: 'POST',
+																body: formData,
+																headers: {"X-CSRFToken": csrfTokenValue}})
+							fetch(request)
+								.then(response => response.json())
+								.then(result => {})
+							})
+
+
+						document.querySelector("#get_parameters").addEventListener("click", event => {
+							event.preventDefault();
+							
+							let formData = new FormData();
+				
+							let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+							let request = new Request('get_parameters/', {method: 'POST',
+																body: formData,
+																headers: {"X-CSRFToken": csrfTokenValue}})
+							fetch(request)
+								.then(response => response.json())
+								.then(result => {})
+							})
+
+							
+						document.querySelector("#get_infos").addEventListener("click", event => {
+							event.preventDefault();
+							
+							let formData = new FormData();
+				
+							let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+							let request = new Request('get_sc_info/', {method: 'POST',
+																body: formData,
+																headers: {"X-CSRFToken": csrfTokenValue}})
+							fetch(request)
+								.then(response => response.json())
+								.then(result => {})
+							})	
+
+
+						document.querySelector("#get_state").addEventListener("click", event => {
+							event.preventDefault();
+							
+							let formData = new FormData();
+				
+							let csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+							let request = new Request('get_sc_state/', {method: 'POST',
+																body: formData,
+																headers: {"X-CSRFToken": csrfTokenValue}})
+							fetch(request)
+								.then(response => response.json())
+								.then(result => {})
+							})	
+
+					</script>
+				</div>
+				
+
+
+
+			</div>
+
+			<div class="bottom-science-box">
+				
+				<div class="gallery-box">
+					<div class="scrollable-gallery">
+						<div class="picture-container">
+							
+						</div>
+						<div class="picture-container">
+							
+						</div>
+						<div class="picture-container">
+							
+						</div>
+							
+					</div>
+				</div>
+				
+			</div>
+			<div style="background-color: green; height:50%;">
+
+			</div>
+
+			
+				
+		</div>
+  	</div>  
+
+{% endblock %}
+  	
+
+{% comment %} 
+					Script Block
+Contains local scripts that need the content to be loaded.
+They implement the websocket connection to update the data.
+{% endcomment %}
+
+{% block scripts_end %}
+  <script>
+	/* Prevents a prompt from appearing if you refresh after entering values*/
+	if ( window.history.replaceState ) {
+		window.history.replaceState( null, null, window.location.href );
+	}
+
+	const tabName = JSON.parse(document.getElementById('tab-name').textContent);
+	const chatSocket = new WebSocket(
+		'ws://'
+		+ window.location.host
+		+ '/ws/csApp/'
+		+ tabName
+		+ '/'
+	);
+
+	chatSocket.onmessage = function(e) {
+		const data = JSON.parse(e.data);
+		
+		console.log("debug")
+
+		let params = data.params
+
+		/* EVERYTHING CONCERNING COMMON TUBE DATA*/
+		let closed = document.querySelectorAll("#closed")
+		tubes_op(closed, params.slice(1,4))
+		let filled = document.querySelectorAll("#tube-empty")
+		tubes_op(filled, params.slice(4,7))
+		let masses = document.querySelectorAll("#tube-mass")
+		tubes_op(masses, params.slice(8, 11))
+		let trap_closed = document.querySelector("#trap-closed")
+		if(params[7] == 1) {
+			trap_closed.innerHTML = "CLOSED"
+		} else {
+			trap_closed.innerHTML = "OPENED"
+		}
+
+		let particles = document.querySelectorAll("#particle-size")
+		tubes_op(particles, data.particle_sizes)
+		let volumes = document.querySelectorAll("#tube-volume")
+		tubes_op(volumes, data.volumes)
+		let densities = document.querySelectorAll("#tube-density")
+		tubes_op(densities, data.densities)
+		
+		let colors = document.querySelectorAll("#tube-color")
+		tubes_op(colors, data.colors)
+
+		/* HUMIDITY OF CONCERNED TUBE */
+		console.log(data.humidity)
+		document.querySelector("#humidity").innerHTML = data.humidity
+		
+		console.log("at least log something my guy")
+		console.log(data.infos)
+		/* DIALOG BOX */
+		/*let infos = data.infos
+		infos.push("\n ------------------ ")*/
+		document.getElementById('dialog').value = data.infos.join("\n - ") //infos.join("\n - ")
+
+	};
+
+	function tubes_op(queries, values) {
+		for(i = 0; i < 3; i++) {
+			queries[i].innerHTML = values[i]
+		}
+	}
+
+	chatSocket.onclose = function(e) {
+		console.log('Switched Tab');
+	};
+
+	const timeSocket = new WebSocket(
+		'ws://'
+		+ window.location.host
+		+ '/ws/csApp/'
+		+ 'time'
+		+ '/'
+	);
+
+	timeSocket.onmessage = function(e) {
+		const data = JSON.parse(e.data);
+		
+		console.log("debug timer");
+		var time = `${data.hor} : ${data.min} : ${data.sec}`;
+		document.getElementById('elapsed').innerHTML    = time;
+
+	};
+	
+
+</script>
+<script src="{% static 'common/common.js' %}"></script>
+
+{% endblock %}

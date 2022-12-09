@@ -1,0 +1,175 @@
+{% extends "../base.html" %}
+{% load static %}
+
+
+{% comment %} 
+			Style Block
+Contains the reference to the page stylesheet.
+{% endcomment %}
+{% block page_style %}{% static 'manualcontrol/manualcontrol.css' %}{% endblock %}
+
+
+{% comment %} 
+							Script Block
+Contains global scripts for the page, that do not need the content to be loaded yet.
+{% endcomment %}
+
+{% block scripts_start %}
+
+	<!-- SCRIPT -->
+	<script src="{% static 'common/border.js' %}"></script> 
+	<script src="{% static 'manualcontrol/manualcontrol.js' %}"></script> 
+	<!-- <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script> -->
+
+{% endblock %}
+
+{% block menu %}
+
+	{% include '../components/rover_status.html' %}
+		
+	{% include '../components/menu_controls.html' %}
+
+		<script src="{% static 'manualcontrol/launch_manualcontrol.js' %}"></script> 
+
+	</div>
+
+			
+
+			
+{% endblock %}
+
+{% block body %}
+		
+		<div id="right-side" class="box">
+
+			{% include '../components/top_bar.html' %}
+			
+			<div id="page" class="page">
+					
+				<div class="left">
+					<div class="top-left">
+					
+						<img id="camera_1" src="{% static 'common/logothumbnail.png' %}" height="100%" width="100%">
+						<p id="envmap-title">CAMERA 1</p>
+						
+					</div>
+
+					<div class="h-separator"></div>
+
+					<div class="bottom-left">
+					
+						<img id="camera_2" src="{% static 'common/logothumbnail.png' %}" height="100%" width="100%">
+						<p id="envmap-title">CAMERA 2</p>
+
+					</div>
+
+				</div>
+
+				<div class="v-separator"></div>
+
+				<div class="right">
+			
+					<div class="settings-container">
+						<div class="settings-top-bar">
+							<div class="currentpos-container">
+								<!-- ROVER POSITION -->
+								<div class="pos-title-c">
+									<p class="pos-title">CURRENT POSITION:</p>
+								</div>
+								<div class="pos-coord">
+									<div class="coord-c">
+										<p class="coord-type">X</p>
+										<p id="X_coord" class="coordinate">0.00</p>
+									</div>
+									<div class="coord-c">
+										<p class="coord-type">Y</p>
+										<p id="Y_coord" class="coordinate">0.00</p>
+									</div>
+									<div class="coord-c">
+										<p class="coord-type">Z</p>
+										<p class="coordinate">0.00</p>
+									</div>
+								</div>
+							</div>
+
+							<!-- ROVER VELOCITY -->
+							<div class="velocity-container">
+								<div class="velocity-title-c">
+									<p class="velocity-title">VELOCITY:</p>
+								</div>
+								<div class="velocity-type-container">
+									<!-- LINEAR VEL -->
+									<div class="velocity-type-c">
+										<p class="velocity-type">Linear:</p>
+										<p id="linVel" class="velocity">0.00</p>
+									</div>
+									<!-- ANGULAR VEL -->
+									<div class="velocity-type-c">
+										<p class="velocity-type">Angular:</p>
+										<p id="angVel" class="velocity">0.00</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="settings-bottom">
+
+							<div class="joint-data-pos velocity-div">
+
+								<!-- ======= JOINT VELOCITIES ======= -->
+
+								<div class="title-container">
+									<p class="data-title"> Joint Velocities (m/s): </p>
+								</div>
+
+								<div class="container" >
+									<p id="joint1_vel" class="data velocity-data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint2_vel" class="data velocity-data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint3_vel" class="data velocity-data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint4_vel" class="data velocity-data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint5_vel" class="data velocity-data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint6_vel" class="data velocity-data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+									<p id="joint7_vel" class="data velocity-data"> 0 </p>
+									<p class="data"> &#xA0; </p>
+								</div>
+							</div>
+
+							{% include '../components/joint_slider_pos.html' %}
+
+								<img id="camera_3" src="{% static 'common/logothumbnail.png' %}" height="100%" width="100%">
+								<p id="envmap-title">CAMERA 1</p>
+
+							<!-- not used so do what you want-->
+							<div class="state-button-container">
+								<form  class="state-button-form" method="POST">
+									{% csrf_token %}
+									<input  id="capture_image" class="state-button" type="submit" value="CAPTURE IMAGES">
+
+								</form>
+
+								<!-- display current HD mode: Direct, Debug, Inverse -->
+								<p id="mode-title">HD Mode : </p>
+								<p id="hd_man_mode">DIR</p>
+								<div class="mode-container">
+
+								</div>
+							</div>
+					</div>
+				</div>
+			</div>
+		</div>
+{% endblock %}
+
+{% block scripts_end %}
+
+	<!-- =================================================================================================================== -->
+	<script src="{% static 'manualcontrol/manualcontrol_socket.js' %}"></script>
+	<script src="{% static 'common/common.js' %}"></script>
+
+{% endblock %}

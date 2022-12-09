@@ -41,3 +41,6 @@ cs_ws/install/
 *.exe
 *.out
 *.app
+
+# Cache files
+*.DS_Store
