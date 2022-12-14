@@ -149,6 +149,7 @@ class Rover():
             pass'''
         
         self.cs.node.get_logger().info("Rover: [task = %d, instr = %d] received", task, instr)
+        
         self.RoverConfirm_pub.publish("Instructions received")
 
         # MANUAL
@@ -160,7 +161,9 @@ class Rover():
             self.ROVER_STATE = Task.NAVIGATION
             # LAUNCH
             if(instr == Instruction.LAUNCH.value):
+
                 self.cs.node.get_logger().info("goal launched")
+
                 self.Nav_Goal_pub.publish(self.model.Nav.getGoal())
             # ABORT
             elif(instr == Instruction.ABORT.value): 
@@ -210,7 +213,9 @@ class Rover():
 
     def cs_confirm(self, bool):
         if(self.waiting): 
+
             self.cs.node.get_logger().info("CS Confirmation Received")
+
             self.received = True
 
 
@@ -227,6 +232,7 @@ class Rover():
             self.wait(pub, val)
 
         if(not self.received):
+
             self.cs.node.get_logger().info("Answer not received: TIMEOUT")
 
         self.waiting = False
