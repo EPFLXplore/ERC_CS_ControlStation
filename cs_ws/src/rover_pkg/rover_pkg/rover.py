@@ -141,16 +141,16 @@ class Rover():
         task = array.data[0]
         instr = array.data[1]
 
-        '''if not(1 <= task <= 4):
-            self.Exception_pub.publish("Task number denied (allowed only 1-4), received:", task) 
+        if not(1 <= task <= 4):
+            self.Exception_pub.publish(String(data="Task number denied (allowed only 1-4), received:"), task)
             pass
         if not(1 <= instr <= 5):
-            self.Exception_pub.publish("Instr number denied (allowed only 1-5), received:", instr) 
-            pass'''
+            self.Exception_pub.publish(String(data="Instr number denied (allowed only 1-5), received:"), instr) 
+            pass
         
         self.cs.node.get_logger().info("Rover: [task = %d, instr = %d] received", task, instr)
         
-        self.RoverConfirm_pub.publish("Instructions received")
+        self.RoverConfirm_pub.publish(String(data="Instructions received"))
 
         # MANUAL
         if (task == Task.MANUAL.value):
@@ -164,28 +164,28 @@ class Rover():
 
                 self.cs.node.get_logger().info("goal launched")
 
-                self.Nav_Goal_pub.publish(self.model.Nav.getGoal())
+                self.Nav_Goal_pub.publish(PoseStamped(data=self.model.Nav.getGoal()))
             # ABORT
             elif(instr == Instruction.ABORT.value): 
                 self.model.Nav.cancelGoal()
                 self.ROVER_STATE = Task.IDLE
             # WAIT/RESUME
             else:
-                self.Nav_pub.publish(instr)
+                self.Nav_pub.publish(Int8(data=instr))
 
         # MAINTENANCE
         elif (task == Task.MAINTENANCE.value): 
             self.ROVER_STATE = Task.MAINTENANCE
             # LAUNCH
             if(instr == Instruction.LAUNCH.value): 
-                self.HD_SemiAuto_Id_pub.publish(self.model.HD.getId())
+                self.HD_SemiAuto_Id_pub.publish(Int8(self.model.HD.getId()))
             # ABORT
             elif(instr == Instruction.ABORT.value): 
-                self.HD_SemiAuto_Id_pub.publish(-1)
+                self.HD_SemiAuto_Id_pub.publish(Int8(data=-1))
                 self.ROVER_STATE = Task.IDLE
             # WAIT/RESUME
             else:
-                self.Maintenance_pub.publish(instr)
+                self.Maintenance_pub.publish(Int8(data=instr))
 
         # SCIENCE
         else: 
@@ -195,13 +195,13 @@ class Rover():
                 self.wait(self.SC_params_pub, Int16MultiArray(data=self.model.SC.getParams()))
             # REQUEST TO RESEND INFO
             elif(instr == ScienceTask.INFO.value):
-                self.wait(self.SC_infos_pub, String(self.model.SC.get_text_info()))
+                self.wait(self.SC_infos_pub, String(data=self.model.SC.get_text_info()))
             # REQUEST TO RESEND STATE
             elif(instr == ScienceTask.STATE.value):
-                self.wait(self.SC_state_pub, String(self.model.SC.get_state_info()))
+                self.wait(self.SC_state_pub, String(data=self.model.SC.get_state_info()))
             # COMMANDS SENT TO SC
             else:
-                self.SC_pub.publish(instr)
+                self.SC_pub.publish(Int8(data=instr))
         
     # run ros
     def run(self):
