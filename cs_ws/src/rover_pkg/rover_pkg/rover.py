@@ -177,7 +177,7 @@ class Rover():
             self.ROVER_STATE = Task.MAINTENANCE
             # LAUNCH
             if (instr == Instruction.LAUNCH.value):
-                self.HD_SemiAuto_Id_pub.publish(Int8(self.model.HD.getId()))
+                self.HD_SemiAuto_Id_pub.publish(Int8(data=self.model.HD.getId()))
             # ABORT
             elif (instr == Instruction.ABORT.value):
                 self.HD_SemiAuto_Id_pub.publish(Int8(data=-1))
