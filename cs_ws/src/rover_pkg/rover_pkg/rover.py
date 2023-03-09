@@ -148,7 +148,7 @@ class Rover():
             self.Exception_pub.publish(String(data="Instr number denied (allowed only 1-5), received:"), instr) 
             pass
         
-        self.cs.node.get_logger().info("Rover: [task = %d, instr = %d] received", task, instr)
+        self.node.get_logger().info("Rover: [task = %d, instr = %d] received", task, instr)
         
         self.RoverConfirm_pub.publish(String(data="Instructions received"))
 
@@ -162,7 +162,7 @@ class Rover():
             # LAUNCH
             if(instr == Instruction.LAUNCH.value):
 
-                self.cs.node.get_logger().info("goal launched")
+                self.node.get_logger().info("goal launched")
 
                 self.Nav_Goal_pub.publish(PoseStamped(data=self.model.Nav.getGoal()))
             # ABORT
@@ -214,7 +214,7 @@ class Rover():
     def cs_confirm(self, bool):
         if(self.waiting): 
 
-            self.cs.node.get_logger().info("CS Confirmation Received")
+            self.node.get_logger().info("CS Confirmation Received")
 
             self.received = True
 
@@ -233,7 +233,7 @@ class Rover():
 
         if(not self.received):
 
-            self.cs.node.get_logger().info("Answer not received: TIMEOUT")
+            self.node.get_logger().info("Answer not received: TIMEOUT")
 
         self.waiting = False
         self.received = False
