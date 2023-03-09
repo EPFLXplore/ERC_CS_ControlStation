@@ -140,10 +140,10 @@ class Rover():
         instr = array.data[1]
 
         if not (1 <= task <= 4):
-            self.Exception_pub.publish(String(data="Task number denied (allowed only 1-4), received:"), task)
+            self.Exception_pub.publish(String(data="Task number denied (allowed only 1-4), received: %d"% task))
             pass
         if not (1 <= instr <= 5):
-            self.Exception_pub.publish(String(data="Instr number denied (allowed only 1-5), received:"), instr)
+            self.Exception_pub.publish(String(data="Instr number denied (allowed only 1-5), received: %d"% instr))
             pass
 
         self.node.get_logger().info("Rover: [task = %d, instr = %d] received" % (task, instr))
