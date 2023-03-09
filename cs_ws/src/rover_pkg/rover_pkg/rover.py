@@ -162,7 +162,7 @@ class Rover():
 
                 self.node.get_logger().info("goal launched")
 
-                self.Nav_Goal_pub.publish(PoseStamped(self.model.Nav.getGoal()))
+                self.Nav_Goal_pub.publish(PoseStamped(pose=self.model.Nav.getGoal()))
             # ABORT
             elif (instr == Instruction.ABORT.value):
                 self.model.Nav.cancelGoal()
