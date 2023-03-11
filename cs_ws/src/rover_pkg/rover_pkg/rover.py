@@ -61,30 +61,30 @@ class Rover():
 
         # ===== PUBLISHERS =====
 
-        self.RoverConfirm_pub = self.node.create_publisher(String, 'ROVER_RoverConfirm', 1)
-        self.Exception_pub = self.node.create_publisher(String, 'ROVER_Exception', 1)
-        self.TaskProgress_pub = self.node.create_publisher(Int8, 'ROVER_TaskProgress', 1)
+        self.RoverConfirm_pub  = self.node.create_publisher(String,            'ROVER_RoverConfirm'            , 1)
+        self.Exception_pub     = self.node.create_publisher(String,            'ROVER_Exception'               , 1)
+        self.TaskProgress_pub  = self.node.create_publisher(Int8,              'ROVER_TaskProgress'            , 1)
         # Rover(SC) --> CS
-        self.SC_state_pub = self.node.create_publisher(String, 'ROVER_SC_state', 1)
-        self.SC_infos_pub = self.node.create_publisher(String, 'ROVER_SC_info', 1)
-        self.SC_humidities_pub = self.node.create_publisher(Int16, 'ROVER_SC_measurements_humidity', 1)
-        self.SC_params_pub = self.node.create_publisher(Int16MultiArray, 'ROVER_SC_params', 1)
+        self.SC_state_pub      = self.node.create_publisher(String,            'ROVER_SC_state'                , 1)
+        self.SC_infos_pub      = self.node.create_publisher(String,            'ROVER_SC_info'                 , 1)
+        self.SC_humidities_pub = self.node.create_publisher(Int16,             'ROVER_SC_measurements_humidity', 1)
+        self.SC_params_pub     = self.node.create_publisher(Int16MultiArray,   'ROVER_SC_params'               , 1)
         # Rover(HD) --> CS
-        self.HD_telemetry_pub = self.node.create_publisher(JointState, 'ROVER_HD_telemetry', 1)
-        self.HD_tof = self.node.create_publisher(Int32, 'ROVER_HD_tof', 1)
-        self.NAV_odometry_pub = self.node.create_publisher(Odometry, 'ROVER_NAV_odometry', 1)
-        self.HD_element_pub = self.node.create_publisher(Float32MultiArray, 'ROVER_HD_detected_element', 3)
+        self.HD_telemetry_pub  = self.node.create_publisher(JointState,        'ROVER_HD_telemetry'            , 1)
+        self.HD_tof            = self.node.create_publisher(Int32,             'ROVER_HD_tof'                  , 1)
+        self.NAV_odometry_pub  = self.node.create_publisher(Odometry,          'ROVER_NAV_odometry'            , 1)
+        self.HD_element_pub    = self.node.create_publisher(Float32MultiArray, 'ROVER_HD_detected_element'     , 3)
 
         # ===== SUBSCRIBERS =====
 
         # messages from CS
-        self.node.create_subscription(Int8MultiArray, 'Task', self.task_instr, 10)
-        self.node.create_subscription(Bool, 'CS_Confirm', self.cs_confirm, 10)
+        self.node.create_subscription(Int8MultiArray, 'Task'             , self.task_instr             , 10)
+        self.node.create_subscription(Bool,           'CS_Confirm'       , self.cs_confirm             , 10)
         # messages form CS (HD)
-        self.node.create_subscription(Int8, 'CS_HD_mode', self.model.HD.setHDMode, 10)
-        self.node.create_subscription(Int8, 'CS_HD_SemiAuto_Id', self.model.HD.set_semiAutoID, 10)
+        self.node.create_subscription(Int8,           'CS_HD_mode'       , self.model.HD.setHDMode     , 10)
+        self.node.create_subscription(Int8,           'CS_HD_SemiAuto_Id', self.model.HD.set_semiAutoID, 10)
         # messages from CS (NAV)
-        self.node.create_subscription(PoseStamped, 'CS_NAV_goal', self.model.Nav.setGoal, 10)
+        self.node.create_subscription(PoseStamped,    'CS_NAV_goal'      , self.model.Nav.setGoal      , 10)
 
         # ==========================================================
         #           MESSAGES BETWEEN ROVER AND SUBSYSTEMS
@@ -93,29 +93,29 @@ class Rover():
         # ===== PUBLISHERS =====
 
         # Rover --> HD
-        self.Maintenance_pub = self.node.create_publisher(Int8, 'Maintenance', 1)
-        self.HD_mode_pub = self.node.create_publisher(Int8, 'HD_mode', 1)
-        self.HD_SemiAuto_Id_pub = self.node.create_publisher(Int8, 'HD_SemiAuto_Id', 1)
+        self.Maintenance_pub    = self.node.create_publisher(Int8,        'Maintenance'      , 1)
+        self.HD_mode_pub        = self.node.create_publisher(Int8,        'HD_mode'          , 1)
+        self.HD_SemiAuto_Id_pub = self.node.create_publisher(Int8,        'HD_SemiAuto_Id'   , 1)
         # Rover --> NAV
-        self.Nav_pub = self.node.create_publisher(Int8, 'Navigation', 1)
-        self.Nav_Goal_pub = self.node.create_publisher(PoseStamped, 'CS/NAV_goal', 1)
-        self.Nav_CancelGoal_pub = self.node.create_publisher(GoalID, '/move_base/cancel', 1)
+        self.Nav_pub            = self.node.create_publisher(Int8,        'Navigation'       , 1)
+        self.Nav_Goal_pub       = self.node.create_publisher(PoseStamped, 'CS/NAV_goal'      , 1)
+        self.Nav_CancelGoal_pub = self.node.create_publisher(GoalID,      '/move_base/cancel', 1)
         # Rover --> SC
-        self.SC_pub = self.node.create_publisher(Int8, 'sc_cmd', 1)
+        self.SC_pub             = self.node.create_publisher(Int8,        'sc_cmd'           , 1)
 
         # ===== SUBSCRIBERS =====
 
         # SC --> Rover
-        self.node.create_subscription(String, 'sc_state', self.model.SC.set_state_info, 10)
-        self.node.create_subscription(String, 'sc_info', self.model.SC.set_text_info, 10)  # self.SC_infos_pub.publish)
-        self.node.create_subscription(Int16, 'sc_measurements_humidity', self.SC_humidities_pub.publish, 10)
-        self.node.create_subscription(Int16MultiArray, 'sc_params', self.model.SC.params, 10)
-        self.node.create_subscription(Int8, 'TaskProgress', self.model.setProgress, 10)
+        self.node.create_subscription(String,          'sc_state'                    , self.model.SC.set_state_info  , 10)
+        self.node.create_subscription(String,          'sc_info'                     , self.model.SC.set_text_info   , 10)  # self.SC_infos_pub.publish)
+        self.node.create_subscription(Int16,           'sc_measurements_humidity'    , self.SC_humidities_pub.publish, 10)
+        self.node.create_subscription(Int16MultiArray, 'sc_params'                   , self.model.SC.params          , 10)
+        self.node.create_subscription(Int8,            'TaskProgress'                , self.model.setProgress        , 10)
         # NAV --> Rover
-        self.node.create_subscription(Odometry, '/odometry/filtered', self.NAV_odometry_pub.publish, 10)
+        self.node.create_subscription(Odometry,        '/odometry/filtered'          , self.NAV_odometry_pub.publish , 10)
         # HD --> Rover
-        self.node.create_subscription(JointState, '/arm_control/joint_telemetry', self.HD_telemetry_pub.publish, 10)
-        self.node.create_subscription(Int32, '/avionics_ToF', self.HD_tof.publish, 10)
+        self.node.create_subscription(JointState,      '/arm_control/joint_telemetry', self.HD_telemetry_pub.publish , 10)
+        self.node.create_subscription(Int32,           '/avionics_ToF'               , self.HD_tof.publish           , 10)
 
     #        self.node.create_subscription(object_list,       '/detected_elements',           self.model.HD.pub_detected_elements)
 
