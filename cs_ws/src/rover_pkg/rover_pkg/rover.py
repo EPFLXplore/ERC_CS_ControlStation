@@ -150,57 +150,82 @@ class Rover():
 
         self.RoverConfirm_pub.publish(String(data="Instructions received"))
 
+        #-------------Processing the task received-------------
+
+
         # MANUAL
         if (task == Task.MANUAL.value):
-            self.ROVER_STATE = Task.MANUAL
-
-        # NAVIGATION
-        elif (task == Task.NAVIGATION.value):
-            self.ROVER_STATE = Task.NAVIGATION
-            # LAUNCH
-            if (instr == Instruction.LAUNCH.value):
-
-                self.node.get_logger().info("goal launched")
-                goal = self.model.Nav.getGoal()
-
-                self.Nav_Goal_pub.publish(PoseStamped(header=goal.header, pose=goal.pose))
-            # ABORT
-            elif (instr == Instruction.ABORT.value):
-                self.model.Nav.cancelGoal()
-                self.ROVER_STATE = Task.IDLE
-            # WAIT/RESUME
+            if (self.ROVER_STATE == Task.IDLE):
+                self.ROVER_STATE = Task.MANUAL
             else:
-                self.Nav_pub.publish(Int8(data=instr))
+                self.node.get_logger().info("Can't launch Manual if another task is still running!")
 
-        # MAINTENANCE
-        elif (task == Task.MAINTENANCE.value):
-            self.ROVER_STATE = Task.MAINTENANCE
-            # LAUNCH
+        #--------------------------NAVIGATION-----------------------------
+        if task == Task.NAVIGATION.value:
+            # LAUNCH -------------------------
+            if instr == Instruction.LAUNCH.value:
+                if (self.ROVER_STATE == Task.IDLE):
+                    self.ROVER_STATE = Task.NAVIGATION
+                    self.node.get_logger().info("goal launched")
+                    goal = self.model.Nav.getGoal()
+                    self.Nav_Goal_pub.publish(PoseStamped(header=goal.header, pose=goal.pose))
+                else:
+                    self.node.get_logger().info("Can't launch Navigation if another task is still running!")
+
+            if (self.ROVER_STATE == Task.NAVIGATION):
+                # ABORT
+                if instr == Instruction.ABORT.value:
+                    self.model.Nav.cancelGoal()
+                    self.ROVER_STATE = Task.IDLE
+                # WAIT/RESUME
+                else:
+                    self.Nav_pub.publish(Int8(data=instr))
+
+
+        #-------------------------------MAINTENANCE----------------------------------
+        if task == Task.MAINTENANCE.value:
+            # LAUNCH---------------------------
             if (instr == Instruction.LAUNCH.value):
-                self.HD_SemiAuto_Id_pub.publish(Int8(data=self.model.HD.getId()))
-            # ABORT
-            elif (instr == Instruction.ABORT.value):
-                self.HD_SemiAuto_Id_pub.publish(Int8(data=-1))
-                self.ROVER_STATE = Task.IDLE
-            # WAIT/RESUME
-            else:
-                self.Maintenance_pub.publish(Int8(data=instr))
+                if(self.ROVER_STATE == Task.IDLE):
+                    self.ROVER_STATE = Task.MAINTENANCE
+                    self.HD_SemiAuto_Id_pub.publish(Int8(data=self.model.HD.getId()))
+
+                else:
+                    self.node.get_logger().info("Can't launch Maintenance if another task is still running!")
+
+            if(self.ROVER_STATE == Task.MAINTENANCE):
+                # ABORT--------------------------------------
+                if (instr == Instruction.ABORT.value):
+                    self.HD_SemiAuto_Id_pub.publish(Int8(data=-1))
+                    self.ROVER_STATE = Task.IDLE
+                # WAIT/RESUME--------------------------------- TODO: see how to not be able to wait 2 times
+                else:
+                    self.Maintenance_pub.publish(Int8(data=instr))
+
+
 
         # SCIENCE
-        else:
-            self.ROVER_STATE = Task.SCIENCE
-            # REQUEST TO RESEND PARAMETERS
-            if (instr == ScienceTask.PARAMS.value):
-                self.wait(self.SC_params_pub, Int16MultiArray(data=self.model.SC.getParams()))
-            # REQUEST TO RESEND INFO
-            elif (instr == ScienceTask.INFO.value):
-                self.wait(self.SC_infos_pub, String(data=self.model.SC.get_text_info()))
-            # REQUEST TO RESEND STATE
-            elif (instr == ScienceTask.STATE.value):
-                self.wait(self.SC_state_pub, String(data=self.model.SC.get_state_info()))
-            # COMMANDS SENT TO SC
-            else:
-                self.SC_pub.publish(Int8(data=instr))
+        if (task == Task.SCIENCE.value):
+            #LAUNCH
+            if (instr == Instruction.LAUNCH.value):
+                if(self.ROVER_STATE == Task.IDLE):
+                    self.ROVER_STATE = Task.SCIENCE
+                else:
+                    self.node.get_logger().info("Can't launch Maintenance if another task is still running!")
+            #OTHER SCIENCE INSTR TODO: ADD abort in science
+            if(self.ROVER_STATE == Task.SCIENCE):
+                # REQUEST TO RESEND PARAMETERS
+                if (instr == ScienceTask.PARAMS.value):
+                    self.wait(self.SC_params_pub, Int16MultiArray(data=self.model.SC.getParams()))
+                # REQUEST TO RESEND INFO
+                elif (instr == ScienceTask.INFO.value):
+                    self.wait(self.SC_infos_pub, String(data=self.model.SC.get_text_info()))
+                # REQUEST TO RESEND STATE
+                elif (instr == ScienceTask.STATE.value):
+                    self.wait(self.SC_state_pub, String(data=self.model.SC.get_state_info()))
+                # COMMANDS SENT TO SC
+                else:
+                    self.SC_pub.publish(Int8(data=instr))
 
     # run ros
     def run(self):
