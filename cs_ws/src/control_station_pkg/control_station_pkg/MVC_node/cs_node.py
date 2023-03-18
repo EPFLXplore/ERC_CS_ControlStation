@@ -22,11 +22,12 @@ import sys
 import django
 
 from .controller import Controller
-from .model import Rover
+from .models.rover import Rover
 
 
 from csApp.models         import *
-from std_msgs.msg          import Int8MultiArray    , Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16, Float32MultiArray
+from std_msgs.msg         import Int8MultiArray    , Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16, Float32MultiArray
+from diagnostic_msgs.msg  import DiagnosticStatus
 
 # TODO
 # from ros_package.src.custom_msg_python.msg     import move_base_action_goal 
@@ -59,12 +60,13 @@ class CS:
         self.controller = Controller(self) # controller
         self.rover      = Rover()          # model
         # self.cameras    = Cameras()
-
-        self.navID      = [0]
+        #self.navID      = [0]
 
         # ---------------------------------------------------
         # ===== Publishers ===== 
         # CS --> ROVER 
+
+        #Doit etre remplacé par un service 
         self.Task_pub               = self.node.create_publisher(Int8MultiArray,    'Task',                1)
         self.CS_confirm_pub         = self.node.create_publisher(Bool,              'CS_Confirm',          1)
 
@@ -90,12 +92,15 @@ class CS:
         self.node.create_subscription(String,           'ROVER_RoverConfirm',              self.controller.rover_confirmation , 10)
         self.node.create_subscription(String,           'ROVER_Exception',                 self.controller.exception_clbk     , 10)
         #self.node.create_subscription(Int8,             'ROVER_TaskProgress',              self.controller.task_progress      , 10)
+        self.node.create_subscription(DiagnosticStatus, 'ROVER_log',                          self.controller.log_clbk    , 10)
         
         # SC messages
-        self.node.create_subscription(String,           'ROVER_SC_state',                  self.controller.sc_text_info       , 10) #self.sc_state
+        self.node.create_subscription(String,           'ROVER_SC_state',                  self.controller.sc_text_info       , 10)
         self.node.create_subscription(String,           'ROVER_SC_info',                   self.controller.sc_text_info       , 10)
         self.node.create_subscription(Int16MultiArray,  'ROVER_SC_params',                 self.controller.sc_params          , 10)
         self.node.create_subscription(Int16,            'ROVER_SC_measurements_humidity',  self.controller.sc_humidity        , 10)
+
+        #TODO : changer le nom du subscriber
         self.node.create_subscription(Image,            'sc_camera',                       self.controller.sc_image           , 10)
 
         # HD messages
@@ -104,10 +109,12 @@ class CS:
         self.node.create_subscription(Float32MultiArray,'ROVER_HD_detected_element',       self.controller.hd_detected_element, 10)
 
         # NAV messages
-        self.node.create_subscription(Twist,            '/cmd_vel',                        self.controller.test_joystick      , 10) # TODO i forgot why we subcribed to this...
+        self.node.create_subscription(Twist,            '/cmd_vel',                        self.controller.test_joystick      , 10) 
+        # TODO i forgot why we subcribed to this... + if its usefull change the name !
         self.node.create_subscription(Odometry,         'ROVER_NAV_odometry',              self.controller.nav_data           , 10)
 
         # TODO
+        # c'est quoi ?
         # self.node.create_subscription('detection/state', UInt8, detection_state)
         # self.node.create_subscription('detection/bounding_boxes', Image, ...)
         # self.node.create_subscription('detection/RGB_intel', Image, ...)
@@ -115,6 +122,6 @@ class CS:
         # self.node.create_subscription('detection/RGB_webcam_2', Image, ...)
         
         # Elpased time
-        self.node.create_subscription(Int32MultiArray,  'Time',                            self.controller.elapsed_time       , 10)
+        #self.node.create_subscription(Int32MultiArray,  'Time',                            self.controller.elapsed_time       , 10) #useless
 
     

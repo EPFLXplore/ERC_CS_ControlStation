@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'rover = rover_pkg.rover:main'
+            'rover = rover_pkg.rover:main',
+            'cameras_publisher = rover_pkg.cameras_publisher:main'
         ],
     },
 )

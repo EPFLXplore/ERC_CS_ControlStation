@@ -19,9 +19,9 @@ from django.http            import HttpResponse, JsonResponse
 from django.shortcuts       import render
 from django.shortcuts       import redirect
 
-import MVC_node.cs_node         
+import MVC_node.cs_node
 from MVC_node.controller import *
-from MVC_node.model  import Task      
+from MVC_node.models.rover  import Task
 from manage          import setup
 
 
@@ -67,14 +67,16 @@ def handlingdevice(request):
 
     state = parseState()
     ws_hd.connect(HD_WS_URL)
-    ws_time.connect(TIME_WS_URL)
+    #ws_time.connect(TIME_WS_URL)
     return render(request, 'pages/handlingdevice.html', { 
         'tab_name': "handlingdevice",
         'current_state' : state
     }) 
 
 def homepage(request):
-
+    if not request.session.session_key:
+        request.session.create()
+    print("home page requested : " + request.session.session_key)
     state = parseState()
     ws_hp.connect(HP_WS_URL)
     # ws_time.connect(TIME_WS_URL)
@@ -108,7 +110,7 @@ def science(request):
 
     state = parseState()
     ws_sc.connect(SC_WS_URL)
-    ws_time.connect(TIME_WS_URL)
+    #ws_time.connect(TIME_WS_URL)
     return render(request, 'pages/science.html', { 
         'tab_name': "science",
         'current_state' : state
@@ -118,7 +120,7 @@ def logs(request):
 
     state = parseState()
     ws_av.connect(AV_WS_URL)
-    ws_time.connect(TIME_WS_URL)
+    #ws_time.connect(TIME_WS_URL)
     return render(request, 'pages/logs.html', { 
         'tab_name': "logs",
         'current_state' : state
@@ -128,6 +130,7 @@ def logs(request):
 # manual control views
 
 def launch_manual(request):
+    print("task manual")
     cs.node.get_logger().info("Manual: Launch")
     cs.controller.pub_Task(1,1)
     cs.rover.setState(Task.MANUAL)
@@ -221,9 +224,10 @@ def retry_hd(request):
     return JsonResponse({})
 
 def set_id(request):
-    id = int(request.POST.get("id"))
-    print(cs.rover.HD.getElemId())
-    cs.controller.pub_hd_elemId(id)
+    cs.rover.HD.set_joint_positions([10,0,0,0,0,0])
+    cs.controller.sendJson(Task.MAINTENANCE)
+    #print(cs.rover.HD.getElemId())
+    #cs.controller.pub_hd_elemId(id)
     return JsonResponse({})
 
 # -----------------------------------
@@ -259,6 +263,7 @@ def retry_science(request):
     return JsonResponse({})
 
 def start_timer(request):
+    print("Starting timer")
 
     # startThread()
     return JsonResponse({})

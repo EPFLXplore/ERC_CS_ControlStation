@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'channels',
+    'daphne',
     'csApp.apps.Cs2022Config',
     'cameras', 
     'django.contrib.admin',

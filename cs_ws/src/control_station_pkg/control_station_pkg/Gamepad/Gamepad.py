@@ -14,7 +14,7 @@ from geometry_msgs.msg import Twist
 from std_msgs.msg      import Int8MultiArray, Int8, Bool
 import threading
 
-from MVC_node.model import Task
+from MVC_node.models.rover import Task
 from .keyMap import *
 
 

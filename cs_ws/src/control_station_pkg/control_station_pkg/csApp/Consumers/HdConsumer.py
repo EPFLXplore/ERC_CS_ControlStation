@@ -1,13 +1,33 @@
 import json
+import random
 # from channels.generic.websocket import AsyncWebsocketConsumer
 
 from .RoverConsumer import RoverConsumer
-
+from MVC_node.model import Model
+from asgiref.sync import sync_to_async
 
 class HDConsumer(RoverConsumer):
     
     async def connect(self):
+
+        current_session_date = await sync_to_async(self.scope['session'].load)()
+        self.scope['session'].update(current_session_date)
         
+        # if 'userID' in self.scope['session']:
+        #     print("already connected : " + str(self.scope['session']['userID']))
+        # else:
+            #self.scope['session']['userID'] = random.randint(0, 100)
+            #print("first connection : " + str(self.scope['session'].session_key))
+        try :
+            print("exist deja : " + str(self.scope['session']['userID']))
+        except :
+            self.scope['session']['userID'] = random.randint(0, 100)
+            print("exist pas : " + str(self.scope['session']['userID']))
+
+        self.scope['session'].update(current_session_date)
+        await sync_to_async(self.scope['session'].save)()
+
+        # #self.scope['session'].save()
         self.tab_name = 'handlingdevice'
         self.tab_group_name = 'tab_%s' % self.tab_name
 
@@ -19,10 +39,21 @@ class HDConsumer(RoverConsumer):
 
         await self.accept()
 
+    async def disconnect(self, close_code):
+        print("disconneted")
+        del self.scope['session']
+        # Leave tab group
+        await self.channel_layer.group_discard(
+            self.tab_group_name,
+            self.channel_name
+        )
+
 
 
     # Receive message from WebSocket
     async def receive(self, text_data):
+        print("session key : " + str(self.scope['session']['userID']))
+
         text_data_json = json.loads(text_data)
         joint_position = text_data_json['joint_pos']
         joint_velocity = text_data_json['joint_vel']
@@ -43,6 +74,7 @@ class HDConsumer(RoverConsumer):
 
     # Receive message from room group
     async def topic_message(self, event):
+        print("topic message:")
         joint_position = event['joint_pos']
         joint_velocity = event['joint_vel']
         detected_elements = event['detected_elems']

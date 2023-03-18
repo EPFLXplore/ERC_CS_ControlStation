@@ -5,6 +5,8 @@
 # NVIDIA Jetson Nano Developer Kit using OpenCV
 # Drivers for the camera and OpenCV are included in the base image
 
+
+
 import cv2
 
 """ 
@@ -24,6 +26,10 @@ def gstreamer_pipeline(
     #flip_method=2,
 ):
     return (
+        "gst-launch-1.0 v4l2src device=/dev/video0 ! videoconvert! videoscale ! video/x-raw, width=2592, height=600 ! autovideosink"   )
+
+
+"""return (
         "nvarguscamerasrc sensor-id=%d sensor-mode=1 !"
         "video/x-raw(memory:NVMM), width=(int)%d, height=(int)%d, format=(string)NV12, framerate=(fraction)%d/1 ! "
         "nvvidconv ! xvimagesink -e"
@@ -40,7 +46,8 @@ def gstreamer_pipeline(
             display_width,
             display_height,
         )
-    )
+    )"""
+
 
 
 def show_camera():

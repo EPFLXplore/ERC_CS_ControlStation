@@ -7,7 +7,6 @@ from .RoverConsumer import RoverConsumer
 class TimeConsumer(RoverConsumer):
     
     async def connect(self):
-        
         self.tab_group_name = 'tab_timer'
 
         # Join tab group
@@ -22,6 +21,7 @@ class TimeConsumer(RoverConsumer):
 
     # Receive message from WebSocket
     async def receive(self, text_data):
+        print("receive")
         text_data_json = json.loads(text_data)
         message_1 = text_data_json['hor']
         message_2 = text_data_json['min']
@@ -40,6 +40,7 @@ class TimeConsumer(RoverConsumer):
 
     # Receive message from room group
     async def topic_message(self, event):
+        print("topic_message")
         message_1 = event['hor']
         message_2 = event['min']
         message_3 = event['sec']

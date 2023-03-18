@@ -34,7 +34,7 @@ from actionlib_msgs.msg import GoalID
 from transforms3d.euler import euler2quat, quat2euler
 
 from Gamepad.Gamepad import Gamepad
-from .model       import Task
+from .models.rover   import Task
 
 from nav_msgs.msg import Odometry
 from csApp       import models
@@ -217,6 +217,14 @@ class Controller():
         self.cs.CS_confirm_pub.publish(True)
         # publish to front-end
         self.sendJson(Task.LOGS)
+
+    def log_clbk(self, str):
+        val = str.data
+        self.cs.node.get_logger().info("Diagnostic: " + val)
+        #self.cs.rover.log.add(val)
+
+        # publish to front-end
+        #self.sendJson(Task.LOGS)
 
 
     # =================================================================================================================
@@ -427,17 +435,17 @@ class Controller():
 
     # JSON msg describing the timer
     def elapsed_time(self, data):
-        TimeDict = {
-            'hor': data.data[0],
-            'min': data.data[1],
-            'sec': data.data[2]
-        }
+         TimeDict = {
+             'hor': data.data[0],
+             'min': data.data[1],
+             'sec': data.data[2]
+         }
 
-        message = json.dumps(TimeDict)
+         message = json.dumps(TimeDict)
 
-        if ws_time.connected:
+         if ws_time.connected:
 
-            ws_time.send('%s' % message)
+             ws_time.send('%s' % message)
 
 
     # takes a Task enum as argument
@@ -445,8 +453,13 @@ class Controller():
     # sends the needed data to the front-end depending on the task
     def sendJson(self, subsyst):
 
+        print("Sending JSON " + subsyst.name)
+
+        print(str(ws_av.connected) + "  " +str(ws_hd.connected) + "  " + str(ws_hp.connected) + "  " + str(ws_nav.connected)) 
+
         # Info to display on MANUAL tab
-        if(ws_man.connected): # if a socket is connected it means that the concerned tab is opened
+        #if(ws_man.connected): # if a socket is connected it means that the concerned tab is opened
+        if(subsyst == Task.MANUAL):
             socket = ws_man
 
             nav = self.cs.rover.Nav
@@ -521,5 +534,5 @@ class Controller():
         # send info to front-end
         message = json.dumps(Dictionary)
         if(socket.connected):
-            #print("sent")
+            print("sent ! Json updated")
             socket.send('%s' % message)

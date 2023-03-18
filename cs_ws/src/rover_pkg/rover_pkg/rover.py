@@ -4,11 +4,13 @@
 
 import time
 import rclpy
+from rclpy.logging import LoggingSeverity
 import sys
 
 #from abc import ABC, abstractmethod #Abstract Base Class
 
-from std_msgs.msg       import Int8, Int16, Int32, Bool, String, Int8MultiArray,  Int16MultiArray, Float32MultiArray, UInt8MultiArray 
+from std_msgs.msg       import Int8, Int16, Int32, Bool, String, Int8MultiArray,  Int16MultiArray, Float32MultiArray, UInt8MultiArray
+
 #from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
 from geometry_msgs.msg  import Twist, PoseStamped
 from actionlib_msgs.msg import GoalID
@@ -137,7 +139,7 @@ class Rover():
     #       - Retry  = 5
 
     def task_instr(self, array):
-
+        print('task_instr call !')
         task = array.data[0]
         instr = array.data[1]
 
@@ -148,9 +150,12 @@ class Rover():
             self.Exception_pub.publish("Instr number denied (allowed only 1-5), received:", instr) 
             pass'''
         
-        self.cs.node.get_logger().info("Rover: [task = %d, instr = %d] received", task, instr)
-        
-        self.RoverConfirm_pub.publish("Instructions received")
+        self.node.get_logger().info("Rover: [task = %d, instr = %d] received" %(task, instr))
+        self.RoverConfirm_pub.publish(String(data="Instruction received"))
+
+
+
+
 
         # MANUAL
         if (task == Task.MANUAL.value):
@@ -162,7 +167,7 @@ class Rover():
             # LAUNCH
             if(instr == Instruction.LAUNCH.value):
 
-                self.cs.node.get_logger().info("goal launched")
+                self.node.get_logger().info("goal launched")
 
                 self.Nav_Goal_pub.publish(self.model.Nav.getGoal())
             # ABORT
@@ -181,7 +186,9 @@ class Rover():
                 self.HD_SemiAuto_Id_pub.publish(self.model.HD.getId())
             # ABORT
             elif(instr == Instruction.ABORT.value): 
-                self.HD_SemiAuto_Id_pub.publish(-1)
+                #publish -1 to HD in the SemiAuto_Id topic to stop the HD
+                self.HD_SemiAuto_Id_pub.publish(Int8(data=-1))
+
                 self.ROVER_STATE = Task.IDLE
             # WAIT/RESUME
             else:
@@ -205,13 +212,16 @@ class Rover():
         
     # run ros
     def run(self):
-        print("Listening")
+        print("Rover node starting ...")
+        #self.node.get_logger().set_level(LoggingSeverity.ERROR)
+        #self.node.get_logger().info("Rover starting")
         rclpy.spin(self.node) 
  
     
     # ===== TIMEOUT MECANISM =====
 
     def cs_confirm(self, bool):
+        print("cs confirm")
         if(self.waiting): 
 
             self.cs.node.get_logger().info("CS Confirmation Received")
@@ -220,7 +230,7 @@ class Rover():
 
 
     def wait(self, pub, val):
-
+        print("wait")
         self.waiting = True
 
         pub.publish(val)
@@ -234,6 +244,7 @@ class Rover():
         if(not self.received):
 
             self.cs.node.get_logger().info("Answer not received: TIMEOUT")
+
 
         self.waiting = False
         self.received = False
