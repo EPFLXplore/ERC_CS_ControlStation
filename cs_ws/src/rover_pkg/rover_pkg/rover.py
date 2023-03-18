@@ -202,7 +202,7 @@ class Rover():
                     #self.node.get_logger().info("Can't launch Maintenance if another task is still running!")
 
 
-           elif(self.ROVER_STATE == Task.MAINTENANCE):
+            elif(self.ROVER_STATE == Task.MAINTENANCE):
                 # ABORT--------------------------------------
                 if (instr == Instruction.ABORT.value):
                     self.HD_SemiAuto_Id_pub.publish(Int8(data=-1))
