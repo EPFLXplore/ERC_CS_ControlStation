@@ -15,6 +15,7 @@ from geometry_msgs.msg import Twist, PoseStamped
 from actionlib_msgs.msg import GoalID
 from sensor_msgs.msg import JointState
 from nav_msgs.msg import Odometry
+from diagnostic_msgs import DiagnosticStatus
 
 from .model import *
 
@@ -74,6 +75,7 @@ class Rover():
         self.HD_tof            = self.node.create_publisher(Int32,             'ROVER_HD_tof'                  , 1)
         self.NAV_odometry_pub  = self.node.create_publisher(Odometry,          'ROVER_NAV_odometry'            , 1)
         self.HD_element_pub    = self.node.create_publisher(Float32MultiArray, 'ROVER_HD_detected_element'     , 3)
+        self.diagnostic        = self.node.create_publisher(DiagnosticStatus,  'CS_log'                        ,10)
 
         # ===== SUBSCRIBERS =====
 
@@ -152,13 +154,18 @@ class Rover():
 
         #-------------Processing the task received-------------
 
-
-        # MANUAL
+        # MANUAL TODO ADD ABORT
         if (task == Task.MANUAL.value):
-            if (self.ROVER_STATE == Task.IDLE):
-                self.ROVER_STATE = Task.MANUAL
-            else:
-                self.node.get_logger().info("Can't launch Manual if another task is still running!")
+            if (instr == Instruction.LAUNCH.value):
+                if (self.ROVER_STATE == Task.IDLE):
+                    self.ROVER_STATE = Task.MANUAL
+                else:
+                    # self.node.get_logger().info("Can't launch Manual if another task is still running!")
+                    self.log_task_already_launched("Manual")
+            elif (self.ROVER_STATE == Task.MANUAL):
+                # ABORT
+                if instr == Instruction.ABORT.value:
+                    self.ROVER_STATE = Task.IDLE
 
         #--------------------------NAVIGATION-----------------------------
         if task == Task.NAVIGATION.value:
@@ -170,9 +177,10 @@ class Rover():
                     goal = self.model.Nav.getGoal()
                     self.Nav_Goal_pub.publish(PoseStamped(header=goal.header, pose=goal.pose))
                 else:
-                    self.node.get_logger().info("Can't launch Navigation if another task is still running!")
+                    self.log_task_already_launched("Navigation")
+                    # self.node.get_logger().info("Can't launch Navigation if another task is still running!")
 
-            if (self.ROVER_STATE == Task.NAVIGATION):
+            elif (self.ROVER_STATE == Task.NAVIGATION):
                 # ABORT
                 if instr == Instruction.ABORT.value:
                     self.model.Nav.cancelGoal()
@@ -181,7 +189,6 @@ class Rover():
                 else:
                     self.Nav_pub.publish(Int8(data=instr))
 
-
         #-------------------------------MAINTENANCE----------------------------------
         if task == Task.MAINTENANCE.value:
             # LAUNCH---------------------------
@@ -189,11 +196,12 @@ class Rover():
                 if(self.ROVER_STATE == Task.IDLE):
                     self.ROVER_STATE = Task.MAINTENANCE
                     self.HD_SemiAuto_Id_pub.publish(Int8(data=self.model.HD.getId()))
-
                 else:
-                    self.node.get_logger().info("Can't launch Maintenance if another task is still running!")
+                    self.log_task_already_launched("Maintenance")
+                    #self.node.get_logger().info("Can't launch Maintenance if another task is still running!")
 
-            if(self.ROVER_STATE == Task.MAINTENANCE):
+
+           elif(self.ROVER_STATE == Task.MAINTENANCE):
                 # ABORT--------------------------------------
                 if (instr == Instruction.ABORT.value):
                     self.HD_SemiAuto_Id_pub.publish(Int8(data=-1))
@@ -202,7 +210,24 @@ class Rover():
                 else:
                     self.Maintenance_pub.publish(Int8(data=instr))
 
+        # -------------------------DRONE-------------------------------------------------
+        if (task == Task.DRONE.value):
+            # LAUNCH
+            if (instr == Instruction.LATCH.value):
+                if (self.ROVER_STATE == Task.IDLE):
+                    self.ROVER_STATE = Task.DRONE
+                else:
+                    # self.node.get_logger().info("Can't launch Manual if another task is still running!")
+                    self.log_task_already_launched("Drone")
 
+            # OTHER Instructions
+            elif (self.ROVER_STATE == Task.DRONE):
+                if (instr == Instruction.ABORT.value):
+                    self.ROVER_STATE = Task.IDLE
+                if (instr == Instruction.OKDRONE.value):
+                    self.ROVER_STATE = Task.IDLE
+                else:
+                    self.node.get_logger().info("Not allowed")
 
         # SCIENCE
         if (task == Task.SCIENCE.value):
@@ -211,9 +236,14 @@ class Rover():
                 if(self.ROVER_STATE == Task.IDLE):
                     self.ROVER_STATE = Task.SCIENCE
                 else:
-                    self.node.get_logger().info("Can't launch Maintenance if another task is still running!")
+                    self.node.get_logger().info("Can't launch Science if another task is still running!")
+                    self.log_task_already_launched("Science")
+
             #OTHER SCIENCE INSTR TODO: ADD abort in science
-            if(self.ROVER_STATE == Task.SCIENCE):
+            elif(self.ROVER_STATE == Task.SCIENCE):
+                #ABORT
+                if (instr == Instruction.ABORT.value):
+                    self.ROVER_STATE = Task.IDLE
                 # REQUEST TO RESEND PARAMETERS
                 if (instr == ScienceTask.PARAMS.value):
                     self.wait(self.SC_params_pub, Int16MultiArray(data=self.model.SC.getParams()))
@@ -257,6 +287,13 @@ class Rover():
 
         self.waiting = False
         self.received = False
+
+    def log_task_already_launched(self, task):
+        status = DiagnosticStatus()
+        status.level = DiagnosticStatus.ERROR
+        status.msg = "Can't launch %s if another task is still running!" % task
+        status.name = "Task already running"
+        self.diagnostic.publish(status)
 
 
 def main():
