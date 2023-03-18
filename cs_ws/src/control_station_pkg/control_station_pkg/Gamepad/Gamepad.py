@@ -404,7 +404,7 @@ class Gamepad(Thread):
   def goHome(self):
     self.homeGo = 1
     print(self.homeGo)
-    self.cs.HD_homeGo_pub.publish(self.homeGo)
+    self.cs.HD_homeGo_pub.publish(Bool(data=self.homeGo)) #TODO: Check if Bool accepts numerical values
     # reset bool
     self.homeGo = 0
     
@@ -412,7 +412,7 @@ class Gamepad(Thread):
   def setHome(self):
     self.homeSet = 1
     print(self.homeSet)
-    self.cs.HD_homeSet_pub.publish(self.homeSet)
+    self.cs.HD_homeSet_pub.publish(Bool(data=self.homeSet)) #TODO: Check if Bool accepts numerical values
     # reset bool(s)
     self.homeSet = 0
     self.homeSet_temp = 0  

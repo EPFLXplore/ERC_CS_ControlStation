@@ -57,11 +57,13 @@ class Model:
 
     #--------Exception--------
     # callback for received exceptions (transmits directly to CS)
+    # Exception should be of type std.msg.String()
     def set_exception(self, exception):
         self.rover.wait(self.rover.Exception_pub, exception)
-        self.rover.Exception_pub.publish(exception.data)
+        self.rover.Exception_pub.publish(exception)
 
     # callback for task progress (success/fail) and transmits it to CS
+    # val should be of type std.msg.Int8()
     def setProgress(self, val):
         #if NAV task then topic 'TaskProgress' received a success msg => goal is basically cancelled (??? TODO)
         if(self.getTask() == Task.NAVIGATION.value):
@@ -100,7 +102,7 @@ class Navigation:
         #self.__cancelled = False
         self.setCancelled(False)
 
-        self.rover.RoverConfirm_pub.publish("received NAV goal")
+        self.rover.RoverConfirm_pub.publish(String(data="received NAV goal"))
         self.__currId = goal.header.frame_id
         self.__currGoal = goal
         
@@ -114,7 +116,7 @@ class Navigation:
 
     # -------called when CS sends an ABORT instruction to NAV task --> it cancels the goal and the rover stops-------
     def cancelGoal(self):
-        self.rover.RoverConfirm_pub.publish("received NAV goal cancellation")
+        self.rover.RoverConfirm_pub.publish(String(data="received NAV goal cancellation"))
 
         if(not self.__cancelled): 
             self.setCancelled(True)
@@ -194,17 +196,18 @@ class HandlingDevice:
         self.__distToElem = 0
 
     # -------HD mode: autonomous, direct manual, inverse manual-------
+    # Expects mode_ros to be an std.msg.Int8
     def setHDMode(self, mode_ros):
 
-        self.rover.RoverConfirm_pub.publish("HD mode set")
+        self.rover.RoverConfirm_pub.publish(String(data="HD mode set"))
 
         mode = mode_ros.data
-        if(mode < 0 or mode > 3): 
+        if(mode < 0 or mode > 3):
             #raise ValueError("Invalid mode")
-            self.rover.Exception_pub.publish("Invalid mode, must be between 0 and 3")
+            self.rover.Exception_pub.publish(String(data="Invalid mode, must be between 0 and 3"))
         else:
             self.__hd_mode = mode
-            self.rover.HD_mode_pub.publish(mode)
+            self.rover.HD_mode_pub.publish(mode_ros)
 
     def getHDMode(self):
         return self.__hd_mode
@@ -212,20 +215,21 @@ class HandlingDevice:
     # -------ID of element we want to manipulate autonomously-------
     def set_semiAutoID(self, id_ros):
 
-        self.rover.RoverConfirm_pub.publish("received HD element ID")
+        self.rover.RoverConfirm_pub.publish(String(data="received HD element ID"))
 
         id = id_ros.data
         #self.rover.HD_SemiAuto_Id_pub.publish(self.__semiAutoId)
         if(id < 0 or id > 14):
-            self.rover.Exception_pub.publish("Invalid ID, must be between 0 and 14")
+            self.rover.Exception_pub.publish(String(data="Invalid ID, must be between 0 and 14"))
         else:
             self.__semiAutoId = id
-            #self.rover.HD_SemiAuto_Id_pub.publish(id)
+            #self.rover.HD_SemiAuto_Id_pub.publish(id) TODO: SEE WHY THIS IS USEFUL
 
     def getId(self):
         return self.__semiAutoId
 
     # -------HD joints' positions (rad) and velocity (rad/s ??? TODO)-------
+    #Jointstate is a ROS message
     def set_joint_telemetry(self, telemetry_ros):
         telemetry = telemetry_ros.data
         self.set_joint_positions(telemetry.position)
@@ -247,9 +251,10 @@ class HandlingDevice:
         return self.__joint_velocities
 
     # ToF (time of flight): distance to element
+    #Expects a ros message
     def set_tof(self, val):
         self.__distToElem = val.data
-        self.rover.HD_tof_pub.publish(val.data)
+        self.rover.HD_tof_pub.publish(val)
 
     # retransmit info of an element of the control panel: [id, x, y, z, a, b, c] 
     # we receive these infos progressively as HD scans the control panel and detects new elements
@@ -260,7 +265,7 @@ class HandlingDevice:
     def pub_detected_elements(self, obj_list):
         for i in range(len(obj_list)):
             panel = obj_list[i]
-            msg = Float32MultiArray(data = [panel.id, panel. x_pos, panel.y_pos, panel.z_pos, panel.x_rot, panel.y_rot, panel.z_rot])
+            msg = Float32MultiArray(data= [panel.id, panel. x_pos, panel.y_pos, panel.z_pos, panel.x_rot, panel.y_rot, panel.z_rot])
             self.rover.HD_element_pub.publish(msg)
 
 
