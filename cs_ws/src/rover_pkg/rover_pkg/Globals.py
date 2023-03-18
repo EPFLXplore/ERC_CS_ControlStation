@@ -12,15 +12,17 @@ class Task(IntEnum):
     NAVIGATION  = 2
     MAINTENANCE = 3
     SCIENCE     = 4
+    DRONE       = 5
     
   
 class Instruction(IntEnum):
-  LAUNCH = 1
-  ABORT  = 2
-  WAIT   = 3
-  RESUME = 4
-  RETRY  = 5
-
+  LAUNCH  = 1
+  ABORT   = 2
+  WAIT    = 3
+  RESUME  = 4
+  RETRY   = 5
+  LATCH   = 6
+  OKDRONE = 7
 class ScienceTask(IntEnum):
   ABORT    = 0
   RETRY    = 1
