@@ -1,16 +1,14 @@
 import json
-from re import X
-from zlib import Z_NO_COMPRESSION
 # from channels.generic.websocket import AsyncWebsocketConsumer
 
 from .RoverConsumer import RoverConsumer
 
 
-class NavConsumer(RoverConsumer):
+class NavManualConsumer(RoverConsumer):
     
     async def connect(self):
         
-        self.tab_name = 'navigation'
+        self.tab_name = 'manual'
         self.tab_group_name = 'tab_%s' % self.tab_name
 
         # Join tab group
@@ -25,27 +23,27 @@ class NavConsumer(RoverConsumer):
 
     # Receive message from WebSocket
     async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
+        text_data_json  = json.loads(text_data)
         x_pos           = text_data_json['x']
         y_pos           = text_data_json['y']
-        z_pos           = text_data_json['z']
         linearVelocity  = text_data_json['linVel']
         angularVelocity = text_data_json['angVel']
-        yaw             = text_data_json['yaw']
-        distance        = text_data_json['distance']
+        joint_position  = text_data_json['joint_pos']
+        joint_velocity  = text_data_json['joint_vel']
+        hd_mode         = text_data_json['hd_mode']
 
         # Send message to room group
         await self.channel_layer.group_send(
             self.tab_group_name,
             {
-                'type'    : 'topic_message',
-                'x'       : x_pos,
-                'y'       : y_pos,
-                'z'       : z_pos,
-                'linVel'  : linearVelocity,
-                'angVel'  : angularVelocity,
-                'yaw'     : yaw,
-                'distance': distance
+                'type'     : 'topic_message',
+                'x'        : x_pos,
+                'y'        : y_pos,
+                'linVel'   : linearVelocity,
+                'angVel'   : angularVelocity,
+                'joint_pos': joint_position,
+                'joint_vel': joint_velocity,
+                'hd_mode'  : hd_mode
             }
         )
 
@@ -53,19 +51,19 @@ class NavConsumer(RoverConsumer):
     async def topic_message(self, event):
         x_pos           = event['x']
         y_pos           = event['y']
-        z_pos           = event['z']
         linearVelocity  = event['linVel']
         angularVelocity = event['angVel']
-        yaw             = event['yaw']
-        distance        = event['distance']
+        joint_position  = event['joint_pos']
+        joint_velocity  = event['joint_vel']
+        hd_mode         = event['hd_mode']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'x'       : x_pos,
-            'y'       : y_pos,
-            'z'       : z_pos,
-            'linVel'  : linearVelocity,
-            'angVel'  : angularVelocity,
-            'yaw'     : yaw,
-            'distance': distance
+            'x'        : x_pos,
+            'y'        : y_pos,
+            'linVel'   : linearVelocity,
+            'angVel'   : angularVelocity,
+            'joint_pos': joint_position,
+            'joint_vel': joint_velocity,
+            'hd_mode'  : hd_mode
         }))

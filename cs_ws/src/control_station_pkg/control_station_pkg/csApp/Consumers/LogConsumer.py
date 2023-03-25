@@ -4,12 +4,10 @@ import json
 from .RoverConsumer import RoverConsumer
 
 
-class AVConsumer(RoverConsumer):
+class TimeConsumer(RoverConsumer):
     
     async def connect(self):
-        
-        self.tab_name = 'logs'
-        self.tab_group_name = 'tab_%s' % self.tab_name
+        self.tab_group_name = 'tab_timer'
 
         # Join tab group
         await self.channel_layer.group_add(
@@ -23,23 +21,33 @@ class AVConsumer(RoverConsumer):
 
     # Receive message from WebSocket
     async def receive(self, text_data):
+        print("receive")
         text_data_json = json.loads(text_data)
-        exceptions = text_data_json['exceptions']
+        message_1 = text_data_json['hor']
+        message_2 = text_data_json['min']
+        message_3 = text_data_json['sec']
 
         # Send message to room group
         await self.channel_layer.group_send(
             self.tab_group_name,
             {
                 'type': 'topic_message',
-                'exceptions': exceptions
+                'hor': message_1,
+                'min': message_2,
+                'sec'  : message_3
             }
         )
 
     # Receive message from room group
     async def topic_message(self, event):
-        exceptions = event['exceptions']
+        print("topic_message")
+        message_1 = event['hor']
+        message_2 = event['min']
+        message_3 = event['sec']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'exceptions': exceptions
+            'hor': message_1,
+            'min': message_2,
+            'sec'  : message_3
         }))

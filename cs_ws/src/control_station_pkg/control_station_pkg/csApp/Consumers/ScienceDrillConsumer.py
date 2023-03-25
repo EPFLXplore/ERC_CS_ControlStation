@@ -4,7 +4,7 @@ import json
 from .RoverConsumer import RoverConsumer
 
 
-class SCConsumer(RoverConsumer):
+class ScienceDrillConsumer(RoverConsumer):
     
     async def connect(self):
         

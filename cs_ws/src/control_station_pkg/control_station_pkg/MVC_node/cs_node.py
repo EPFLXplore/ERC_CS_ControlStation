@@ -57,8 +57,13 @@ class CS:
         self.node = rclpy.create_node("csApp")
 
         # MVC pattern => model, view (front-end), controller
+
+
         self.controller = Controller(self) # controller
         self.rover      = Rover()          # model
+
+
+
         # self.cameras    = Cameras()
         #self.navID      = [0]
 
