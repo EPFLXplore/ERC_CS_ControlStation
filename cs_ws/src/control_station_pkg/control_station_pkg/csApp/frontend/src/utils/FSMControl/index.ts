@@ -42,7 +42,7 @@ class FSMControl {
     private static createRequest(task: string, state: string) {
         const csrftoken = this.getCookie('csrftoken');
 
-        return new Request('http://127.0.0.1:8000/' + state, {method: 'POST',
+        return new Request('http://127.0.0.1:8000/csApp/' + task + '/' + state, {method: 'POST',
             body: '',
             headers: {"X-CSRFToken": csrftoken ?? ''}})
     }
