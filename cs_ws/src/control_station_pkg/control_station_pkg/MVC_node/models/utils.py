@@ -1,5 +1,12 @@
 import time
 
+class Session:
+    def __init__(self):
+        self.sessions_list = {}
+        self.nb_users = 0
+
+
+
 class Timer:
     def __init__(self, duration):
         self.duration = duration
@@ -26,9 +33,6 @@ class Timer:
         self.duration = self.time_left()
         self.is_running = False
         
-    
-
-
 class Log:
     def __init__(self):
         self.log = []
@@ -37,3 +41,7 @@ class Log:
     def add(self, msg):
         self.log.append(msg)
         self.last_log = msg
+
+session = Session()
+timer = Timer(600)
+log = Log()

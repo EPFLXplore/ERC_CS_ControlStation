@@ -16,8 +16,7 @@ class TabList(IntEnum):
 
 
 class Tabs():
-	usersState = []
-
+	
 	nav_manual_access       = [1,0,0,0,1,1,1,0,1,1]
 	nav_semi_auto_access    = [1,0,0,0,1,1,1,0,1,1]
 	nav_semi_access         = [1,0,0,0,1,1,1,0,1,1]
@@ -28,7 +27,10 @@ class Tabs():
 	cameras_access          = [1,1,1,1,1,1,1,1,1,1]
 	logs_access             = [1,1,1,1,1,1,1,1,1,1]
 
-    def availableTabs(self):
+	def __init__(self):
+		self.usersState = []
+		
+	def availableTabs(self):
 	    available = [1,1,1,1,1,1,1,1,1,1]
 	    
         

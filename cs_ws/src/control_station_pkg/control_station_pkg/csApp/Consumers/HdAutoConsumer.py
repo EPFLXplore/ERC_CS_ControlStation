@@ -3,10 +3,9 @@ import random
 # from channels.generic.websocket import AsyncWebsocketConsumer
 
 from .RoverConsumer import RoverConsumer
-from MVC_node.model import Model
 from asgiref.sync import sync_to_async
 
-class HDConsumer(RoverConsumer):
+class HdAutoConsumer(RoverConsumer):
     
     async def connect(self):
 
