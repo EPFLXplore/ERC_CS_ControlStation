@@ -16,7 +16,7 @@ from geometry_msgs.msg  import Twist, PoseStamped
 from actionlib_msgs.msg import GoalID
 from sensor_msgs.msg import JointState
 from nav_msgs.msg import Odometry
-from diagnostic_msgs import DiagnosticStatus
+from diagnostic_msgs.msg import DiagnosticStatus
 
 from .model import *
 
