@@ -23,6 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('launcher/', views.launcher, name='launcher'),
     path('csApp/', include('csApp.urls')),
-    path('cameras/', include('cameras.urls')),
-    re_path(r'^(?!/csApp).*$', views.new_control_station, name='new CS'),
+    #path('cameras/', include('cameras.urls')),
+    #re_path(r'^(?!/csApp).*$', views.new_control_station, name='new CS'),
 ]

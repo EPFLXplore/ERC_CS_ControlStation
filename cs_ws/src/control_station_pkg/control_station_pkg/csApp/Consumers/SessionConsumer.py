@@ -10,12 +10,9 @@ import MVC_node.models.utils as utils
 
 
 class SessionConsumer(WebsocketConsumer):
-    def connect(self):
-        #print(type(self.scope))
-        #for key, value in self.scope.items():
-         #   print(key + " : " + str(value))
 
-        #self.scope["session"]["userID"]
+    def connect(self):
+
         if(self.scope["session"].session_key != None):
             #print(str(Session.objects.get(session_key=self.scope["session"].session_key).get_decoded()))
             print("session key : " + str(self.scope["session"].session_key))
@@ -31,15 +28,7 @@ class SessionConsumer(WebsocketConsumer):
 
         else :
             print("no session key")
-
-        
-        
-
-        
-
            
-        #self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
-        #self.room_group_name = "chat_%s" % self.room_name
         self.tab_name = 'homepage'
         self.tab_group_name = 'tab_%s' % self.tab_name
 
@@ -47,12 +36,14 @@ class SessionConsumer(WebsocketConsumer):
         async_to_sync(self.channel_layer.group_add)(
             self.tab_group_name, self.channel_name
         )
+
+        async_to_sync(self.channel_layer.group_send)(
+            self.tab_group_name, {"type": "broadcast", "nb_users": utils.session.nb_users}
+        )
+
         self.accept()
 
     def disconnect(self, close_code):
-        print("disconected : " + str(close_code))
-        # for key, value in self.scope.items():
-        #     print(key + " : " + str(value))
         try :
             print("will remove : " + str(self.scope['session']["userID"]))
             del self.scope['session']["userID"]
@@ -61,6 +52,11 @@ class SessionConsumer(WebsocketConsumer):
         except :
             pass
         self.scope['session'].save()
+
+        #update other users
+        async_to_sync(self.channel_layer.group_send)(
+            self.tab_group_name, {"type": "broadcast", "nb_users": utils.session.nb_users}
+        )
         # Leave room group
         async_to_sync(self.channel_layer.group_discard)(
             self.tab_group_name, self.channel_name
@@ -69,17 +65,16 @@ class SessionConsumer(WebsocketConsumer):
     # Receive message from WebSocket
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message = text_data_json["message"]
+        message = text_data_json["current_tab"]
 
-        # Send message to room group
-        async_to_sync(self.channel_layer.group_send)(
-            self.tab_group_name, {"type": "chat_message", "message": message}
-        )
+        # async_to_sync(self.channel_layer.group_send)(
+        #     self.tab_group_name, {"type": "broadcast", "nb_users": message}
+        # )
 
     # Receive message from room group
-    def chat_message(self, event):
+    def broadcast(self, event):
         
-        message = event["message"]
+        message = event["nb_users"]
 
         # Send message to WebSocket
-        self.send(text_data=json.dumps({"message": message}))
+        self.send(text_data=json.dumps({"nb_users": message}))
