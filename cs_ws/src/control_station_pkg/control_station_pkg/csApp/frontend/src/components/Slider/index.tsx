@@ -7,6 +7,7 @@ interface Props {
 
 export default function App({ label }: Props) {
 	const [value, onChange] = useState(1);
+
 	useEffect(() => {
 		const ele = document.querySelector(".buble");
 		if (ele instanceof HTMLElement) {
@@ -14,16 +15,18 @@ export default function App({ label }: Props) {
 		}
 	});
 	return (
-		<div className={styles.sliderParent}>
-			<input
-				type="range"
-				min="1"
-				max="100"
-				value={value}
-				onChange={({ target: { value: radius } }) => {
-					onChange(parseInt(radius));
-				}}
-			/>
+		<div className={styles.sliderContainer}>
+			<div className={styles.slider}>
+				<input
+					type="range"
+					min="1"
+					max="100"
+					value={value}
+					onChange={({ target: { value: radius } }) => {
+						onChange(parseInt(radius));
+					}}
+				/>
+			</div>
 		</div>
 	);
 }

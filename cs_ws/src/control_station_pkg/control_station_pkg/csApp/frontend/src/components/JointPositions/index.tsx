@@ -5,7 +5,7 @@ import styles from "./style.module.sass";
 export default () => {
 	return (
 		<div className={styles.container}>
-			<h1 className={styles.text}>Joint Positions</h1>
+			<p className={styles.text}>Joint Positions</p>
 			<div className={styles.sliders}>
 				<Slider label="Slider 1" />
 				<Slider label="Slider 2" />

@@ -1,26 +1,36 @@
+@import '../../styles/variables.sass'
+
 .container 
-    background-color: rgba(#000, 0.8)
-    padding: 20px
-    margin: 20px
-    width: 80%
-    max-width: 200px 
-    border-radius: 15px
-    position: absolute
-    right: auto
-    top: auto
-    bottom: 0
-    left: 0
+  width: 12%
+  height: 35%
+  display: flex
+  flex-direction: column
+  padding: 1vh 1vw
+  background-color: rgba($primaryDark2Color, 0.8)
+  border-radius: 2vh
+  align-items: flex-startcenter
+  justify-content: space-evenly
+  margin: 20px
+  position: absolute
+  right: auto
+  top: auto
+  bottom: 0
+  left: 0
 
 .sliders 
+  width: 90%
   display: flex
   flex-wrap: wrap
   justify-content: space-around
-  margin-top: 20px
+  margin-top: 5px
+
+  .slider
+    width: 100%
 
 .text
-    font-family: sans-serif
-    height: fit-content
-    text-align: center
-    margin: 0 0 1rem 0
-    font-weight: 500
-    font-size: 2.0rem
+  font-family: sans-serif
+  font-size: 1.5rem
+  height: fit-content
+  text-align: center
+  margin: 0 0 1rem 0
+  width: 100%
