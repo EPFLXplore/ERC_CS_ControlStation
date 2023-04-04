@@ -139,7 +139,7 @@ class CS:
         # Elpased time
         #self.node.create_subscription(Int32MultiArray,  'Time',                            self.controller.elapsed_time       , 10) #useless
 
-    async def sendRequest(self):
+    def sendRequest(self):
             self.node._logger.info("Sending request")
             while not self.onlineConfirmClient.wait_for_service(timeout_sec=1.0):
                     self.node.get_logger().info('service not available, waiting again...')
