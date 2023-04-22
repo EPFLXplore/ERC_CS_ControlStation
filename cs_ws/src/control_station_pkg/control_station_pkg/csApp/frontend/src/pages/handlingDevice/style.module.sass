@@ -1,8 +1,6 @@
 @import '../../styles/variables.sass'
 
 .container 
-    width: 15%
-    height: 35%
     display: flex
     flex-direction: column
     padding: 1vh 1vw
@@ -10,15 +8,34 @@
     border-radius: 2vh
     align-items: flex-startcenter
     justify-content: space-evenly
-    margin: 20px
+    margin: 10px
+    flex-grow: 1
+    
+
+.globalContainer
+    width: 20%
+    height: 50%
+    //background-color: rgba($primaryDark2Color, 0.8)
     position: absolute
-    right: auto
-    top: auto
     bottom: 0
     right: 0
+    display: flex
+    flex-direction: column  
+    align-items:  stretch    //vertical alignment
+
+.jointContainer
+    //background-color: rgba($primaryDark2Color, 0.8)
+    width: 20%
+    height: 40%
+    position: absolute
+    bottom: 0
+    left: 0
+    display: flex
+    flex-direction: row
+    align-items: stretch
 
 .button
-    background-color: $primaryDark2Color
+    background-color: rgba($primaryDark2Color, 0.8)
     color: $secondaryColor
     border: 3px solid $secondaryColor
     border-radius: 20px

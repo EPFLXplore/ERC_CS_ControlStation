@@ -1,0 +1,44 @@
+@import '../../styles/variables.sass'
+
+.sliderContainer
+    display: flex
+    flex-direction: column
+    padding: 1vh 1vw
+    background-color: rgba($primaryDark2Color, 0.8)
+    border-radius: 2vh
+    align-items: flex-startcenter
+    justify-content: space-evenly
+    margin: 10px
+    flex-grow: 1
+    height: 10%
+
+.sliderTitle
+    color: white
+    font-size: 2rem
+    text-align: center
+
+.sliderText
+    color: white
+    font-size: 1.7rem
+
+.sliderArrows
+    display: flex
+
+    flex-direction: row
+    justify-content: space-between
+    width: 100%
+    margin-top: 10px
+
+    button
+      width: 50px
+      height: 50px
+      background-color: transparent
+      border: none
+      color: $secondaryColor
+      font-size: 24px
+      cursor: pointer
+      transition: opacity 0.2s
+
+      &:hover
+        opacity: 0.8
+

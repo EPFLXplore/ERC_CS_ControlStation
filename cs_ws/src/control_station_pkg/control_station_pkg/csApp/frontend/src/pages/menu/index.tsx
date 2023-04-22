@@ -10,6 +10,7 @@ import HDIcon from "../../assets/images/icons/handling_device_logo.png";
 import InformationIcon from "../../assets/images/icons/information_logo.png";
 import useMenuSelector from "../../hooks/menuHooks";
 import menuLinks from "./items";
+import { Size } from "../../utils/size.type";
 
 export default () => {
 	const [open, setOpen] = useMenuSelector(4);

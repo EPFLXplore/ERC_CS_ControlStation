@@ -3,7 +3,7 @@ import BackButton from "../../components/BackButton";
 import Background from "../../components/Background";
 import Map from "../../components/Map";
 import Button from "../../components/Button";
-import DisplayPosition from "../../components/DisplayPosition";
+import CurrentPosition from "../../components/CurrentPosition";
 import TaskControl from "../../components/TaskControl";
 import SuppressableCard from "../../components/SuppressableCard";
 import { Mode } from "../../utils/mode.type";
@@ -11,8 +11,27 @@ import { Task } from "../../utils/tasks.type";
 import { Themes } from "../../utils/themes";
 import styles from "./style.module.sass";
 import { Size } from "../../utils/size.type";
+import Timer from "../../components/Timer";
+import { useGoalTracker } from "../../hooks/navigationHooks";
 
 export default ({ mode }: { mode: Mode }) => {
+	const { goals, addGoal, removeGoal, resetGoals } = useGoalTracker();
+
+	const handleAddGoal = () => {
+		// Get the values from the input fields
+		const x = parseInt((document.getElementById("input-x") as HTMLInputElement).value, 10);
+		const y = parseInt((document.getElementById("input-y") as HTMLInputElement).value, 10);
+		const o = parseInt((document.getElementById("input-o") as HTMLInputElement).value, 10);
+
+		// Create a new goal object and add it to the list of goals
+		addGoal(x, y, o);
+
+		// Clear the input fields
+		(document.getElementById("input-x") as HTMLInputElement).value = "";
+		(document.getElementById("input-y") as HTMLInputElement).value = "";
+		(document.getElementById("input-o") as HTMLInputElement).value = "";
+	};
+
 	// TODO Replace all these constants by the call to functions
 	const distance = 15;
 	const routeLeft = 20;
@@ -28,31 +47,57 @@ export default ({ mode }: { mode: Mode }) => {
 			<Background />
 			<BackButton />
 			<div className={styles.InfoContainer}>
-				<Map />
+				<Map
+					origin={{
+						//TO SET DURING COMPETITION
+						x: 345,
+						y: 200,
+					}}
+				/>
 				<div className={styles.Info}>
 					<h2 className={styles.InfoTitle}>{mode} Navigation</h2>
-
 					<div className={styles.ControlsContainer}>
 						<h3>Current Position</h3>
-						<DisplayPosition x={41} y={15} o={42} /> {/*CONNECT TO BACKEND*/}
+						<CurrentPosition currentX={41} currentY={15} currentO={42} />
+
+						<div className={styles.inputContainer}>
+							<div className={styles.finalContainer}>
+								X
+								<input type="text" id="input-x" name="input-x" />
+							</div>
+							<div className={styles.finalContainer}>
+								Y
+								<input type="text" id="input-y" name="input-y" />
+							</div>
+							<div className={styles.finalContainer}>
+								O
+								<input type="text" id="input-o" name="input-o" />
+							</div>
+						</div>
 						<Button
 							text="Add Goal"
 							size={Size.SMALL}
 							theme={Themes.BROWN}
-							onClick={() => {}}
+							onClick={handleAddGoal}
 							radius={10}
 						/>
 						<Button
-							text="Reset Goal"
+							text="Reset Goals"
 							size={Size.SMALL}
 							theme={Themes.BROWN}
-							onClick={() => {}}
+							onClick={resetGoals}
 							radius={10}
 						/>
-						<h3>Next Goals</h3>
-						<SuppressableCard x={42} y={19} o={25} /> {/*CONNECT TO BACKEND*/}
-						<SuppressableCard x={24} y={32} o={47} />
-						<SuppressableCard x={25} y={56} o={54} />
+						{goals.length > 0 && <h3>Next Goals</h3>}
+						{goals.map((goal, index) => (
+							<SuppressableCard
+								key={goal.id}
+								x={goal.x}
+								y={goal.y}
+								o={goal.o}
+								removeGoal={() => removeGoal(goal.id)}
+							/>
+						))}
 					</div>
 				</div>
 			</div>
@@ -106,21 +151,11 @@ export default ({ mode }: { mode: Mode }) => {
 									<p>{WheelRR}°</p>
 								</div>
 							</div>
-
-							{/* <div className={styles.InfoArrangement}>
-								<div style={{ marginRight: "10px" }}>
-									<p>Wheel RL: </p>
-									<p>Wheel RR: </p>
-								</div>
-								<div>
-									<p>{WheelFL}°</p>
-									<p>{WheelFR}°</p>
-								</div>
-							</div> */}
 						</div>
 					</div>
 					<div className="Image of rover"> </div>
 				</div>
+				<Timer end={Date.now() + 10000} size={Size.SMALL} />
 				<TaskControl task={Task.NAVIGATION} />
 			</div>
 		</div>

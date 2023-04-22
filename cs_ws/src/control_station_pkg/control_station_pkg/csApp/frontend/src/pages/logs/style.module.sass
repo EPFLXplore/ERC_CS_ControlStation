@@ -46,6 +46,15 @@
 
     overflow: hidden
 
+.LogFilters
+    display: flex
+    flex-direction: row
+    width: 100%
+    align-items: center
+    justify-content: flex-start
+
+    padding: 1rem
+
 .Logs
     display: flex
     flex-direction: column
@@ -55,6 +64,18 @@
     overflow: auto
 
     padding: 1rem
+
+.Logs::-webkit-scrollbar-track
+        background: none
+
+
+.Logs::-webkit-scrollbar-thumb
+        background: $secondaryLight1Color
+        border-radius: 0.5rem
+
+.Logs::-webkit-scrollbar
+        width: 0.6rem
+
 
 .Log
     display: flex
@@ -86,3 +107,5 @@
 
 .Data
     color: $textDark2Color
+
+
