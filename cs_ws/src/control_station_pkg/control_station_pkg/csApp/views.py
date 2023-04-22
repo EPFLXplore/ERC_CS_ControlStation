@@ -66,7 +66,7 @@ def parseState():
 def handlingdevice(request):
 
     state = parseState()
-    ws_hd.connect(HD_WS_URL)
+    #ws_hd.connect(HD_WS_URL)
     #ws_time.connect(TIME_WS_URL)
     return render(request, 'pages/handlingdevice.html', { 
         'tab_name': "handlingdevice",
@@ -78,7 +78,7 @@ def homepage(request):
         request.session.create()
     print("home page requested : " + request.session.session_key)
     state = parseState()
-    ws_hp.connect(HP_WS_URL)
+    #ws_hp.connect(HP_WS_URL)
     # ws_time.connect(TIME_WS_URL)
     return render(request, 'pages/homepage.html', { 
         'tab_name': "homepage",
@@ -88,7 +88,7 @@ def homepage(request):
 def manualcontrol(request):
 
     state = parseState()
-    ws_man.connect(MAN_WS_URL)
+    #ws_man.connect(MAN_WS_URL)
     # ws_time.connect(TIME_WS_URL)
     return render(request, 'pages/manualcontrol.html', { 
         'tab_name': "manual",
@@ -98,8 +98,7 @@ def manualcontrol(request):
 def navigation(request):
 
     state = parseState()
-
-    ws_nav.connect(NAV_WS_URL)
+    #ws_nav.connect(NAV_WS_URL)
     # ws_time.connect(TIME_WS_URL)
     return render(request, 'pages/navigation.html', { 
         'tab_name': "navigation",
@@ -109,7 +108,7 @@ def navigation(request):
 def science(request):
 
     state = parseState()
-    ws_sc.connect(SC_WS_URL)
+    #ws_sc.connect(SC_WS_URL)
     #ws_time.connect(TIME_WS_URL)
     return render(request, 'pages/science.html', { 
         'tab_name': "science",
@@ -119,7 +118,7 @@ def science(request):
 def logs(request):
 
     state = parseState()
-    ws_av.connect(AV_WS_URL)
+    #ws_av.connect(AV_WS_URL)
     #ws_time.connect(TIME_WS_URL)
     return render(request, 'pages/logs.html', { 
         'tab_name': "logs",

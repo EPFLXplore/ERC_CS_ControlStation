@@ -13,8 +13,6 @@ const chatSocket = new WebSocket(
 // on receiving json message from back-end
 chatSocket.onmessage = function (e) {
     const data = JSON.parse(e.data);
-
-    console.log("debug")
     // update x and y coordinates + linear and angular velocities
     document.getElementById('X_coord').innerHTML = Math.round((data.x + Number.EPSILON) * 100) / 100
     document.getElementById('Y_coord').innerHTML = Math.round((data.y + Number.EPSILON) * 100) / 100
@@ -52,8 +50,14 @@ chatSocket.onmessage = function (e) {
 };
 
 chatSocket.onclose = function (e) {
-    console.log('Switched Tab');
+    console.log('Switched Tab2');
 };
+
+
+
+
+
+
 
 // --------------------------------------------------------------------------
 // Cameras
@@ -62,8 +66,6 @@ let ws = new WebSocket(
     + window.location.host
     + '/ws/cameras/'
     + 'video6/'
-    // + 'wms'
-    // + '/'
 );
 
 let ws2 = new WebSocket(
@@ -71,60 +73,26 @@ let ws2 = new WebSocket(
     + window.location.host
     + '/ws/cameras/'
     + 'video2/'
-    // + 'wms'
-    // + '/'
 );
+
 let ws3 = new WebSocket(
     'ws://'
     + window.location.host
     + '/ws/cameras/'
-    + 'video/'
-    // + 'wms'
-    // + '/'
+    + 'video0/'
 );
-
 
 ws.onmessage = function (evt) {
     v_data = JSON.parse(evt.data);
-    // $("#camera_1").attr("src", v_data.message);
-    document.getElementById('camera_1').src = v_data.message;
-
-
-
+    document.getElementById('camera_1').src = v_data.video_data;
 };
 
 ws2.onmessage = function (evt) {
     v_data = JSON.parse(evt.data);
-    document.getElementById('camera_2').src = v_data.message;
-
-
-
+    document.getElementById('camera_2').src = v_data.video_data;
 };
+
 ws3.onmessage = function (evt) {
     v_data = JSON.parse(evt.data);
-    document.getElementById('camera_3').src = v_data.message;
-
-
-
-};
-
-ws.onclose = function (evt) {
-    console.log("Connection closed.");
-};
-
-const timeSocket = new WebSocket(
-    'ws://'
-    + window.location.host
-    + '/ws/csApp/'
-    + 'time'
-    + '/'
-);
-
-timeSocket.onmessage = function (e) {
-    const data = JSON.parse(e.data);
-
-    console.log("debug timer");
-    var time = `${data.hor} : ${data.min} : ${data.sec}`;
-    document.getElementById('elapsed').innerHTML = time;
-
+    document.getElementById('camera_3').src = v_data.video_data;
 };

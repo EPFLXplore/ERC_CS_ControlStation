@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'control_station = control_station_pkg.control_station:main'
+            'control_station = control_station_pkg.control_station:main',
+            'cameras_reciever = control_station_pkg.cameras_reciever'
         ],
     },
 )

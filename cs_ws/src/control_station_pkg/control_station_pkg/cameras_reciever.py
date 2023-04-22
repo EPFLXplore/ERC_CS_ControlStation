@@ -9,7 +9,6 @@
 @brief: exectuable in the control_station ros package to recieve 
         camera streams
 
-
 '''
 # ==================================================================
 # libraries
@@ -24,7 +23,9 @@ from xplore_interfaces.srv import EnableCamera, DisableCamera
 
 # ==================================================================
 
-NUMBER_CAMERAS = 6
+print("this file is running")
+
+NUMBER_CAMERAS = 7
 
 CAMERAS_WS_URL = []
 ws = []
@@ -42,23 +43,16 @@ encode_param=[int(cv2.IMWRITE_JPEG_QUALITY),95]
 def encode_stream(s):
     
     result, imgencode = cv2.imencode('.jpg', s, encode_param)
-    
     data = np.array(imgencode)
-    
     img = data.tobytes()
-    
-    
+
     # base64 encoded transmission
     img = base64.b64encode(img).decode()
-
     return img
 
 def display_cam(msg, index):
     img = encode_stream(msg)
     ws[index].send("data:image/jpg;base64,"+ img)
-
-
-
 
 """
 # ==================================================================
@@ -99,10 +93,12 @@ while(cap.isOpened()):
     #print(type(frame))
     if(ret):
         display_cam(frame, 2)
+        display_cam(frame, 0)
+        display_cam(frame, 6)
 
 NUMBER_CAMERAS = 6
 
-class CamerasReceiver(Node):
+class CamerasReceiver():
     
         def __init__(self):
             super().__init__('cameras_receiver')
@@ -121,16 +117,3 @@ class CamerasReceiver(Node):
             while not self.DisableCameraClient.wait_for_service(timeout_sec = 5.0):
                 self.get_logger().info('service not available, waiting again...')
             self.req = DisableCamera.Request()
-
-        
-            
-            
-    
-        
-
-
-
-
-
-
-
