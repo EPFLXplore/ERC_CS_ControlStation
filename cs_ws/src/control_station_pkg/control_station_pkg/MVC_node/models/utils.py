@@ -20,7 +20,6 @@ class Cameras:
         self.nb_cameras = 7
         self.cameras_list = [0] * self.nb_cameras
         
-
 class Timer:
     def __init__(self, duration):
         self.duration = duration

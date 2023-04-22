@@ -20,4 +20,6 @@ websocket_urlpatterns = [
     path('ws/csApp/timer/'       , TimerConsumer.TimerConsumer.as_asgi()),
     path('ws/csApp/gamepad/'       , GamepadConsumer.GamepadConsumer.as_asgi()),
 
+    path('ws/csApp/science/'       , ScienceDrillConsumer.ScienceDrillConsumer.as_asgi()),
+
 ]

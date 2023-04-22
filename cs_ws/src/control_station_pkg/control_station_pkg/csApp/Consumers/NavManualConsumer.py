@@ -57,6 +57,9 @@ class NavManualConsumer(RoverConsumer):
         joint_velocity  = event['joint_vel']
         hd_mode         = event['hd_mode']
 
+
+        print("print : " + event['text'])
+
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'x'        : x_pos,

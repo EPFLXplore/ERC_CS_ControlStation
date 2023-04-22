@@ -43,16 +43,18 @@ encode_param=[int(cv2.IMWRITE_JPEG_QUALITY),95]
 def encode_stream(s):
     
     result, imgencode = cv2.imencode('.jpg', s, encode_param)
-    data = np.array(imgencode)
-    img = data.tobytes()
-
+    #data = np.array(imgencode)
+    #img = data.tobytes()
     # base64 encoded transmission
-    img = base64.b64encode(img).decode()
+    img = base64.b64encode(imgencode).decode()
     return img
 
 def display_cam(msg, index):
-    img = encode_stream(msg)
-    ws[index].send("data:image/jpg;base64,"+ img)
+    if(ws[index].connected):
+        img = encode_stream(msg)
+        ws[2].send("data:image/jpg;base64,"+ img)
+        ws[0].send("data:image/jpg;base64,"+ img)
+        ws[6].send("data:image/jpg;base64,"+ img)
 
 """
 # ==================================================================
@@ -93,8 +95,8 @@ while(cap.isOpened()):
     #print(type(frame))
     if(ret):
         display_cam(frame, 2)
-        display_cam(frame, 0)
-        display_cam(frame, 6)
+        #display_cam(frame, 0)
+        #display_cam(frame, 6)
 
 NUMBER_CAMERAS = 6
 

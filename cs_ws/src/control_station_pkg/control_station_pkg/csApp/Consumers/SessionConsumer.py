@@ -7,8 +7,6 @@ from channels.generic.websocket import WebsocketConsumer
 from django.contrib.sessions.models import Session
 import MVC_node.models.utils as utils
 
-
-
 class SessionConsumer(WebsocketConsumer):
 
     def connect(self):

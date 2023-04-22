@@ -89,7 +89,7 @@ def manualcontrol(request):
 
     state = parseState()
     #ws_man.connect(MAN_WS_URL)
-    # ws_time.connect(TIME_WS_URL)
+    #ws_time.connect(TIME_WS_URL)
     return render(request, 'pages/manualcontrol.html', { 
         'tab_name': "manual",
         'current_state' : state

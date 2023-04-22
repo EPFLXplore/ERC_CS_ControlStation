@@ -54,11 +54,6 @@ chatSocket.onclose = function (e) {
 };
 
 
-
-
-
-
-
 // --------------------------------------------------------------------------
 // Cameras
 let ws = new WebSocket(

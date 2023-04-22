@@ -60,6 +60,13 @@ ws_hp = websocket.WebSocket()
 ws_time = websocket.WebSocket()
 
 
+
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
+channel_layer = get_channel_layer()
+
+
 # ===============================================================================
 # Controller (MVC)
 
@@ -394,10 +401,10 @@ class Controller():
     # launches Gamepad => enables Manual controls
     # is automatically launched from pub_Task when publishing Manual
     def launch_Manual(self):
-        self.cs.node.get_logger().info("\nTrying manual controls\n")
-
-        self.gpad.connect()
-        self.gpad.run()
+        #self.cs.node.get_logger().info("\nTrying manual controls\n")
+        async_to_sync(channel_layer.group_send)("tab_manual", {"type": "topic_message", "text": "Hello there!",})
+        #self.gpad.connect()
+        #self.gpad.run()
 
     # turns off Gamepad's 'running' flag => stops reading commands from the gamepad
     # TODO this is not enough. When running manual and accidentally unplugging the joystick, 

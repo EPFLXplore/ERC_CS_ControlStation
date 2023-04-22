@@ -5,6 +5,7 @@ import MVC_node.models.utils as utils
 
 class CameraConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+
         self.room_name = self.scope['url_route']['kwargs']['v_name']
         utils.cameras.cameras_list[int(re.findall(r'\d+', self.room_name)[0])] += 1 
         print(utils.cameras.cameras_list)
@@ -28,9 +29,21 @@ class CameraConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         #print("websocket received : " + self.scope.get("path"))
 
-        await self.send(text_data=json.dumps({
-            'video_data': text_data
-        }))
+        # await self.send(text_data=json.dumps({
+        #     'video_data': text_data
+        # }))
+        
+        # await self.send({
+        #     "type": "websocket.send",
+        #     "video_data": "oui",
+        # })
+
+        #text_data_json = json.loads(text_data)
+        #message = text_data_json['data']
+        #print(self.channel_layer.__dict__)
+
+        #await self.send(text_data=json.dumps({"video_data": text_data}))
+
         await self.channel_layer.group_send(
             self.room_group_name,
             {
