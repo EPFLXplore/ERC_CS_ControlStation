@@ -1,0 +1,155 @@
+[
+    {
+        "time": "2019-01-01 00:00:00",
+        "type": "info",
+        "message": "Starting up"
+
+    },
+    {
+        "time": "2019-01-01 00:00:24",
+        "type": "info",
+        "message": "ROS is ready to launch the robot"
+    },
+    {
+        "time": "2019-01-01 00:00:28",
+        "type": "data",
+        "message": "Number of nodes connected: 5"
+    },
+    {
+        "time": "2019-01-01 00:00:28",
+        "type": "data",
+        "message": "Camera feed is refreshing at 30.0 Hz"
+    },
+    {
+        "time": "2019-01-01 00:01:24",
+        "type": "warning",
+        "message": "The robot is not responding. Retrying in 5 seconds to launch the robot."
+    },
+    {
+        "time": "2019-01-01 00:01:29",
+        "type": "warning",
+        "message": "The robot is not responding. Retrying in 5 seconds to launch the robot."
+    },
+    {
+        "time": "2019-01-01 00:01:34",
+        "type": "warning",
+        "message": "The robot is not responding. Retrying in 5 seconds to launch the robot."
+    },
+    {
+        "time": "2019-01-01 00:01:39",
+        "type": "warning",
+        "message": "The robot is not responding. Retrying in 5 seconds to launch the robot."
+    },
+    {
+        "time": "2019-01-01 00:01:44",
+        "type": "warning",
+        "message": "The robot is not responding. Retrying in 5 seconds to launch the robot."
+    },
+    {
+        "time": "2019-01-01 00:01:49",
+        "type": "error",
+        "message": "The robot is not responding. Error in the backend of the CS."
+    },
+    {
+        "time": "2019-01-01 00:00:00",
+        "type": "info",
+        "message": "Starting up"
+
+    },
+    {
+        "time": "2019-01-01 00:00:24",
+        "type": "info",
+        "message": "ROS is ready to launch the robot"
+    },
+    {
+        "time": "2019-01-01 00:00:28",
+        "type": "data",
+        "message": "Number of nodes connected: 5"
+    },
+    {
+        "time": "2019-01-01 00:00:28",
+        "type": "data",
+        "message": "Camera feed is refreshing at 30.0 Hz"
+    },
+    {
+        "time": "2019-01-01 00:01:24",
+        "type": "warning",
+        "message": "The robot is not responding. Retrying in 5 seconds to launch the robot."
+    },
+    {
+        "time": "2019-01-01 00:01:29",
+        "type": "warning",
+        "message": "The robot is not responding. Retrying in 5 seconds to launch the robot."
+    },
+    {
+        "time": "2019-01-01 00:01:34",
+        "type": "warning",
+        "message": "The robot is not responding. Retrying in 5 seconds to launch the robot."
+    },
+    {
+        "time": "2019-01-01 00:01:39",
+        "type": "warning",
+        "message": "The robot is not responding. Retrying in 5 seconds to launch the robot."
+    },
+    {
+        "time": "2019-01-01 00:01:44",
+        "type": "warning",
+        "message": "The robot is not responding. Retrying in 5 seconds to launch the robot."
+    },
+    {
+        "time": "2019-01-01 00:01:49",
+        "type": "error",
+        "message": "The robot is not responding. Error in the backend of the CS."
+    },
+    {
+        "time": "2019-01-01 00:00:00",
+        "type": "info",
+        "message": "Starting up"
+
+    },
+    {
+        "time": "2019-01-01 00:00:24",
+        "type": "info",
+        "message": "ROS is ready to launch the robot"
+    },
+    {
+        "time": "2019-01-01 00:00:28",
+        "type": "data",
+        "message": "Number of nodes connected: 5"
+    },
+    {
+        "time": "2019-01-01 00:00:28",
+        "type": "data",
+        "message": "Camera feed is refreshing at 30.0 Hz"
+    },
+    {
+        "time": "2019-01-01 00:01:24",
+        "type": "warning",
+        "message": "The robot is not responding. Retrying in 5 seconds to launch the robot."
+    },
+    {
+        "time": "2019-01-01 00:01:29",
+        "type": "warning",
+        "message": "The robot is not responding. Retrying in 5 seconds to launch the robot."
+    },
+    {
+        "time": "2019-01-01 00:01:34",
+        "type": "warning",
+        "message": "The robot is not responding. Retrying in 5 seconds to launch the robot."
+    },
+    {
+        "time": "2019-01-01 00:01:39",
+        "type": "warning",
+        "message": "The robot is not responding. Retrying in 5 seconds to launch the robot."
+    },
+    {
+        "time": "2019-01-01 00:01:44",
+        "type": "warning",
+        "message": "The robot is not responding. Retrying in 5 seconds to launch the robot."
+    },
+    {
+        "time": "2019-01-01 00:01:49",
+        "type": "error",
+        "message": "The robot is not responding. Error in the backend of the CS."
+    }
+]

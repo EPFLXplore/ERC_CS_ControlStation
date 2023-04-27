@@ -16,6 +16,8 @@ import {
 	Battery6Bar,
 	BatteryFullRounded,
 } from "@mui/icons-material";
+import { Size } from "../../utils/size.type";
+import useTimer from "../../hooks/timerHooks";
 
 const Timer = ({
 	end,
@@ -23,65 +25,87 @@ const Timer = ({
 	status = Status.IDLE,
 	connection = 1,
 	battery = 100,
+	size = Size.LARGE,
 }: {
 	end: EpochTimeStamp;
 	onFinished?: () => void;
 	status?: Status;
 	connection?: number;
 	battery?: number;
+	size?: Omit<Size, Size.MEDIUM>;
 }) => {
-	const [minutes, setMinutes] = useState(0); // minutes left
-	const [seconds, setSeconds] = useState(0); // seconds left
-	const [finished, setFinished] = useState(false);
-	const [active, setActive] = useState(true);
-	let interval: NodeJS.Timer;
+	const [minutes, seconds, active, changeTime, setActive] = useTimer(onFinished);
+	const [controls, setControls] = useState(false);
 
-	const getTime = (changeMinutes?: number, changeSeconds?: number) => {
-		let newMinutes = changeMinutes || minutes;
-		let newSeconds = changeSeconds || seconds;
-		let time = newMinutes * 60000 + newSeconds * 1000;
+	//SMALL SIZE TIMER
+	if (size === Size.SMALL)
+		return (
+			<div
+				className={styles.timerSmall}
+				onMouseEnter={() => {
+					setControls(true);
+				}}
+				onMouseLeave={() => setControls(false)}
+			>
+				<div className={styles.time}>
+					<input
+						type="text"
+						maxLength={2}
+						value={timeRepresentation(minutes, active)}
+						onFocus={(e) => {
+							e.target.value = "";
+							setActive(false);
+						}}
+						onBlur={(e) => {
+							if (e.target.value === "") {
+								changeTime(0, seconds);
+							}
+							setActive(true);
+						}}
+						onChange={(e) => changeTime(parseInt(e.target.value), seconds)}
+						className={styles.input}
+					/>
+					<p className={styles.comma}>:</p>
+					<input
+						type="text"
+						maxLength={2}
+						value={timeRepresentation(seconds, active)}
+						onFocus={(e) => {
+							e.target.value = "";
+							setActive(false);
+						}}
+						onBlur={(e) => {
+							if (e.target.value === "") {
+								changeTime(minutes, 0);
+							}
+							setActive(true);
+						}}
+						onChange={(e) => changeTime(minutes, parseInt(e.target.value))}
+						className={styles.input}
+					/>
+					<p className={styles.status} />
+				</div>
+				{controls && (
+					<div className={styles.controls}>
+						<button className={styles.button} onClick={() => setActive(!active)}>
+							{active ? (
+								<PauseIcon className={styles.icon} />
+							) : (
+								<PlayArrowIcon className={styles.icon} />
+							)}
+						</button>
+						<button
+							className={styles.button}
+							onClick={() => changeTime(minutes, seconds + 10)}
+						>
+							<Replay10Icon className={styles.icon} />
+						</button>
+					</div>
+				)}
+			</div>
+		);
 
-		if (time <= 0) {
-			setFinished(true);
-			setMinutes(0);
-			setSeconds(0);
-			return;
-		}
-
-		if (active) time -= 1000;
-
-		setMinutes(Math.floor((time / 1000 / 60) % 60));
-		setSeconds(Math.floor((time / 1000) % 60));
-		setFinished(false);
-	};
-
-	useEffect(() => {
-		if (!finished && active) {
-			interval = setTimeout(() => getTime(), 1000);
-		}
-
-		return () => clearTimeout(interval);
-	}, [finished, active, minutes, seconds]);
-
-	const changeTime = (minutes: number, seconds: number) => {
-		if (minutes >= 0 && seconds >= 0 && seconds < 60) {
-			clearTimeout(interval);
-			getTime(minutes, seconds);
-		} else if (minutes >= 0 && seconds >= 60) {
-			clearTimeout(interval);
-			getTime(
-				minutes + Math.floor(seconds / 60),
-				(seconds - Math.floor(seconds / 60) * 60) % 60
-			);
-		}
-	};
-
-	React.useEffect(() => {
-		if (finished && onFinished) {
-			onFinished();
-		}
-	}, [finished, onFinished]);
-
+	//LARGE SIZE TIMER
 	return (
 		<div className={styles.timer}>
 			<div className={styles.batteryInfos}>

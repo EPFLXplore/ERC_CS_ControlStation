@@ -12,9 +12,6 @@ urlpatterns = [
     path('logs/', 		             logs,		      name='logs'),
     path('capture_image/', 		     capture_image,  name='capture_image'),
     
-
-    
-    
     #STATE BUTTONS
     #Manualcontrol
     path('manualcontrol/launch',    launch_manual,  name='launch_manual'),
@@ -39,10 +36,11 @@ urlpatterns = [
     
     #Science
     #path('science/launch/',          launch_science, name='launch_science'),
+    #path('science/wait',            wait_science,   name='wait_science'),
+    
     path('science/confirm',         confirm_science, name='confirm_science'),
     path('science/abort',           abort_science,  name='abort_science'),
     path('science/retry',           retry_science,  name='retry_science'),
-    #path('science/wait',            wait_science,   name='wait_science'),
     path('science/set_tube_cmd',    set_tube_cmd,   name='set_tube_cmd'),
     path('science/get_humidity',    get_humidity,   name='get_humidity'),
     path('science/get_parameters',  get_parameters, name='get_parameters'),

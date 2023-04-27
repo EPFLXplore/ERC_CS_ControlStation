@@ -92,6 +92,12 @@ chatSocket.onmessage = function (e) {
 chatSocket.onclose = function (e) {
     console.log('Switched Tab');
 };
+
+
+
+
+////timer
+
 const timeSocket = new WebSocket(
     'ws://'
     + window.location.host
@@ -99,10 +105,50 @@ const timeSocket = new WebSocket(
     + 'time'
     + '/'
 );
+
+var time = 0;
+var isrunning = false;
+
+document.querySelector("#pause_button").addEventListener("click", event => {
+
+    chatSocket.send(JSON.stringify({
+        'launch': False,
+        'duration': time
+    }));
+
+})
+
 timeSocket.onmessage = function (e) {
     const data = JSON.parse(e.data);
-
-    console.log("debug timer");
-    var time = `${data.hor} : ${data.min} : ${data.sec}`;
-    document.getElementById('elapsed').innerHTML = time;
+    var launch = data.launch;
+    var duration = data.duration;
+    console.log(launch + "  " + duration);
+    time = data.duration;
+    if(launch){
+        console.log("launch");
+    }else{
+        console.log("pause");
+    }
 };
+
+////gamepad
+
+let controllers = {};
+
+
+function disconnecthandler(e) {
+    removegamepad(e.gamepad);
+  }
+
+window.addEventListener("gamepadconnected", event => {
+    controllers[event.gamepad.index] = event.gamepad;
+    console.log("gamepad connected");
+    });
+window.addEventListener("gamepaddisconnected", event => {
+    delete controllers[event.gamepad.index];
+    console.log("gamepad disconnected");
+    });
+
+if (!haveEvents) {
+ setInterval(scangamepads, 500);
+}
