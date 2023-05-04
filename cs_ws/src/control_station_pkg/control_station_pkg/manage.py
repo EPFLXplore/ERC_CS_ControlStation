@@ -31,6 +31,7 @@ class setup:
             print("import error")
 
         self.CONTROL_STATION = CS()
+        
 
 # ============================================================================
 
