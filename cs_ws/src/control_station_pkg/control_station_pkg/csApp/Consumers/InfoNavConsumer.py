@@ -1,38 +1,39 @@
 import json
-# from channels.generic.websocket import AsyncWebsocketConsumer
-
-from .InfoRoverConsumer import RoverConsumer
+from re import X
+from zlib import Z_NO_COMPRESSION
+from channels.generic.websocket import AsyncWebsocketConsumer
 
 
 """
+
 Data format :
 {
     'state' : state,
-    'pos_x' : x_pos,
-    'pos_y' : y_pos,
-    'pos_z' : z_pos,
-    'ang_x' : angle,
-    'ang_y' : angle,
-    'ang_z' : angle,
+    'x' : x_pos,
+    'y' : y_pos,
+    'z' : z_pos,
+    'ang_x' : x_angle,
+    'ang_y' : y_angle,
+    'ang_z' : z_angle,
     'linVel' : linearVelocity,
     'angVel' : angularVelocity,
-    'ang_front_left_wheel' : ,
-    'ang_front_right_wheel' : ,
-    'ang_rear_left_wheel' : ,
-    'ang_rear_right_wheel' : ,
-    'current_goal' : ,
-    'goals' : ,
-
+    'current_goal' : current_goal,
+    'goals' : goals,
+    'ang_front_right_wheel' : ang_front_right_wheel,
+    'ang_front_left_wheel' : ang_front_left_wheel,
+    'ang_back_right_wheel' : ang_back_right_wheel,
+    'ang_back_left_wheel' : ang_back_left_wheel,
 }
 
 """
 
 
-class NavManualConsumer(RoverConsumer):
+class NavAutoConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
         
-        self.tab_group_name = 'nav_manual'
+        self.tab_name = 'navigation'
+        self.tab_group_name = 'tab_%s' % self.tab_name
 
         # Join tab group
         await self.channel_layer.group_add(
@@ -42,53 +43,51 @@ class NavManualConsumer(RoverConsumer):
 
         await self.accept()
 
+
+
     # Receive message from WebSocket
     async def receive(self, text_data):
-        text_data_json  = json.loads(text_data)
+        text_data_json = json.loads(text_data)
         x_pos           = text_data_json['x']
         y_pos           = text_data_json['y']
+        z_pos           = text_data_json['z']
         linearVelocity  = text_data_json['linVel']
         angularVelocity = text_data_json['angVel']
-        joint_position  = text_data_json['joint_pos']
-        joint_velocity  = text_data_json['joint_vel']
-        hd_mode         = text_data_json['hd_mode']
+        yaw             = text_data_json['yaw']
+        distance        = text_data_json['distance']
 
         # Send message to room group
         await self.channel_layer.group_send(
             self.tab_group_name,
             {
-                'type'     : 'nav_manual_broadcast',
-                'x'        : x_pos,
-                'y'        : y_pos,
-                'linVel'   : linearVelocity,
-                'angVel'   : angularVelocity,
-                'joint_pos': joint_position,
-                'joint_vel': joint_velocity,
-                'hd_mode'  : hd_mode
+                'type'    : 'topic_message',
+                'x'       : x_pos,
+                'y'       : y_pos,
+                'z'       : z_pos,
+                'linVel'  : linearVelocity,
+                'angVel'  : angularVelocity,
+                'yaw'     : yaw,
+                'distance': distance
             }
         )
 
     # Receive message from room group
-    async def nav_manual_broadcast(self, event):
-        print(event)
-
+    async def topic_message(self, event):
         x_pos           = event['x']
         y_pos           = event['y']
+        z_pos           = event['z']
         linearVelocity  = event['linVel']
         angularVelocity = event['angVel']
-        joint_position  = event['joint_pos']
-        joint_velocity  = event['joint_vel']
-        hd_mode         = event['hd_mode']
-
-        print("print : " + event['text'])   
+        yaw             = event['yaw']
+        distance        = event['distance']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'x'        : x_pos,
-            'y'        : y_pos,
-            'linVel'   : linearVelocity,
-            'angVel'   : angularVelocity,
-            'joint_pos': joint_position,
-            'joint_vel': joint_velocity,
-            'hd_mode'  : hd_mode
+            'x'       : x_pos,
+            'y'       : y_pos,
+            'z'       : z_pos,
+            'linVel'  : linearVelocity,
+            'angVel'  : angularVelocity,
+            'yaw'     : yaw,
+            'distance': distance
         }))

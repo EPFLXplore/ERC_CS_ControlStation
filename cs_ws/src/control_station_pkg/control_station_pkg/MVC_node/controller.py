@@ -33,7 +33,6 @@ from geometry_msgs.msg import Pose, Point, Twist, PoseStamped, Quaternion
 from actionlib_msgs.msg import GoalID
 from transforms3d.euler import euler2quat, quat2euler
 
-from Gamepad.Gamepad import Gamepad
 from .models.rover   import Task
 
 from nav_msgs.msg import Odometry
@@ -78,7 +77,7 @@ class Controller():
 
     def __init__(self, cs):
         self.cs = cs
-        self.gpad = Gamepad(self.cs)
+
 
     # ===============================
     #            CALLBACKS

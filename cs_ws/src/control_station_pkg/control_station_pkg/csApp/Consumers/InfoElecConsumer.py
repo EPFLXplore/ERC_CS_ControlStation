@@ -1,7 +1,5 @@
 import json
-# from channels.generic.websocket import AsyncWebsocketConsumer
-
-from .InfoRoverConsumer import RoverConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 
 
 """
@@ -16,7 +14,7 @@ Data format :
 """
 
 
-class ElecConsumer(RoverConsumer):
+class ElecConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
         

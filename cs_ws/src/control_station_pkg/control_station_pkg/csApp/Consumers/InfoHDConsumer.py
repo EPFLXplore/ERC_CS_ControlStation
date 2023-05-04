@@ -1,27 +1,11 @@
 import json
 import random
-# from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 
-from .InfoRoverConsumer import RoverConsumer
+
 from asgiref.sync import sync_to_async
 
-
-""""
-
-Data format:
-{
-
-    'State' : ,
-    'hd_mode' : ,
-    'joint_pos' : joint_position,
-    'joint_vel' : joint_velocity,
-    'detected_elems' : list,
-
-
-"""
-
-
-class HdAutoConsumer(RoverConsumer):
+class HdManualConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
 

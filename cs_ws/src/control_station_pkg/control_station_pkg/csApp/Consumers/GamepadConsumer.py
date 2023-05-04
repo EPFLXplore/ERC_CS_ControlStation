@@ -1,7 +1,6 @@
 import json
-# from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 
-from .RoverConsumer import RoverConsumer
 import MVC_node.models.utils as utils
 
 
@@ -32,7 +31,7 @@ ou
 """
 
 
-class GamepadConsumer(RoverConsumer):
+class GamepadConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
         utils.gamepad.buttons = [False]*11

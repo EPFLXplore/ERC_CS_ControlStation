@@ -1,7 +1,6 @@
 import json
-# from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 
-from .RoverConsumer import RoverConsumer
 import MVC_node.models.utils as utils
 
 
@@ -20,7 +19,7 @@ Data format :
 """
 
 
-class TimerConsumer(RoverConsumer):
+class TimerConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
         self.room_group_name = 'tab_timer'

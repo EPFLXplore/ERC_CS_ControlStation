@@ -4,21 +4,30 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 """
 
 Data format :
+
 {
-    'hours' : hours,
-    'minutes' : minutes,
-    'seconds' : seconds,
-    'type' : type
-    'message' : message
-}
+    accelerometer
+    mass * 2
+    concentration * 3
+
+    temperature
+    humidity
+    conductivity
+    pH
+
+    Spectro [] * 17
 
 """
 
 
-class TimeConsumer(AsyncWebsocketConsumer):
+
+
+class ElecConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
-        self.tab_group_name = 'tab_timer'
+        
+        self.tab_name = 'logs'
+        self.tab_group_name = 'tab_%s' % self.tab_name
 
         # Join tab group
         await self.channel_layer.group_add(
@@ -32,33 +41,23 @@ class TimeConsumer(AsyncWebsocketConsumer):
 
     # Receive message from WebSocket
     async def receive(self, text_data):
-        print("receive")
         text_data_json = json.loads(text_data)
-        message_1 = text_data_json['hor']
-        message_2 = text_data_json['min']
-        message_3 = text_data_json['sec']
+        exceptions = text_data_json['exceptions']
 
         # Send message to room group
         await self.channel_layer.group_send(
             self.tab_group_name,
             {
                 'type': 'topic_message',
-                'hor': message_1,
-                'min': message_2,
-                'sec'  : message_3
+                'exceptions': exceptions
             }
         )
 
     # Receive message from room group
     async def topic_message(self, event):
-        print("topic_message")
-        message_1 = event['hor']
-        message_2 = event['min']
-        message_3 = event['sec']
+        exceptions = event['exceptions']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'hor': message_1,
-            'min': message_2,
-            'sec'  : message_3
+            'exceptions': exceptions
         }))

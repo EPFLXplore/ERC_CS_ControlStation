@@ -11,9 +11,10 @@ import MVC_node.models.utils as utils
 """
 
 Data format :
+
 {
-    'nb_users' : nb_users,
-    
+    'nb_users': int,
+}
 
 """
 

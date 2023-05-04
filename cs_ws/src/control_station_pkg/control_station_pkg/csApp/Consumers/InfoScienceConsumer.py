@@ -1,10 +1,27 @@
 import json
-# from channels.generic.websocket import AsyncWebsocketConsumer
-
-from .RoverConsumer import RoverConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 
 
-class ScienceDataConsumer(RoverConsumer):
+"""
+
+Data format :
+
+{
+
+    "state" : state,
+    'motor_pos' : float,
+    'motor_speed' : float,
+    'motor_current' : float,
+    'drill_speed' : float,
+    'limt_switch_1' : bool,
+    'limt_switch_2' : bool,
+
+}
+
+"""
+
+
+class ScienceDataConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
         
