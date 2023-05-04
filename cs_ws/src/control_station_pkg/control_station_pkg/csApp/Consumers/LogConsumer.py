@@ -15,7 +15,7 @@ Data format :
 """
 
 
-class TimeConsumer(AsyncWebsocketConsumer):
+class LogConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
         self.tab_group_name = 'tab_timer'

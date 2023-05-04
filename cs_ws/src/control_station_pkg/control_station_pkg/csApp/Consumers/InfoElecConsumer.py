@@ -6,15 +6,24 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 
 Data format :
 {
-    'humidity' : humidity,
-    'temperature' : temperature,
+    'humidity' : float,
+    'temperature' : float,
+    'conductivity' : float,
+    'mass_1' : float,
+    'mass_2' : float,
+    'concentration' : float,
+    'pH' : float,
+    
+
+    accelerometer
+    Spectro [] * 17
 
 }
 
 """
 
 
-class ElecConsumer(AsyncWebsocketConsumer):
+class InfoElecConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
         

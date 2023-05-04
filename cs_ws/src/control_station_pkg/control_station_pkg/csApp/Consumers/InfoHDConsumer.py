@@ -2,10 +2,21 @@ import json
 import random
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-
 from asgiref.sync import sync_to_async
 
-class HdManualConsumer(AsyncWebsocketConsumer):
+"""
+
+Data format :
+{
+
+    'state' : string,
+
+}
+
+"""
+
+
+class InfoHDConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
 

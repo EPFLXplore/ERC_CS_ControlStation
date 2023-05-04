@@ -28,7 +28,7 @@ Data format :
 """
 
 
-class NavAutoConsumer(AsyncWebsocketConsumer):
+class InfoNavConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
         

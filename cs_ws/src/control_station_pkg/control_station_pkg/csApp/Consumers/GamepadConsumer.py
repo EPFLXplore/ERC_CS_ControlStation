@@ -7,25 +7,10 @@ import MVC_node.models.utils as utils
 """
 Data format :
 {
-    'buttons' : [button_1, button_2, ... , button_11],
-    'axes' : [axis_1, axis_2, ... , axis_6]
+    'name' : string,
+    'buttons' : [button_1, button_2, ... , button_11] Array int,
+    'axes' : [axis_1, axis_2, ... , axis_6] Array float
 }
-
-ou
-
-{
-    'a': ,
-    'b': ,
-    'x': ,
-    'y': ,
-    'l1': ,
-    'r1': ,
-    'l2': ,
-    'r2': ,
-    'select': ,
-    'start': ,
-    ...
-
 
 
 """

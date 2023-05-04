@@ -3,7 +3,17 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 
-class RoverConsumer(AsyncWebsocketConsumer):
+"""
+
+Data format :
+{
+    'state' : string,
+
+
+"""
+
+
+class InfoRoverConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
         # self.tab_name = self.scope['url_route']['kwargs']['tab_name']
