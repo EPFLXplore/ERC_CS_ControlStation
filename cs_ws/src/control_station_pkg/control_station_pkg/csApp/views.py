@@ -129,7 +129,6 @@ def logs(request):
 # manual control views
 
 def launch_manual(request):
-    print("task manual")
     cs.node.get_logger().info("Manual: Launch")
     cs.controller.pub_Task(1,1)
     cs.rover.setState(Task.MANUAL)

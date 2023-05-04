@@ -4,6 +4,20 @@ import json
 from .RoverConsumer import RoverConsumer
 
 
+"""
+
+Data format :
+{
+    'hours' : hours,
+    'minutes' : minutes,
+    'seconds' : seconds,
+    'type' : type
+    'message' : message
+}
+
+"""
+
+
 class TimeConsumer(RoverConsumer):
     
     async def connect(self):

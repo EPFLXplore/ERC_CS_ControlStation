@@ -400,9 +400,9 @@ class Controller():
 
     # launches Gamepad => enables Manual controls
     # is automatically launched from pub_Task when publishing Manual
-    def launch_Manual(self):
-        #self.cs.node.get_logger().info("\nTrying manual controls\n")
-        async_to_sync(channel_layer.group_send)("tab_manual", {"type": "topic_message", "text": "Hello there!",})
+    def launch_Manual(self):       #Gamepad 
+        print("launch manual")
+        self.cs.node.get_logger().info("\nTrying manual controls\n")
         #self.gpad.connect()
         #self.gpad.run()
 
@@ -450,18 +450,22 @@ class Controller():
 
         print("Sending JSON " + subsyst.name)
 
-        print(str(ws_av.connected) + "  " +str(ws_hd.connected) + "  " + str(ws_hp.connected) + "  " + str(ws_nav.connected)) 
+        # async_to_sync(channel_layer.group_send)("nav_manual", {"type": "nav_manual_broadcast", "text": "Hello there!",
+        #                                                    "x": 10, "y": 50,
+        #                                                    "linVel": 30, "angVel": 20,
+        #                                                    "joint_pos":0, "joint_vel":0,
+        #                                                    "hd_mode":0})
 
         # Info to display on MANUAL tab
-        #if(ws_man.connected): # if a socket is connected it means that the concerned tab is opened
         if(subsyst == Task.MANUAL):
-            socket = ws_man
 
+            consumer = "nav_manual"
             nav = self.cs.rover.Nav
             hd = self.cs.rover.HD
 
             pos = nav.getPos()
             Dictionary = {
+                "type": "nav_manual_broadcast",
                 'x': pos[0],
                 'y': pos[1],
                 'z': pos[2],
@@ -474,11 +478,13 @@ class Controller():
 
         # Info to display on NAVIGATION tab
         elif (subsyst == Task.NAVIGATION):
-            socket = ws_nav
 
+            consumer = ""
             nav = self.cs.rover.Nav
             pos = nav.getPos()
+
             Dictionary = {
+                "type": "",
                 'x': pos[0],
                 'y': pos[1],
                 'z': pos[2],
@@ -490,10 +496,12 @@ class Controller():
 
         # Info to display on MAINTENANCE/HANDLING DEVICE tab
         elif (subsyst == Task.MAINTENANCE):
-            socket = ws_hd
 
+            consumer = ""
             hd = self.cs.rover.HD
+
             Dictionary = {
+                "type": "",
                 'joint_pos': hd.get_joint_positions(),
                 'joint_vel': hd.get_joint_velocities(),
                 'detected_elems': hd.getElements().flatten().tolist(),
@@ -502,10 +510,12 @@ class Controller():
 
         # Info to display on SCIENCE tab
         elif (subsyst == Task.SCIENCE):
-            socket = ws_sc
 
+            consumer = ""
             sc = self.cs.rover.SC
+
             Dictionary = {
+                "type": "",
                 'params': sc.getParams(),
                 'particle_sizes': sc.getParticleSizes(),
                 'volumes': sc.getVolumes(),
@@ -520,14 +530,15 @@ class Controller():
 
         # Info to display on LOGS tab
         elif (subsyst == Task.LOGS):
-            socket = ws_av
+
+            consumer = ""
             l = self.cs.rover.getExceptions()
+
             Dictionary = {
+                "type": "",
                 'exceptions': l
             }
 
         # send info to front-end
         message = json.dumps(Dictionary)
-        if(socket.connected):
-            print("sent ! Json updated")
-            socket.send('%s' % message)
+        async_to_sync(channel_layer.group_send)(consumer, message)

@@ -5,6 +5,21 @@ from .RoverConsumer import RoverConsumer
 import MVC_node.models.utils as utils
 
 
+"""
+
+Data format :
+{
+
+    'launch': bool,
+    'hours': int,
+    'minutes': int,
+    'seconds': int,
+
+}
+
+"""
+
+
 class TimerConsumer(RoverConsumer):
     
     async def connect(self):

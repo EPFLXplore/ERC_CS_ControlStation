@@ -4,12 +4,36 @@ import json
 from .RoverConsumer import RoverConsumer
 
 
+"""
+Data format :
+{
+    'state' : state,
+    'pos_x' : x_pos,
+    'pos_y' : y_pos,
+    'pos_z' : z_pos,
+    'ang_x' : angle,
+    'ang_y' : angle,
+    'ang_z' : angle,
+    'linVel' : linearVelocity,
+    'angVel' : angularVelocity,
+    'ang_front_left_wheel' : ,
+    'ang_front_right_wheel' : ,
+    'ang_rear_left_wheel' : ,
+    'ang_rear_right_wheel' : ,
+    'current_goal' : ,
+    'goals' : ,
+
+    '
+}
+
+"""
+
+
 class NavManualConsumer(RoverConsumer):
     
     async def connect(self):
         
-        self.tab_name = 'manual'
-        self.tab_group_name = 'tab_%s' % self.tab_name
+        self.tab_group_name = 'nav_manual'
 
         # Join tab group
         await self.channel_layer.group_add(
@@ -18,8 +42,6 @@ class NavManualConsumer(RoverConsumer):
         )
 
         await self.accept()
-
-
 
     # Receive message from WebSocket
     async def receive(self, text_data):
@@ -36,7 +58,7 @@ class NavManualConsumer(RoverConsumer):
         await self.channel_layer.group_send(
             self.tab_group_name,
             {
-                'type'     : 'topic_message',
+                'type'     : 'nav_manual_broadcast',
                 'x'        : x_pos,
                 'y'        : y_pos,
                 'linVel'   : linearVelocity,
@@ -48,7 +70,9 @@ class NavManualConsumer(RoverConsumer):
         )
 
     # Receive message from room group
-    async def topic_message(self, event):
+    async def nav_manual_broadcast(self, event):
+        print(event)
+
         x_pos           = event['x']
         y_pos           = event['y']
         linearVelocity  = event['linVel']
@@ -57,8 +81,7 @@ class NavManualConsumer(RoverConsumer):
         joint_velocity  = event['joint_vel']
         hd_mode         = event['hd_mode']
 
-
-        print("print : " + event['text'])
+        print("print : " + event['text'])   
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
