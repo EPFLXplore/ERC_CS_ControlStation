@@ -2,8 +2,24 @@ import json
 import random
 # from channels.generic.websocket import AsyncWebsocketConsumer
 
-from .RoverConsumer import RoverConsumer
+from .InfoRoverConsumer import RoverConsumer
 from asgiref.sync import sync_to_async
+
+
+""""
+
+Data format:
+{
+
+    'State' : ,
+    'hd_mode' : ,
+    'joint_pos' : joint_position,
+    'joint_vel' : joint_velocity,
+    'detected_elems' : list,
+
+
+"""
+
 
 class HdAutoConsumer(RoverConsumer):
     

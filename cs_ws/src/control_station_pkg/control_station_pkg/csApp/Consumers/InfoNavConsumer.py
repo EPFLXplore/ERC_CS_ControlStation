@@ -1,7 +1,7 @@
 import json
 # from channels.generic.websocket import AsyncWebsocketConsumer
 
-from .RoverConsumer import RoverConsumer
+from .InfoRoverConsumer import RoverConsumer
 
 
 """
@@ -23,7 +23,6 @@ Data format :
     'current_goal' : ,
     'goals' : ,
 
-    '
 }
 
 """

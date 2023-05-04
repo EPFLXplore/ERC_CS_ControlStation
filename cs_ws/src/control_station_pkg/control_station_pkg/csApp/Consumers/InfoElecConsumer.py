@@ -1,7 +1,19 @@
 import json
 # from channels.generic.websocket import AsyncWebsocketConsumer
 
-from .RoverConsumer import RoverConsumer
+from .InfoRoverConsumer import RoverConsumer
+
+
+"""
+
+Data format :
+{
+    'humidity' : humidity,
+    'temperature' : temperature,
+
+}
+
+"""
 
 
 class ElecConsumer(RoverConsumer):
