@@ -28,6 +28,8 @@ from .models.rover import Rover
 from csApp.models         import *
 from std_msgs.msg         import Int8MultiArray    , Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16, Float32MultiArray
 from diagnostic_msgs.msg  import DiagnosticStatus
+from std_srvs.srv import SetBool
+
 
 # TODO
 # from ros_package.src.custom_msg_python.msg     import move_base_action_goal 
@@ -61,6 +63,14 @@ class CS:
 
         self.controller = Controller(self) # controller
         self.rover      = Rover()          # model
+        self.roverConnected = False
+
+
+        #==================Service CLIENT==========================
+        print("Waiting for ROVER_ONLINE service...")
+        self.onlineConfirmClient = self.node.create_client(SetBool, "ROVER_ONLINE")
+        print("Sending Request...")
+        self.sendRequest()
 
 
 
@@ -96,7 +106,7 @@ class CS:
         # ===== Subscribers =====
         self.node.create_subscription(String,           'ROVER_RoverConfirm',              self.controller.rover_confirmation , 10)
         self.node.create_subscription(String,           'ROVER_Exception',                 self.controller.exception_clbk     , 10)
-        #self.node.create_subscription(Int8,             'ROVER_TaskProgress',              self.controller.task_progress      , 10)
+       # self.node.create_subscription(Int8,             'ROVER_TaskProgress',              self.controller.task_progress      , 10)
         self.node.create_subscription(DiagnosticStatus, 'ROVER_log',                          self.controller.log_clbk    , 10)
         
         # SC messages
@@ -129,4 +139,23 @@ class CS:
         # Elpased time
         #self.node.create_subscription(Int32MultiArray,  'Time',                            self.controller.elapsed_time       , 10) #useless
 
+    def sendRequest(self):
+            self.node._logger.info("Sending request")
+            while not self.onlineConfirmClient.wait_for_service(timeout_sec=1.0):
+                    self.node.get_logger().info('service not available, waiting again...')
+
+            self.node.get_logger().info('service is available')
+            self.roverConnected = True
+            req = SetBool.Request()
+            req.data = True
+            future = self.onlineConfirmClient.call_async(req)
+            future.add_done_callback(self.roverAnswerReceived)
+        
+            
+        
+        
+    def roverAnswerReceived(self,future):
+        self.roverConnected = future.result().success
+        self.node.get_logger().info('ROVER is online')
+    
     

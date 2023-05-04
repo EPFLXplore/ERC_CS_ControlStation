@@ -1,0 +1,111 @@
+@import '../../styles/variables.sass'
+
+.TabContainer
+    display: flex
+    margin: auto
+    flex-direction: column
+    height: 95vh
+    width: 90vw
+    margin-right: 2vw
+    overflow: hidden
+
+.TabHeader
+    display: flex
+    flex-direction: row
+    margin-left: 2vh
+    width: calc(100% - 2vh)
+
+.TabButton
+    color: $textLightColor
+    background-color: rgba($primaryDark2Color, 0.8)
+    padding: 0.5rem 2rem
+    margin: 0 0.5rem 0 0.5rem
+    -webkit-border-top-left-radius: 15px
+    -webkit-border-top-right-radius: 15px
+    -moz-border-radius-topleft: 15px
+    -moz-border-radius-topright: 15px
+    border-top-left-radius: 15px
+    border-top-right-radius: 15px
+
+    font-size: 2rem
+
+.Inactive
+    opacity: 0.5
+
+.TabContent
+    display: flex
+    flex-direction: column
+    width: 100%
+    flex: 1
+    overflow: auto
+
+    background-color: rgba($primaryDark2Color, 0.8)
+    border-radius: 2vh
+
+    padding: 1rem
+
+    overflow: hidden
+
+.LogFilters
+    display: flex
+    flex-direction: row
+    width: 100%
+    align-items: center
+    justify-content: flex-start
+
+    padding: 1rem
+
+.Logs
+    display: flex
+    flex-direction: column
+    // flex-direction: column-reverse
+    width: 100%
+    height: auto
+    overflow: auto
+
+    padding: 1rem
+
+.Logs::-webkit-scrollbar-track
+        background: none
+
+
+.Logs::-webkit-scrollbar-thumb
+        background: $secondaryLight1Color
+        border-radius: 0.5rem
+
+.Logs::-webkit-scrollbar
+        width: 0.6rem
+
+
+.Log
+    display: flex
+    flex-direction: row
+    width: 100%
+    padding: 0.5rem 0
+
+    border-bottom: 1px solid $primaryDark1Color
+
+    color: $textLightColor
+
+.LogTime
+    font-weight: 200
+    color: $infoColor
+
+.LogType
+    margin: 0 0.5rem 0 0.5rem
+    text-transform: uppercase
+    font-weight: 600
+
+.Error
+    color: $errorColor
+
+.Warning
+    color: $warningColor
+
+.Info
+    color: $infoColor
+
+.Data
+    color: $textDark2Color
+
+

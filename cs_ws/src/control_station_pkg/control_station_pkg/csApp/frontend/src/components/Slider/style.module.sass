@@ -1,7 +1,52 @@
-.App 
-  font-family: sans-serif
-  text-align: center
-
-
 .sliderParent
   position:relative
+
+.sliderContainer 
+  position: relative
+  display: flex
+  flex-direction: column
+  align-items: center
+
+
+.slider
+  width: 100%
+  border-radius: 5px
+  position: relative
+
+  &__range
+    width: 100%
+    height: 100%
+    border-radius: 5px
+    background-color: #0077ff
+    position: absolute
+    top: 0
+    left: 0
+    transform-origin: left center
+
+  &__thumb
+    width: 5px
+    height: 5px
+    border-radius: 50%
+    background-color: #003212
+    position: absolute
+    top: -5px
+    transform: translate(-50%, -50%)
+
+  &:hover
+    opacity: 1
+
+  &::-webkit-slider-thumb
+    -webkit-appearance: none
+    appearance: none
+    width: 200px
+    height: 5px
+    border-radius: 50%
+    background-color: #4CAF50
+    cursor: pointer
+
+  &::-moz-range-thumb
+    width: 100%
+    height: 20px
+    border-radius: 50%
+    background-color: #4CAF50
+    cursor: pointer
