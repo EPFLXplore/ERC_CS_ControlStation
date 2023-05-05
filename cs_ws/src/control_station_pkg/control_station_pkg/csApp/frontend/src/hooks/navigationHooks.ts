@@ -22,7 +22,7 @@ export const useGoalTracker = () => {
 
 	useEffect(() => {
 		goals.forEach((goal) => {
-			drawPoint(goal.x, goal.y);
+			drawPoint({ x: goal.x, y: goal.y, o: goal.o });
 		});
 	}, [goals]);
 

@@ -7,13 +7,23 @@ type Point = {
 	y: number;
 };
 
+type Goal = {
+	x: number;
+	y: number;
+	o: number;
+};
+
 type Props = {
 	origin: Point;
 };
 
+//Dimensions of the map in meters
+const YARD_WIDTH_M = 39;
+const YARD_LENGTH_M = 47;
+
 var mapCTX: CanvasRenderingContext2D | null;
 var mapOrigin: Point;
-const pointSpacing: number = 30; // Change this to adjust the spacing between points of the grid
+var pointSpacing: number;
 
 const Map: React.FC<Props> = ({ origin }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -51,9 +61,11 @@ const Map: React.FC<Props> = ({ origin }) => {
 				const gridOriginY = canvas.height - origin.y;
 				mapOrigin = { x: gridOriginX, y: gridOriginY };
 
-				const fontSize = 16;
+				const fontSize = 12;
 				ctx.font = `${fontSize}px Arial`;
 				ctx.strokeStyle = "white";
+
+				pointSpacing = Math.floor(canvas.width / YARD_LENGTH_M);
 
 				// Draw the x-axis
 				ctx.beginPath();
@@ -113,24 +125,24 @@ const Map: React.FC<Props> = ({ origin }) => {
 				for (let x = gridOriginX; x <= canvas.width; x += pointSpacing) {
 					for (let y = gridOriginY; y >= 0; y -= pointSpacing) {
 						ctx.beginPath();
-						ctx.arc(x, y, 2, 0, 2 * Math.PI);
+						ctx.arc(x, y, 1.5, 0, 2 * Math.PI);
 						ctx.fill();
 					}
 					for (let y = gridOriginY; y <= canvas.height; y += pointSpacing) {
 						ctx.beginPath();
-						ctx.arc(x, y, 2, 0, 2 * Math.PI);
+						ctx.arc(x, y, 1.5, 0, 2 * Math.PI);
 						ctx.fill();
 					}
 				}
 				for (let x = gridOriginX; x >= 0; x -= pointSpacing) {
 					for (let y = gridOriginY; y >= 0; y -= pointSpacing) {
 						ctx.beginPath();
-						ctx.arc(x, y, 2, 0, 2 * Math.PI);
+						ctx.arc(x, y, 1.5, 0, 2 * Math.PI);
 						ctx.fill();
 					}
 					for (let y = gridOriginY; y <= canvas.height; y += pointSpacing) {
 						ctx.beginPath();
-						ctx.arc(x, y, 2, 0, 2 * Math.PI);
+						ctx.arc(x, y, 1.5, 0, 2 * Math.PI);
 						ctx.fill();
 					}
 				}
@@ -152,18 +164,92 @@ const Map: React.FC<Props> = ({ origin }) => {
 	);
 };
 
-export const drawPoint = (x: number, y: number) => {
+export const drawPoint = (goal: Goal) => {
 	if (mapCTX) {
-		mapCTX.fillStyle = "red";
+		let sideLength: number = 10;
+
+		let yaw: number = goal.o;
+		let x_px: number = goal.x * pointSpacing + mapOrigin.x;
+		let y_px: number = -goal.y * pointSpacing + mapOrigin.y;
+
+		let p1 = [x_px, y_px + sideLength];
+		let p2 = [x_px, y_px - sideLength];
+		let p3 = [x_px + 2 * sideLength, y_px];
+
+		//======= rotation of p1 and p2 around {x_px, y_px} by yaw ========//
+
+		// Convert the angle from degrees to radians
+		let angle = (-yaw * Math.PI) / 180;
+
+		// Rotate p1 around (x_px, y_px)
+		let x1 = (p1[0] - x_px) * Math.cos(angle) - (p1[1] - y_px) * Math.sin(angle) + x_px;
+		let y1 = (p1[0] - x_px) * Math.sin(angle) + (p1[1] - y_px) * Math.cos(angle) + y_px;
+
+		// Rotate p2 around (x_px, y_px)
+		let x2 = (p2[0] - x_px) * Math.cos(angle) - (p2[1] - y_px) * Math.sin(angle) + x_px;
+		let y2 = (p2[0] - x_px) * Math.sin(angle) + (p2[1] - y_px) * Math.cos(angle) + y_px;
+
+		// Rotate p3 around (x_px, y_px)
+		let x3 = (p3[0] - x_px) * Math.cos(angle) - (p3[1] - y_px) * Math.sin(angle) + x_px;
+		let y3 = (p3[0] - x_px) * Math.sin(angle) + (p3[1] - y_px) * Math.cos(angle) + y_px;
+
+		// Define the points of the triangle
+		p1 = [x1, y1];
+		p2 = [x2, y2];
+		p3 = [x3, y3];
+
+		// Begin the path and set the starting point to p1
 		mapCTX.beginPath();
-		mapCTX.arc(
-			x * pointSpacing + mapOrigin.x,
-			-y * pointSpacing + mapOrigin.y,
-			5,
-			0,
-			2 * Math.PI
-		);
+		mapCTX.moveTo(p1[0], p1[1]);
+
+		// Draw lines from p1 to p2, p2 to p3, and from p3 back to p1
+		mapCTX.lineTo(p2[0], p2[1]);
+		mapCTX.lineTo(p3[0], p3[1]);
+		mapCTX.lineTo(p1[0], p1[1]);
+
+		// Fill the triangle with the given color
+		mapCTX.fillStyle = "red";
 		mapCTX.fill();
+	}
+};
+
+const drawPointFromNav = (goal: Goal) => {
+	if (mapCTX) {
+		let p1: [number, number] = [0, 0];
+		let p2: [number, number] = [0, 0];
+		let sideLength: number = 20;
+
+		let yaw: number = goal.o;
+		let x_px: number = goal.x * pointSpacing + mapOrigin.x;
+		let y_px: number = -goal.y * pointSpacing + mapOrigin.y;
+
+		// top point of the triangle
+		// here and later on, adding x_px and y_px is done to reposition the triangle correctly on the map (shifting)
+		mapCTX.moveTo(sideLength * Math.cos(yaw) + x_px, sideLength * Math.sin(yaw) + y_px);
+
+		// p1 and p2 are the points of the two other angles of the triangle
+		if (Math.abs(yaw) == Math.PI / 2) {
+			p1 = [x_px - 5, y_px];
+			p2 = [x_px + 5, y_px];
+		} else {
+			let tan: number = Math.round(Math.tan(yaw) * 100) / 100; // two decimal precision
+			let factor: number = Math.round((5 / Math.sqrt(tan * tan + 1)) * 100) / 100;
+
+			p1 = [factor * -tan + x_px, factor + y_px];
+			p2 = [factor * tan + x_px, -factor + y_px];
+		}
+
+		// draw triangle
+		// JS draws two lines from the moveTo() method (see above) to the points p1 and p2 and then fills up the drawn object
+		mapCTX.lineTo(p1[0], p1[1]);
+		mapCTX.lineTo(p2[0], p2[1]);
+		mapCTX.fill();
+
+		// draw new segment of the path
+		mapCTX.lineTo(x_px, y_px);
+		mapCTX.strokeStyle = "#008000";
+		mapCTX.fillStyle = "#008000";
+		mapCTX.stroke();
 	}
 };
 

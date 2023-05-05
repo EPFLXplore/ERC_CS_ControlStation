@@ -49,8 +49,8 @@ export default ({ mode }: { mode: Mode }) => {
 			<div className={styles.InfoContainer}>
 				<Map
 					origin={{
-						//TO SET DURING COMPETITION
-						x: 345,
+						//SET ORIGIN IN METERS DURING COMPETITION
+						x: 300,
 						y: 200,
 					}}
 				/>
@@ -63,15 +63,15 @@ export default ({ mode }: { mode: Mode }) => {
 						<div className={styles.inputContainer}>
 							<div className={styles.finalContainer}>
 								X
-								<input type="text" id="input-x" name="input-x" />
+								<input type="number" id="input-x" name="input-x" />
 							</div>
 							<div className={styles.finalContainer}>
 								Y
-								<input type="text" id="input-y" name="input-y" />
+								<input type="number" id="input-y" name="input-y" />
 							</div>
 							<div className={styles.finalContainer}>
 								O
-								<input type="text" id="input-o" name="input-o" />
+								<input type="number" id="input-o" name="input-o" />
 							</div>
 						</div>
 						<Button
