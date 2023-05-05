@@ -13,7 +13,7 @@ export default ({
 	onDisactivate: () => void;
 	color: Omit<Themes, Themes.DARK | Themes.LIGHT>;
 }) => {
-	const [active, setActive] = useState(true);
+	const [active, setActive] = useState(false);
 
 	const getColorType = (type: Omit<Themes, Themes.DARK | Themes.LIGHT>) => {
 		switch (type) {

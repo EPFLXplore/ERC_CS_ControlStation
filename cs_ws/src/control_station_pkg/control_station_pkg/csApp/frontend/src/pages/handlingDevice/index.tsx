@@ -1,4 +1,3 @@
-import React from "react";
 import BackButton from "../../components/BackButton";
 import Background from "../../components/Background";
 import JointPositions from "../../components/JointPositions";
