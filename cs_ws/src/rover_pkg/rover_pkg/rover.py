@@ -18,6 +18,9 @@ from sensor_msgs.msg import JointState
 from nav_msgs.msg import Odometry
 from diagnostic_msgs.msg import DiagnosticStatus
 
+from std_srvs.srv import SetBool
+
+
 from .model import *
 
 # from .Globals   import *
@@ -46,6 +49,7 @@ class Rover():
 
         # state of the rover (FSM)
         self.ROVER_STATE = Task.IDLE
+        self.csConnected = False
 
         # The communication between the Rover and the CS is done in such a way that
         # all information other subsystems publish on different topics is read by this code
@@ -76,7 +80,7 @@ class Rover():
         self.HD_tof            = self.node.create_publisher(Int32,             'ROVER_HD_tof'                  , 1)
         self.NAV_odometry_pub  = self.node.create_publisher(Odometry,          'ROVER_NAV_odometry'            , 1)
         self.HD_element_pub    = self.node.create_publisher(Float32MultiArray, 'ROVER_HD_detected_element'     , 3)
-        self.diagnostic        = self.node.create_publisher(DiagnosticStatus,  'CS_log'                        ,10)
+        #self.diagnostic        = self.node.create_publisher(DiagnosticStatus,  'CS_log'                        ,10)
 
         # ===== SUBSCRIBERS =====
 
@@ -121,6 +125,19 @@ class Rover():
         self.node.create_subscription(JointState,      '/arm_control/joint_telemetry', self.HD_telemetry_pub.publish , 10)
         self.node.create_subscription(Int32,           '/avionics_ToF'               , self.HD_tof.publish           , 10)
 
+
+        # ======Services server=====
+        self.onlineConfirm = self.node.create_service(SetBool, "ROVER_ONLINE", self.onlineConfirm)
+
+    ''' Callback used for the rover to confirm it is online to the CS'''
+    def onlineConfirm(self,request,response):
+        self.node.get_logger().info('ROVER: Online confirmation received from CS')
+        self.csConnected = request.data
+        #res = SetBool.Response()
+        response.success = True
+        return response
+
+
     #        self.node.create_subscription(object_list,       '/detected_elements',           self.model.HD.pub_detected_elements)
 
     # receives array: [task, instr]:
@@ -139,7 +156,7 @@ class Rover():
     #       - Retry  = 5
 
     def task_instr(self, array):
-        print('task_instr call !')
+        print('task_instr call : ' + str(array.data))
         task = array.data[0]
         instr = array.data[1]
 
@@ -295,14 +312,17 @@ class Rover():
         self.received = False
 
     def log_task_already_launched(self, task):
-        status = DiagnosticStatus()
-        status.level = DiagnosticStatus.ERROR
-        status.msg = "Can't launch %s if another task is still running!" % task
-        status.name = "Task already running"
-        self.diagnostic.publish(status)
+        # status = DiagnosticStatus()
+        # status.level = DiagnosticStatus.ERROR
+        # status.msg = "Can't launch %s if another task is still running!" % task
+        # status.name = "Task already running"
+        # self.diagnostic.publish(status)
+        return
 
 
 def main():
+    print("main launched")
     rover = Rover()
+    print("rover created")
     rover.run()
     print("running")

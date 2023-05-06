@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'channels',
     'daphne',
     'csApp.apps.Cs2022Config',
-    'cameras', 
+    # 'cameras', 
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

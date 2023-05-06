@@ -4,8 +4,9 @@ from .handling_device import HandlingDevice
 from .science import Science
 
 
-"""
+
 class Tab(IntEnum):
+    
 	NAV_MANUAL     = 0
 	NAV_SEMIAUTO   = 1
 	NAV_AUTO       = 2
@@ -21,7 +22,7 @@ class Instruction(IntEnum):
 	WAIT    = 1
 	RESUME  = 2
 	ABORT   = 3
-"""
+
 
 #state de la FSM
 class Task(IntEnum):
@@ -51,7 +52,10 @@ class Rover:
         self.userIDs = []
         
         # current rover FSM state
+        self.__tab= Tab
+        self.__instruction = Instruction.WAIT
         self.__state    = Task.IDLE
+
 
         # these two variables are useful in the wait() function of the controller
         # TODO (i think it'd be better to initialise them in the controller)
