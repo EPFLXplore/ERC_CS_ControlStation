@@ -28,10 +28,10 @@ class GamepadConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     # Receive message from WebSocket
-    async def receive(self, data):
-        utils.gamepad.id = json.loads(data)['id']
-        utils.gamepad.buttons = json.loads(data)['buttons']
-        utils.gamepad.axes = json.loads(data)['axes']
+    async def receive(self, text_data):
+        utils.gamepad.id = json.loads(text_data)['id']
+        utils.gamepad.buttons = json.loads(text_data)['buttons']
+        utils.gamepad.axes = json.loads(text_data)['axes']
 
     async def disconnect(self, close_code):
         utils.gamepad.id = ""
