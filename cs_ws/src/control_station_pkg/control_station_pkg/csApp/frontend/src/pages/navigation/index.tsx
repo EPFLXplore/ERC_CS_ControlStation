@@ -42,6 +42,10 @@ export default ({ mode }: { mode: Mode }) => {
 	const WheelFR = 10;
 	const WheelRL = 0;
 	const WheelRR = 0;
+
+	const currentX = 41;
+	const currentY = 15;
+	const currentO = 42;
 	return (
 		<div className="page center">
 			<Background />
@@ -58,7 +62,11 @@ export default ({ mode }: { mode: Mode }) => {
 					<h2 className={styles.InfoTitle}>{mode} Navigation</h2>
 					<div className={styles.ControlsContainer}>
 						<h3>Current Position</h3>
-						<CurrentPosition currentX={41} currentY={15} currentO={42} />
+						<CurrentPosition
+							currentX={currentX}
+							currentY={currentY}
+							currentO={currentO}
+						/>
 
 						<div className={styles.inputContainer}>
 							<div className={styles.finalContainer}>

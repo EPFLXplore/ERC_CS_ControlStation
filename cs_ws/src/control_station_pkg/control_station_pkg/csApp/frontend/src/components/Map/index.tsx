@@ -164,39 +164,33 @@ const Map: React.FC<Props> = ({ origin }) => {
 	);
 };
 
+const rotatePoint = (angle: number, point: number[], x_px: number, y_px: number) => {
+	let x = (point[0] - x_px) * Math.cos(angle) - (point[1] - y_px) * Math.sin(angle) + x_px;
+	let y = (point[0] - x_px) * Math.sin(angle) + (point[1] - y_px) * Math.cos(angle) + y_px;
+
+	return [x, y];
+};
+
 export const drawPoint = (goal: Goal) => {
 	if (mapCTX) {
-		let sideLength: number = 10;
-
 		let yaw: number = goal.o;
 		let x_px: number = goal.x * pointSpacing + mapOrigin.x;
 		let y_px: number = -goal.y * pointSpacing + mapOrigin.y;
 
-		let p1 = [x_px, y_px + sideLength];
-		let p2 = [x_px, y_px - sideLength];
-		let p3 = [x_px + 2 * sideLength, y_px];
+		//set the three points of the triangle to be drawn before rotation
+		let p1 = [x_px, y_px + 7];
+		let p2 = [x_px, y_px - 7];
+		let p3 = [x_px + 20, y_px];
 
-		//======= rotation of p1 and p2 around {x_px, y_px} by yaw ========//
+		//======= rotation of p1, p2 and p2 around {x_px, y_px} by yaw ========//
 
 		// Convert the angle from degrees to radians
 		let angle = (-yaw * Math.PI) / 180;
 
-		// Rotate p1 around (x_px, y_px)
-		let x1 = (p1[0] - x_px) * Math.cos(angle) - (p1[1] - y_px) * Math.sin(angle) + x_px;
-		let y1 = (p1[0] - x_px) * Math.sin(angle) + (p1[1] - y_px) * Math.cos(angle) + y_px;
-
-		// Rotate p2 around (x_px, y_px)
-		let x2 = (p2[0] - x_px) * Math.cos(angle) - (p2[1] - y_px) * Math.sin(angle) + x_px;
-		let y2 = (p2[0] - x_px) * Math.sin(angle) + (p2[1] - y_px) * Math.cos(angle) + y_px;
-
-		// Rotate p3 around (x_px, y_px)
-		let x3 = (p3[0] - x_px) * Math.cos(angle) - (p3[1] - y_px) * Math.sin(angle) + x_px;
-		let y3 = (p3[0] - x_px) * Math.sin(angle) + (p3[1] - y_px) * Math.cos(angle) + y_px;
-
-		// Define the points of the triangle
-		p1 = [x1, y1];
-		p2 = [x2, y2];
-		p3 = [x3, y3];
+		// Define the rotated points of the triangle
+		p1 = rotatePoint(angle, p1, x_px, y_px);
+		p2 = rotatePoint(angle, p2, x_px, y_px);
+		p3 = rotatePoint(angle, p3, x_px, y_px);
 
 		// Begin the path and set the starting point to p1
 		mapCTX.beginPath();
@@ -210,46 +204,6 @@ export const drawPoint = (goal: Goal) => {
 		// Fill the triangle with the given color
 		mapCTX.fillStyle = "red";
 		mapCTX.fill();
-	}
-};
-
-const drawPointFromNav = (goal: Goal) => {
-	if (mapCTX) {
-		let p1: [number, number] = [0, 0];
-		let p2: [number, number] = [0, 0];
-		let sideLength: number = 20;
-
-		let yaw: number = goal.o;
-		let x_px: number = goal.x * pointSpacing + mapOrigin.x;
-		let y_px: number = -goal.y * pointSpacing + mapOrigin.y;
-
-		// top point of the triangle
-		// here and later on, adding x_px and y_px is done to reposition the triangle correctly on the map (shifting)
-		mapCTX.moveTo(sideLength * Math.cos(yaw) + x_px, sideLength * Math.sin(yaw) + y_px);
-
-		// p1 and p2 are the points of the two other angles of the triangle
-		if (Math.abs(yaw) == Math.PI / 2) {
-			p1 = [x_px - 5, y_px];
-			p2 = [x_px + 5, y_px];
-		} else {
-			let tan: number = Math.round(Math.tan(yaw) * 100) / 100; // two decimal precision
-			let factor: number = Math.round((5 / Math.sqrt(tan * tan + 1)) * 100) / 100;
-
-			p1 = [factor * -tan + x_px, factor + y_px];
-			p2 = [factor * tan + x_px, -factor + y_px];
-		}
-
-		// draw triangle
-		// JS draws two lines from the moveTo() method (see above) to the points p1 and p2 and then fills up the drawn object
-		mapCTX.lineTo(p1[0], p1[1]);
-		mapCTX.lineTo(p2[0], p2[1]);
-		mapCTX.fill();
-
-		// draw new segment of the path
-		mapCTX.lineTo(x_px, y_px);
-		mapCTX.strokeStyle = "#008000";
-		mapCTX.fillStyle = "#008000";
-		mapCTX.stroke();
 	}
 };
 
