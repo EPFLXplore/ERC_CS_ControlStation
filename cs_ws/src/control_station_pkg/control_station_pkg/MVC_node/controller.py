@@ -41,22 +41,22 @@ from csApp import models
 # ================================================================================
 # Webscokets for ASGI
 
-NAV_WS_URL = "ws://127.0.0.1:8000/ws/csApp/navigation/"
-HD_WS_URL = "ws://localhost:8000/ws/csApp/handlingdevice/"
-SC_WS_URL = "ws://localhost:8000/ws/csApp/science/"
-AV_WS_URL = "ws://localhost:8000/ws/csApp/logs/"
-MAN_WS_URL = "ws://localhost:8000/ws/csApp/manual/"
-HP_WS_URL = "ws://localhost:8000/ws/csApp/homepage/"
-TIME_WS_URL = "ws://localhost:8000/ws/csApp/time/"
+# NAV_WS_URL = "ws://127.0.0.1:8000/ws/csApp/navigation/"
+# HD_WS_URL = "ws://localhost:8000/ws/csApp/handlingdevice/"
+# SC_WS_URL = "ws://localhost:8000/ws/csApp/science/"
+# AV_WS_URL = "ws://localhost:8000/ws/csApp/logs/"
+# MAN_WS_URL = "ws://localhost:8000/ws/csApp/manual/"
+# HP_WS_URL = "ws://localhost:8000/ws/csApp/homepage/"
+# TIME_WS_URL = "ws://localhost:8000/ws/csApp/time/"
 
 # WEB SOCKETS used to publish info to front-end depending on the tab
-ws_nav = websocket.WebSocket()
-ws_hd = websocket.WebSocket()
-ws_sc = websocket.WebSocket()
-ws_av = websocket.WebSocket()
-ws_man = websocket.WebSocket()
-ws_hp = websocket.WebSocket()
-ws_time = websocket.WebSocket()
+# ws_nav = websocket.WebSocket()
+# ws_hd = websocket.WebSocket()
+# ws_sc = websocket.WebSocket()
+# ws_av = websocket.WebSocket()
+# ws_man = websocket.WebSocket()
+# ws_hp = websocket.WebSocket()
+# ws_time = websocket.WebSocket()
 
 
 
@@ -438,9 +438,9 @@ class Controller():
 
          message = json.dumps(TimeDict)
 
-         if ws_time.connected:
+        #  if ws_time.connected:
 
-             ws_time.send('%s' % message)
+        #      ws_time.send('%s' % message)
 
     # takes a Task enum as argument
     # invoked at the end of a callback after updating data that came from rover

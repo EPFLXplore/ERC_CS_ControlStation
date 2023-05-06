@@ -151,11 +151,7 @@ class CS:
             future = self.onlineConfirmClient.call_async(req)
             future.add_done_callback(self.roverAnswerReceived)
         
-            
-        
-        
+
     def roverAnswerReceived(self,future):
         self.roverConnected = future.result().success
         self.node.get_logger().info('ROVER is online')
-    
-    

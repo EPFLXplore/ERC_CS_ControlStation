@@ -16,9 +16,8 @@ Data format :
 class InfoRoverConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
-        # self.tab_name = self.scope['url_route']['kwargs']['tab_name']
-        self.tab_name = 'homepage'
-        self.tab_group_name = 'tab_%s' % self.tab_name
+
+        self.tab_group_name = 'tab_info_rover'
 
         # Join tab group
         await self.channel_layer.group_add(
@@ -37,25 +36,23 @@ class InfoRoverConsumer(AsyncWebsocketConsumer):
 
     # Receive message from WebSocket
     
-    async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json['message']
+    async def receive(self, data):
+        data_json = json.loads(data)
 
         # Send message to room group
         await self.channel_layer.group_send(
             self.tab_group_name,
             {
-                'type': 'topic_message',
-                'message': message,
+                'type': 'broadcast_info_rover',
+                'state': data_json['state'],
                 
             }
         )
 
     # Receive message from tab group
-    async def topic_message(self, event):
-        message = event['message']
+    async def broadcast_info_rover(self, data_json):
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'message': message
+                'state': data_json['state'],
         }))

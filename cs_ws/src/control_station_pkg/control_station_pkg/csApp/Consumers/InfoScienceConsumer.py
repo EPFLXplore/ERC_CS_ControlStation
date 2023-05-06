@@ -25,8 +25,7 @@ class InfoScienceConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
         
-        self.tab_name = 'science'
-        self.tab_group_name = 'tab_%s' % self.tab_name
+        self.tab_group_name = 'tab_info_science'
 
         # Join tab group
         await self.channel_layer.group_add(
@@ -39,48 +38,35 @@ class InfoScienceConsumer(AsyncWebsocketConsumer):
 
 
     # Receive message from WebSocket
-    async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        parameters     = text_data_json['params']
-        particle_sizes = text_data_json['particle_sizes']
-        volumes        = text_data_json['volumes']
-        densities      = text_data_json['densities']
-        colors         = text_data_json['colors']
-        humidity       = text_data_json['humidity']
-        infos          = text_data_json['infos']
+    async def receive(self, data):
+
+        data_json = json.loads(data)
 
         # Send message to room group
         await self.channel_layer.group_send(
             self.tab_group_name,
             {
-                'type': 'topic_message',
-                'params'        : parameters,
-                'particle_sizes': particle_sizes,
-                'volumes'       : volumes,
-                'densities'     : densities,
-                'colors'        : colors,
-                'humidity'      : humidity,
-                'infos'         : infos
+                'type': 'broadcast_info_science',
+                'state': data_json['state'],
+                'motor_pos': data_json['motor_pos'],
+                'motor_speed': data_json['motor_speed'],
+                'motor_current': data_json['motor_current'],
+                'drill_speed': data_json['drill_speed'],
+                'limt_switch_1': data_json['limt_switch_1'],
+                'limt_switch_2': data_json['limt_switch_2'],
             }
         )
 
     # Receive message from room group
-    async def topic_message(self, event):
-        params         = event['params']
-        particle_sizes = event['particle_sizes']
-        volumes        = event['volumes']
-        densities      = event['densities']
-        colors         = event['colors']
-        humidity       = event['humidity']
-        infos          = event['infos']
+    async def broadcast_info_science(self, data_json):
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'params'        : params,
-            'particle_sizes': particle_sizes,
-            'volumes'       : volumes,
-            'densities'     : densities,
-            'colors'        : colors,
-            'humidity'      : humidity,
-            'infos'         : infos
+                'state': data_json['state'],
+                'motor_pos': data_json['motor_pos'],
+                'motor_speed': data_json['motor_speed'],
+                'motor_current': data_json['motor_current'],
+                'drill_speed': data_json['drill_speed'],
+                'limt_switch_1': data_json['limt_switch_1'],
+                'limt_switch_2': data_json['limt_switch_2'],
         }))

@@ -31,9 +31,8 @@ Data format :
 class InfoNavConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
-        
-        self.tab_name = 'navigation'
-        self.tab_group_name = 'tab_%s' % self.tab_name
+
+        self.tab_group_name = 'tab_info_nav'
 
         # Join tab group
         await self.channel_layer.group_add(
@@ -46,48 +45,50 @@ class InfoNavConsumer(AsyncWebsocketConsumer):
 
 
     # Receive message from WebSocket
-    async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        x_pos           = text_data_json['x']
-        y_pos           = text_data_json['y']
-        z_pos           = text_data_json['z']
-        linearVelocity  = text_data_json['linVel']
-        angularVelocity = text_data_json['angVel']
-        yaw             = text_data_json['yaw']
-        distance        = text_data_json['distance']
+    async def receive(self, data):
+        data_json = json.loads(data)
 
         # Send message to room group
         await self.channel_layer.group_send(
             self.tab_group_name,
             {
-                'type'    : 'topic_message',
-                'x'       : x_pos,
-                'y'       : y_pos,
-                'z'       : z_pos,
-                'linVel'  : linearVelocity,
-                'angVel'  : angularVelocity,
-                'yaw'     : yaw,
-                'distance': distance
+                'type'    : 'broadcast_info_nav',
+                'state'   : data_json['state'],
+                'x'       : data_json['x'],
+                'y'       : data_json['y'],
+                'z'       : data_json['z'],
+                'ang_x'   : data_json['ang_x'],
+                'ang_y'   : data_json['ang_y'],
+                'ang_z'   : data_json['ang_z'],
+                'linVel'  : data_json['linVel'],
+                'angVel'  : data_json['angVel'],
+                'current_goal' : data_json['current_goal'],
+                'goals'   : data_json['goals'],
+                'ang_front_right_wheel' : data_json['ang_front_right_wheel'],
+                'ang_front_left_wheel'  : data_json['ang_front_left_wheel'],
+                'ang_back_right_wheel'  : data_json['ang_back_right_wheel'],
+                'ang_back_left_wheel'   : data_json['ang_back_left_wheel'],
             }
         )
 
     # Receive message from room group
-    async def topic_message(self, event):
-        x_pos           = event['x']
-        y_pos           = event['y']
-        z_pos           = event['z']
-        linearVelocity  = event['linVel']
-        angularVelocity = event['angVel']
-        yaw             = event['yaw']
-        distance        = event['distance']
+    async def broadcast_info_nav(self, data_json):
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'x'       : x_pos,
-            'y'       : y_pos,
-            'z'       : z_pos,
-            'linVel'  : linearVelocity,
-            'angVel'  : angularVelocity,
-            'yaw'     : yaw,
-            'distance': distance
+                'state'   : data_json['state'],
+                'x'       : data_json['x'],
+                'y'       : data_json['y'],
+                'z'       : data_json['z'],
+                'ang_x'   : data_json['ang_x'],
+                'ang_y'   : data_json['ang_y'],
+                'ang_z'   : data_json['ang_z'],
+                'linVel'  : data_json['linVel'],
+                'angVel'  : data_json['angVel'],
+                'current_goal' : data_json['current_goal'],
+                'goals'   : data_json['goals'],
+                'ang_front_right_wheel' : data_json['ang_front_right_wheel'],
+                'ang_front_left_wheel'  : data_json['ang_front_left_wheel'],
+                'ang_back_right_wheel'  : data_json['ang_back_right_wheel'],
+                'ang_back_left_wheel'   : data_json['ang_back_left_wheel'],
         }))

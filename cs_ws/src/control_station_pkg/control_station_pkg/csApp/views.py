@@ -303,3 +303,9 @@ def sc_send_cmd(val):
 def capture_image(request):
 
     return JsonResponse({})
+
+
+def get_gamepad_profile(request):
+    return JsonResponse({})
+
+

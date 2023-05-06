@@ -74,18 +74,13 @@ class SessionConsumer(WebsocketConsumer):
         )
 
     # Receive message from WebSocket
-    def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json["current_tab"]
-
-        # async_to_sync(self.channel_layer.group_send)(
-        #     self.tab_group_name, {"type": "broadcast", "nb_users": message}
-        # )
+    def receive(self, data):
+        data_json = json.loads(data)
+        async_to_sync(self.channel_layer.group_send)(
+            self.tab_group_name, {"type": "broadcast_session", "nb_users": data_json["current_tab"]}
+        )
 
     # Receive message from room group
-    def broadcast(self, event):
-        
-        message = event["nb_users"]
+    def broadcast_session(self, data_json):
 
-        # Send message to WebSocket
-        self.send(text_data=json.dumps({"nb_users": message}))
+        self.send(text_data=json.dumps({"nb_users": data_json["nb_users"]}))

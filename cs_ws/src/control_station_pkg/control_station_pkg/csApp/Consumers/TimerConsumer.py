@@ -9,8 +9,7 @@ import MVC_node.models.utils as utils
 Data format :
 {
 
-    'launch': bool,
-    'hours': int,
+    'active': bool,
     'minutes': int,
     'seconds': int,
 
@@ -23,16 +22,18 @@ class TimerConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
         self.room_group_name = 'tab_timer'
-        print("connect to timer consumer")
-        # Join tab group
+
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
         )
         
         await self.accept()
-        await self.send(text_data=json.dumps({"launch":utils.timer.is_running,
-                                        "duration":utils.timer.duration,}))
+        await self.send(text_data=json.dumps(
+            {
+                "active":utils.timer.is_running,
+                "duration":utils.timer.duration,
+                }))
 
     async def disconnect(self, close_code):
         # Leave room group
@@ -42,27 +43,34 @@ class TimerConsumer(AsyncWebsocketConsumer):
         )
 
     # Receive message from WebSocket
-    async def receive(self, text_data):
+    async def receive(self, data):
 
         #update timer model
-        utils.timer.is_running = text_data['launch']
-        utils.timer.duration = text_data['duration']
+        utils.timer.is_running = data['active']
+        utils.timer.duration = 60 * data['minutes'] + data['seconds']
+
+        m,s = utils.timer.get_time()
+        
 
         # Update every frontend
         await self.channel_layer.group_send(
             self.tab_group_name,
             {
-                'type': 'broadcast',
-                'launch': utils.timer.is_running,
-                'duration': utils.timer.duration,
+                'type': 'broadcast_timer',
+                'active': data['active'],
+                'minutes': m,
+                'seconds': s,
             }
         )
 
     # Receive message from room group
-    async def broadcast(self, event):
+    async def broadcast_timer(self, data_json):
+
+        m,s = utils.timer.get_time()
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'launch': utils.timer.is_running,
-            'duration': utils.timer.duration,
+                'active': data_json['active'],
+                'minutes': m,
+                'seconds': s,
         }))
