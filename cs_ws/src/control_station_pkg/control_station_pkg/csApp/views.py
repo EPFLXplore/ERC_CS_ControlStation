@@ -89,7 +89,7 @@ def manualcontrol(request):
 
     state = parseState()
     #ws_man.connect(MAN_WS_URL)
-    # ws_time.connect(TIME_WS_URL)
+    #ws_time.connect(TIME_WS_URL)
     return render(request, 'pages/manualcontrol.html', { 
         'tab_name': "manual",
         'current_state' : state
@@ -129,7 +129,6 @@ def logs(request):
 # manual control views
 
 def launch_manual(request):
-    print("task manual")
     cs.node.get_logger().info("Manual: Launch")
     cs.controller.pub_Task(1,1)
     cs.rover.setState(Task.MANUAL)
@@ -304,3 +303,9 @@ def sc_send_cmd(val):
 def capture_image(request):
 
     return JsonResponse({})
+
+
+def get_gamepad_profile(request):
+    return JsonResponse({})
+
+

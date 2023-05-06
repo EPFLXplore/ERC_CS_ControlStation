@@ -33,7 +33,6 @@ from geometry_msgs.msg import Pose, Point, Twist, PoseStamped, Quaternion
 from actionlib_msgs.msg import GoalID
 from transforms3d.euler import euler2quat, quat2euler
 
-from Gamepad.Gamepad import Gamepad
 from .models.rover   import Task
 
 from nav_msgs.msg import Odometry
@@ -42,22 +41,29 @@ from csApp import models
 # ================================================================================
 # Webscokets for ASGI
 
-NAV_WS_URL = "ws://127.0.0.1:8000/ws/csApp/navigation/"
-HD_WS_URL = "ws://localhost:8000/ws/csApp/handlingdevice/"
-SC_WS_URL = "ws://localhost:8000/ws/csApp/science/"
-AV_WS_URL = "ws://localhost:8000/ws/csApp/logs/"
-MAN_WS_URL = "ws://localhost:8000/ws/csApp/manual/"
-HP_WS_URL = "ws://localhost:8000/ws/csApp/homepage/"
-TIME_WS_URL = "ws://localhost:8000/ws/csApp/time/"
+# NAV_WS_URL = "ws://127.0.0.1:8000/ws/csApp/navigation/"
+# HD_WS_URL = "ws://localhost:8000/ws/csApp/handlingdevice/"
+# SC_WS_URL = "ws://localhost:8000/ws/csApp/science/"
+# AV_WS_URL = "ws://localhost:8000/ws/csApp/logs/"
+# MAN_WS_URL = "ws://localhost:8000/ws/csApp/manual/"
+# HP_WS_URL = "ws://localhost:8000/ws/csApp/homepage/"
+# TIME_WS_URL = "ws://localhost:8000/ws/csApp/time/"
 
 # WEB SOCKETS used to publish info to front-end depending on the tab
-ws_nav = websocket.WebSocket()
-ws_hd = websocket.WebSocket()
-ws_sc = websocket.WebSocket()
-ws_av = websocket.WebSocket()
-ws_man = websocket.WebSocket()
-ws_hp = websocket.WebSocket()
-ws_time = websocket.WebSocket()
+# ws_nav = websocket.WebSocket()
+# ws_hd = websocket.WebSocket()
+# ws_sc = websocket.WebSocket()
+# ws_av = websocket.WebSocket()
+# ws_man = websocket.WebSocket()
+# ws_hp = websocket.WebSocket()
+# ws_time = websocket.WebSocket()
+
+
+
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
+channel_layer = get_channel_layer()
 
 
 # ===============================================================================
@@ -71,7 +77,7 @@ class Controller():
 
     def __init__(self, cs):
         self.cs = cs
-        self.gpad = Gamepad(self.cs)
+
 
     # ===============================
     #            CALLBACKS
@@ -393,11 +399,11 @@ class Controller():
 
     # launches Gamepad => enables Manual controls
     # is automatically launched from pub_Task when publishing Manual
-    def launch_Manual(self):
+    def launch_Manual(self):       #Gamepad 
+        print("launch manual")
         self.cs.node.get_logger().info("\nTrying manual controls\n")
-
-        self.gpad.connect()
-        self.gpad.run()
+        #self.gpad.connect()
+        #self.gpad.run()
 
     # turns off Gamepad's 'running' flag => stops reading commands from the gamepad
     # TODO this is not enough. When running manual and accidentally unplugging the joystick, 
@@ -432,9 +438,9 @@ class Controller():
 
          message = json.dumps(TimeDict)
 
-         if ws_time.connected:
+        #  if ws_time.connected:
 
-             ws_time.send('%s' % message)
+        #      ws_time.send('%s' % message)
 
     # takes a Task enum as argument
     # invoked at the end of a callback after updating data that came from rover
@@ -443,18 +449,22 @@ class Controller():
 
         print("Sending JSON " + subsyst.name)
 
-        print(str(ws_av.connected) + "  " +str(ws_hd.connected) + "  " + str(ws_hp.connected) + "  " + str(ws_nav.connected)) 
+        # async_to_sync(channel_layer.group_send)("nav_manual", {"type": "nav_manual_broadcast", "text": "Hello there!",
+        #                                                    "x": 10, "y": 50,
+        #                                                    "linVel": 30, "angVel": 20,
+        #                                                    "joint_pos":0, "joint_vel":0,
+        #                                                    "hd_mode":0})
 
         # Info to display on MANUAL tab
-        #if(ws_man.connected): # if a socket is connected it means that the concerned tab is opened
         if(subsyst == Task.MANUAL):
-            socket = ws_man
 
+            consumer = "nav_manual"
             nav = self.cs.rover.Nav
             hd = self.cs.rover.HD
 
             pos = nav.getPos()
             Dictionary = {
+                "type": "nav_manual_broadcast",
                 'x': pos[0],
                 'y': pos[1],
                 'z': pos[2],
@@ -467,11 +477,13 @@ class Controller():
 
         # Info to display on NAVIGATION tab
         elif (subsyst == Task.NAVIGATION):
-            socket = ws_nav
 
+            consumer = ""
             nav = self.cs.rover.Nav
             pos = nav.getPos()
+
             Dictionary = {
+                "type": "",
                 'x': pos[0],
                 'y': pos[1],
                 'z': pos[2],
@@ -483,10 +495,12 @@ class Controller():
 
         # Info to display on MAINTENANCE/HANDLING DEVICE tab
         elif (subsyst == Task.MAINTENANCE):
-            socket = ws_hd
 
+            consumer = ""
             hd = self.cs.rover.HD
+
             Dictionary = {
+                "type": "",
                 'joint_pos': hd.get_joint_positions(),
                 'joint_vel': hd.get_joint_velocities(),
                 'detected_elems': hd.getElements().flatten().tolist(),
@@ -495,10 +509,12 @@ class Controller():
 
         # Info to display on SCIENCE tab
         elif (subsyst == Task.SCIENCE):
-            socket = ws_sc
 
+            consumer = ""
             sc = self.cs.rover.SC
+
             Dictionary = {
+                "type": "",
                 'params': sc.getParams(),
                 'particle_sizes': sc.getParticleSizes(),
                 'volumes': sc.getVolumes(),
@@ -513,14 +529,15 @@ class Controller():
 
         # Info to display on LOGS tab
         elif (subsyst == Task.LOGS):
-            socket = ws_av
+
+            consumer = ""
             l = self.cs.rover.getExceptions()
+
             Dictionary = {
+                "type": "",
                 'exceptions': l
             }
 
         # send info to front-end
         message = json.dumps(Dictionary)
-        if(socket.connected):
-            print("sent ! Json updated")
-            socket.send('%s' % message)
+        async_to_sync(channel_layer.group_send)(consumer, message)

@@ -3,6 +3,20 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 import re       #import regrex functions to extract the video number from the url
 import MVC_node.models.utils as utils
 
+"""
+
+Data format :
+{
+
+    'video_data_1' : string,
+    'video_data_2' : string,
+    ...
+}
+
+"""
+
+
+
 class CameraConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['v_name']
