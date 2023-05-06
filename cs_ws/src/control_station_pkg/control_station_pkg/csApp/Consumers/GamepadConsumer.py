@@ -2,6 +2,8 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 import MVC_node.models.utils as utils
+import views
+
 
 
 """
@@ -30,8 +32,11 @@ class GamepadConsumer(AsyncWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, data):
         utils.gamepad.id = json.loads(data)['id']
-        utils.gamepad.buttons = json.loads(data)['buttons']
-        utils.gamepad.axes = json.loads(data)['axes']
+        buttons = json.loads(data)['buttons']
+        axes = json.loads(data)['axes']
+        views.cs.send_gamepad_data(axes, buttons)
+
+
 
     async def disconnect(self, close_code):
         utils.gamepad.id = ""

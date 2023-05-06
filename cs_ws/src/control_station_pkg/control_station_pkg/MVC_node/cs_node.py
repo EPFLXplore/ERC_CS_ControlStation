@@ -29,6 +29,7 @@ from csApp.models         import *
 from std_msgs.msg         import Int8MultiArray    , Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16, Float32MultiArray
 from diagnostic_msgs.msg  import DiagnosticStatus
 from std_srvs.srv import SetBool
+import MVC_node.models.utils as utils
 
 
 # TODO
@@ -158,3 +159,18 @@ class CS:
     def roverAnswerReceived(self,future):
         self.roverConnected = future.result().success
         self.node.get_logger().info('ROVER is online')
+
+    # ===============================
+    #            GAMEPAD
+    # ===============================
+
+    def send_gamepad_data(self, axes, buttons):
+        '''
+            send gamepad data to rover
+        '''
+
+        joy_msg = Joy()
+        joy_msg.axes = axes
+        joy_msg.buttons = buttons
+
+        self.Gamepad_pub.publish(joy_msg)
