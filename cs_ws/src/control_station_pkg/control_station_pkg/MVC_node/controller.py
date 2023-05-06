@@ -21,6 +21,7 @@
 # ================================================================================
 # Libraries
 
+import datetime
 from turtle import pos
 import rclpy
 import sys
@@ -220,8 +221,25 @@ class Controller():
         self.sendJson(Task.LOGS)
 
     def log_clbk(self, str):
-        val = str.data
-        self.cs.node.get_logger().info("Diagnostic: " + val)
+
+        print("log_clbk")
+
+        # consumer = "log_consumer"
+
+        # Dictionary = {
+        #         "type": "broadcast_log",
+        #         'hours' : datetime.datetime.now().hour,
+        #         'minutes' : datetime.datetime.now().minute,
+        #         'seconds' : datetime.datetime.now().second,
+        #         'type' : int.from_bytes(str.level, "big"),
+        #         'message' : str.message
+        # }
+
+        # message = json.dumps(Dictionary)
+        # async_to_sync(channel_layer.group_send)(consumer, message)
+
+        #val = str.data
+        #self.cs.node.get_logger().info("Diagnostic: " + val)
         #self.cs.rover.log.add(val)
 
         # publish to front-end

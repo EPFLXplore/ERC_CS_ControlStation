@@ -3,6 +3,9 @@
 import os
 import sys
 
+import rclpy
+
+import threading 
 
 
 def main():
@@ -30,8 +33,13 @@ class setup:
         except:
             print("import error")
 
+        #rclpy.init(args=sys.argv)
+
         self.CONTROL_STATION = CS()
+        thread = threading.Thread(target=rclpy.spin(self.CONTROL_STATION.node))
+        thread.start()
         
+
 
 # ============================================================================
 
