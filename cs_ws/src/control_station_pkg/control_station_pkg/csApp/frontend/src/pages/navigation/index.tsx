@@ -13,6 +13,7 @@ import styles from "./style.module.sass";
 import { Size } from "../../utils/size.type";
 import Timer from "../../components/Timer";
 import { useGoalTracker } from "../../hooks/navigationHooks";
+import { useNavigationSelector } from "../../hooks/navigationHooks";
 
 export default ({ mode }: { mode: Mode }) => {
 	const { goals, addGoal, removeGoal, resetGoals } = useGoalTracker();
@@ -43,9 +44,6 @@ export default ({ mode }: { mode: Mode }) => {
 	const WheelRL = 0;
 	const WheelRR = 0;
 
-	const currentX = 41;
-	const currentY = 15;
-	const currentO = 42;
 	return (
 		<div className="page center">
 			<Background />
@@ -56,18 +54,14 @@ export default ({ mode }: { mode: Mode }) => {
 						//SET ORIGIN IN METERS DURING COMPETITION
 						x: 300,
 						y: 200,
+						o: 0,
 					}}
 				/>
 				<div className={styles.Info}>
 					<h2 className={styles.InfoTitle}>{mode} Navigation</h2>
 					<div className={styles.ControlsContainer}>
 						<h3>Current Position</h3>
-						<CurrentPosition
-							currentX={currentX}
-							currentY={currentY}
-							currentO={currentO}
-						/>
-
+						<CurrentPosition currentPoint={useNavigationSelector()} />
 						<div className={styles.inputContainer}>
 							<div className={styles.finalContainer}>
 								X

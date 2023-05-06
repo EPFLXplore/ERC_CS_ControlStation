@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { drawPoint } from "../components/Map";
+import { drawGoal } from "../components/Map";
+import { drawCurrentPosition } from "../components/Map";
 
 type Goal = { id: number; x: number; y: number; o: number };
 
@@ -22,9 +23,36 @@ export const useGoalTracker = () => {
 
 	useEffect(() => {
 		goals.forEach((goal) => {
-			drawPoint({ x: goal.x, y: goal.y, o: goal.o });
+			drawGoal({ x: goal.x, y: goal.y, o: goal.o });
 		});
 	}, [goals]);
 
 	return { goals, addGoal, removeGoal, resetGoals };
 };
+
+export function useNavigationSelector() {
+	const [socket, setSocket] = useState<WebSocket | null>(null);
+	var currentPoint = { x: 0, y: 0, o: 0 };
+
+	useEffect(() => {
+		let navigationSocket = new WebSocket(
+			"ws://" + window.location.host + "/ws/csApp/info_nav/"
+		);
+
+		navigationSocket.onmessage = (e) => {
+			const data = JSON.parse(e.data);
+
+			currentPoint = { x: data.x, y: data.y, o: 0 }; //TODO: no o data rendered by the JSON
+			drawCurrentPosition(currentPoint);
+		};
+
+		navigationSocket.onerror = (e) => {
+			console.log(e);
+			setSocket(null);
+		};
+
+		setSocket(navigationSocket);
+	}, []);
+
+	return currentPoint;
+}

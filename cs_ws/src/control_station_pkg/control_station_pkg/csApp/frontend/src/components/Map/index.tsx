@@ -5,11 +5,6 @@ import React, { useState, useEffect, useRef } from "react";
 type Point = {
 	x: number;
 	y: number;
-};
-
-type Goal = {
-	x: number;
-	y: number;
 	o: number;
 };
 
@@ -59,7 +54,7 @@ const Map: React.FC<Props> = ({ origin }) => {
 				// Set the origin of the grid
 				const gridOriginX = origin.x;
 				const gridOriginY = canvas.height - origin.y;
-				mapOrigin = { x: gridOriginX, y: gridOriginY };
+				mapOrigin = { x: gridOriginX, y: gridOriginY, o: 0 };
 
 				const fontSize = 12;
 				ctx.font = `${fontSize}px Arial`;
@@ -171,7 +166,7 @@ const rotatePoint = (angle: number, point: number[], x_px: number, y_px: number)
 	return [x, y];
 };
 
-export const drawPoint = (goal: Goal) => {
+export const drawGoal = (goal: Point) => {
 	if (mapCTX) {
 		let yaw: number = goal.o;
 		let x_px: number = goal.x * pointSpacing + mapOrigin.x;
@@ -203,6 +198,21 @@ export const drawPoint = (goal: Goal) => {
 
 		// Fill the triangle with the given color
 		mapCTX.fillStyle = "red";
+		mapCTX.fill();
+	}
+};
+
+export const drawCurrentPosition = (point: Point) => {
+	if (mapCTX) {
+		mapCTX.fillStyle = "black";
+		mapCTX.beginPath();
+		mapCTX.arc(
+			point.x * pointSpacing + mapOrigin.x,
+			-point.y * pointSpacing + mapOrigin.y,
+			3,
+			0,
+			2 * Math.PI
+		);
 		mapCTX.fill();
 	}
 };
