@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import BackButton from "../../components/BackButton";
 import Background from "../../components/Background";
 import Map from "../../components/Map";
@@ -17,6 +17,8 @@ import { useNavigationSelector } from "../../hooks/navigationHooks";
 
 export default ({ mode }: { mode: Mode }) => {
 	const { goals, addGoal, removeGoal, resetGoals } = useGoalTracker();
+
+	var [currentPosition, setCurrentPosition] = useState({ x: 0, y: 0, o: 0 });
 
 	const handleAddGoal = () => {
 		// Get the values from the input fields
@@ -61,7 +63,7 @@ export default ({ mode }: { mode: Mode }) => {
 					<h2 className={styles.InfoTitle}>{mode} Navigation</h2>
 					<div className={styles.ControlsContainer}>
 						<h3>Current Position</h3>
-						<CurrentPosition currentPoint={useNavigationSelector()} />
+						<CurrentPosition currentPoint={currentPosition} />
 						<div className={styles.inputContainer}>
 							<div className={styles.finalContainer}>
 								X
