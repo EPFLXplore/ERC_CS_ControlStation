@@ -100,9 +100,10 @@ class Rover():
         self.HD_mode_pub        = self.node.create_publisher(Int8,        'HD_mode'          , 1)
         self.HD_SemiAuto_Id_pub = self.node.create_publisher(Int8,        'HD_SemiAuto_Id'   , 1)
         # Rover --> NAV
-        self.Nav_pub            = self.node.create_publisher(Int8,        'Navigation'       , 1)
+        # self.Nav_pub            = self.node.create_publisher(Int8,        'Navigation'       , 1)
+        # self.Nav_CancelGoal_pub = self.node.create_publisher(GoalID,      '/move_base/cancel', 1)
         self.Nav_Goal_pub       = self.node.create_publisher(PoseStamped, 'CS/NAV_goal'      , 1)
-        self.Nav_CancelGoal_pub = self.node.create_publisher(GoalID,      '/move_base/cancel', 1)
+        self.Nav_Status         = self.node.create_publisher(String,      'NAV_STATUS'       , 1)
         # Rover --> SC
         self.SC_pub             = self.node.create_publisher(Int8,        'sc_cmd'           , 1)
 
@@ -185,11 +186,14 @@ class Rover():
                 # ABORT
                 if instr == Instruction.ABORT.value:
                     self.model.Nav.cancelGoal()
+                    self.Nav_Status.publish(String(data="stop"))
                     self.ROVER_STATE = Task.IDLE
                 # WAIT/RESUME
-                else:
-                    self.Nav_pub.publish(Int8(data=instr))
-
+                if instr == Instruction.WAIT.value:
+                    self.Nav_Status.publish(String(data="pause"))
+                if instr == Instruction.RESUME.value:
+                    self.Nav_Status.publish(String(data="resume"))
+                
         #-------------------------------MAINTENANCE----------------------------------
         if task == Task.MAINTENANCE.value:
             # LAUNCH---------------------------

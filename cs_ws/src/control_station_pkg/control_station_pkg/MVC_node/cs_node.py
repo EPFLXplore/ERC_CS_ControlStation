@@ -35,7 +35,7 @@ from diagnostic_msgs.msg  import DiagnosticStatus
 from geometry_msgs.msg     import Twist, PoseStamped
 from actionlib_msgs.msg    import GoalID
 from nav_msgs.msg          import Odometry
-from sensor_msgs.msg       import JointState, Image
+from sensor_msgs.msg       import JointState, Image, Joy
 
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
@@ -65,7 +65,7 @@ class CS:
 
 
         # self.cameras    = Cameras()
-        #self.navID      = [0]
+        # self.navID      = [0]
 
         # ---------------------------------------------------
         # ===== Publishers ===== 
@@ -74,6 +74,9 @@ class CS:
         #Doit etre remplacé par un service 
         self.Task_pub               = self.node.create_publisher(Int8MultiArray,    'Task',                1)
         self.CS_confirm_pub         = self.node.create_publisher(Bool,              'CS_Confirm',          1)
+
+        #CS --> ROVER (GAMEPAD)
+        self.Gamepad_pub            = self.node.create_publisher(Joy,    'Gamepad',             1)
 
         # CS --> ROVER (HD)
         self.HD_mode_pub            = self.node.create_publisher(Int8,              'CS_HD_mode',          1)
@@ -129,4 +132,20 @@ class CS:
         # Elpased time
         #self.node.create_subscription(Int32MultiArray,  'Time',                            self.controller.elapsed_time       , 10) #useless
 
-    
+    def sendRequest(self):
+            self.node._logger.info("Sending request")
+            while not self.onlineConfirmClient.wait_for_service(timeout_sec=1.0):
+
+                    self.node.get_logger().info('service not available, waiting again...')
+
+            self.node.get_logger().info('service is available')
+            self.roverConnected = True
+            req = SetBool.Request()
+            req.data = True
+            future = self.onlineConfirmClient.call_async(req)
+            future.add_done_callback(self.roverAnswerReceived)
+        
+
+    def roverAnswerReceived(self,future):
+        self.roverConnected = future.result().success
+        self.node.get_logger().info('ROVER is online')

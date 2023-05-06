@@ -99,6 +99,8 @@ class Navigation:
     # -------callback for received PoseStamped from the CS-------
     def setGoal(self, goal):
 
+        #TODO: MODIFY IT SO THAT IT CAN HANDLE A LIST OF GOALS
+
         #self.__cancelled = False
         self.setCancelled(False)
 
@@ -115,13 +117,14 @@ class Navigation:
         return self.__currGoal
 
     # -------called when CS sends an ABORT instruction to NAV task --> it cancels the goal and the rover stops-------
+    # -------Also called when the CS sends a cancel instruction to the rover-------
     def cancelGoal(self):
         self.rover.RoverConfirm_pub.publish(String(data="received NAV goal cancellation"))
 
         if(not self.__cancelled): 
             self.setCancelled(True)
-            self.__currGoal = np.zeros(0)
-            self.rover.Nav_CancelGoal_pub.publish(GoalID())
+            self.__currGoal = np.zeros(0) # TODO: IN FUTURE, this will go to the next element in the list of goals
+            self.rover.Nav_Status.publish("cancel")
 
     #-------------------------------------
 
