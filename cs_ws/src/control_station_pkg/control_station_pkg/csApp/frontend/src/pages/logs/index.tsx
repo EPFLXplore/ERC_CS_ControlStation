@@ -2,20 +2,19 @@ import React, { useEffect, useRef } from "react";
 import BackButton from "../../components/BackButton";
 import Background from "../../components/Background";
 import styles from "./style.module.sass";
-import logs from "./test_logs.json";
 import LogFilter from "../../components/LogFilter";
 import { Themes } from "../../utils/themes";
+import useLogs from "../../hooks/logsHook";
 
 export default () => {
 	const [mode, setMode] = React.useState("logs");
 	const bottomRef = useRef<HTMLDivElement | null>(null);
-	const [filters, setFilters] = React.useState(["info", "data", "warning", "error"]);
-	const [filteredLogs, setFilteredLogs] = React.useState(logs);
+	const [logs, changeFilter] = useLogs();
 
 	useEffect(() => {
 		// 👇️ scroll to bottom every time messages change
 		bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-	}, [logs, filteredLogs]);
+	}, [logs]);
 
 	const getColorType = (type: string) => {
 		switch (type) {
@@ -29,22 +28,6 @@ export default () => {
 				return styles.Data;
 		}
 	};
-
-	const filterLogs = (types: string[]) => {
-		setFilteredLogs(logs.filter((log) => types.includes(log.type)));
-	};
-
-	const changeFilter = (type: string, add: boolean) => {
-		if (add) {
-			if (!filters.includes(type)) setFilters([...filters, type]);
-		} else {
-			setFilters(filters.filter((filter) => filter !== type));
-		}
-	};
-
-	useEffect(() => {
-		filterLogs(filters);
-	}, [filters]);
 
 	if (mode === "logs") {
 		return (
@@ -110,7 +93,7 @@ export default () => {
 							/>
 						</div>
 						<div className={styles.Logs}>
-							{filteredLogs.map((log) => (
+							{logs.map((log) => (
 								<div className={styles.Log}>
 									<div className={styles.LogTime}>[{log.time}]</div>
 									<div className={`${styles.LogType} ${getColorType(log.type)}`}>

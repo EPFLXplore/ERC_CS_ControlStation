@@ -80,7 +80,7 @@ class Rover():
         self.HD_tof            = self.node.create_publisher(Int32,             'ROVER_HD_tof'                  , 1)
         self.NAV_odometry_pub  = self.node.create_publisher(Odometry,          'ROVER_NAV_odometry'            , 1)
         self.HD_element_pub    = self.node.create_publisher(Float32MultiArray, 'ROVER_HD_detected_element'     , 3)
-        self.diagnostic        = self.node.create_publisher(DiagnosticStatus,  'CS_log'                        ,10)
+        #self.diagnostic        = self.node.create_publisher(DiagnosticStatus,  'CS_log'                        ,10)
 
         # ===== SUBSCRIBERS =====
 
@@ -155,7 +155,7 @@ class Rover():
     #       - Retry  = 5
 
     def task_instr(self, array):
-        print('task_instr call !')
+        print('task_instr call : ' + str(array.data))
         task = array.data[0]
         instr = array.data[1]
 
@@ -308,11 +308,12 @@ class Rover():
         self.received = False
 
     def log_task_already_launched(self, task):
-        status = DiagnosticStatus()
-        status.level = DiagnosticStatus.ERROR
-        status.msg = "Can't launch %s if another task is still running!" % task
-        status.name = "Task already running"
-        self.diagnostic.publish(status)
+        # status = DiagnosticStatus()
+        # status.level = DiagnosticStatus.ERROR
+        # status.msg = "Can't launch %s if another task is still running!" % task
+        # status.name = "Task already running"
+        # self.diagnostic.publish(status)
+        return
 
 
 def main():

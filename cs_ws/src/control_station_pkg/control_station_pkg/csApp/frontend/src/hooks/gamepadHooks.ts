@@ -17,9 +17,7 @@ function useGamepad() {
 		const gamepad = new GamepadController();
 		setGamepad(gamepad);
 
-		let gamepadSocket = new WebSocket(
-			"ws://" + window.location.host + "/ws/csApp/gamepad/"
-		);
+		let gamepadSocket = new WebSocket("ws://" + window.location.host + "/ws/csApp/gamepad/");
 
 		setSocket(gamepadSocket);
 	}, []);
@@ -30,7 +28,13 @@ function useGamepad() {
 
 	setInterval(() => {
 		if (gamepad?.getGamepad() && gamepad.getIsConnected()) {
-			socket?.send(JSON.stringify(gamepad.getState()));
+			const stateSent = {
+				axes: gamepad.getState().axes,
+				buttons: gamepad.getState().buttons,
+				id: gamepad.getState().controller?.id ?? "",
+			};
+			console.log(stateSent);
+			if (socket?.readyState === WebSocket.OPEN) socket?.send(JSON.stringify(stateSent));
 		}
 	}, 50);
 
