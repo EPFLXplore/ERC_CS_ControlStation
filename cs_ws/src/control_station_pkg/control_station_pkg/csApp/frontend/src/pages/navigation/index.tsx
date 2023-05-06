@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import BackButton from "../../components/BackButton";
 import Background from "../../components/Background";
 import Map from "../../components/Map";
@@ -13,9 +13,12 @@ import styles from "./style.module.sass";
 import { Size } from "../../utils/size.type";
 import Timer from "../../components/Timer";
 import { useGoalTracker } from "../../hooks/navigationHooks";
+import { useNavigationSelector } from "../../hooks/navigationHooks";
 
 export default ({ mode }: { mode: Mode }) => {
 	const { goals, addGoal, removeGoal, resetGoals } = useGoalTracker();
+
+	var [currentPosition, setCurrentPosition] = useState({ x: 0, y: 0, o: 0 });
 
 	const handleAddGoal = () => {
 		// Get the values from the input fields
@@ -42,6 +45,7 @@ export default ({ mode }: { mode: Mode }) => {
 	const WheelFR = 10;
 	const WheelRL = 0;
 	const WheelRR = 0;
+
 	return (
 		<div className="page center">
 			<Background />
@@ -49,29 +53,29 @@ export default ({ mode }: { mode: Mode }) => {
 			<div className={styles.InfoContainer}>
 				<Map
 					origin={{
-						//TO SET DURING COMPETITION
-						x: 345,
+						//SET ORIGIN IN METERS DURING COMPETITION
+						x: 300,
 						y: 200,
+						o: 0,
 					}}
 				/>
 				<div className={styles.Info}>
 					<h2 className={styles.InfoTitle}>{mode} Navigation</h2>
 					<div className={styles.ControlsContainer}>
 						<h3>Current Position</h3>
-						<CurrentPosition currentX={41} currentY={15} currentO={42} />
-
+						<CurrentPosition currentPoint={currentPosition} />
 						<div className={styles.inputContainer}>
 							<div className={styles.finalContainer}>
 								X
-								<input type="text" id="input-x" name="input-x" />
+								<input type="number" id="input-x" name="input-x" />
 							</div>
 							<div className={styles.finalContainer}>
 								Y
-								<input type="text" id="input-y" name="input-y" />
+								<input type="number" id="input-y" name="input-y" />
 							</div>
 							<div className={styles.finalContainer}>
 								O
-								<input type="text" id="input-o" name="input-o" />
+								<input type="number" id="input-o" name="input-o" />
 							</div>
 						</div>
 						<Button
