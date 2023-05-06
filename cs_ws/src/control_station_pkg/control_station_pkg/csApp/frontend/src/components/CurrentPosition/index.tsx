@@ -1,18 +1,22 @@
 import styles from "./style.module.sass";
 
+type Point = {
+	x: number;
+	y: number;
+	o: number;
+};
+
 interface Props {
-	currentX: number;
-	currentY: number;
-	currentO: number;
+	currentPoint: Point;
 }
 
-export default function MyComponent({ currentX, currentY, currentO }: Props) {
+export default function MyComponent({ currentPoint }: Props) {
 	return (
 		<div className={styles.container}>
 			<div className={styles.containerValues}>
-				<div className={styles.coordinates}>{currentX}, </div>
-				<div className={styles.coordinates}>{currentY}, </div>
-				<div className={styles.coordinates}>{currentO}°</div>
+				<div className={styles.coordinates}>{currentPoint.x}, </div>
+				<div className={styles.coordinates}>{currentPoint.y}, </div>
+				<div className={styles.coordinates}>{currentPoint.o}°</div>
 			</div>
 		</div>
 	);
