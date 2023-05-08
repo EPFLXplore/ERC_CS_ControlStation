@@ -39,6 +39,10 @@ from actionlib_msgs.msg    import GoalID
 from nav_msgs.msg          import Odometry
 from sensor_msgs.msg       import JointState, Image
 
+from threading import Thread
+
+# from manage                import CONTROL_STATION
+
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
 django.setup()
@@ -51,13 +55,18 @@ class CS:
         Control Station node in the ROS network of the rover
     '''
     
-    def __init__(self):
+    def __init__(self, node):
 
-        if(not rclpy.ok()):
-            rclpy.init(args=sys.argv)
+        # if(not rclpy.ok()):
+        #     rclpy.init(args=sys.argv)
             
-        self.node = rclpy.create_node("CONTROL_STATION")
+        # self.node = rclpy.create_node("CONTROL_STATION")
+        # from manage                import CONTROL_STATION
 
+        self.node = node
+        t2 = Thread(target=rclpy.spin, args=(node, None))
+        t2.start()
+        print("started")
         # MVC pattern => model, view (front-end), controller
 
 

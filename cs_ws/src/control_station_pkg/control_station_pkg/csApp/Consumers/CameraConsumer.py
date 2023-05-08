@@ -16,7 +16,6 @@ Data format :
 """
 
 
-
 class CameraConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['v_name']
