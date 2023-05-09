@@ -20,6 +20,8 @@ class LogConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.tab_group_name = 'tab_log'
 
+        print("channels name : " + self.channel_name)
+
         # Join tab group
         await self.channel_layer.group_add(
             self.tab_group_name,

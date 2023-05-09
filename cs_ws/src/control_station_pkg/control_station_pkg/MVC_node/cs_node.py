@@ -16,6 +16,7 @@
 #================================================================================
 # Libraries
 
+import asyncio
 import os
 import rclpy
 import sys
@@ -116,7 +117,7 @@ class CS:
         self.node.create_subscription(String,           'ROVER_RoverConfirm',              self.controller.rover_confirmation , 10)
         self.node.create_subscription(String,           'ROVER_Exception',                 self.controller.exception_clbk     , 10)
        # self.node.create_subscription(Int8,             'ROVER_TaskProgress',              self.controller.task_progress      , 10)
-        self.node.create_subscription(DiagnosticStatus, 'ROVER/CS_log',                          self.controller.log_clbk    , 10)
+        self.node.create_subscription(DiagnosticStatus, 'ROVER/CS_log',                    self.controller.log_clbk    , 10)
         
         # SC messages
         self.node.create_subscription(String,           'ROVER_SC_state',                  self.controller.sc_text_info       , 10)

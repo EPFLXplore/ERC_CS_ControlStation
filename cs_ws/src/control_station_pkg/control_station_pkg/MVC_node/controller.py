@@ -21,6 +21,7 @@
 # ================================================================================
 # Libraries
 
+import asyncio
 import datetime
 from turtle import pos
 import rclpy
@@ -62,7 +63,7 @@ from csApp import models
 
 
 from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
+from asgiref.sync import sync_to_async
 
 channel_layer = get_channel_layer()
 
@@ -220,23 +221,28 @@ class Controller():
         # publish to front-end
         self.sendJson(Task.LOGS)
 
-    def log_clbk(self, str):
+    async def log_clbk(self, str):
 
-        print("log_clbk")
+        #print("log_clbk")
 
-        # consumer = "log_consumer"
+        consumer = "tab_log"
 
-        # Dictionary = {
-        #         "type": "broadcast_log",
-        #         'hours' : datetime.datetime.now().hour,
-        #         'minutes' : datetime.datetime.now().minute,
-        #         'seconds' : datetime.datetime.now().second,
-        #         'type' : int.from_bytes(str.level, "big"),
-        #         'message' : str.message
-        # }
+        Dictionary = {
+                "type": "broadcast_log",
+                'hours' : datetime.datetime.now().hour,
+                'minutes' : datetime.datetime.now().minute,
+                'seconds' : datetime.datetime.now().second,
+                'type' : int.from_bytes(str.level, "big"),
+                'message' : str.message
+        }
 
-        # message = json.dumps(Dictionary)
-        # async_to_sync(channel_layer.group_send)(consumer, message)
+        message = json.dumps(Dictionary)
+        asyncio.set_event_loop(asyncio.new_event_loop())
+        #print(asyncio.get_event_loop().is_closed())
+        #asyncio.set_event_loop(asyncio.new_event_loop())
+        #asyncio.run(channel_layer.group_send(consumer, message))
+        channel_layer.group_send(consumer, message)
+
 
         #val = str.data
         #self.cs.node.get_logger().info("Diagnostic: " + val)
