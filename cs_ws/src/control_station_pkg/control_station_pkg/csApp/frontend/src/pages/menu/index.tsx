@@ -19,7 +19,7 @@ export default () => {
 		<div className={`page center`}>
 			<Background />
 			<BackButton />
-			<h1 className={styles.MenuTitle}>Astra</h1>
+			<h1 className={styles.MenuTitle}>Kerby</h1>
 			<div className={styles.Menu}>
 				<MenuCategory
 					icon={NavIcon}
