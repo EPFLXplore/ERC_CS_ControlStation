@@ -22,13 +22,13 @@ from django.shortcuts       import redirect
 import MVC_node.cs_node
 from MVC_node.controller import *
 from MVC_node.models.rover  import Task
-from manage          import setup
+from manage          import CONTROL_STATION
 
 
 # ===============================================================
 # Control Station setup
 
-cs = setup().CONTROL_STATION
+cs = CONTROL_STATION
 
 
 # ===============================================================

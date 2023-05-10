@@ -21,6 +21,8 @@
 # ================================================================================
 # Libraries
 
+import asyncio
+import datetime
 from turtle import pos
 import rclpy
 import sys
@@ -77,6 +79,9 @@ class Controller():
 
     def __init__(self, cs):
         self.cs = cs
+        self.loop = asyncio.new_event_loop()
+        #loop = asyncio.get_event_loop()
+        asyncio.set_event_loop(self.loop)
 
 
 
@@ -221,8 +226,41 @@ class Controller():
         self.sendJson(Task.LOGS)
 
     def log_clbk(self, str):
-        val = str.data
-        self.cs.node.get_logger().info("Diagnostic: " + val)
+
+        print("log_clbk")
+
+        channel_name = "log_channels"
+
+        Dictionary = {
+                "type": "broadcast_log",
+                'hours' : datetime.datetime.now().hour,
+                'minutes' : datetime.datetime.now().minute,
+                'seconds' : datetime.datetime.now().second,
+                'type' : int.from_bytes(str.level, "big"),
+                'message' : str.message
+        }
+
+        message = json.dumps(Dictionary)
+
+        #loop = asyncio.new_event_loop()
+        #loop = asyncio.get_event_loop()
+        #asyncio.set_event_loop(loop)
+        
+        print(asyncio.get_event_loop().is_closed())
+        
+
+        #asyncio.set_event_loop(asyncio.new_event_loop())
+        #print(asyncio.get_event_loop().is_closed())
+        #asyncio.set_event_loop(asyncio.new_event_loop())
+        #asyncio.run(channel_layer.group_send(channel_name, message))
+        #loop.run_until_complete(channel_layer.group_send(channel_name, message))
+        #await channel_layer.group_send(channel_name, message)
+        #async_to_sync(channel_layer.group_send(channel_name, message))
+        try:
+            async_to_sync(channel_layer.group_send)("chat", {"type": "chat.force_disconnect"})
+        except: print("dis wallah")
+        #val = str.data
+        #self.cs.node.get_logger().info("Diagnostic: " + val)
         #self.cs.rover.log.add(val)
 
         # publish to front-end
