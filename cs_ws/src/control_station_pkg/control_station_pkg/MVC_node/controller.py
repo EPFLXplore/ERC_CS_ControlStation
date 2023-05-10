@@ -63,7 +63,7 @@ from csApp import models
 
 
 from channels.layers import get_channel_layer
-from asgiref.sync import sync_to_async
+from asgiref.sync import async_to_sync
 
 channel_layer = get_channel_layer()
 
@@ -79,6 +79,9 @@ class Controller():
 
     def __init__(self, cs):
         self.cs = cs
+        self.loop = asyncio.new_event_loop()
+        #loop = asyncio.get_event_loop()
+        asyncio.set_event_loop(self.loop)
 
 
     # ===============================
@@ -221,11 +224,11 @@ class Controller():
         # publish to front-end
         self.sendJson(Task.LOGS)
 
-    async def log_clbk(self, str):
+    def log_clbk(self, str):
 
-        #print("log_clbk")
+        print("log_clbk")
 
-        consumer = "tab_log"
+        channel_name = "log_channels"
 
         Dictionary = {
                 "type": "broadcast_log",
@@ -237,13 +240,24 @@ class Controller():
         }
 
         message = json.dumps(Dictionary)
-        asyncio.set_event_loop(asyncio.new_event_loop())
+
+        #loop = asyncio.new_event_loop()
+        #loop = asyncio.get_event_loop()
+        #asyncio.set_event_loop(loop)
+        
+        print(asyncio.get_event_loop().is_closed())
+        
+
+        #asyncio.set_event_loop(asyncio.new_event_loop())
         #print(asyncio.get_event_loop().is_closed())
         #asyncio.set_event_loop(asyncio.new_event_loop())
-        #asyncio.run(channel_layer.group_send(consumer, message))
-        channel_layer.group_send(consumer, message)
-
-
+        #asyncio.run(channel_layer.group_send(channel_name, message))
+        #loop.run_until_complete(channel_layer.group_send(channel_name, message))
+        #await channel_layer.group_send(channel_name, message)
+        #async_to_sync(channel_layer.group_send(channel_name, message))
+        try:
+            async_to_sync(channel_layer.group_send)("chat", {"type": "chat.force_disconnect"})
+        except: print("dis wallah")
         #val = str.data
         #self.cs.node.get_logger().info("Diagnostic: " + val)
         #self.cs.rover.log.add(val)

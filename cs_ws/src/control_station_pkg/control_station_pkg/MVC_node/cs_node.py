@@ -67,7 +67,7 @@ class CS:
         self.node = node
         t2 = Thread(target=rclpy.spin, args=(node, None))
         t2.start()
-        print("started")
+        print("CS node spin started")
         # MVC pattern => model, view (front-end), controller
 
 
@@ -75,7 +75,7 @@ class CS:
         self.rover      = Rover()          # model
         self.roverConnected = False
 
-
+ 
         #==================Service CLIENT==========================
         print("Waiting for ROVER_ONLINE service...")
         self.onlineConfirmClient = self.node.create_client(SetBool, "ROVER_ONLINE")
@@ -117,7 +117,7 @@ class CS:
         self.node.create_subscription(String,           'ROVER_RoverConfirm',              self.controller.rover_confirmation , 10)
         self.node.create_subscription(String,           'ROVER_Exception',                 self.controller.exception_clbk     , 10)
        # self.node.create_subscription(Int8,             'ROVER_TaskProgress',              self.controller.task_progress      , 10)
-        self.node.create_subscription(DiagnosticStatus, 'ROVER/CS_log',                    self.controller.log_clbk    , 10)
+        self.node.create_subscription(DiagnosticStatus, 'ROVER/CS_log',                    self.controller.log_clbk   , 10)
         
         # SC messages
         self.node.create_subscription(String,           'ROVER_SC_state',                  self.controller.sc_text_info       , 10)
