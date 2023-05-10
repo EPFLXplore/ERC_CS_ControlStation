@@ -2,7 +2,7 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 import MVC_node.models.utils as utils
-import views
+from ..views import *
 
 
 

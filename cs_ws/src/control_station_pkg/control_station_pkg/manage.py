@@ -2,6 +2,7 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import rclpy
 
 
 
@@ -31,6 +32,11 @@ class setup:
             print("import error")
 
         self.CONTROL_STATION = CS()
+        self.CONTROL_STATION.node.get_logger().info("Control Station node started")
+        node = self.CONTROL_STATION.node
+
+        rclpy.spin(node)
+        print("Listening")
         
 
 # ============================================================================
