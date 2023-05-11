@@ -5,15 +5,20 @@ import React, { useState, useEffect, useRef } from "react";
 type Point = {
 	x: number;
 	y: number;
+	o: number;
 };
 
 type Props = {
 	origin: Point;
 };
 
+//Dimensions of the map in meters
+const YARD_WIDTH_M = 39;
+const YARD_LENGTH_M = 47;
+
 var mapCTX: CanvasRenderingContext2D | null;
 var mapOrigin: Point;
-const pointSpacing: number = 30; // Change this to adjust the spacing between points of the grid
+var pointSpacing: number;
 
 const Map: React.FC<Props> = ({ origin }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -49,11 +54,13 @@ const Map: React.FC<Props> = ({ origin }) => {
 				// Set the origin of the grid
 				const gridOriginX = origin.x;
 				const gridOriginY = canvas.height - origin.y;
-				mapOrigin = { x: gridOriginX, y: gridOriginY };
+				mapOrigin = { x: gridOriginX, y: gridOriginY, o: 0 };
 
-				const fontSize = 16;
+				const fontSize = 12;
 				ctx.font = `${fontSize}px Arial`;
 				ctx.strokeStyle = "white";
+
+				pointSpacing = Math.floor(canvas.width / YARD_LENGTH_M);
 
 				// Draw the x-axis
 				ctx.beginPath();
@@ -113,24 +120,24 @@ const Map: React.FC<Props> = ({ origin }) => {
 				for (let x = gridOriginX; x <= canvas.width; x += pointSpacing) {
 					for (let y = gridOriginY; y >= 0; y -= pointSpacing) {
 						ctx.beginPath();
-						ctx.arc(x, y, 2, 0, 2 * Math.PI);
+						ctx.arc(x, y, 1.5, 0, 2 * Math.PI);
 						ctx.fill();
 					}
 					for (let y = gridOriginY; y <= canvas.height; y += pointSpacing) {
 						ctx.beginPath();
-						ctx.arc(x, y, 2, 0, 2 * Math.PI);
+						ctx.arc(x, y, 1.5, 0, 2 * Math.PI);
 						ctx.fill();
 					}
 				}
 				for (let x = gridOriginX; x >= 0; x -= pointSpacing) {
 					for (let y = gridOriginY; y >= 0; y -= pointSpacing) {
 						ctx.beginPath();
-						ctx.arc(x, y, 2, 0, 2 * Math.PI);
+						ctx.arc(x, y, 1.5, 0, 2 * Math.PI);
 						ctx.fill();
 					}
 					for (let y = gridOriginY; y <= canvas.height; y += pointSpacing) {
 						ctx.beginPath();
-						ctx.arc(x, y, 2, 0, 2 * Math.PI);
+						ctx.arc(x, y, 1.5, 0, 2 * Math.PI);
 						ctx.fill();
 					}
 				}
@@ -152,14 +159,57 @@ const Map: React.FC<Props> = ({ origin }) => {
 	);
 };
 
-export const drawPoint = (x: number, y: number) => {
+const rotatePoint = (angle: number, point: number[], x_px: number, y_px: number) => {
+	let x = (point[0] - x_px) * Math.cos(angle) - (point[1] - y_px) * Math.sin(angle) + x_px;
+	let y = (point[0] - x_px) * Math.sin(angle) + (point[1] - y_px) * Math.cos(angle) + y_px;
+
+	return [x, y];
+};
+
+export const drawGoal = (goal: Point) => {
 	if (mapCTX) {
+		let yaw: number = goal.o;
+		let x_px: number = goal.x * pointSpacing + mapOrigin.x;
+		let y_px: number = -goal.y * pointSpacing + mapOrigin.y;
+
+		//set the three points of the triangle to be drawn before rotation
+		let p1 = [x_px, y_px + 7];
+		let p2 = [x_px, y_px - 7];
+		let p3 = [x_px + 20, y_px];
+
+		//======= rotation of p1, p2 and p2 around {x_px, y_px} by yaw ========//
+
+		// Convert the angle from degrees to radians
+		let angle = (-yaw * Math.PI) / 180;
+
+		// Define the rotated points of the triangle
+		p1 = rotatePoint(angle, p1, x_px, y_px);
+		p2 = rotatePoint(angle, p2, x_px, y_px);
+		p3 = rotatePoint(angle, p3, x_px, y_px);
+
+		// Begin the path and set the starting point to p1
+		mapCTX.beginPath();
+		mapCTX.moveTo(p1[0], p1[1]);
+
+		// Draw lines from p1 to p2, p2 to p3, and from p3 back to p1
+		mapCTX.lineTo(p2[0], p2[1]);
+		mapCTX.lineTo(p3[0], p3[1]);
+		mapCTX.lineTo(p1[0], p1[1]);
+
+		// Fill the triangle with the given color
 		mapCTX.fillStyle = "red";
+		mapCTX.fill();
+	}
+};
+
+export const drawCurrentPosition = (point: Point) => {
+	if (mapCTX) {
+		mapCTX.fillStyle = "black";
 		mapCTX.beginPath();
 		mapCTX.arc(
-			x * pointSpacing + mapOrigin.x,
-			-y * pointSpacing + mapOrigin.y,
-			5,
+			point.x * pointSpacing + mapOrigin.x,
+			-point.y * pointSpacing + mapOrigin.y,
+			3,
 			0,
 			2 * Math.PI
 		);
