@@ -21,10 +21,9 @@ Data format :
 class TimerConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
-        self.room_group_name = 'tab_timer'
 
         await self.channel_layer.group_add(
-            self.room_group_name,
+            "timer",
             self.channel_name
         )
         
@@ -38,13 +37,14 @@ class TimerConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         # Leave room group
         await self.channel_layer.group_discard(
-            self.room_group_name,
+            "timer",
             self.channel_name
         )
 
     # Receive message from WebSocket
-    async def receive(self, data):
+    async def receive(self, text_data):
 
+        data = json.loads(text_data)
         #update timer model
         utils.timer.is_running = data['active']
         utils.timer.duration = 60 * data['minutes'] + data['seconds']
@@ -54,9 +54,9 @@ class TimerConsumer(AsyncWebsocketConsumer):
 
         # Update every frontend
         await self.channel_layer.group_send(
-            self.tab_group_name,
+            "timer",
             {
-                'type': 'broadcast_timer',
+                'type': 'timer_message',
                 'active': data['active'],
                 'minutes': m,
                 'seconds': s,
@@ -64,13 +64,13 @@ class TimerConsumer(AsyncWebsocketConsumer):
         )
 
     # Receive message from room group
-    async def broadcast_timer(self, data_json):
+    async def timer_message(self, event):
 
         m,s = utils.timer.get_time()
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-                'active': data_json['active'],
+                'active': event['active'],
                 'minutes': m,
                 'seconds': s,
         }))

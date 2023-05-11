@@ -23,6 +23,7 @@
 
 import asyncio
 import datetime
+import threading
 from turtle import pos
 import rclpy
 import sys
@@ -79,10 +80,6 @@ class Controller():
 
     def __init__(self, cs):
         self.cs = cs
-        self.loop = asyncio.new_event_loop()
-        #loop = asyncio.get_event_loop()
-        asyncio.set_event_loop(self.loop)
-
 
 
     # ===============================
@@ -188,6 +185,10 @@ class Controller():
 
     # receives an Odometry message from NAVIGATION
     def nav_data(self, odometry):
+
+        print("nav data received")
+
+
         data = odometry
         nav = self.cs.rover.Nav
 
@@ -225,47 +226,33 @@ class Controller():
         # publish to front-end
         self.sendJson(Task.LOGS)
 
-    def log_clbk(self, str):
+    def log_clbk(self, data):
 
-        print("log_clbk")
+        print("log_clbk ")
 
-        channel_name = "log_channels"
+        #asyncio.set_event_loop(self.cs.loop)
 
-        Dictionary = {
-                "type": "broadcast_log",
-                'hours' : datetime.datetime.now().hour,
-                'minutes' : datetime.datetime.now().minute,
-                'seconds' : datetime.datetime.now().second,
-                'type' : int.from_bytes(str.level, "big"),
-                'message' : str.message
-        }
+        # asyncio.get_event_loop().run_until_complete(channel_layer.group_send("log", {"type": "log.message",'hours': str(datetime.datetime.now().hour),
+        #                                                                 'minutes': str(datetime.datetime.now().minute),
+        #                                                                 'seconds': str(datetime.datetime.now().second),
+        #                                                                 'severity': int.from_bytes(data.level, "big"),
+        #                                                                 'message': data.message,}))
 
-        message = json.dumps(Dictionary)
 
-        #loop = asyncio.new_event_loop()
-        #loop = asyncio.get_event_loop()
-        #asyncio.set_event_loop(loop)
+
+        # asyncio.run(channel_layer.group_send("log", {"type": "log.message",'hours': str(datetime.datetime.now().hour),
+        #                                                                 'minutes': str(datetime.datetime.now().minute),
+        #                                                                 'seconds': str(datetime.datetime.now().second),
+        #                                                                 'severity': int.from_bytes(data.level, "big"),
+        #                                                                 'message': data.message,}))
         
-        print(asyncio.get_event_loop().is_closed())
         
-
-        #asyncio.set_event_loop(asyncio.new_event_loop())
-        #print(asyncio.get_event_loop().is_closed())
-        #asyncio.set_event_loop(asyncio.new_event_loop())
-        #asyncio.run(channel_layer.group_send(channel_name, message))
-        #loop.run_until_complete(channel_layer.group_send(channel_name, message))
-        #await channel_layer.group_send(channel_name, message)
-        #async_to_sync(channel_layer.group_send(channel_name, message))
-        try:
-            async_to_sync(channel_layer.group_send)("chat", {"type": "chat.force_disconnect"})
-        except: print("dis wallah")
-        #val = str.data
-        #self.cs.node.get_logger().info("Diagnostic: " + val)
-        #self.cs.rover.log.add(val)
-
-        # publish to front-end
-        #self.sendJson(Task.LOGS)
-
+        async_to_sync(channel_layer.group_send)("log", {"type": "log.message",'hours': str(datetime.datetime.now().hour),
+                                                                        'minutes': str(datetime.datetime.now().minute),
+                                                                        'seconds': str(datetime.datetime.now().second),
+                                                                        'severity': int.from_bytes(data.level, "big"),
+                                                                        'message': data.message,})
+        
 
     # =================================================================================================================
 
@@ -311,6 +298,8 @@ class Controller():
             publishes task instructions to the self.cs.rover
         '''
         # checkArgs(task, instr)
+
+        print("pub_Task called") 
 
         arr = [task, instr]
 
@@ -497,7 +486,7 @@ class Controller():
         # Info to display on MANUAL tab
         if(subsyst == Task.MANUAL):
 
-            consumer = "nav_manual"
+            consumer = "tab_info_nav"
             nav = self.cs.rover.Nav
             hd = self.cs.rover.HD
 
@@ -577,6 +566,12 @@ class Controller():
                 'exceptions': l
             }
 
-        # send info to front-end
-        message = json.dumps(Dictionary)
-        async_to_sync(channel_layer.group_send)(consumer, message)
+        # channel_layer = get_channel_layer()
+        # # send info to front-end
+        # message = json.dumps(Dictionary)
+        # #async_to_sync(channel_layer.group_send)("chat", message)
+        # async_to_sync(channel_layer.group_send)("log", {"type": "log.message",'hours': str(datetime.datetime.now().hour),
+        #                                                                 'minutes': str(datetime.datetime.now().minute),
+        #                                                                 'seconds': str(datetime.datetime.now().second),
+        #                                                                 'severity': "",
+        #                                                                 'message': "Emile <3",})

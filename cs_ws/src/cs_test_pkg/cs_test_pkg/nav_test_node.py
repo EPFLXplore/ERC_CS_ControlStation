@@ -5,6 +5,7 @@ from rclpy.node import Node
 from std_msgs.msg import String
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import PoseStamped
+from diagnostic_msgs.msg import DiagnosticStatus
 
 from std_msgs.msg import Int8MultiArray, Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16, Float32MultiArray
 
@@ -14,6 +15,9 @@ class NavTestNode(Node):
 
     def __init__(self):
         super().__init__('nav_test_publisher')
+        
+        # Log publisher
+        self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
 
                 # Log publisher
         self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
@@ -31,12 +35,19 @@ class NavTestNode(Node):
         self.i = 0
 
     def timer_callback(self):
+        msg_log = DiagnosticStatus()
+       
+        msg_log.name = 'Nav Test'
+        msg_log.level = (self.i % 3). to_bytes(1,"big")
+        msg_log.message = 'Diagnostic Status Message from Nav Test'
+        self.publisher_log.publish(msg_log)
+        print("Messaage send ")
 
         print("log message send  from nav test nodes")
 
         msg_log = DiagnosticStatus()
         msg_log.name = 'Nav Test'
-        #msg_log.level = self.i % 3
+        msg_log.level = (self.i%3).to_bytes(1, 'big')
         msg_log.message = 'Diagnostic Status Message from Nav Test'
         self.publisher_log.publish(msg_log)
 

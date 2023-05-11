@@ -75,6 +75,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'django_settings.wsgi.application'
 ASGI_APPLICATION = 'django_settings.asgi.application'
+
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
@@ -83,6 +84,15 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.pubsub.RedisPubSubChannelLayer",
+#         "CONFIG": {
+#             "hosts": [('127.0.0.1', 6379)],
+#         },
+#     },
+# }
 
 
 
