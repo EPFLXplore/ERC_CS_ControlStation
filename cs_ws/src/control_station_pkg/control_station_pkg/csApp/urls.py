@@ -4,13 +4,13 @@ from .views import *
 
 urlpatterns = [
     # General
-    path('homepage/',		         homepage,		  name='homepage'),
-    path('navigation/',		         navigation, 	  name='navigation'),
-    path('manualcontrol/', 	         manualcontrol,  name='manualcontrol'),
-    path('handlingdevice/',          handlingdevice, name='handlingdevice'),
-    path('science/', 		         science,		  name='science'),
-    path('logs/', 		             logs,		      name='logs'),
-    path('capture_image/', 		     capture_image,  name='capture_image'),
+    # path('homepage/',		         homepage,		  name='homepage'),
+    # path('navigation/',		         navigation, 	  name='navigation'),
+    # path('manualcontrol/', 	         manualcontrol,  name='manualcontrol'),
+    # path('handlingdevice/',          handlingdevice, name='handlingdevice'),
+    # path('science/', 		         science,		  name='science'),
+    # path('logs/', 		             logs,		      name='logs'),
+    # path('capture_image/', 		     capture_image,  name='capture_image'),
     
     #STATE BUTTONS
     #Manualcontrol
@@ -24,7 +24,7 @@ urlpatterns = [
     path('navigation/wait',         wait_nav,       name='wait_nav'),
     path('navigation/abort',        abort_nav,      name='abort_nav'),
     path('navigation/resume',       resume_nav,     name='resume_nav'),
-    path('navigation/set_goal',     set_nav,        name="set_nav"),
+    path('navigation/add_goal_nav', add_goal_nav,   name="add_goal_nav"),
 
     #Handlingdevice
     path('handlingdevice/launch',   launch_hd,      name='launch_hd'),

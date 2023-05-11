@@ -227,6 +227,7 @@ class Controller():
         self.sendJson(Task.LOGS)
 
     def log_clbk(self, data):
+        #return
 
         print("log_clbk ")
 

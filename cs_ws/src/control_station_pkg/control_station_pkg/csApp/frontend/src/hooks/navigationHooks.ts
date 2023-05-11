@@ -7,9 +7,36 @@ type Goal = { id: number; x: number; y: number; o: number };
 export const useGoalTracker = () => {
 	const [goals, setGoals] = useState<Goal[]>([]);
 
+	const getCookie = (name: string): string | null => {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
 	const addGoal = (x: number, y: number, o: number) => {
 		const id = Date.now(); //Generate a unique id for the goal
 		setGoals([...goals, { id, x, y, o }]);
+		const csrftoken = getCookie('csrftoken');
+		fetch("http://127.0.0.1:8000/csApp/navigation/add_goal_nav",
+			{
+				method: "POST",
+				body: JSON.stringify({
+					x: x,
+					y: y,
+					yaw: o,
+				}),
+				headers: {"X-CSRFToken": csrftoken ?? ''}
+			}).then((res) => res.json()).then((data) => console.log(data));
 	};
 
 	const resetGoals = () => {
@@ -36,7 +63,7 @@ export function useNavigationSelector() {
 
 	useEffect(() => {
 		let navigationSocket = new WebSocket(
-			"ws://" + window.location.host + "/ws/csApp/info_nav/"
+			"ws://127.0.0.1:8000/ws/csApp/info_nav/"
 		);
 
 		navigationSocket.onmessage = (e) => {
