@@ -158,8 +158,6 @@ def resume_manual(request):
 
 def launch_nav(request):
 
-    print("test")
-    cs.start_spin()
     cs.controller.sendJson(Task.NAVIGATION)
 
     #cs.node.get_logger().info("Navigation: Launch")

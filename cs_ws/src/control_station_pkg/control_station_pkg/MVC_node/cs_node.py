@@ -43,10 +43,10 @@ class CS:
 
         print("start spinning")
 
-        self.loop = asyncio.get_event_loop()
+        #self.loop = asyncio.get_event_loop()
 
         #self.loop = asyncio.get_event_loop().run_forever(rclpy.spin(self.node))
-        # asyncio.create_task(rclpy.spin(self.node))
+        #asyncio.create_task(rclpy.spin(self.node))
 
         thr = threading.Thread(target=rclpy.spin, args=(self.node,)).start()
 
@@ -146,6 +146,3 @@ class CS:
         self.roverConnected = future.result().success
         self.node.get_logger().info('ROVER is online')
 
-    def start_spin(self):
-        print("start spin" )
-        rclpy.spin(self.node)
