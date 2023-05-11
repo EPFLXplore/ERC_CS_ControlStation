@@ -48,7 +48,7 @@ class CS:
         #self.loop = asyncio.get_event_loop().run_forever(rclpy.spin(self.node))
         #asyncio.create_task(rclpy.spin(self.node))
 
-        thr = threading.Thread(target=rclpy.spin, args=(self.node,)).start()
+        #thr = threading.Thread(target=rclpy.spin, args=(self.node,)).start()
 
         
 
