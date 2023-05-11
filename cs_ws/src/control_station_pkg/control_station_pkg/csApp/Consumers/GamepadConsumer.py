@@ -30,10 +30,10 @@ class GamepadConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     # Receive message from WebSocket
-    async def receive(self, data):
-        utils.gamepad.id = json.loads(data)['id']
-        buttons = json.loads(data)['buttons']
-        axes = json.loads(data)['axes']
+    async def receive(self, text_data):
+        utils.gamepad.id = json.loads(text_data)['id']
+        buttons = json.loads(text_data)['buttons']
+        axes = json.loads(text_data)['axes']
         cs.send_gamepad_data(axes, buttons)
 
 

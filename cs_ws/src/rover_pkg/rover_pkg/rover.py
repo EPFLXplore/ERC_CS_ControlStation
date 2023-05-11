@@ -14,7 +14,7 @@ from std_msgs.msg       import Int8, Int16, Int32, Bool, String, Int8MultiArray,
 #from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
 from geometry_msgs.msg  import Twist, PoseStamped
 from actionlib_msgs.msg import GoalID
-from sensor_msgs.msg import JointState
+from sensor_msgs.msg import JointState, Joy
 from nav_msgs.msg import Odometry
 from diagnostic_msgs.msg import DiagnosticStatus
 
@@ -93,6 +93,8 @@ class Rover():
         # messages from CS (NAV)
         self.node.create_subscription(PoseStamped,    'CS_NAV_goal'      , self.model.Nav.setGoal      , 10)
         self.node.create_subscription(GoalID,         'CS_NAV_cancel'    , self.model.Nav.cancelGoal   , 10)
+        # messages from CS (GAMEPAD)
+        self.node.create_subscription(Joy,    'Gamepad',   self.handle_gamepad,          1)
         #TODO: add cancel goal and other messages from CS to NAV
 
 
@@ -101,6 +103,10 @@ class Rover():
         # ==========================================================
 
         # ===== PUBLISHERS =====
+        
+
+        #ROVER --> All
+        self.Gamepad_pub        = self.node.create_publisher(Joy,    'Gamepad_Rover',             1)
 
         # Rover --> HD
         self.Maintenance_pub    = self.node.create_publisher(Int8,        'Maintenance'      , 1)
@@ -286,6 +292,11 @@ class Rover():
     def run(self):
         print("Listening")
         rclpy.spin(self.node)
+
+
+    def handle_gamepad(self, joy):
+        self.node.get_logger().info("Joy received")
+        self.Gamepad_pub.publish(joy)
 
         # ===== TIMEOUT MECANISM =====
 

@@ -2,6 +2,7 @@ import os
 import rclpy
 import sys
 import django
+import numpy as np
 
 from .controller import Controller
 from .models.rover import Rover
@@ -30,6 +31,7 @@ django.setup()
 
 import threading
 import asyncio
+#from ../views import views
 
 
 class CS:
@@ -140,6 +142,8 @@ class CS:
         #self.node.create_subscription(Int32MultiArray,  'Time',                            self.controller.elapsed_time       , 10) #useless
 
         #rclpy.spin(self.node)
+
+        #views.launch_nav(None)
         
 
     def sendRequest(self):
@@ -167,9 +171,10 @@ class CS:
         '''
             send gamepad data to rover
         '''
+        axes = [float(i) for i in axes]
 
         joy_msg = Joy()
         joy_msg.axes = axes
         joy_msg.buttons = buttons
-
+        
         self.Gamepad_pub.publish(joy_msg)
