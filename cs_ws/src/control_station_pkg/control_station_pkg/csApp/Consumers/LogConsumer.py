@@ -19,8 +19,8 @@ Data format :
 # class LogConsumer(AsyncWebsocketConsumer):
     
 #     async def connect(self):
-#         self.tab_group_name = 'tab_log'
-#         self.channel_name = "log_channel"
+#         self.tab_group_name = 'log'
+    
 
 #         print("channels name : " + self.channel_name)
 
@@ -35,70 +35,17 @@ Data format :
 
 
 #     # Receive message from WebSocket
-#     async def receive(self, data):
-
-#         data_json = json.loads(data)
-
-#         # Send message to room group
-#         await self.channel_layer.group_send(
-#             self.tab_group_name,
-#             {
-#                 'type': 'broadcast_log',
-#                 'hours': data_json['hours'],
-#                 'minutes': data_json['minutes'],
-#                 'seconds': data_json['seconds'],
-#                 'type': data_json['type'],
-#                 'message': data_json['message'],
-
-#             }
-#         )
-
-#     # Receive message from room group
-#     async def broadcast_log(self, data_json):
-
-#         # Send message to WebSocket
-#         await self.send(text_data=json.dumps({
-#                 'type': 'broadcast_log',
-#                 'hours': data_json['hours'],
-#                 'minutes': data_json['minutes'],
-#                 'seconds': data_json['seconds'],
-#                 'type': data_json['type'],
-#                 'message': data_json['message'],
-
-#         }))
-
-
-
-# class LogConsumer(WebsocketConsumer):
-    
-#     def connect(self):
-
-#         self.tab_group_name = "log"
-
-#         print("channels name : " + self.channel_name)
-
-#         # Join tab group
-#         async_to_sync(self.channel_layer.group_add)(
-#             self.tab_group_name,
-#             self.channel_name
-#         )
-
-#         self.accept()
-
-
-
-#     # Receive message from WebSocket
-#     def receive(self, text_data):
+#     async def receive(self, text_data):
 
 #         print("data received ")
 
 #         data_json = json.loads(text_data)
 
 #         # Send message to room group
-#         async_to_sync(self.channel_layer.group_send)(
+#         await self.channel_layer.group_send(
 #             self.tab_group_name,
 #             {
-#                 'type': 'log_message',
+#                 'type': 'broadcast_log',
 #                 'hours': data_json['hours'],
 #                 'minutes': data_json['minutes'],
 #                 'seconds': data_json['seconds'],
@@ -109,13 +56,13 @@ Data format :
 #         )
 
 #     # Receive message from room group
-#     def log_message(self, event):
+#     async def broadcast_log(self, event):
 
 #         print("data broadcast")
 
-
 #         # Send message to WebSocket
-#         async_to_sync(self.send(text_data=json.dumps)({
+#         await self.send(text_data=json.dumps({
+#                 'type': 'broadcast_log',
 #                 'hours': event['hours'],
 #                 'minutes': event['minutes'],
 #                 'seconds': event['seconds'],
@@ -124,34 +71,92 @@ Data format :
 
 #         }))
 
+import asyncio
+
+class LogConsumer(WebsocketConsumer):
+    
+    def connect(self):
+
+        self.tab_group_name = "log"
+
+        print("channels name : " + self.channel_name)
+
+        
+
+        # Join tab group
+        async_to_sync(self.channel_layer.group_add)(
+            self.tab_group_name,
+            self.channel_name
+        )
+
+        self.accept()
+
+
+
+    # Receive message from WebSocket
+    def receive(self, text_data):
+
+        print("data received ")
+
+        data_json = json.loads(text_data)
+
+        # Send message to room group
+        async_to_sync(self.channel_layer.group_send)(
+            self.tab_group_name,
+            {
+                'type': 'log_message',
+                'hours': data_json['hours'],
+                'minutes': data_json['minutes'],
+                'seconds': data_json['seconds'],
+                'severity': data_json['type'],
+                'message': data_json['message'],
+
+            }
+        )
+
+    # Receive message from room group
+    def log_message(self, event):
+
+        print("data broadcast")
+
+
+        # Send message to WebSocket
+        async_to_sync(self.send(text_data=json.dumps({
+                'hours': event['hours'],
+                'minutes': event['minutes'],
+                'seconds': event['seconds'],
+                'type': event['severity'],
+                'message': event['message'],
+
+        })))
+
 
 
 # This example uses WebSocket consumer, which is synchronous, and so
 # needs the async channel layer functions to be converted.
-from asgiref.sync import async_to_sync
-import asyncio
+# from asgiref.sync import async_to_sync
+# import asyncio
 
-class LogConsumer(WebsocketConsumer):
+# class LogConsumer(WebsocketConsumer):
 
-    def connect(self):
-        print("loop is running :" + asyncio.get_event_loop().is_running())
-        async_to_sync(self.channel_layer.group_add)("chat", self.channel_name)
+#     def connect(self):
+#         async_to_sync(self.channel_layer.group_add)("chat", self.channel_name)
 
-    def disconnect(self, close_code):
-        async_to_sync(self.channel_layer.group_discard)("chat", self.channel_name)
+#     def disconnect(self, close_code):
+#         async_to_sync(self.channel_layer.group_discard)("chat", self.channel_name)
 
-    def receive(self, text_data):
+#     def receive(self, text_data):
 
-        print("received call")
-        async_to_sync(self.channel_layer.group_send)(
-            "chat",
-            {
-                "type": "chat.message",
-                "text": text_data,
-            },
-        )
+#         print("received call")
+#         async_to_sync(self.channel_layer.group_send)(
+#             "chat",
+#             {
+#                 "type": "chat.message",
+#                 "text": text_data,
+#             },
+#         )
 
-    def chat_message(self, event):
+#     def chat_message(self, event):
 
-        print("broadcast call")
-        self.send(text_data=event["text"])
+#         print("broadcast call")
+#         self.send(text_data=event["text"])

@@ -22,13 +22,13 @@ from django.shortcuts       import redirect
 import MVC_node.cs_node
 from MVC_node.controller import *
 from MVC_node.models.rover  import Task
-from manage          import CONTROL_STATION
+from manage          import setup
 
 
 # ===============================================================
 # Control Station setup
 
-cs = CONTROL_STATION
+cs = setup().CONTROL_STATION
 
 
 # ===============================================================
@@ -157,9 +157,14 @@ def resume_manual(request):
 # navigation
 
 def launch_nav(request):
-    cs.node.get_logger().info("Navigation: Launch")
-    cs.controller.pub_Task(2,1)
-    cs.rover.setState(Task.NAVIGATION)
+
+    print("test")
+    cs.start_spin()
+    cs.controller.sendJson(Task.NAVIGATION)
+
+    #cs.node.get_logger().info("Navigation: Launch")
+    #cs.controller.pub_Task(2,1)
+    #cs.rover.setState(Task.NAVIGATION)
     # return empty json response to update the page without refreshing
     return JsonResponse({})
 

@@ -1,22 +1,3 @@
-# 27/11/2021
-#
-# @authors: Emile Hreich
-#           emile.janhodithreich@epfl.ch
-#
-#           Roman Danylovych
-#           roman.danylovych@epfl.ch
-#
-# @brief: This file contains the Application class of the backend. It will
-#         create the ROS node for the Control Station and take care of creating
-#         and subscribing to the needed ROS topic. It will also define and run 
-#         the listening thread that will receive the data from the rover and store
-#         it into the database.
-#-------------------------------------------------------------------------------
-
-#================================================================================
-# Libraries
-
-import asyncio
 import os
 import rclpy
 import sys
@@ -29,8 +10,6 @@ from .models.rover import Rover
 from csApp.models         import *
 from std_msgs.msg         import Int8MultiArray    , Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16, Float32MultiArray
 from diagnostic_msgs.msg  import DiagnosticStatus
-from std_srvs.srv import SetBool
-
 
 # TODO
 # from ros_package.src.custom_msg_python.msg     import move_base_action_goal 
@@ -40,15 +19,14 @@ from actionlib_msgs.msg    import GoalID
 from nav_msgs.msg          import Odometry
 from sensor_msgs.msg       import JointState, Image
 
-from threading import Thread
-
-# from manage                import CONTROL_STATION
-
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
 django.setup()
 
 #================================================================================
+
+import threading
+import asyncio
 
 
 class CS:
@@ -56,32 +34,29 @@ class CS:
         Control Station node in the ROS network of the rover
     '''
     
-    def __init__(self, node):
+    def __init__(self):
 
-        # if(not rclpy.ok()):
-        #     rclpy.init(args=sys.argv)
+        if(not rclpy.ok()):
+            rclpy.init(args=sys.argv)
             
-        # self.node = rclpy.create_node("CONTROL_STATION")
-        # from manage                import CONTROL_STATION
+        self.node = rclpy.create_node("csApp")
 
-        self.node = node
-        t2 = Thread(target=rclpy.spin, args=(node, None))
-        t2.start()
-        print("CS node spin started")
+        print("start spinning")
+
+        self.loop = asyncio.get_event_loop()
+
+        #self.loop = asyncio.get_event_loop().run_forever(rclpy.spin(self.node))
+        # asyncio.create_task(rclpy.spin(self.node))
+
+        thr = threading.Thread(target=rclpy.spin, args=(self.node,)).start()
+
+        
+
         # MVC pattern => model, view (front-end), controller
 
 
         self.controller = Controller(self) # controller
         self.rover      = Rover()          # model
-        self.roverConnected = False
-
- 
-        #==================Service CLIENT==========================
-        print("Waiting for ROVER_ONLINE service...")
-        self.onlineConfirmClient = self.node.create_client(SetBool, "ROVER_ONLINE")
-        print("Sending Request...")
-        self.sendRequest()
-
 
 
         # self.cameras    = Cameras()
@@ -107,6 +82,7 @@ class CS:
         self.HD_voltmeter_pub       = self.node.create_publisher(Int8,              'HD_voltmeter',        1)
 
         # CS --> ROVER (NAV)
+
         self.Nav_Goal_pub           = self.node.create_publisher(PoseStamped,       'CS_NAV_goal',         1)
         self.Nav_CancelGoal_pub     = self.node.create_publisher(GoalID,            'CS_NAV_cancel',       1)
         self.Nav_Joystick_pub       = self.node.create_publisher(Twist,             '/cmd_vel',            1)
@@ -134,9 +110,10 @@ class CS:
         self.node.create_subscription(Float32MultiArray,'ROVER_HD_detected_element',       self.controller.hd_detected_element, 10)
 
         # NAV messages
-        self.node.create_subscription(Twist,            '/cmd_vel',                        self.controller.test_joystick      , 10) 
-        # TODO i forgot why we subcribed to this... + if its usefull change the name !
-        self.node.create_subscription(Odometry,         'ROVER_NAV_odometry',              self.controller.nav_data           , 10)
+        #self.node.create_subscription(Twist,            '/cmd_vel',                        self.controller.test_joystick      , 10) 
+        #self.node.create_subscription(Odometry,         'ROVER_NAV_odometry',              self.controller.nav_data           , 10)
+        #self.node.create_subscription(Odometry,         'NAV/odometry/filtered',              self.controller.nav_data           , 10)
+
 
         # TODO
         # c'est quoi ?
@@ -148,6 +125,9 @@ class CS:
         
         # Elpased time
         #self.node.create_subscription(Int32MultiArray,  'Time',                            self.controller.elapsed_time       , 10) #useless
+
+        #rclpy.spin(self.node)
+        
 
     def sendRequest(self):
             self.node._logger.info("Sending request")
@@ -165,3 +145,7 @@ class CS:
     def roverAnswerReceived(self,future):
         self.roverConnected = future.result().success
         self.node.get_logger().info('ROVER is online')
+
+    def start_spin(self):
+        print("start spin" )
+        rclpy.spin(self.node)

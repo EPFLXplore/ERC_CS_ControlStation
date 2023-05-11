@@ -36,7 +36,7 @@ class NavTestNode(Node):
 
         msg_log = DiagnosticStatus()
         msg_log.name = 'Nav Test'
-        #msg_log.level = self.i % 3
+        msg_log.level = (self.i%3).to_bytes(1, 'big')
         msg_log.message = 'Diagnostic Status Message from Nav Test'
         self.publisher_log.publish(msg_log)
 
