@@ -19,12 +19,20 @@ class Navigation:
 
     def addGoal(self, arr):
         if(len(arr) != 3): raise Exception("array length must be 3 -> (x,y,z)")
-        np.append(self.__goals, arr)
-        self.incrementId()
+        np.append(self.__navGoalList, arr)
+        #self.incrementId()
 
     # ---------GOAL----------
     def setCurrentGoal(self, arr):
         return
+    
+    #return the current goal
+    def getNextGoal(self):
+        return self.__navGoalList[0]
+    
+    #return and remove the current goal, should be called when the rover send confirmation
+    def popGoal(self):
+        return self.__navGoalList.pop(0)
 
     def cancelGoal(self, id):
         len = len(self.__goals)

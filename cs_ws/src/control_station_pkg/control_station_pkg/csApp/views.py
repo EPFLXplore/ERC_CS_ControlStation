@@ -191,14 +191,19 @@ def resume_nav(request):
 #    return JsonResponse({})
 def add_goal_nav(request):
 
+    print(request.POST)
+
     x = float(request.POST.get("x"))
     y = float(request.POST.get("y"))
     yaw = float(request.POST.get("yaw"))
+
     #print("the goal is (x = %.2f, y = %.2f, yaw = %.2f):", x, y, yaw)
-    
+
+    cs.controller.pub_nav_goal(x, y, yaw)
     return JsonResponse({})
 
 def remove_goal_nav(request):
+
 
     return JsonResponse({})
 

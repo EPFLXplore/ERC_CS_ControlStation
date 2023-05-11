@@ -84,7 +84,7 @@ class CS:
         # CS --> ROVER (NAV)
 
         self.Nav_Goal_pub           = self.node.create_publisher(PoseStamped,       'CS/NAV_goal',         1)
-        self.Nav_Status_pub     = self.node.create_publisher(GoalID,            'CS/NAV_STATUS',       1)
+        self.Nav_Status_pub         = self.node.create_publisher(GoalID,            'CS/NAV_STATUS',       1)
         self.Nav_Joystick_pub       = self.node.create_publisher(Twist,             '/cmd_vel',            1)
         #self.Nav_DebugWheels_pub    = self.node.create_publisher(Int16MultiArray,   '/debug/wheel_cmds',   1)
 

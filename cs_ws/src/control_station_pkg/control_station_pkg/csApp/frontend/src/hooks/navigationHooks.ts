@@ -44,6 +44,19 @@ export const useGoalTracker = () => {
 
 		fetch(request).then((res) => res.json()).then((data) => console.log(data));
 
+		// let formData = new FormData();
+		// 								formData.append("x",  x.toString());
+		// 								formData.append('y',  y.toString());
+		// 								formData.append('yaw', o.toString());
+						
+		// 								let request = new Request('http://127.0.0.1:8000/csApp/navigation/add_goal_nav', {method: 'POST',
+		// 																	body: formData,
+		// 																	headers: {"X-CSRFToken": csrftoken ?? ''}})
+		// 								fetch(request)
+		// 									.then(response => response.json())
+		// 									.then(result => {})
+
+
 	};
 
 	const resetGoals = () => {

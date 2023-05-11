@@ -347,21 +347,21 @@ class Controller():
 
     # send the coordinates the rover must reach and the orientation it must reach them in
     def pub_nav_goal(self, x, y, yaw):
-        self.cs.node.get_logger().info("NAV: set goal (%.2f, %.2f) + %.2f (orientation)", x, y, yaw)
+        #self.cs.node.get_logger().info("NAV: set goal (%.2f, %.2f) + %.2f (orientation)", x, y, yaw)
 
-        self.cs.rover.Nav.setGoal([x, y, yaw])
+        self.cs.rover.Nav.addGoal([x, y, yaw])
 
         # PoseStamped message construction: Header + Pose
         # ----- Header -----
         nav = self.cs.rover.Nav
         h = Header()
-        h.frame_id = str(nav.getId())  # goal has an id by which it is recognized
+        #h.frame_id = str(nav.getId())  # goal has an id by which it is recognized
 
         # ----- Pose: Point + Quaternion -----
         pose = Pose()
 
         # z = 0.0 (the rover can't fly yet)
-        point = Point(x, y, 0.0)
+        point = Point(x=x, y=y, z=0.0)
         pose.position = point
 
         # rover orientation
@@ -371,8 +371,10 @@ class Controller():
         pose.orientation.y = q[2]
         pose.orientation.z = q[3]
 
-        # -----------------------------------
-        # publish goal to rover
+
+        #TODO: should be replaced by a service
+        #pour avoir le goal, call self.cs.rover.Nav.getGoal()
+        #apres avoir recu confirmation du rover, appeler self.cs.rover.Nav.popGoal()
         self.cs.Nav_Goal_pub.publish(PoseStamped(header=h, pose=pose))
 
     # cancel a specific Navigation goal by giving the goal's id
