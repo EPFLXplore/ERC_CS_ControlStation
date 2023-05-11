@@ -123,7 +123,7 @@ class Rover():
         self.node.create_subscription(Int16MultiArray, 'sc_params'                   , self.model.SC.params          , 10)
         self.node.create_subscription(Int8,            'TaskProgress'                , self.model.setProgress        , 10)
         # NAV --> Rover
-        self.node.create_subscription(Odometry,        '/odometry/filtered'          , self.NAV_odometry_pub.publish , 10)
+        # self.node.create_subscription(Odometry,        '/odometry/filtered'          , self.NAV_odometry_pub.publish , 10) # CS DIRECTLY SUBSCRIBED
         # HD --> Rover
         self.node.create_subscription(JointState,      '/arm_control/joint_telemetry', self.HD_telemetry_pub.publish , 10)
         self.node.create_subscription(Int32,           '/avionics_ToF'               , self.HD_tof.publish           , 10)

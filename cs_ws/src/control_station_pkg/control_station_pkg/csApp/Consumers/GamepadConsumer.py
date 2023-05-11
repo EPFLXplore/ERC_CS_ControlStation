@@ -34,7 +34,7 @@ class GamepadConsumer(AsyncWebsocketConsumer):
         utils.gamepad.id = json.loads(data)['id']
         buttons = json.loads(data)['buttons']
         axes = json.loads(data)['axes']
-        views.cs.send_gamepad_data(axes, buttons)
+        cs.send_gamepad_data(axes, buttons)
 
 
 
