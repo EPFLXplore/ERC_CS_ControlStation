@@ -92,6 +92,9 @@ class Rover():
         self.node.create_subscription(Int8,           'CS_HD_SemiAuto_Id', self.model.HD.set_semiAutoID, 10)
         # messages from CS (NAV)
         self.node.create_subscription(PoseStamped,    'CS_NAV_goal'      , self.model.Nav.setGoal      , 10)
+        self.node.create_subscription(GoalID,         'CS_NAV_cancel'    , self.model.Nav.cancelGoal   , 10)
+        #TODO: add cancel goal and other messages from CS to NAV
+
 
         # ==========================================================
         #           MESSAGES BETWEEN ROVER AND SUBSYSTEMS
@@ -106,7 +109,7 @@ class Rover():
         # Rover --> NAV
         # self.Nav_pub            = self.node.create_publisher(Int8,        'Navigation'       , 1)
         # self.Nav_CancelGoal_pub = self.node.create_publisher(GoalID,      '/move_base/cancel', 1)
-        self.Nav_Goal_pub       = self.node.create_publisher(PoseStamped, 'CS/NAV_goal'      , 1)
+        self.Nav_Goal_pub       = self.node.create_publisher(PoseStamped, 'NAV_goal'         , 1)
         self.Nav_Status         = self.node.create_publisher(String,      'NAV_STATUS'       , 1)
         # Rover --> SC
         self.SC_pub             = self.node.create_publisher(Int8,        'sc_cmd'           , 1)

@@ -118,8 +118,11 @@ class CS:
         self.HD_voltmeter_pub       = self.node.create_publisher(Int8,              'HD_voltmeter',        1)
 
         # CS --> ROVER (NAV)
-        self.Nav_Goal_pub           = self.node.create_publisher(PoseStamped,       'CS_NAV_goal',         1)
         self.Nav_CancelGoal_pub     = self.node.create_publisher(GoalID,            'CS_NAV_cancel',       1)
+
+        self.Nav_Goal_pub           = self.node.create_publisher(PoseStamped,       'CS_NAV_goal',         1)
+        self.Nav_status_pub         = self.node.create_publisher(String,            'CS_NAV_status',       1)
+        
         self.Nav_Joystick_pub       = self.node.create_publisher(Twist,             '/cmd_vel',            1)
         self.Nav_DebugWheels_pub    = self.node.create_publisher(Int16MultiArray,   '/debug/wheel_cmds',   1)
 
