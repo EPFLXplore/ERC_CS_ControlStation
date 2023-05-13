@@ -76,12 +76,14 @@ class CS:
         self.CS_confirm_pub         = self.node.create_publisher(Bool,              'CS_Confirm',          1)
 
         #CS --> ROVER (GAMEPAD)
-        self.Gamepad_pub            = self.node.create_publisher(Joy,    'Gamepad',             1)
+        #self.Gamepad_pub            = self.node.create_publisher(Joy,    'Gamepad',             1)
 
         # CS --> ROVER (HD)
         self.HD_mode_pub            = self.node.create_publisher(Int8,              'CS_HD_mode',          1)
         self.HD_SemiAuto_Id_pub     = self.node.create_publisher(Int8,              'CS_HD_SemiAuto_Id',   1)
         self.HD_Angles_pub          = self.node.create_publisher(Int8MultiArray,    'HD_Angles',           1)
+        self.HD_Gamepad_pub         = self.node.create_publisher(Joy,               'CS/HD_gamepad',       1)
+        
         #TODO necessary? 
         #self.HD_ManualVelocity_pub  = self.node.create_publisher('HD_ManualVelocity',  Float32,        1)
         self.HD_InvManual_Coord_pub = self.node.create_publisher(Int8MultiArray,    'HD_InvManual_Coord',  1)
@@ -113,7 +115,7 @@ class CS:
         self.node.create_subscription(Image,            'sc_camera',                       self.controller.sc_image           , 10)
 
         # HD messages
-        self.node.create_subscription(JointState,       'ROVER_HD_telemetry',              self.controller.hd_telemetry       , 10)
+        self.node.create_subscription(JointState,       'HD/arm_control/joint_telemetry',              self.controller.hd_data       , 10)
         self.node.create_subscription(Int32,            'ROVER_HD_tof',                    self.controller.hd_tof             , 10)
         self.node.create_subscription(Float32MultiArray,'ROVER_HD_detected_element',       self.controller.hd_detected_element, 10)
 

@@ -90,6 +90,7 @@ class Rover():
         # messages form CS (HD)
         self.node.create_subscription(Int8,           'CS_HD_mode'       , self.model.HD.setHDMode     , 10)
         self.node.create_subscription(Int8,           'CS_HD_SemiAuto_Id', self.model.HD.set_semiAutoID, 10)
+        self.node.create_subscription(Joy,            'CS/HD_gamepad'    , self.model.HD.set_semiAutoID, 10)
         # messages from CS (NAV)
         self.node.create_subscription(PoseStamped,    'CS/NAV_goal'      , self.model.Nav.setGoal      , 10)
         # self.node.create_subscription(GoalID,         'CS_NAV_cancel'    , self.model.Nav.cancelGoal   , 10)

@@ -22,6 +22,7 @@ class InfoHDConsumer(WebsocketConsumer):
     
     def connect(self):
 
+        print("connect to info_hd consumer")
 
         self.tab_group_name = 'info_hd'
 
@@ -34,6 +35,8 @@ class InfoHDConsumer(WebsocketConsumer):
         self.accept()
 
     def disconnect(self, close_code):
+
+        print("disconnect to info_hd consumer")
         # Leave tab group
         async_to_sync(self.channel_layer.group_discard)(
             self.tab_group_name,
@@ -43,8 +46,8 @@ class InfoHDConsumer(WebsocketConsumer):
 
     # Receive message from WebSocket
     def receive(self, text_data):
-        data_json = json.loads(text_data)
 
+        data_json = json.loads(text_data)
         print("received in hd")
 
         # Send message to room group
@@ -64,7 +67,7 @@ class InfoHDConsumer(WebsocketConsumer):
     # Receive message from room group
     def hd_message(self, event):
 
-        print("broadcast_info_nav")
+        print("broadcast_info_hd")
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({

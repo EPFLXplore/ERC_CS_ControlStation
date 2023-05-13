@@ -183,18 +183,15 @@ class Controller():
 
     def hd_data(self, JointState):
 
-        print("nav data received")
-
         joint_positon = JointState.position
         joint_velocity = JointState.velocity
         joint_current = JointState.effort
 
-
         async_to_sync(channel_layer.group_send)("info_hd", {"type": "hd_message",
-                                                            'joint_position': joint_positon,
-                                                            'joint_velocity': joint_velocity,
-                                                            'joint_current': joint_current,
-                                                            'detected_tag' : [0,0,0,1],
+                                                            'joint_position': [joint_positon[0], joint_positon[1], joint_positon[2], joint_positon[3], joint_positon[4], joint_positon[5]],
+                                                            'joint_velocity': [joint_velocity[0], joint_velocity[1], joint_velocity[2], joint_velocity[3], joint_velocity[4], joint_velocity[5]],
+                                                            'joint_current': [joint_current[0], joint_current[1], joint_current[2], joint_current[3], joint_current[4], joint_current[5]],
+                                                            'detected_tags' : [0,0,0,1],
                                                             'task_outcome' : False,
                                                                         })
     
