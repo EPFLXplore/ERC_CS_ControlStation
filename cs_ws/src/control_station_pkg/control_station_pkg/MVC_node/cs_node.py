@@ -83,7 +83,7 @@ class CS:
         self.HD_SemiAuto_Id_pub     = self.node.create_publisher(Int8,              'CS_HD_SemiAuto_Id',   1)
         self.HD_Angles_pub          = self.node.create_publisher(Int8MultiArray,    'HD_Angles',           1)
         self.HD_Gamepad_pub         = self.node.create_publisher(Joy,               'CS/HD_gamepad',       1)
-        
+
         #TODO necessary? 
         #self.HD_ManualVelocity_pub  = self.node.create_publisher('HD_ManualVelocity',  Float32,        1)
         self.HD_InvManual_Coord_pub = self.node.create_publisher(Int8MultiArray,    'HD_InvManual_Coord',  1)
@@ -171,5 +171,8 @@ class CS:
         joy_msg = Joy()
         joy_msg.axes = axes
         joy_msg.buttons = buttons
+
+        self.node.get_logger().info('Received gamepad:" %s"' % joy_msg.buttons)
         
-        self.Gamepad_pub.publish(joy_msg)
+        #changer si on doit l'envoyer a la nav
+        self.HD_Gamepad_pub.publish(joy_msg)

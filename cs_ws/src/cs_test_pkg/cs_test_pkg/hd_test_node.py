@@ -5,6 +5,8 @@ from rclpy.node import Node
 from std_msgs.msg import String, Int32, Int8
 from sensor_msgs.msg import JointState
 
+from sensor_msgs.msg import JointState, Joy
+
 
 class HdTestNode(Node):
 
@@ -18,10 +20,12 @@ class HdTestNode(Node):
         self.subscription_semiauto_id = self.create_subscription(Int8,'ROVER/element_id',self.id_callback,10)
         self.subscription_mode = self.create_subscription(Int8,'ROVER/HD_mode',self.mode_callback,10)
         self.subscription_maintenance = self.create_subscription(Int8,'ROVER/Maintenance',self.maintenance_callback,10)
+        self.subscription_gamepad = self.create_subscription(Joy,'ROVER/HD_gamepad',self.gamepad_callback,10)
 
         timer_period = 1.0  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.i = 0
+        self.j = 0
 
     def timer_callback(self):
 
@@ -43,6 +47,13 @@ class HdTestNode(Node):
     
     def maintenance_callback(self, msg):
         self.get_logger().info('Received maintenance: %d' % msg.data)
+
+    def gamepad_callback(self, msg):
+        self.j+=1
+        if(self.j == 50):
+            self.j = 0
+            self.get_logger().info('Received gamepad:" %s"' % msg.buttons)
+        #self.get_logger().info('Received gamepad:" %s"' % msg.axes)
 
 
 def main(args=None):
