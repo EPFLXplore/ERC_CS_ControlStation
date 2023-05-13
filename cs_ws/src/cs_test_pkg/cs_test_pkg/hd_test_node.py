@@ -21,7 +21,6 @@ class HdTestNode(Node):
         self.subscription_element_id = self.create_subscription(Int8,'ROVER/element_id',self.element_callback,10)
         
        # self.subscription_semiauto_id = self.create_subscription(Int8,'ROVER/element_id',self.id_callback,10)
-        self.subscription_mode = self.create_subscription(Int8,'ROVER/HD_mode',self.mode_callback,10)
         self.subscription_maintenance = self.create_subscription(Int8,'ROVER/Maintenance',self.maintenance_callback,10)
         self.subscription_gamepad = self.create_subscription(Joy,'ROVER/HD_gamepad',self.gamepad_callback,10)
 
