@@ -6,8 +6,6 @@ function useGamepad() {
 	const [gamepad, setGamepad] = useState<GamepadController | null>(null);
 	const [gamepadState, setGamepadState] = useState<GamepadControllerState | null>(null);
 
-	console.log("setup gamepad")
-
 	const update = () => {
 		if (gamepad?.getGamepad() && gamepad.getIsConnected()) {
 			setGamepadState(gamepad.getState());
@@ -23,22 +21,25 @@ function useGamepad() {
 
 		setSocket(gamepadSocket);
 	}, []);
+	
+	useEffect(() => {
+		setInterval(() => {
+			if (gamepad?.getGamepad() && gamepad.getIsConnected() && socket?.readyState === WebSocket.OPEN) {
+				const stateSent = {
+					axes: gamepad.getState().axes,
+					buttons: gamepad.getState().buttons,
+					id: gamepad.getState().controller?.id ?? "",
+				};
+				console.log(stateSent);
+				socket?.send(JSON.stringify(stateSent));
+			}
+		}, 200);
+	}, [socket])
 
 	useEffect(() => {
 		requestAnimationFrame(update);
 	}, [gamepad]);
 
-	setInterval(() => {
-		if (gamepad?.getGamepad() && gamepad.getIsConnected() && socket?.readyState === WebSocket.OPEN) {
-			const stateSent = {
-				axes: gamepad.getState().axes,
-				buttons: gamepad.getState().buttons,
-				id: gamepad.getState().controller?.id ?? "",
-			};
-			console.log(stateSent);
-			socket?.send(JSON.stringify(stateSent));
-		}
-	}, 2000);
 
 	return [gamepad, gamepadState] as const;
 }
