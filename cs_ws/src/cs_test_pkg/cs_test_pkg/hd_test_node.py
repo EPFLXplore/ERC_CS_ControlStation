@@ -17,17 +17,13 @@ class HdTestNode(Node):
         #self.publisher_avionics = self.create_publisher(Int32, 'HD/avionics_ToF', 10)
         self.publisher_joint_telemetry = self.create_publisher(JointState, 'HD/arm_control/joint_telemetry', 10)
 
-<<<<<<< HEAD
-        self.subscription_semiauto_id = self.create_subscription(Int8,'ROVER/HD_SemiAuto_Id',self.goal_callback,10)
         self.subscription_mode = self.create_subscription(Int8,'ROVER/HD_mode',self.mode_callback,10)
-        self.subscription_element_id = self.create_subscription(Int8,'ROVER/HD_element_id',self.element_callback,10)
-        self.subscription_maintenance = self.create_subscription(Int8,'ROVER/Maintenance',self.goal_callback,10)
-=======
-        self.subscription_semiauto_id = self.create_subscription(Int8,'ROVER/element_id',self.id_callback,10)
+        self.subscription_element_id = self.create_subscription(Int8,'ROVER/element_id',self.element_callback,10)
+        
+       # self.subscription_semiauto_id = self.create_subscription(Int8,'ROVER/element_id',self.id_callback,10)
         self.subscription_mode = self.create_subscription(Int8,'ROVER/HD_mode',self.mode_callback,10)
         self.subscription_maintenance = self.create_subscription(Int8,'ROVER/Maintenance',self.maintenance_callback,10)
         self.subscription_gamepad = self.create_subscription(Joy,'ROVER/HD_gamepad',self.gamepad_callback,10)
->>>>>>> websocket
 
         timer_period = 1.0  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
@@ -45,19 +41,6 @@ class HdTestNode(Node):
 
     def timer_callback(self):
 
-<<<<<<< HEAD
-        # msg_avionics = Int32()
-        # msg_avionics.data = self.i
-        # self.publisher_avionics.publish(msg_avionics)
-
-        # msg_joint_telemetry = JointState()
-        # msg_joint_telemetry.header.stamp = self.get_clock().now().to_msg()
-        # msg_joint_telemetry.name = ['joint1', 'joint2', 'joint3']
-        # msg_joint_telemetry.position = [self.i, self.i + 10, self.i + 20]
-        # msg_joint_telemetry.velocity = [self.i + 30, self.i + 40, self.i + 50]
-        # msg_joint_telemetry.effort = [self.i + 60, self.i + 70, self.i + 80]
-        # self.publisher_joint_telemetry.publish(msg_joint_telemetry)
-=======
         msg_joint_telemetry = JointState()
         msg_joint_telemetry.header.stamp = self.get_clock().now().to_msg()
         msg_joint_telemetry.name = ['joint1', 'joint2', 'joint3', 'joint4', 'joint5', 'joint6']
@@ -65,9 +48,8 @@ class HdTestNode(Node):
         msg_joint_telemetry.velocity = [self.i + 30., self.i + 40., self.i + 50., self.i + 60., self.i + 70., self.i + 80.]
         msg_joint_telemetry.effort = [self.i + 60., self.i + 70., self.i + 80., self.i + 90., self.i + 100., self.i + 110.]
         self.publisher_joint_telemetry.publish(msg_joint_telemetry)
->>>>>>> websocket
 
-         self.i += 1
+        self.i += 1
 
     def id_callback(self, msg):
         self.get_logger().info('Received element id: %d' % msg.data)
