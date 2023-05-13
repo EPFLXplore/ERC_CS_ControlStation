@@ -211,6 +211,15 @@ class HandlingDevice:
         else:
             self.__hd_mode = mode
             self.rover.HD_mode_pub.publish(mode_ros)
+            self.rover.node.get_logger().info("mode element ID sent")
+
+
+    def send_element_id_hd(self, id):
+        self.rover.send_HD_element_id_pub.publish(id)
+        self.rover.node.get_logger().info("HD element ID sent")
+
+    def send_toggle_info(self, toggle):
+        self.rover.send_toggle_info_pub.publish(Bool(data=toggle))
 
     def getHDMode(self):
         return self.__hd_mode

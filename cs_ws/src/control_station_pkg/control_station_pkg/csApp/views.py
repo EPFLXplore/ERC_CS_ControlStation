@@ -239,18 +239,24 @@ def retry_hd(request):
 
 def set_id(request):
     cs.rover.HD.set_joint_positions([10,0,0,0,0,0])
-    cs.controller.sendJson(Task.MAINTENANCE)
+    #cs.controller.sendJson(Task.MAINTENANCE)
+    id = int(request.POST.get("id"))
+    cs.rover.HD.setElemId(id)
+    cs.HD_id.publish(Int8(data=id))
+    cs.node.get_logger().info("Maintenance: Set HD id to " + str(id))
     #print(cs.rover.HD.getElemId())
     #cs.controller.pub_hd_elemId(id)
     return JsonResponse({})
 
 def set_hd_mode(request):
-
-
+    mode = int(request.POST.get("mode"))
+    cs.rover.HD.setHDMode(mode)
+    cs.HD_mode_pub.publish(Int8(data=mode))
+    cs.node.get_logger().info("Maintenance: Set HD mode to " +  str(mode))
     return JsonResponse({})
 
 def toggle_hd_camera(request):
-
+    #TODO AFTER UGO SET IT
     
     return JsonResponse({})
 

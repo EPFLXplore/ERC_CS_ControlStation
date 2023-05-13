@@ -16,28 +16,38 @@ class HdTestNode(Node):
         self.publisher_joint_telemetry = self.create_publisher(JointState, 'HD/arm_control/joint_telemetry', 10)
 
         self.subscription_semiauto_id = self.create_subscription(Int8,'ROVER/HD_SemiAuto_Id',self.goal_callback,10)
-        self.subscription_mode = self.create_subscription(Int8,'ROVER/HD_mode',self.goal_callback,10)
+        self.subscription_mode = self.create_subscription(Int8,'ROVER/HD_mode',self.mode_callback,10)
+        self.subscription_element_id = self.create_subscription(Int8,'ROVER/HD_element_id',self.element_callback,10)
         self.subscription_maintenance = self.create_subscription(Int8,'ROVER/Maintenance',self.goal_callback,10)
 
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.i = 0
 
+    def mode_callback(self, msg):
+        self.get_logger().info('Received mode: "%d"' % msg.data)
+
+    def element_callback(self, msg):
+        self.get_logger().info('Received element: "%d"' % msg.data)
+
+    def goal_callback(self, msg):
+        self.get_logger().info('Received goal: "%d"' % msg.data)
+
     def timer_callback(self):
 
-        msg_avionics = Int32()
-        msg_avionics.data = self.i
-        self.publisher_avionics.publish(msg_avionics)
+        # msg_avionics = Int32()
+        # msg_avionics.data = self.i
+        # self.publisher_avionics.publish(msg_avionics)
 
-        msg_joint_telemetry = JointState()
-        msg_joint_telemetry.header.stamp = self.get_clock().now().to_msg()
-        msg_joint_telemetry.name = ['joint1', 'joint2', 'joint3']
-        msg_joint_telemetry.position = [self.i, self.i + 10, self.i + 20]
-        msg_joint_telemetry.velocity = [self.i + 30, self.i + 40, self.i + 50]
-        msg_joint_telemetry.effort = [self.i + 60, self.i + 70, self.i + 80]
-        self.publisher_joint_telemetry.publish(msg_joint_telemetry)
+        # msg_joint_telemetry = JointState()
+        # msg_joint_telemetry.header.stamp = self.get_clock().now().to_msg()
+        # msg_joint_telemetry.name = ['joint1', 'joint2', 'joint3']
+        # msg_joint_telemetry.position = [self.i, self.i + 10, self.i + 20]
+        # msg_joint_telemetry.velocity = [self.i + 30, self.i + 40, self.i + 50]
+        # msg_joint_telemetry.effort = [self.i + 60, self.i + 70, self.i + 80]
+        # self.publisher_joint_telemetry.publish(msg_joint_telemetry)
 
-        self.i += 1
+         self.i += 1
 
 
 def main(args=None):

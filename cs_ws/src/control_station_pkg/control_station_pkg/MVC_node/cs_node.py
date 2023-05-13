@@ -45,27 +45,26 @@ class CS:
         if(not rclpy.ok()):
             rclpy.init(args=sys.argv)
             
-        self.node = rclpy.create_node("csApp")
-
-
-        self.sendRequest()
-        print("start spinning")
+        self.node = rclpy.create_node("csApp")        
 
         #self.loop = asyncio.get_event_loop()
 
         #self.loop = asyncio.get_event_loop().run_forever(rclpy.spin(self.node))
         #asyncio.create_task(rclpy.spin(self.node))
 
-        thr = threading.Thread(target=rclpy.spin, args=(self.node,)).start()
-
-
-        
-
         # MVC pattern => model, view (front-end), controller
 
 
         self.controller = Controller(self) # controller
         self.rover      = Rover()          # model
+        self.roverConnected = False
+
+
+        #==================Service CLIENT==========================
+        print("Waiting for ROVER_ONLINE service...")
+        self.onlineConfirmClient = self.node.create_client(SetBool, "ROVER_ONLINE")
+        print("Sending Request...")
+        self.sendRequest()
 
 
         # self.cameras    = Cameras()
@@ -80,12 +79,14 @@ class CS:
         self.CS_confirm_pub         = self.node.create_publisher(Bool,              'CS/Confirm',          1)
 
         #CS --> ROVER (GAMEPAD)
-        self.Gamepad_pub            = self.node.create_publisher(Joy,    'Gamepad',             1)
+        self.Gamepad_pub            = self.node.create_publisher(Joy,               'CS/Gamepad',          1)
 
         # CS --> ROVER (HD)
         self.HD_mode_pub            = self.node.create_publisher(Int8,              'CS/HD_mode',          1)
         self.HD_SemiAuto_Id_pub     = self.node.create_publisher(Int8,              'CS/HD_SemiAuto_Id',   1)
-        self.HD_Angles_pub          = self.node.create_publisher(Int8MultiArray,    'CS/HD_Angles',           1)
+        self.HD_Angles_pub          = self.node.create_publisher(Int8MultiArray,    'CS/HD_Angles',        1)
+        self.HD_id                  = self.node.create_publisher(Int8,              'CS/HD_element_id',    1)
+        self.HD_toggle_camera_pub   = self.node.create_publisher(Bool,              'CS/HD_toggle_camera', 1)
         #TODO necessary? 
         #self.HD_ManualVelocity_pub  = self.node.create_publisher('HD_ManualVelocity',  Float32,        1)
         self.HD_InvManual_Coord_pub = self.node.create_publisher(Int8MultiArray,    'CS/HD_InvManual_Coord',  1)
@@ -141,6 +142,10 @@ class CS:
         #rclpy.spin(self.node)
 
         #views.launch_nav(None)
+
+
+        thr = threading.Thread(target=rclpy.spin, args=(self.node,)).start()
+        print("start spinning")
         
 
     def sendRequest(self):
@@ -157,6 +162,7 @@ class CS:
         
 
     def roverAnswerReceived(self,future):
+        self.node.get_logger().info('Received message from rover')
         self.roverConnected = future.result().success
         self.node.get_logger().info('ROVER is online')
 
