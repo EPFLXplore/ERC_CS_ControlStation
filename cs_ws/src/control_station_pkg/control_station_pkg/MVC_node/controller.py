@@ -181,13 +181,30 @@ class Controller():
         # publish to front-end
         self.sendJson(Task.MAINTENANCE)
 
+    def hd_data(self, JointState):
+
+        print("nav data received")
+
+        joint_positon = JointState.position
+        joint_velocity = JointState.velocity
+        joint_current = JointState.effort
+
+
+        async_to_sync(channel_layer.group_send)("info_hd", {"type": "hd_message",
+                                                            'joint_position': joint_positon,
+                                                            'joint_velocity': joint_velocity,
+                                                            'joint_current': joint_current,
+                                                            'detected_tag' : [0,0,0,1],
+                                                            'task_outcome' : False,
+                                                                        })
+    
+
     # ========= NAVIGATION CALLBACKS =========
 
     # receives an Odometry message from NAVIGATION
     def nav_data(self, odometry):
 
         print("nav data received")
-
 
         #data = odometry
         #nav = self.cs.rover.Nav
@@ -212,21 +229,19 @@ class Controller():
 
         # self.cs.node.get_logger().info("linvel %d", nav.getLinVel())
 
-        async_to_sync(channel_layer.group_send)("info_nav", {"type": "info_nav.message",'state'   : "",
-                                                                                'x'       : odometry.pose.pose.position.x,
-                                                                                'y'       : odometry.pose.pose.position.y,
-                                                                                'z'       : odometry.pose.pose.position.z,
-                                                                                'ang_x'   : odometry.pose.pose.orientation.x,
-                                                                                'ang_y'   : odometry.pose.pose.orientation.y,
-                                                                                'ang_z'   : odometry.pose.pose.orientation.z,
-                                                                                'linVel'  : odometry.twist.twist.linear,
-                                                                                'angVel'  : odometry.twist.twist.angular,
-                                                                                'current_goal' : "",
-                                                                                'goals'   : "",
-                                                                                'ang_front_right_wheel' : 20,
-                                                                                'ang_front_left_wheel'  : 25,
-                                                                                'ang_back_right_wheel'  : 30,
-                                                                                'ang_back_left_wheel'   : 35,
+        position = odometry.pose.pose.position
+        orientation = odometry.pose.pose.orientation
+        linVel = odometry.twist.twist.linear
+        angVel = odometry.twist.twist.angular
+
+
+        async_to_sync(channel_layer.group_send)("info_nav", {"type": "nav_message",
+                                                            'position'   : [position.x, position.y, position.z],
+                                                            'orientation': [orientation.w, orientation.x, orientation.y, orientation.z],
+                                                            'linVel'     : [linVel.x, linVel.y, linVel.z],
+                                                            'angVel'     : [angVel.x, angVel.y, angVel.z],
+                                                            'current_goal' : "",
+                                                            'wheel_ang' : [1,2,3,4]
                                                                         })
 
         # publish to front-end
@@ -244,7 +259,8 @@ class Controller():
         self.sendJson(Task.LOGS)
 
     def log_clbk(self, data):
-        #return
+
+        return
 
         print("log_clbk ")
 

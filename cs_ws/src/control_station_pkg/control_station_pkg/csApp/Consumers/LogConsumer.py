@@ -121,14 +121,14 @@ class LogConsumer(WebsocketConsumer):
 
 
         # Send message to WebSocket
-        async_to_sync(self.send(text_data=json.dumps({
+        self.send(text_data=json.dumps({
                 'hours': event['hours'],
                 'minutes': event['minutes'],
                 'seconds': event['seconds'],
                 'type': event['severity'],
                 'message': event['message'],
 
-        })))
+        }))
 
 
 

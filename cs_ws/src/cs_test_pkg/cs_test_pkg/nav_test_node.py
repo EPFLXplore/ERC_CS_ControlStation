@@ -19,9 +19,6 @@ class NavTestNode(Node):
         # Log publisher
         self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
 
-                # Log publisher
-        self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
-
         self.publisher_odometry = self.create_publisher(Odometry, 'NAV/odometry/filtered', 10)
         
         #TODO

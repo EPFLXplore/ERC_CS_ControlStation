@@ -38,13 +38,6 @@ class CS:
     '''
         Control Station node in the ROS network of the rover
     '''
-
-    def run(self):
-        '''
-            Run the node
-        '''
-        rclpy.spin(self.node)
-        print("Listening")
     
     def __init__(self):
 
@@ -60,7 +53,7 @@ class CS:
         #self.loop = asyncio.get_event_loop().run_forever(rclpy.spin(self.node))
         #asyncio.create_task(rclpy.spin(self.node))
 
-        #thr = threading.Thread(target=rclpy.spin, args=(self.node,)).start()
+        thr = threading.Thread(target=rclpy.spin, args=(self.node,)).start()
 
         
 

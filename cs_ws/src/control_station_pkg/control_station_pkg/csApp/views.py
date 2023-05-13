@@ -238,6 +238,7 @@ def retry_hd(request):
     return JsonResponse({})
 
 def set_id(request):
+    print(request.POST.get("id"))
     cs.rover.HD.set_joint_positions([10,0,0,0,0,0])
     cs.controller.sendJson(Task.MAINTENANCE)
     #print(cs.rover.HD.getElemId())

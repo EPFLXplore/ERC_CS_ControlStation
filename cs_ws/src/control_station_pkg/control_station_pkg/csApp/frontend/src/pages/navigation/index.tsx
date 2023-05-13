@@ -18,7 +18,7 @@ import { useNavigation } from "../../hooks/navigationHooks";
 export default ({ mode }: { mode: Mode }) => {
 	const { goals, addGoal, removeGoal, resetGoals } = useGoalTracker();
 
-	const [currentPosition, wheelsPosition] = useNavigation();
+	const [currentPosition, wheelsPosition, linearVelocity, angularVelocity] = useNavigation();
 
 	const handleAddGoal = () => {
 		// Get the values from the input fields
@@ -39,12 +39,6 @@ export default ({ mode }: { mode: Mode }) => {
 	const distance = 15;
 	const routeLeft = 20;
 	const EstimatedTime = "07:00";
-	const linear = 5;
-	const angular = 3;
-	const WheelFL = 10;
-	const WheelFR = 10;
-	const WheelRL = 0;
-	const WheelRR = 0;
 
 	return (
 		<div className="page center">
@@ -132,8 +126,8 @@ export default ({ mode }: { mode: Mode }) => {
 								<p>Angular: </p>
 							</div>
 							<div>
-								<p>{linear} m/s</p>
-								<p>{angular} rad/s</p>
+								<p>{linearVelocity} m/s</p>
+								<p>{angularVelocity} rad/s</p>
 							</div>
 						</div>
 					</div>
