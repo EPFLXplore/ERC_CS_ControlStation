@@ -13,12 +13,12 @@ import styles from "./style.module.sass";
 import { Size } from "../../utils/size.type";
 import Timer from "../../components/Timer";
 import { useGoalTracker } from "../../hooks/navigationHooks";
-import { useNavigationSelector } from "../../hooks/navigationHooks";
+import { useNavigation } from "../../hooks/navigationHooks";
 
 export default ({ mode }: { mode: Mode }) => {
 	const { goals, addGoal, removeGoal, resetGoals } = useGoalTracker();
 
-	var [currentPosition, setCurrentPosition] = useState({ x: 0, y: 0, o: 0 });
+	const [currentPosition, wheelsPosition] = useNavigation();
 
 	const handleAddGoal = () => {
 		// Get the values from the input fields
@@ -149,10 +149,10 @@ export default ({ mode }: { mode: Mode }) => {
 									<p>Wheel RR: </p>
 								</div>
 								<div style={{ marginRight: "30px" }}>
-									<p>{WheelFL}°</p>
-									<p>{WheelFR}°</p>
-									<p>{WheelRL}°</p>
-									<p>{WheelRR}°</p>
+									<p>{wheelsPosition.fl}°</p>
+									<p>{wheelsPosition.fr}°</p>
+									<p>{wheelsPosition.rl}°</p>
+									<p>{wheelsPosition.rr}°</p>
 								</div>
 							</div>
 						</div>
