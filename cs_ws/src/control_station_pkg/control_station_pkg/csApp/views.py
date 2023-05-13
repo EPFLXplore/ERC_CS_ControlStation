@@ -244,6 +244,16 @@ def set_id(request):
     #cs.controller.pub_hd_elemId(id)
     return JsonResponse({})
 
+def set_hd_mode(request):
+
+
+    return JsonResponse({})
+
+def toggle_hd_camera(request):
+
+    
+    return JsonResponse({})
+
 # -----------------------------------
 # Science views
 

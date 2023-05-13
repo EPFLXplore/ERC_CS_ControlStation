@@ -8,9 +8,11 @@ from asgiref.sync import sync_to_async
 
 Data format :
 {
-
-    'state' : string,
-
+    'joint_position' : [float] * 6
+    'joint_velocity' : [float] * 6
+    'joint_current' : [float] * 6
+    'detected_tags' : [bool] * 4
+    'task_outcome' : bool
 }
 
 """

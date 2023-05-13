@@ -91,7 +91,7 @@ class Rover():
         self.node.create_subscription(Int8,           'CS_HD_mode'       , self.model.HD.setHDMode     , 10)
         self.node.create_subscription(Int8,           'CS_HD_SemiAuto_Id', self.model.HD.set_semiAutoID, 10)
         # messages from CS (NAV)
-        self.node.create_subscription(PoseStamped,    'CS_NAV_goal'      , self.model.Nav.setGoal      , 10)
+        self.node.create_subscription(PoseStamped,    'CS/NAV_goal'      , self.model.Nav.setGoal      , 10)
 
         # ==========================================================
         #           MESSAGES BETWEEN ROVER AND SUBSYSTEMS
@@ -105,7 +105,7 @@ class Rover():
         self.HD_SemiAuto_Id_pub = self.node.create_publisher(Int8,        'HD_SemiAuto_Id'   , 1)
         # Rover --> NAV
         self.Nav_pub            = self.node.create_publisher(Int8,        'Navigation'       , 1)
-        self.Nav_Goal_pub       = self.node.create_publisher(PoseStamped, 'CS/NAV_goal'      , 1)
+        self.Nav_Goal_pub       = self.node.create_publisher(PoseStamped, 'ROVER/NAV_goal'      , 1)
         self.Nav_CancelGoal_pub = self.node.create_publisher(GoalID,      '/move_base/cancel', 1)
         # Rover --> SC
         self.SC_pub             = self.node.create_publisher(Int8,        'sc_cmd'           , 1)
@@ -193,10 +193,11 @@ class Rover():
                     self.ROVER_STATE = Task.NAVIGATION
                     self.node.get_logger().info("goal launched")
                     goal = self.model.Nav.getGoal()
+                    print("goal : " + str(goal))
                     self.Nav_Goal_pub.publish(PoseStamped(header=goal.header, pose=goal.pose))
                 else:
                     self.log_task_already_launched("Navigation")
-                    # self.node.get_logger().info("Can't launch Navigation if another task is still running!")
+                    self.node.get_logger().info("Can't launch Navigation if another task is still running, task : " + str(self.ROVER_STATE))
 
             elif (self.ROVER_STATE == Task.NAVIGATION):
                 # ABORT

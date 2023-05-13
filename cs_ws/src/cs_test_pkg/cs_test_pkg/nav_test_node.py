@@ -41,9 +41,6 @@ class NavTestNode(Node):
         msg_log.level = (self.i % 3). to_bytes(1,"big")
         msg_log.message = 'Diagnostic Status Message from Nav Test'
         self.publisher_log.publish(msg_log)
-        print("Messaage send ")
-
-        print("log message send  from nav test nodes")
 
         msg_log = DiagnosticStatus()
         msg_log.name = 'Nav Test'
@@ -73,7 +70,7 @@ class NavTestNode(Node):
 
 
     def goal_callback(self, msg):
-        self.get_logger().info('Goal callback: "%s"' % msg.data)
+        self.get_logger().info('Goal callback :' + str(msg.pose.position.x) + " " + str(msg.pose.position.y) + " " + str(msg.pose.position.z))
 
     def navigation_callback(self, msg):
         self.get_logger().info('Navigation callback: "%s"' % msg.data)

@@ -188,31 +188,48 @@ class Controller():
         print("nav data received")
 
 
-        data = odometry
-        nav = self.cs.rover.Nav
+        #data = odometry
+        #nav = self.cs.rover.Nav
 
-        # position (x,y,z)
-        pos = data.pose.pose.position
-        nav.setPos([pos.x, pos.y, pos.z])
+        # # position (x,y,z)
+        # pos = data.pose.pose.position
+        # nav.setPos([pos.x, pos.y, pos.z])
 
-        # orientation
-        quaternion = data.pose.pose.orientation
-        explicit_quat = [quaternion.w, quaternion.x, quaternion.y, quaternion.z]
-        roll, pitch, yaw = quat2euler(explicit_quat)
-        nav.setYaw(yaw)
+        # # orientation
+        # quaternion = data.pose.pose.orientation
+        # explicit_quat = [quaternion.w, quaternion.x, quaternion.y, quaternion.z]
+        # roll, pitch, yaw = quat2euler(explicit_quat)
+        # nav.setYaw(yaw)
 
-        # linear velocity
-        twistLin = data.twist.twist.linear
-        nav.setLinVel([twistLin.x, twistLin.y, twistLin.z])
+        # # linear velocity
+        # twistLin = data.twist.twist.linear
+        # nav.setLinVel([twistLin.x, twistLin.y, twistLin.z])
 
-        # angular velocity
-        twistAng = data.twist.twist.angular
-        nav.setAngVel([twistAng.x, twistAng.y, twistAng.z])
+        # # angular velocity
+        # twistAng = data.twist.twist.angular
+        # nav.setAngVel([twistAng.x, twistAng.y, twistAng.z])
 
         # self.cs.node.get_logger().info("linvel %d", nav.getLinVel())
 
+        async_to_sync(channel_layer.group_send)("info_nav", {"type": "info_nav.message",'state'   : "",
+                                                                                'x'       : odometry.pose.pose.position.x,
+                                                                                'y'       : odometry.pose.pose.position.y,
+                                                                                'z'       : odometry.pose.pose.position.z,
+                                                                                'ang_x'   : odometry.pose.pose.orientation.x,
+                                                                                'ang_y'   : odometry.pose.pose.orientation.y,
+                                                                                'ang_z'   : odometry.pose.pose.orientation.z,
+                                                                                'linVel'  : odometry.twist.twist.linear,
+                                                                                'angVel'  : odometry.twist.twist.angular,
+                                                                                'current_goal' : "",
+                                                                                'goals'   : "",
+                                                                                'ang_front_right_wheel' : 20,
+                                                                                'ang_front_left_wheel'  : 25,
+                                                                                'ang_back_right_wheel'  : 30,
+                                                                                'ang_back_left_wheel'   : 35,
+                                                                        })
+
         # publish to front-end
-        self.sendJson(Task.NAVIGATION)
+        #self.sendJson(Task.NAVIGATION)
 
     # callback for exceptions thrown from rover or from the CS
     def exception_clbk(self, str):

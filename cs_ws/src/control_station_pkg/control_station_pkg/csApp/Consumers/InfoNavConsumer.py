@@ -105,7 +105,7 @@ class InfoNavConsumer(WebsocketConsumer):
 
         print("nav websocket connected")
 
-        self.tab_group_name = 'tab_info_nav'
+        self.tab_group_name = 'info_nav'
 
         # Join tab group
         self.channel_layer.group_add(
@@ -127,7 +127,7 @@ class InfoNavConsumer(WebsocketConsumer):
         self.channel_layer.group_send(
             self.tab_group_name,
             {
-                'type'    : 'broadcast_info_nav',
+                'type'    : 'info_nav_message',
                 'state'   : data_json['state'],
                 'x'       : data_json['x'],
                 'y'       : data_json['y'],
@@ -147,7 +147,7 @@ class InfoNavConsumer(WebsocketConsumer):
         )
 
     # Receive message from room group
-    def broadcast_info_nav(self, data_json):
+    def info_nav_message(self, data_json):
 
         print("broadcast_info_nav")
 

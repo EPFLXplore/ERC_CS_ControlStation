@@ -112,7 +112,7 @@ class CS:
         # NAV messages
         #self.node.create_subscription(Twist,            '/cmd_vel',                        self.controller.test_joystick      , 10) 
         #self.node.create_subscription(Odometry,         'ROVER_NAV_odometry',              self.controller.nav_data           , 10)
-        #self.node.create_subscription(Odometry,         'NAV/odometry/filtered',              self.controller.nav_data           , 10)
+        self.node.create_subscription(Odometry,         'NAV/odometry/filtered',            self.controller.nav_data           , 10)
 
 
         # TODO
