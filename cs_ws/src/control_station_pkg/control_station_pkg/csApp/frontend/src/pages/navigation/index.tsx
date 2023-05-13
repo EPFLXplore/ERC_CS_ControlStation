@@ -18,7 +18,7 @@ import { useNavigation } from "../../hooks/navigationHooks";
 export default ({ mode }: { mode: Mode }) => {
 	const { goals, addGoal, removeGoal, resetGoals } = useGoalTracker();
 
-	const [currentPosition, wheelsPosition, linearVelocity, angularVelocity] = useNavigation();
+	const [currentPosition, currentOrientation, wheelsPosition, linearVelocity, angularVelocity] = useNavigation();
 
 	const handleAddGoal = () => {
 		// Get the values from the input fields
@@ -57,7 +57,7 @@ export default ({ mode }: { mode: Mode }) => {
 					<h2 className={styles.InfoTitle}>{mode} Navigation</h2>
 					<div className={styles.ControlsContainer}>
 						<h3>Current Position</h3>
-						<CurrentPosition currentPoint={currentPosition} />
+						<CurrentPosition currentPoint={[currentPosition[0], currentPosition[1], currentOrientation[2]]} />
 						<div className={styles.inputContainer}>
 							<div className={styles.finalContainer}>
 								X
@@ -126,8 +126,8 @@ export default ({ mode }: { mode: Mode }) => {
 								<p>Angular: </p>
 							</div>
 							<div>
-								<p>{linearVelocity} m/s</p>
-								<p>{angularVelocity} rad/s</p>
+								<p>{Math.sqrt(linearVelocity.reduce((prev, curr) => prev + curr*curr)).toFixed(2)} m/s</p>
+								<p>{angularVelocity[2]} rad/s</p>
 							</div>
 						</div>
 					</div>
@@ -143,10 +143,10 @@ export default ({ mode }: { mode: Mode }) => {
 									<p>Wheel RR: </p>
 								</div>
 								<div style={{ marginRight: "30px" }}>
-									<p>{wheelsPosition.fl}°</p>
-									<p>{wheelsPosition.fr}°</p>
-									<p>{wheelsPosition.rl}°</p>
-									<p>{wheelsPosition.rr}°</p>
+									<p>{wheelsPosition[0]}°</p>
+									<p>{wheelsPosition[1]}°</p>
+									<p>{wheelsPosition[2]}°</p>
+									<p>{wheelsPosition[3]}°</p>
 								</div>
 							</div>
 						</div>

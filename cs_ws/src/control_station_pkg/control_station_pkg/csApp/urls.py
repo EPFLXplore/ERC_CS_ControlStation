@@ -33,6 +33,7 @@ urlpatterns = [
     path('handlingdevice/resume',   resume_hd,      name='resume_hd'),
     path('handlingdevice/retry',    retry_hd,       name='retry_hd'),
     path('handlingdevice/set_id',   set_id,         name='set_id'),
+    path('handlingdevice/set_hd_mode',   set_hd_mode,         name='set_hd_mode'),
     
     #Science
     #path('science/launch/',          launch_science, name='launch_science'),

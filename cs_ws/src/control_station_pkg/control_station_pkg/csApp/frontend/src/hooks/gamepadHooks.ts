@@ -6,6 +6,8 @@ function useGamepad() {
 	const [gamepad, setGamepad] = useState<GamepadController | null>(null);
 	const [gamepadState, setGamepadState] = useState<GamepadControllerState | null>(null);
 
+	console.log("setup gamepad")
+
 	const update = () => {
 		if (gamepad?.getGamepad() && gamepad.getIsConnected()) {
 			setGamepadState(gamepad.getState());
@@ -36,7 +38,7 @@ function useGamepad() {
 			console.log(stateSent);
 			socket?.send(JSON.stringify(stateSent));
 		}
-	}, 200);
+	}, 2000);
 
 	return [gamepad, gamepadState] as const;
 }

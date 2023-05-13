@@ -1,16 +1,24 @@
+import hdModeSelect from "../../utils/hdModeSelect";
 import styles from "./style.module.sass";
 import { useState } from "react";
 
 const ModeSlider = () => {
 	const [activeIndex, setActiveIndex] = useState(0);
-	const texts = ["IK", "FK"];
+	const texts = ["IK", "FK", "SA"];
+
+	const _setActiveIndex = (mode: number) => {
+		hdModeSelect(mode)
+		setActiveIndex(mode)
+	}
 
 	const handlePrev = () => {
-		setActiveIndex((prevIndex) => (prevIndex + texts.length - 1) % texts.length);
+		const newMode = (activeIndex - 1) % texts.length
+		_setActiveIndex(newMode);
 	};
 
 	const handleNext = () => {
-		setActiveIndex((prevIndex) => (prevIndex + 1) % texts.length);
+		const newMode = (activeIndex + 1) % texts.length
+		_setActiveIndex(newMode);
 	};
 
 	return (
