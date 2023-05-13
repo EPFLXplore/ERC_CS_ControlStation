@@ -67,19 +67,19 @@ class Rover():
 
         # ===== PUBLISHERS =====
 
-        self.RoverConfirm_pub  = self.node.create_publisher(String,            'ROVER_RoverConfirm'            , 1)
-        self.Exception_pub     = self.node.create_publisher(String,            'ROVER_Exception'               , 1)
-        self.TaskProgress_pub  = self.node.create_publisher(Int8,              'ROVER_TaskProgress'            , 1)
+        self.RoverConfirm_pub  = self.node.create_publisher(String,            'ROVER/RoverConfirm'            , 1)
+        self.Exception_pub     = self.node.create_publisher(String,            'ROVER/Exception'               , 1)
+        self.TaskProgress_pub  = self.node.create_publisher(Int8,              'ROVER/TaskProgress'            , 1)
         # Rover(SC) --> CS
-        self.SC_state_pub      = self.node.create_publisher(String,            'ROVER_SC_state'                , 1)
-        self.SC_infos_pub      = self.node.create_publisher(String,            'ROVER_SC_info'                 , 1)
-        self.SC_humidities_pub = self.node.create_publisher(Int16,             'ROVER_SC_measurements_humidity', 1)
-        self.SC_params_pub     = self.node.create_publisher(Int16MultiArray,   'ROVER_SC_params'               , 1)
+        self.SC_state_pub      = self.node.create_publisher(String,            'ROVER/SC_state'                , 1)
+        self.SC_infos_pub      = self.node.create_publisher(String,            'ROVER/SC_info'                 , 1)
+        self.SC_humidities_pub = self.node.create_publisher(Int16,             'ROVER/SC_measurements_humidity', 1)
+        self.SC_params_pub     = self.node.create_publisher(Int16MultiArray,   'ROVER/SC_params'               , 1)
         # Rover(HD) --> CS
-        self.HD_telemetry_pub  = self.node.create_publisher(JointState,        'ROVER_HD_telemetry'            , 1)
-        self.HD_tof            = self.node.create_publisher(Int32,             'ROVER_HD_tof'                  , 1)
-        self.NAV_odometry_pub  = self.node.create_publisher(Odometry,          'ROVER_NAV_odometry'            , 1)
-        self.HD_element_pub    = self.node.create_publisher(Float32MultiArray, 'ROVER_HD_detected_element'     , 3)
+        self.HD_telemetry_pub  = self.node.create_publisher(JointState,        'ROVER/HD_telemetry'            , 1)
+        self.HD_tof            = self.node.create_publisher(Int32,             'ROVER/HD_tof'                  , 1)
+        self.NAV_odometry_pub  = self.node.create_publisher(Odometry,          'ROVER/NAV_odometry'            , 1)
+        self.HD_element_pub    = self.node.create_publisher(Float32MultiArray, 'ROVER/HD_detected_element'     , 3)
         #self.diagnostic        = self.node.create_publisher(DiagnosticStatus,  'CS_log'                        ,10)
 
         # ===== SUBSCRIBERS =====
@@ -106,19 +106,19 @@ class Rover():
         
 
         #ROVER --> All
-        self.Gamepad_pub        = self.node.create_publisher(Joy,    'Gamepad_Rover',             1)
+        self.Gamepad_pub        = self.node.create_publisher(Joy,    'ROVER/Gamepad',             1)
 
         # Rover --> HD
-        self.Maintenance_pub    = self.node.create_publisher(Int8,        'Maintenance'      , 1)
-        self.HD_mode_pub        = self.node.create_publisher(Int8,        'HD_mode'          , 1)
-        self.HD_SemiAuto_Id_pub = self.node.create_publisher(Int8,        'HD_SemiAuto_Id'   , 1)
+        self.Maintenance_pub    = self.node.create_publisher(Int8,        'ROVER/Maintenance'      , 1)
+        self.HD_mode_pub        = self.node.create_publisher(Int8,        'ROVER/HD_mode'          , 1)
+        self.HD_SemiAuto_Id_pub = self.node.create_publisher(Int8,        'ROVER/HD_SemiAuto_Id'   , 1)
         # Rover --> NAV
         # self.Nav_pub            = self.node.create_publisher(Int8,        'Navigation'       , 1)
         # self.Nav_CancelGoal_pub = self.node.create_publisher(GoalID,      '/move_base/cancel', 1)
         self.Nav_Goal_pub       = self.node.create_publisher(PoseStamped, 'ROVER/NAV_goal'    , 1)
         self.Nav_Status         = self.node.create_publisher(String,      'ROVER/NAV_STATUS'  , 1)
         # Rover --> SC
-        self.SC_pub             = self.node.create_publisher(Int8,        'sc_cmd'           , 1)
+        self.SC_pub             = self.node.create_publisher(Int8,        'ROVER/SCIENCE_CMD'           , 1)
 
         # ===== SUBSCRIBERS =====
 
