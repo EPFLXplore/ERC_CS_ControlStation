@@ -77,9 +77,12 @@ export const useGoalTracker = () => {
 	return { goals, addGoal, removeGoal, resetGoals };
 };
 
-export function useNavigationSelector() {
+export function useNavigation() {
 	const [socket, setSocket] = useState<WebSocket | null>(null);
-	var currentPoint = { x: 0, y: 0, o: 0 };
+	const [currentPosition, setCurrentPosition] = useState({ x: 0, y: 0, o: 0 });
+	const [wheelsPosition, setWheelsPosition] = useState({ fl: 0, fr: 0, rl: 0, rr: 0 });
+	const [linearVelocity, setLinearVelocity] = useState(0);
+	const [angularVelocity, setAngularVelocity] = useState(0);
 
 	useEffect(() => {
 		let navigationSocket = new WebSocket(
@@ -89,8 +92,16 @@ export function useNavigationSelector() {
 		navigationSocket.onmessage = (e) => {
 			const data = JSON.parse(e.data);
 
-			currentPoint = { x: data.x, y: data.y, o: 0 }; //TODO: no o data rendered by the JSON
-			drawCurrentPosition(currentPoint);
+			setCurrentPosition({ x: data.x, y: data.y, o: 0 });
+			setWheelsPosition({
+				fl: data.ang_front_left_wheel,
+				fr: data.ang_front_right_wheel,
+				rl: data.ang_back_left_wheel,
+				rr: data.ang_back_right_wheel,
+			});
+			setLinearVelocity(data.linVel);
+			setAngularVelocity(data.angVel);
+			drawCurrentPosition({ x: data.x, y: data.y, o: 0 });
 		};
 
 		navigationSocket.onerror = (e) => {
@@ -101,5 +112,5 @@ export function useNavigationSelector() {
 		setSocket(navigationSocket);
 	}, []);
 
-	return currentPoint;
+	return [currentPosition, wheelsPosition] as const;
 }
