@@ -92,11 +92,13 @@ class Rover():
         self.node.create_subscription(Int8,           'CS/HD_SemiAuto_Id', self.model.HD.set_semiAutoID, 10)
         self.node.create_subscription(Int8,           'CS/HD_element_id' , self.model.HD.send_element_id_hd     , 10)
         self.node.create_subscription(Bool,           'CS/HD_toggle_camera', self.model.HD.send_toggle_info     , 10)
+        self.node.create_subscription(Joy,            'CS/HD_gamepad'    , self.model.HD.handle_hd_gamepad, 10)
         # messages from CS (NAV)
         self.node.create_subscription(PoseStamped,    'CS/NAV_goal'      , self.model.Nav.setGoal      , 10)
         # self.node.create_subscription(GoalID,         'CS_NAV_cancel'    , self.model.Nav.cancelGoal   , 10)
         # messages from CS (GAMEPAD)
-        self.node.create_subscription(Joy,    'CS/Gamepad',   self.handle_gamepad,          1)
+        
+        #self.node.create_subscription(Joy,    'Gamepad',   self.handle_gamepad,          1)
         #TODO: add cancel goal and other messages from CS to NAV
 
 
@@ -108,7 +110,6 @@ class Rover():
         
 
         #ROVER --> All
-        self.Gamepad_pub        = self.node.create_publisher(Joy,    'ROVER/Gamepad',             1)
 
         # Rover --> HD
         self.Maintenance_pub    = self.node.create_publisher(Int8,        'ROVER/Maintenance'      , 1)
@@ -116,6 +117,7 @@ class Rover():
         self.HD_SemiAuto_Id_pub = self.node.create_publisher(Int8,        'ROVER/HD_SemiAuto_Id'   , 1)
         self.send_HD_element_id_pub  = self.node.create_publisher(Int8,   'ROVER/element_id'       , 1)
         self.send_toggle_info_pub = self.node.create_publisher(Bool,      'ROVER/HD_toggle_camera',  1)
+        
         # Rover --> NAV
         # self.Nav_pub            = self.node.create_publisher(Int8,        'Navigation'       , 1)
         # self.Nav_CancelGoal_pub = self.node.create_publisher(GoalID,      '/move_base/cancel', 1)
@@ -300,10 +302,6 @@ class Rover():
         print("Listening")
         rclpy.spin(self.node)
 
-
-    def handle_gamepad(self, joy):
-        self.node.get_logger().info("Joy received")
-        self.Gamepad_pub.publish(joy)
 
         # ===== TIMEOUT MECANISM =====
 

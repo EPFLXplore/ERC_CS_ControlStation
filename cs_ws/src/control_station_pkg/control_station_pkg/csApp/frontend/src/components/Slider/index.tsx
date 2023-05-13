@@ -19,7 +19,7 @@ export default function App({ label, initValue }: Props) {
 	// update the value as needed
 	useEffect(() => {
 		setValue(initValue); // the value to the given parameter
-	}, []);
+	}, [initValue]);
 
 	return (
 		<div className={styles.sliderContainer}>

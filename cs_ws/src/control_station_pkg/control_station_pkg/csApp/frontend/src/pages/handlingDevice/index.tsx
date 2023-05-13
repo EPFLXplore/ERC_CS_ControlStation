@@ -16,6 +16,8 @@ import JointSpeed from "../../components/JointSpeed";
 import useHandlingDevice from "../../hooks/handlingDeviceHooks";
 import JointCurrents from "../../components/JointCurrents";
 import buttonSelect from "../../utils/buttonSelect";
+import TaskControl from "../../components/TaskControl";
+import { Task } from "../../utils/tasks.type";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 	const [camera, selectCamera] = useCameraManager(Cameras.CAM1);
@@ -109,6 +111,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 					</button>
 				</div>
 				<ModeSlider />
+				<TaskControl task={Task.HANDLING_DEVICE} />
 			</div>
 
 			<GamepadHint />

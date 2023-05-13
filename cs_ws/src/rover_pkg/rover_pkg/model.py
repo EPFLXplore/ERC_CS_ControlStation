@@ -237,6 +237,16 @@ class HandlingDevice:
             self.__semiAutoId = id
             #self.rover.HD_SemiAuto_Id_pub.publish(id) TODO: SEE WHY THIS IS USEFUL
 
+    
+    def handle_hd_gamepad(self, joy):
+        self.rover.HD_Gamepad_pub.publish(joy)
+
+    def set_joint_telemetry(self, telemetry_ros):
+        telemetry = telemetry_ros.data
+        self.set_joint_positions(telemetry.position)
+        self.set_joint_velocities(telemetry.velocity)
+        self.rover.HD_telemetry_pub.publish(telemetry)
+
     def getId(self):
         return self.__semiAutoId
 

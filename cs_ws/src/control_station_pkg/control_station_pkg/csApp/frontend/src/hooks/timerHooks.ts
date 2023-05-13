@@ -14,9 +14,10 @@ function useTimer(onFinished?: () => void) {
 		setSocket(timerSocket);
 
 		timerSocket.onmessage = (e) => {
-			const { active, hours, minutes, seconds } = JSON.parse(e.data);
+			const { active, minutes, seconds } = JSON.parse(e.data);
+			console.log(seconds)
 			_setActive(active);
-			_changeTime(hours * 60 + minutes, seconds);
+			_changeTime(minutes, seconds);
 		};
 	}, []);
 
@@ -34,6 +35,8 @@ function useTimer(onFinished?: () => void) {
 		}
 
 		if (active) time -= 1000;
+
+		console.log("Computed time: " + Math.floor((time / 1000) % 60))
 
 		setMinutes(Math.floor((time / 1000 / 60) % 60));
 		setSeconds(Math.floor((time / 1000) % 60));
@@ -80,6 +83,7 @@ function useTimer(onFinished?: () => void) {
 
 	// Public function to change active through websocket if available
 	const setActive = (active: boolean) => {
+		console.log("Active: " + seconds)
 		if (socket?.readyState === WebSocket.OPEN) {
 			socket?.send(
 				JSON.stringify({
