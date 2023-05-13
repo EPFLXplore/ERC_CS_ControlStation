@@ -112,5 +112,5 @@ export function useNavigation() {
 		setSocket(navigationSocket);
 	}, []);
 
-	return [currentPosition, wheelsPosition] as const;
+	return [currentPosition, wheelsPosition, linearVelocity, angularVelocity] as const;
 }
