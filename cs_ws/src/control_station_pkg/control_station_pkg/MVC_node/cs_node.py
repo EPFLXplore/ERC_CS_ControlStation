@@ -2,6 +2,7 @@ import os
 import rclpy
 import sys
 import django
+import numpy as np
 
 from .controller import Controller
 from .models.rover import Rover
@@ -10,6 +11,9 @@ from .models.rover import Rover
 from csApp.models         import *
 from std_msgs.msg         import Int8MultiArray    , Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16, Float32MultiArray
 from diagnostic_msgs.msg  import DiagnosticStatus
+from std_srvs.srv import SetBool
+import MVC_node.models.utils as utils
+
 
 # TODO
 # from ros_package.src.custom_msg_python.msg     import move_base_action_goal 
@@ -17,7 +21,7 @@ from diagnostic_msgs.msg  import DiagnosticStatus
 from geometry_msgs.msg     import Twist, PoseStamped
 from actionlib_msgs.msg    import GoalID
 from nav_msgs.msg          import Odometry
-from sensor_msgs.msg       import JointState, Image
+from sensor_msgs.msg       import JointState, Image, Joy
 
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
@@ -27,12 +31,20 @@ django.setup()
 
 import threading
 import asyncio
+#from ../views import views
 
 
 class CS:
     '''
         Control Station node in the ROS network of the rover
     '''
+
+    def run(self):
+        '''
+            Run the node
+        '''
+        rclpy.spin(self.node)
+        print("Listening")
     
     def __init__(self):
 
@@ -60,7 +72,7 @@ class CS:
 
 
         # self.cameras    = Cameras()
-        #self.navID      = [0]
+        # self.navID      = [0]
 
         # ---------------------------------------------------
         # ===== Publishers ===== 
@@ -69,6 +81,9 @@ class CS:
         #Doit etre remplacé par un service 
         self.Task_pub               = self.node.create_publisher(Int8MultiArray,    'Task',                1)
         self.CS_confirm_pub         = self.node.create_publisher(Bool,              'CS_Confirm',          1)
+
+        #CS --> ROVER (GAMEPAD)
+        self.Gamepad_pub            = self.node.create_publisher(Joy,    'Gamepad',             1)
 
         # CS --> ROVER (HD)
         self.HD_mode_pub            = self.node.create_publisher(Int8,              'CS_HD_mode',          1)
@@ -127,6 +142,8 @@ class CS:
         #self.node.create_subscription(Int32MultiArray,  'Time',                            self.controller.elapsed_time       , 10) #useless
 
         #rclpy.spin(self.node)
+
+        #views.launch_nav(None)
         
 
     def sendRequest(self):
@@ -146,3 +163,18 @@ class CS:
         self.roverConnected = future.result().success
         self.node.get_logger().info('ROVER is online')
 
+    # ===============================
+    #            GAMEPAD
+    # ===============================
+
+    def send_gamepad_data(self, axes, buttons):
+        '''
+            send gamepad data to rover
+        '''
+        axes = [float(i) for i in axes]
+
+        joy_msg = Joy()
+        joy_msg.axes = axes
+        joy_msg.buttons = buttons
+        
+        self.Gamepad_pub.publish(joy_msg)
