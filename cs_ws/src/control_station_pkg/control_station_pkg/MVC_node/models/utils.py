@@ -27,25 +27,18 @@ class Timer:
         self.start_time = 0
         self.is_running = False
 
-    def start(self, duration = None):
-        if(self.is_running == True):
-            return
-        if(duration != None):
-            self.duration = duration
+    def start(self):
         self.is_running = True
         self.start_time = time.time()
 
     def time_left(self):
         if(self.is_running == False):
+            self.start_time = time.time()
             return self.duration
         current = time.time() - self.start_time
         if(current < self.duration):
             return self.duration - current
         return 0
-    
-    def pause(self):
-        self.duration = self.time_left()
-        self.is_running = False
 
     def get_time(self):
         
