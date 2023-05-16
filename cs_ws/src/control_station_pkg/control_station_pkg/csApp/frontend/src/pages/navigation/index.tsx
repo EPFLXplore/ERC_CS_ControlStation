@@ -15,6 +15,7 @@ import Timer from "../../components/Timer";
 import { useGoalTracker } from "../../hooks/navigationHooks";
 import { useNavigation } from "../../hooks/navigationHooks";
 import GamepadHint from "../../components/GamepadHint";
+import { ReplyTwoTone } from "@mui/icons-material";
 
 export default ({ mode }: { mode: Mode }) => {
 	const { goals, addGoal, removeGoal, resetGoals } = useGoalTracker();
@@ -281,5 +282,12 @@ export default ({ mode }: { mode: Mode }) => {
 				</div>
 			</div>
 		);
+	} else {
+		return (
+		<div className="page center">
+				<Background />
+				<BackButton />
+		</div>
+		)
 	}
 };
