@@ -1,20 +1,11 @@
 import time
+from . import gamepad
 
 class Session:
     def __init__(self):
         self.sessions_list = {}
         self.nb_users = 0
         #comment representer les tab utilise par les users ?
-
-class Gamepad:
-    def __init__(self):
-        """
-        Buttons order : A ,B ,X ,Y ,L1 ,R1 ,Select ,Start ,Mid, L3, R3
-        Axes order : Lx, Ly, L2, Rx, Ry, R2, Cross X, Cross Y
-        """
-        self.id = ""
-        # self.buttons = [False] * 11
-        # self.axes = [0] * 8
 
 class Cameras:
     def __init__(self):
@@ -58,6 +49,6 @@ class Log:
 
 session = Session()
 timer = Timer(600)
-gamepad = Gamepad()
+gamepad = gamepad.Gamepad()
 cameras = Cameras()
 log = Log()

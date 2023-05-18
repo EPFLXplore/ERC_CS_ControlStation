@@ -29,7 +29,6 @@ class TimerConsumer(AsyncWebsocketConsumer):
         
         await self.accept()
         m,s = utils.timer.get_time()
-        print(utils.timer.is_running)
         # Update every frontend
         await self.channel_layer.group_send(
             "timer",
@@ -74,7 +73,6 @@ class TimerConsumer(AsyncWebsocketConsumer):
 
     # Receive message from room group
     async def timer_message(self, event):
-        print(event)
         m,s = utils.timer.get_time()
 
         # Send message to WebSocket

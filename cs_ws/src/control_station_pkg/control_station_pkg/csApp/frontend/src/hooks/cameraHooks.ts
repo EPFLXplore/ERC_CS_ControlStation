@@ -13,7 +13,8 @@ function useCameraSelector(item: Cameras) {
 
 		cameraSocket.onmessage = (e) => {
 			const data = JSON.parse(e.data);
-			setImage(data.message);
+			console.log(data.data);
+			setImage(data.data);
 		};
 
 		cameraSocket.onerror = (e) => {

@@ -85,7 +85,7 @@ class Rover():
         # ===== SUBSCRIBERS =====
 
         # messages from CS
-        self.node.create_subscription(Int8MultiArray, 'Task'             , self.task_instr             , 10)
+        self.node.create_subscription(Int8MultiArray, 'CS/Task'             , self.task_instr             , 10)
         self.node.create_subscription(Bool,           'CS/Confirm'       , self.cs_confirm             , 10)
         # messages form CS (HD)
         self.node.create_subscription(Int8,           'CS/HD_mode'       , self.model.HD.setHDMode     , 10)
@@ -95,8 +95,7 @@ class Rover():
         self.node.create_subscription(Joy,            'CS/HD_gamepad'    , self.model.HD.handle_hd_gamepad, 10)
         # messages from CS (NAV)
         self.node.create_subscription(PoseStamped,    'CS/NAV_goal'      , self.model.Nav.setGoal      , 10)
-        # self.node.create_subscription(GoalID,         'CS_NAV_cancel'    , self.model.Nav.cancelGoal   , 10)
-        # messages from CS (GAMEPAD)
+        self.node.create_subscription(Joy,            'CS/NAV_gamepad'   , self.model.Nav.gamepad  , 10)
         
         #self.node.create_subscription(Joy,    'Gamepad',   self.handle_gamepad,          1)
         #TODO: add cancel goal and other messages from CS to NAV
@@ -112,17 +111,18 @@ class Rover():
         #ROVER --> All
 
         # Rover --> HD
-        self.Maintenance_pub    = self.node.create_publisher(Int8,        'ROVER/Maintenance'      , 1)
-        self.HD_mode_pub        = self.node.create_publisher(Int8,        'ROVER/HD_mode'          , 1)
-        self.HD_SemiAuto_Id_pub = self.node.create_publisher(Int8,        'ROVER/HD_SemiAuto_Id'   , 1)
-        self.send_HD_element_id_pub  = self.node.create_publisher(Int8,   'ROVER/element_id'       , 1)
-        self.send_toggle_info_pub = self.node.create_publisher(Bool,      'ROVER/HD_toggle_camera',  1)
+        self.Maintenance_pub         = self.node.create_publisher(Int8,        'ROVER/Maintenance'      , 1)
+        self.HD_mode_pub             = self.node.create_publisher(Int8,        'ROVER/HD_mode'          , 1)
+        self.HD_SemiAuto_Id_pub      = self.node.create_publisher(Int8,        'ROVER/HD_SemiAuto_Id'   , 1)
+        self.send_HD_element_id_pub  = self.node.create_publisher(Int8,        'ROVER/element_id'       , 1)
+        self.send_toggle_info_pub    = self.node.create_publisher(Bool,        'ROVER/HD_toggle_camera' , 1)
         
         # Rover --> NAV
-        # self.Nav_pub            = self.node.create_publisher(Int8,        'Navigation'       , 1)
-        # self.Nav_CancelGoal_pub = self.node.create_publisher(GoalID,      '/move_base/cancel', 1)
         self.Nav_Goal_pub       = self.node.create_publisher(PoseStamped, 'ROVER/NAV_goal'    , 1)
         self.Nav_Status         = self.node.create_publisher(String,      'ROVER/NAV_STATUS'  , 1)
+        self.Nav_gamepad_pub    = self.node.create_publisher(Joy,         'ROVER/NAV_gamepad' , 1)
+
+
         # Rover --> SC
         self.SC_pub             = self.node.create_publisher(Int8,        'ROVER/SCIENCE_CMD'           , 1)
 
