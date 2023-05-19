@@ -1,0 +1,50 @@
+
+@import '../../styles/variables'
+
+.InfoContainer
+    width: 80%                      //80% of its parent container
+    height: 80%                     //80% of its parent container
+    display: flex                   //sets the display property to flex, which enables the use of flexbox layout
+    flex-direction: row             //arranges the child elements horizontally
+    margin-top: 2vh                 //sets a margin of 2% of the viewport height on top
+    align-items: center             //centers the child elements vertically
+    justify-content: space-between  //sets the space between the child elements to be equal
+
+.GraphContainer
+    height: 70vh
+    width: 70vw
+    padding: 2vh 2vw
+    background-color: rgba($primaryDark2Color, 0.8)
+    overflow: hidden
+    border-radius: 2vh
+    margin-top: 7vh
+    margin-left: 20vh
+
+.taskControlContainer
+    position: fixed
+    right: 20px
+    bottom: 10px
+
+.Info
+    width: 20%
+    height: 100%
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: space-evenly
+    margin: 0
+
+.ControlsContainer
+    position: fixed
+    top: 7vh
+    right: 20px
+    width: 15vw
+    height: 70vh
+    display: flex
+    flex-direction: column
+    padding: 2vh 2vw
+    background-color: rgba($primaryDark2Color, 0.8)
+    border-radius: 2vh
+    align-items: flex-startcenter
+    justify-content: space-evenly
+    margin: 0
