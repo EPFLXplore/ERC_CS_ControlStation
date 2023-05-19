@@ -22,7 +22,8 @@ export default ({ mode }: { mode: Mode }) => {
 	const [camera, selectCamera] = useCameraManager(Cameras.CAM1);
 	const { goals, addGoal, removeGoal, resetGoals } = useGoalTracker();
 
-	const [currentPosition, wheelsPosition] = useNavigation();
+	const [currentPosition, currentOrientation, wheelsPosition, linearVelocity, angularVelocity] =
+		useNavigation();
 
 	const handleAddGoal = () => {
 		// Get the values from the input fields
@@ -43,12 +44,6 @@ export default ({ mode }: { mode: Mode }) => {
 	const distance = 15;
 	const routeLeft = 20;
 	const EstimatedTime = "07:00";
-	const linear = 5;
-	const angular = 3;
-	const WheelFL = 10;
-	const WheelFR = 10;
-	const WheelRL = 0;
-	const WheelRR = 0;
 
 	switch (mode) {
 		case Mode.AUTONOMOUS:
@@ -139,8 +134,15 @@ export default ({ mode }: { mode: Mode }) => {
 										<p>Angular: </p>
 									</div>
 									<div>
-										<p>{linear} m/s</p>
-										<p>{angular} rad/s</p>
+										<p>
+											{Math.sqrt(
+												linearVelocity.reduce(
+													(prev, curr) => prev + curr * curr
+												)
+											).toFixed(2)}{" "}
+											m/s
+										</p>
+										<p>{angularVelocity[2]} rad/s</p>
 									</div>
 								</div>
 							</div>
@@ -156,18 +158,18 @@ export default ({ mode }: { mode: Mode }) => {
 											<p>Wheel RR: </p>
 										</div>
 										<div style={{ marginRight: "30px" }}>
-											<p>{wheelsPosition.fl}°</p>
-											<p>{wheelsPosition.fr}°</p>
-											<p>{wheelsPosition.rl}°</p>
-											<p>{wheelsPosition.rr}°</p>
+											<p>{wheelsPosition[0]}°</p>
+											<p>{wheelsPosition[1]}°</p>
+											<p>{wheelsPosition[2]}°</p>
+											<p>{wheelsPosition[3]}°</p>
 										</div>
 									</div>
+									<div className="Image of rover"> </div>
 								</div>
+								<Timer end={Date.now() + 10000} size={Size.SMALL} />
+								<TaskControl task={Task.NAVIGATION} />
 							</div>
-							<div className="Image of rover"> </div>
 						</div>
-						<Timer end={Date.now() + 10000} size={Size.SMALL} />
-						<TaskControl task={Task.NAVIGATION} />
 					</div>
 				</div>
 			);
@@ -204,8 +206,15 @@ export default ({ mode }: { mode: Mode }) => {
 											<p>Angular: </p>
 										</div>
 										<div>
-											<p>{linear} m/s</p>
-											<p>{angular} rad/s</p>
+											<p>
+												{Math.sqrt(
+													linearVelocity.reduce(
+														(prev, curr) => prev + curr * curr
+													)
+												).toFixed(2)}{" "}
+												m/s
+											</p>
+											<p>{angularVelocity[2]} rad/s</p>
 										</div>
 									</div>
 								</div>
@@ -221,10 +230,10 @@ export default ({ mode }: { mode: Mode }) => {
 												<p>Wheel RR: </p>
 											</div>
 											<div style={{ marginRight: "30px" }}>
-												<p>{wheelsPosition.fl}°</p>
-												<p>{wheelsPosition.fr}°</p>
-												<p>{wheelsPosition.rl}°</p>
-												<p>{wheelsPosition.rr}°</p>
+												<p>{wheelsPosition[0]}°</p>
+												<p>{wheelsPosition[1]}°</p>
+												<p>{wheelsPosition[2]}°</p>
+												<p>{wheelsPosition[3]}°</p>
 											</div>
 										</div>
 									</div>

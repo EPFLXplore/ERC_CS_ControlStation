@@ -1,51 +1,79 @@
 import json
 import random
-from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer, WebsocketConsumer
 
-from asgiref.sync import sync_to_async
+from asgiref.sync import async_to_sync
 
 """
 
 Data format :
 {
-
-    'state' : string,
-
+    'joint_position' : [float] * 6
+    'joint_velocity' : [float] * 6
+    'joint_current' : [float] * 6
+    'detected_tags' : [bool] * 4
+    'task_outcome' : bool
 }
 
 """
 
 
-class InfoHDConsumer(AsyncWebsocketConsumer):
+class InfoHDConsumer(WebsocketConsumer):
     
-    async def connect(self):
+    def connect(self):
 
-        self.tab_group_name = 'tab_info_hd'
+        print("connect to info_hd consumer")
+
+        self.tab_group_name = 'info_hd'
 
         # Join tab group
-        await self.channel_layer.group_add(
+        async_to_sync(self.channel_layer.group_add)(
             self.tab_group_name,
             self.channel_name
         )
 
-        await self.accept()
+        self.accept()
 
-    async def disconnect(self, close_code):
+    def disconnect(self, close_code):
+
+        print("disconnect to info_hd consumer")
         # Leave tab group
-        await self.channel_layer.group_discard(
+        async_to_sync(self.channel_layer.group_discard)(
             self.tab_group_name,
             self.channel_name
         )
-
 
 
     # Receive message from WebSocket
-    async def receive(self, text_data):
-        return
+    def receive(self, text_data):
+
+        data_json = json.loads(text_data)
+        print("received in hd")
+
+        # Send message to room group
+        async_to_sync(self.channel_layer.group_send)(
+            self.tab_group_name,
+            {
+                'type': 'hd_message',
+                'joint_position'   : data_json['joint_position'],
+                'joint_velocity': data_json['joint_velocity'],
+                'joint_current': data_json['joint_current'],
+                'detected_tags': data_json['detected_tags'],
+                'task_outcome': data_json['task_outcome'],
+            }
+        )
 
 
-    async def broadcast_info_hd(self, data_json):
+    # Receive message from room group
+    def hd_message(self, event):
 
-        await self.send(text_data=json.dumps({
-            'state': data_json['state']
-        }))
+        print("broadcast_info_hd")
+
+        # Send message to WebSocket
+        self.send(text_data=json.dumps({
+                'joint_position'   : event['joint_position'],
+                'joint_velocity': event['joint_velocity'],
+                'joint_current': event['joint_current'],
+                'detected_tags': event['detected_tags'],
+                'task_outcome': event['task_outcome'],
+            }))

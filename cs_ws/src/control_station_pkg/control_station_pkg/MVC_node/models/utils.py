@@ -13,8 +13,8 @@ class Gamepad:
         Axes order : Lx, Ly, L2, Rx, Ry, R2, Cross X, Cross Y
         """
         self.id = ""
-        self.buttons = [False] * 11
-        self.axes = [0] * 8
+        # self.buttons = [False] * 11
+        # self.axes = [0] * 8
 
 class Cameras:
     def __init__(self):
