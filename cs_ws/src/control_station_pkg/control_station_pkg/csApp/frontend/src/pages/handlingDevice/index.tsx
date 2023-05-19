@@ -16,6 +16,8 @@ import JointSpeed from "../../components/JointSpeed";
 import useHandlingDevice from "../../hooks/handlingDeviceHooks";
 import JointCurrents from "../../components/JointCurrents";
 import buttonSelect from "../../utils/buttonSelect";
+import { Task } from "../../utils/tasks.type";
+import TaskControl from "../../components/TaskControl";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 	const [camera, selectCamera] = useCameraManager(Cameras.CAM1);
@@ -34,7 +36,61 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 					options={["Camera 1", "Camera 2", "Camera 3"]}
 					optionsCallback={selectCamera}
 				/>
+				<div className={styles.globalContainer}>
+					<div className={styles.container}>
+						<button className={styles.button} onClick={() => buttonSelect(0)}>
+							Button A1 1
+						</button>
+						<button className={styles.button} onClick={() => buttonSelect(1)}>
+							Button A1 2
+						</button>
+						<button className={styles.button} onClick={() => buttonSelect(2)}>
+							Button A1 3
+						</button>
+						<button className={styles.button} onClick={() => buttonSelect(3)}>
+							Button A1 4
+						</button>
+						<button className={styles.button} onClick={() => buttonSelect(4)}>
+							Button A1 5
+						</button>
+						<button className={styles.button} onClick={() => buttonSelect(5)}>
+							Button A1 6
+						</button>
+						<button className={styles.button} onClick={() => buttonSelect(6)}>
+							Button A1 7
+						</button>
+						<button className={styles.button} onClick={() => buttonSelect(7)}>
+							Button A1 8
+						</button>
+						<button className={styles.button} onClick={() => buttonSelect(8)}>
+							Button A1 9
+						</button>
+						<button className={styles.button} onClick={() => buttonSelect(9)}>
+							Button A1 10
+						</button>
+						<button className={styles.button} onClick={() => buttonSelect(10)}>
+							Button A2 1
+						</button>
+						<button className={styles.button} onClick={() => buttonSelect(11)}>
+							Button A2 2
+						</button>
+						<button className={styles.button} onClick={() => buttonSelect(12)}>
+							Button A2 3
+						</button>
+						<button className={styles.button} onClick={() => buttonSelect(13)}>
+							Button A2 4
+						</button>
+						<button className={styles.button} onClick={() => buttonSelect(20)}>
+							Button B1 1
+						</button>
+						<button className={styles.button} onClick={() => buttonSelect(21)}>
+							Button B1 2
+						</button>
+					</div>
+					<TaskControl task={Task.HANDLING_DEVICE} />
+				</div>
 				<Timer end={Date.now() + 10000} size={Size.SMALL} />
+				<CameraView camera={camera} />
 			</div>
 		);
 
@@ -58,60 +114,10 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 			</div>
 
 			<div className={styles.globalContainer}>
-				<div className={styles.container}>
-					<button className={styles.button} onClick={() => buttonSelect(0)}>
-						Button A1 1
-					</button>
-					<button className={styles.button} onClick={() => buttonSelect(1)}>
-						Button A1 2
-					</button>
-					<button className={styles.button} onClick={() => buttonSelect(2)}>
-						Button A1 3
-					</button>
-					<button className={styles.button} onClick={() => buttonSelect(3)}>
-						Button A1 4
-					</button>
-					<button className={styles.button} onClick={() => buttonSelect(4)}>
-						Button A1 5
-					</button>
-					<button className={styles.button} onClick={() => buttonSelect(5)}>
-						Button A1 6
-					</button>
-					<button className={styles.button} onClick={() => buttonSelect(6)}>
-						Button A1 7
-					</button>
-					<button className={styles.button} onClick={() => buttonSelect(7)}>
-						Button A1 8
-					</button>
-					<button className={styles.button} onClick={() => buttonSelect(8)}>
-						Button A1 9
-					</button>
-					<button className={styles.button} onClick={() => buttonSelect(9)}>
-						Button A1 10
-					</button>
-					<button className={styles.button} onClick={() => buttonSelect(10)}>
-						Button A2 1
-					</button>
-					<button className={styles.button} onClick={() => buttonSelect(11)}>
-						Button A2 2
-					</button>
-					<button className={styles.button} onClick={() => buttonSelect(12)}>
-						Button A2 3
-					</button>
-					<button className={styles.button} onClick={() => buttonSelect(13)}>
-						Button A2 4
-					</button>
-					<button className={styles.button} onClick={() => buttonSelect(20)}>
-						Button B1 1
-					</button>
-					<button className={styles.button} onClick={() => buttonSelect(21)}>
-						Button B1 2
-					</button>
-				</div>
 				<ModeSlider />
+				<GamepadHint />
+				<TaskControl task={Task.HANDLING_DEVICE} />
 			</div>
-
-			<GamepadHint />
 
 			<Timer end={Date.now() + 10000} size={Size.SMALL} />
 
