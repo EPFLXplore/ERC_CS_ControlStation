@@ -127,6 +127,8 @@ class Navigation:
             self.rover.Nav_Status.publish("cancel")
 
     #-------------------------------------
+    def gamepad(self, joy):
+        self.rover.Nav_gamepad_pub.publish(joy)
 
 
 class Science:
@@ -290,6 +292,9 @@ class HandlingDevice:
             panel = obj_list[i]
             msg = Float32MultiArray(data= [panel.id, panel. x_pos, panel.y_pos, panel.z_pos, panel.x_rot, panel.y_rot, panel.z_rot])
             self.rover.HD_element_pub.publish(msg)
+
+    def gamepad(self, joy):
+        self.rover.HD_gamepad_pub.publish(joy)
 
 
 # TASK: 

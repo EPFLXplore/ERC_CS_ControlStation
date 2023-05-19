@@ -21,12 +21,8 @@
 # ================================================================================
 # Libraries
 
-import asyncio
 import datetime
-import threading
 from turtle import pos
-import rclpy
-import sys
 import json
 import websocket
 import time

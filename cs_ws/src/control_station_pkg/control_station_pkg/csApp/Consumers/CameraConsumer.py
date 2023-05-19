@@ -1,7 +1,8 @@
 import json
-from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer, WebsocketConsumer
 import re       #import regrex functions to extract the video number from the url
 import MVC_node.models.utils as utils
+from asgiref.sync import async_to_sync
 
 """
 
@@ -16,35 +17,30 @@ Data format :
 """
 
 
-class CameraConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
+class CameraConsumer(WebsocketConsumer):
+    def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['v_name']
-        utils.cameras.cameras_list[int(re.findall(r'\d+', self.room_name)[0])] += 1 
-        print(utils.cameras.cameras_list)
-        self.room_group_name = 'video_%s' % self.room_name
-        await self.channel_layer.group_add(
+        self.room_group_name = self.room_name
+
+        async_to_sync(self.channel_layer.group_add)(
              self.room_group_name,
              self.channel_name
         )
-        await self.accept()
+        self.accept()
 
-    async def disconnect(self, close_code):
-        utils.cameras.cameras_list[int(re.findall(r'\d+', self.room_name)[0])] -= 1 
-        print(utils.cameras.cameras_list)
+    def disconnect(self, close_code):
         # Leave room group
-        await self.channel_layer.group_discard(
+        async_to_sync(self.channel_layer.group_discard)(
             self.room_group_name,
             self.channel_name
         )
 
     # Receive message from WebSocket
-    async def receive(self, text_data):
-        #print("websocket received : " + self.scope.get("path"))
+    def receive(self, text_data):
 
-        await self.send(text_data=json.dumps({
-            'video_data': text_data
-        }))
-        await self.channel_layer.group_send(
+        print("message received in cameras consumer")
+
+        async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
                 'type': 'video_message',
@@ -53,10 +49,10 @@ class CameraConsumer(AsyncWebsocketConsumer):
         )
 
     # Receive message from room group
-    async def video_message(self, event):
+    def video_message(self, event):
         data = event['video_data']
 
         # Send message to WebSocket
-        await self.send(text_data=json.dumps({
-            'video_data': data
+        self.send(text_data=json.dumps({
+            'data': data
         }))

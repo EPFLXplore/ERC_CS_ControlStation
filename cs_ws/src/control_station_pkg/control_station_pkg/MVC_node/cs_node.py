@@ -14,6 +14,8 @@ from diagnostic_msgs.msg  import DiagnosticStatus
 from std_srvs.srv import SetBool
 import MVC_node.models.utils as utils
 
+import cameras_reciever
+
 
 # TODO
 # from ros_package.src.custom_msg_python.msg     import move_base_action_goal 
@@ -21,7 +23,7 @@ import MVC_node.models.utils as utils
 from geometry_msgs.msg     import Twist, PoseStamped
 from actionlib_msgs.msg    import GoalID
 from nav_msgs.msg          import Odometry
-from sensor_msgs.msg       import JointState, Image, Joy
+from sensor_msgs.msg       import JointState, Image, Joy, CompressedImage
 
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
@@ -44,7 +46,7 @@ class CS:
         if(not rclpy.ok()):
             rclpy.init(args=sys.argv)
             
-        self.node = rclpy.create_node("csApp")        
+        self.node = rclpy.create_node("CONTROl_STATION")  
 
         #self.loop = asyncio.get_event_loop()
 
@@ -89,6 +91,7 @@ class CS:
 
         # CS --> ROVER (HD)
         self.HD_Gamepad_pub         = self.node.create_publisher(Joy,               'CS/HD_gamepad',       1)
+        self.NAV_Gamepad_pub         = self.node.create_publisher(Joy,               'CS/NAV_gamepad',       1)
 
         #TODO necessary? 
         #self.HD_ManualVelocity_pub  = self.node.create_publisher('HD_ManualVelocity',  Float32,        1)
@@ -130,6 +133,10 @@ class CS:
         #self.node.create_subscription(Odometry,         'ROVER_NAV_odometry',              self.controller.nav_data           , 10)
         self.node.create_subscription(Odometry,         'NAV/odometry/filtered',            self.controller.nav_data           , 10)
 
+        #Camera messages
+        self.node.create_subscription(CompressedImage,            '/camera_0',                 cameras_reciever.display_cam_1   , 1)
+        self.node.create_subscription(CompressedImage,            '/camera_1',                 cameras_reciever.display_cam_2   , 1)
+        self.node.create_subscription(CompressedImage,            '/camera_2',                 cameras_reciever.display_cam_3   , 1)
 
         # TODO
         # c'est quoi ?
@@ -173,17 +180,23 @@ class CS:
     #            GAMEPAD
     # ===============================
 
-    def send_gamepad_data(self, axes, buttons):
+    def send_gamepad_data(self, axes, buttons, id, target):
         '''
             send gamepad data to rover
         '''
         axes = [float(i) for i in axes]
 
-        joy_msg = Joy()
-        joy_msg.axes = axes
-        joy_msg.buttons = buttons
 
-        self.node.get_logger().info('Received gamepad:" %s"' % joy_msg.buttons)
-        
-        #changer si on doit l'envoyer a la nav
-        self.HD_Gamepad_pub.publish(joy_msg)
+
+        if(target == 'HD'):
+            new_axes, new_buttons = utils.gamepad.hd_maping(axes, buttons)
+            joy_msg = Joy()
+            joy_msg.axes = new_axes
+            joy_msg.buttons = new_buttons
+            self.HD_Gamepad_pub.publish(joy_msg)
+        elif(target == 'NAV'):
+            new_axes, new_buttons = utils.gamepad.nav_maping(axes, buttons)
+            joy_msg = Joy()
+            joy_msg.axes = new_axes
+            joy_msg.buttons = new_buttons
+            self.NAV_Gamepad_pub.publish(joy_msg)

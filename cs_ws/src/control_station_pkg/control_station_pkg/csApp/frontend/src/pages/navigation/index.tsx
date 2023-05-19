@@ -170,6 +170,48 @@ export default ({ mode }: { mode: Mode }) => {
 								<TaskControl task={Task.NAVIGATION} />
 							</div>
 						</div>
+
+						<div>
+							<h3>Speed</h3>
+							<div className={styles.InfoArrangement}>
+								<div style={{ marginRight: "20px" }}>
+									<p>Linear: </p>
+									<p>Angular: </p>
+								</div>
+								<div>
+									<p>
+										{Math.sqrt(
+											linearVelocity.reduce(
+												(prev, curr) => prev + curr * curr
+											)
+										).toFixed(2)}{" "}
+										m/s
+									</p>
+									<p>{angularVelocity[2]} rad/s</p>
+								</div>
+							</div>
+						</div>
+
+						<div>
+							<h3>Wheels</h3>
+							<div className={styles.InfoArrangement}>
+								<div className={styles.InfoArrangement}>
+									<div style={{ marginRight: "10px" }}>
+										<p>Wheel FL: </p>
+										<p>Wheel FR: </p>
+										<p>Wheel RL: </p>
+										<p>Wheel RR: </p>
+									</div>
+									<div style={{ marginRight: "30px" }}>
+										<p>{wheelsPosition[0]}°</p>
+										<p>{wheelsPosition[1]}°</p>
+										<p>{wheelsPosition[2]}°</p>
+										<p>{wheelsPosition[3]}°</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="Image of rover"> </div>
 					</div>
 				</div>
 			);

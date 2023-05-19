@@ -19,10 +19,11 @@ from django.http            import HttpResponse, JsonResponse
 from django.shortcuts       import render
 from django.shortcuts       import redirect
 
-import MVC_node.cs_node
 from MVC_node.controller import *
 from MVC_node.models.rover  import Task
 from manage          import setup
+
+from MVC_node.models import gamepad
 
 
 # ===============================================================
@@ -338,7 +339,23 @@ def capture_image(request):
     return JsonResponse({})
 
 
-def get_gamepad_profile(request):
+# -----------------------------------
+# gamepad views
+
+def get_nav_gamepad_profile(request):
+
+    return JsonResponse(gamepad.get_nav_profile())
+
+def get_hd_gamepad_profile(request):
+
+    return JsonResponse(gamepad.get_hd_profile())
+
+def set_nav_gamepad_profile(request):
+
+    return JsonResponse({})
+
+def set_hd_gamepad_profile(request):
+
     return JsonResponse({})
 
 
