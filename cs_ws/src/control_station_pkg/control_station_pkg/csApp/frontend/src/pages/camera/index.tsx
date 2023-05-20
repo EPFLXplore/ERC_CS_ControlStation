@@ -5,10 +5,10 @@ import CameraView from "../../components/CameraView";
 import PageHeader from "../../components/PageHeader";
 import Timer from "../../components/Timer";
 import { Cameras } from "../../utils/cameras.type";
-import useCameraManager from "../../hooks/cameraManager";
+import useCameraSelector from "../../hooks/cameraHooks";
 
 export default () => {
-	const [camera, selectCamera] = useCameraManager(Cameras.CAM1);
+	const [image, camera, selectCamera] = useCameraSelector(Cameras.CAM1);
 
 	return (
 		<div className="page center">
@@ -22,7 +22,7 @@ export default () => {
 				optionsCallback={selectCamera}
 			/>
 			<Timer end={Date.now() + 10000} />
-			<CameraView camera={camera} />
+			<CameraView image={image} />
 		</div>
 	);
 };

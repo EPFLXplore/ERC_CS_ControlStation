@@ -62,7 +62,7 @@ const router = createBrowserRouter([
 ]);
 
 export const App = () => {
-	const [userCount] = useSession();
+	//const [userCount] = useSession();
 
 	return (
 		<Provider store={store}>

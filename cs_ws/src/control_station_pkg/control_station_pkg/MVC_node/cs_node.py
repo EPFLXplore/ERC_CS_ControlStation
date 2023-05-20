@@ -181,6 +181,7 @@ class CS:
     # ===============================
 
     def send_gamepad_data(self, axes, buttons, id, target):
+        print(buttons)
         '''
             send gamepad data to rover
         '''
