@@ -47,39 +47,26 @@ const pointsSecondWave = [
 	{ x: 3, y: 2 },
 ];
 
-// Sample data for the table
-const lines = [
-	{ id: "Phosphate", content: 10 },
-	{ id: "Azote", content: 5.4 },
-	{ id: "Potassium", content: 12 },
-];
-
-const lines2 = [
-	{ id: "Humidity", content: 10 },
-	{ id: "Temperature", content: 5.4 },
-	{ id: "Elec", content: 12 },
-	{ id: "PH", content: 6 },
-];
+const values1 = [10, 5.4, 12];
+const values2 = [10, 5.4, 12, 6];
 
 export default () => {
 	return (
 		<div className="page">
 			<Background />
 			<BackButton />
-			<div className={styles.infoContainer}>
-				<div className={styles.GraphContainer}>
-					<WaveGraph
-						pointsFirstWave={pointsFirstWave}
-						pointsSecondWave={pointsSecondWave}
-					/>
-				</div>
+			<div className={styles.InfoContainer}>
+				<WaveGraph
+					pointsFirstWave={pointsFirstWave}
+					pointsSecondWave={pointsSecondWave}
+					percentage={78}
+					mainComponent="Phosphate"
+				/>
 			</div>
 			<div className={styles.Info}>
 				<div className={styles.ControlsContainer}>
-					<h2 className={styles.title}>NPK sensor</h2>
-					<Table lines={lines} sensorType={Sensor.NPK} />
-					<h2 className={styles.title}>4-in-1 sensor</h2>
-					<Table lines={lines2} sensorType={Sensor.ALL} />
+					<Table values={values1} sensorType={Sensor.NPK} />
+					<Table values={values2} sensorType={Sensor.ALL} />
 				</div>
 			</div>
 			<div className={styles.taskControlContainer}>
