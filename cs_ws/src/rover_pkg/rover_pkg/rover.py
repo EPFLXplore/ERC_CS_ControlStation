@@ -92,7 +92,6 @@ class Rover():
         self.node.create_subscription(Int8,           'CS/HD_SemiAuto_Id', self.model.HD.set_semiAutoID, 10)
         self.node.create_subscription(Int8,           'CS/HD_element_id' , self.model.HD.send_element_id_hd     , 10)
         self.node.create_subscription(Bool,           'CS/HD_toggle_camera', self.model.HD.send_toggle_info     , 10)
-        self.node.create_subscription(Float32MultiArray,  'CS/HD_gamepad'    , self.model.HD.handle_hd_gamepad, 10)
         # messages from CS (NAV)
         self.node.create_subscription(PoseStamped,    'CS/NAV_goal'      , self.model.Nav.setGoal      , 10)
         self.node.create_subscription(Joy,            'CS/NAV_gamepad'   , self.model.Nav.gamepad  , 10)
@@ -141,6 +140,9 @@ class Rover():
         self.node.create_subscription(JointState,      '/arm_control/joint_telemetry', self.HD_telemetry_pub.publish , 10)
         self.node.create_subscription(Int32,           '/avionics_ToF'               , self.HD_tof.publish           , 10)
 
+
+        # ==========================================================GAMEPAD FROM CS
+        self.node.create_subscription(Float32MultiArray,  'CS/HD_gamepad'    , self.HD_gamepad_pub.publish, 10)
 
         # ======Services server=====
         self.onlineConfirm = self.node.create_service(SetBool, "ROVER_ONLINE", self.onlineConfirm)
