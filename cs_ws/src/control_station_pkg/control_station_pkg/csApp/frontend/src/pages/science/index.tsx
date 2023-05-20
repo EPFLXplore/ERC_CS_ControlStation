@@ -72,6 +72,7 @@ export default () => {
 			<div className={styles.taskControlContainer}>
 				<TaskControl task={Task.SCIENCE} />
 			</div>
+			<div className={styles.InfoControllerContainer}></div>
 		</div>
 	);
 };
