@@ -185,8 +185,8 @@ class CS:
         axes = [float(i) for i in axes]
 
         if(target == 'HD'):
-            new_axes = utils.gamepad.permute(axes, utils.gamepad.selected_hd_profile.axes)
-            new_buttons = utils.gamepad.permute(buttons, utils.gamepad.selected_hd_profile.buttons)
+            #new_axes = utils.gamepad.permute(axes, utils.gamepad.selected_hd_profile.axes)
+            #new_buttons = utils.gamepad.permute(buttons, utils.gamepad.selected_hd_profile.buttons)
 
             # Need to rescale axes 2 and 5 starting at -1
             ax4 = axes[4]
@@ -212,18 +212,18 @@ class CS:
              # Gripper are buttons 1 and 2
             # transform them into speeds
             if (buttons[2] == 1):
-                speed.append(buttons[4]* (-speed))
+                speed.data.append(buttons[4]* (-speed))
             elif (buttons[1] == 1):
-                speed.append(buttons[5]* (speed))
+                speed.data.append(buttons[5]* (speed))
             else:
-                speed.append(0)
+                speed.data.append(0)
 
             self.HD_Gamepad_pub.publish(speed)
 
         elif(target == 'NAV'):
             joy_msg = Joy()
-            new_axes = utils.gamepad.permute(axes, utils.gamepad.selected_nav_profile.axes)
-            new_buttons = utils.gamepad.permute(buttons, utils.gamepad.selected_nav_profile.buttons)
+            #new_axes = utils.gamepad.permute(axes, utils.gamepad.selected_nav_profile.axes)
+            #new_buttons = utils.gamepad.permute(buttons, utils.gamepad.selected_nav_profile.buttons)
 
             joy_msg.axes = axes
             joy_msg.buttons = buttons
