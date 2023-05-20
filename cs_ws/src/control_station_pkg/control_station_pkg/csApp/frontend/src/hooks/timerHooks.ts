@@ -15,7 +15,7 @@ function useTimer(onFinished?: () => void) {
 
 		timerSocket.onmessage = (e) => {
 			const { active, minutes, seconds } = JSON.parse(e.data);
-			console.log(seconds)
+			console.log(e)
 			_setActive(active);
 			_changeTime(minutes, seconds);
 		};

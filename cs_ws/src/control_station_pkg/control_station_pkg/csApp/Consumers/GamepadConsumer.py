@@ -11,6 +11,7 @@ from ..views import *
 Data format :
 {
     'id' : string,
+    'target' : string,
     'buttons' : [button_1, button_2, ... , button_11] Array int,
     'axes' : [axis_1, axis_2, ... , axis_6] Array float
 }
@@ -22,7 +23,7 @@ class GamepadConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
         
-        self.tab_group_name = 'tab_gamepad'
+        self.tab_group_name = 'gamepad'
 
         utils.gamepad.id = ""
         utils.gamepad.buttons = []
@@ -31,10 +32,11 @@ class GamepadConsumer(AsyncWebsocketConsumer):
 
     # Receive message from WebSocket
     async def receive(self, text_data):
-        utils.gamepad.id = json.loads(text_data)['id']
-        buttons = json.loads(text_data)['buttons']
-        axes = json.loads(text_data)['axes']
-        cs.send_gamepad_data(axes, buttons)
+        json_data = json.loads(text_data)
+        cs.send_gamepad_data(json_data['axes'],
+                            json_data['buttons'],
+                            json_data['id'],
+                            json_data['target'])
 
 
 
