@@ -8,6 +8,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Home, Menu, Navigation, HandlingDevice, Science, Camera, Logs, NotFound } from "./pages";
 import { Mode } from "./utils/mode.type";
 import useSession from "./hooks/sessionHooks";
+import ManualNavigation from "./pages/manualNavigation";
 
 const router = createBrowserRouter([
 	{
@@ -28,7 +29,7 @@ const router = createBrowserRouter([
 	},
 	{
 		path: "/navigation/manual",
-		element: <Navigation mode={Mode.MANUAL} />,
+		element: <ManualNavigation />,
 	},
 	{
 		path: "/handlingDevice/auto",
