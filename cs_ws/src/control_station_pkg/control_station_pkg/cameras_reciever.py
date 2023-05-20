@@ -30,14 +30,14 @@ encode_param=[int(cv2.IMWRITE_JPEG_QUALITY),95]
 
 bridge = CvBridge()  # bridge between OpenCV and ROS
 
-
+im_0 = np.zeros((300, 300, 3))
 im_1 = np.zeros((300, 300, 3))
 im_2 = np.zeros((420, 360, 3))
 im_3 = np.zeros((300, 300, 3))
 im_4 = np.zeros((300, 300, 3))
 im_5 = np.zeros((300, 300, 3))
-im_6 = np.zeros((300, 300, 3))
-im_7 = np.zeros((300, 300, 3))
+
+
 
 # ==================================================================
 # callback functions definition
@@ -51,36 +51,51 @@ def encode_stream(s):
     img = base64.b64encode(img).decode()
     return img
 
-def display_cam_1(msg):
-    global im1 
-    im1 = bridge.compressed_imgmsg_to_cv2(msg)
-    img = encode_stream(im1)
+def display_cam_0(msg):
+    global im0
+    im0 = bridge.compressed_imgmsg_to_cv2(msg)
+    img = encode_stream(im0)
     async_to_sync(channel_layer.group_send)("video0", {"type": "video_message",
                                                             'video_data' : "data:image/jpg;base64,"+ img })
+
+
+def display_cam_1(msg):
+    global im1
+    im1 = bridge.compressed_imgmsg_to_cv2(msg)
+    img = encode_stream(im1)
+    async_to_sync(channel_layer.group_send)("video1", {"type": "video_message",
+                                                            'video_data' : "data:image/jpg;base64,"+ img })
+
 
 
 def display_cam_2(msg):
     global im2 
     im2 = bridge.compressed_imgmsg_to_cv2(msg)
     img = encode_stream(im2)
-    #ws2.send("data:image/jpg;base64,"+ img)
+    async_to_sync(channel_layer.group_send)("video2", {"type": "video_message",
+                                                            'video_data' : "data:image/jpg;base64,"+ img })
 
-
-def display_cam_3(msg):
-    global im3 
-    im3 = bridge.compressed_imgmsg_to_cv2(msg)
-    img = encode_stream(im3)
-    #ws3.send("data:image/jpg;base64,"+ img)
 
     
+
+def display_cam_3(msg):
+    global im3
+    im3 = bridge.compressed_imgmsg_to_cv2(msg)
+
+    img = encode_stream(im3)
+    async_to_sync(channel_layer.group_send)("video3", {"type": "video_message",
+                                                            'video_data' : "data:image/jpg;base64,"+ img })
+
+
 
 def display_cam_4(msg):
     global im4 
     im4 = bridge.compressed_imgmsg_to_cv2(msg)
 
     img = encode_stream(im4)
-    
-    #ws4.send("data:image/jpg;base64,"+ img)
+    async_to_sync(channel_layer.group_send)("video4", {"type": "video_message",
+                                                            'video_data' : "data:image/jpg;base64,"+ img })
+
 
 
 def display_cam_5(msg):
@@ -88,35 +103,9 @@ def display_cam_5(msg):
     im5 = bridge.compressed_imgmsg_to_cv2(msg)
 
     img = encode_stream(im5)
-    
-    #ws5.send("data:image/jpg;base64,"+ img)
+    async_to_sync(channel_layer.group_send)("video5", {"type": "video_message",
+                                                            'video_data' : "data:image/jpg;base64,"+ img })
 
-
-def display_cam_6(msg):
-    global im6 
-    im6 = bridge.compressed_imgmsg_to_cv2(msg)
-
-    img = encode_stream(im6)
-    
-    #ws6.send("data:image/jpg;base64,"+ img)
-
-
-def display_cam_7(msg):
-    global im7 
-    im7 = bridge.compressed_imgmsg_to_cv2(msg)
-
-    img = encode_stream(im7)
-    
-    #ws7.send("data:image/jpg;base64,"+ img)
-
-
-def display_cam_8(msg):
-    global im8 
-    im8 = bridge.compressed_imgmsg_to_cv2(msg)
-
-    img = encode_stream(im8)
-    
-    #ws8.send("data:image/jpg;base64,"+ img)
 
 
 

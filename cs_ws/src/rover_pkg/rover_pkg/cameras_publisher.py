@@ -47,22 +47,23 @@ def gstreamer_pipeline(
     framerate=CAMERA_FRAMERATE,
     flip_method=0,
 ):
-    # return (
-    #     "nvarguscamerasrc sensor-id=%d !"
-    #     "video/x-raw(memory:NVMM), width=(int)%d, height=(int)%d, framerate=(fraction)%d/1 ! "
-    #     "nvvidconv flip-method=%d ! "
-    #     "video/x-raw, width=(int)%d, height=(int)%d, format=(string)BGRx ! "
-    #     "videoconvert ! "
-    #     "video/x-raw, format=(string)BGR ! appsink"
-    #     % (
-    #         sensor_id,
-    #         capture_width,
-    #         capture_height,
-    #         framerate,
-    #         flip_method,
-    #         display_width,
-    #         display_height,
-    #     )
+    return (
+        "nvarguscamerasrc sensor-id=%d !"
+        "video/x-raw(memory:NVMM), width=(int)%d, height=(int)%d, framerate=(fraction)%d/1 ! "
+        "nvvidconv flip-method=%d ! "
+        "video/x-raw, width=(int)%d, height=(int)%d, format=(string)BGRx ! "
+        "videoconvert ! "
+        "video/x-raw, format=(string)BGR ! appsink"
+        % (
+            sensor_id,
+            capture_width,
+            capture_height,
+            framerate,
+            flip_method,
+            display_width,
+            display_height,
+        )
+    )
 
     # return (
     #         "gst-launch-1.0 v4l2src !"  
@@ -77,7 +78,7 @@ def gstreamer_pipeline(
     #         )
     # )
     #return ('sudo gst-launch-1.0 v4l2src ! videoconvert ! x264enc pass=qual quantizer=20 tune=zerolatency ! rtph264pay ! udpsink host=127.0.0.1 port=8080')
-    return ('sudo gst-launch-1.0 v4l2src ! videoconvert ! video/x-raw, format=(string)BGR ! appsink')
+    #return ('sudo gst-launch-1.0 v4l2src ! videoconvert ! video/x-raw, format=(string)BGR ! appsink')
 
 def main(args=None):
     rclpy.init(args=args)

@@ -134,9 +134,9 @@ class CS:
         self.node.create_subscription(Odometry,         'NAV/odometry/filtered',            self.controller.nav_data           , 10)
 
         #Camera messages
-        self.node.create_subscription(CompressedImage,            '/camera_0',                 cameras_reciever.display_cam_1   , 1)
-        self.node.create_subscription(CompressedImage,            '/camera_1',                 cameras_reciever.display_cam_2   , 1)
-        self.node.create_subscription(CompressedImage,            '/camera_2',                 cameras_reciever.display_cam_3   , 1)
+        self.node.create_subscription(CompressedImage,            '/camera_0',                 cameras_reciever.display_cam_0   , 1)
+        self.node.create_subscription(CompressedImage,            '/camera_1',                 cameras_reciever.display_cam_1   , 1)
+        self.node.create_subscription(CompressedImage,            '/camera_2',                 cameras_reciever.display_cam_2   , 1)
 
         # TODO
         # c'est quoi ?
@@ -189,14 +189,14 @@ class CS:
 
 
         if(target == 'HD'):
-            new_axes, new_buttons = utils.gamepad.hd_maping(axes, buttons)
+            #new_axes, new_buttons = utils.gamepad.hd_maping(axes, buttons)
             joy_msg = Joy()
-            joy_msg.axes = new_axes
-            joy_msg.buttons = new_buttons
+            joy_msg.axes = axes
+            joy_msg.buttons = buttons
             self.HD_Gamepad_pub.publish(joy_msg)
         elif(target == 'NAV'):
-            new_axes, new_buttons = utils.gamepad.nav_maping(axes, buttons)
+            #new_axes, new_buttons = utils.gamepad.nav_maping(axes, buttons)
             joy_msg = Joy()
-            joy_msg.axes = new_axes
-            joy_msg.buttons = new_buttons
+            joy_msg.axes = axes
+            joy_msg.buttons = buttons
             self.NAV_Gamepad_pub.publish(joy_msg)
