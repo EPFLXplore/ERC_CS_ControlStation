@@ -7,7 +7,7 @@ import TaskControl from "../../components/TaskControl";
 import styles from "./style.module.sass";
 import { WaveGraph } from "../../components/WaveGraph";
 import { Table } from "../../components/Table";
-import { Tab } from "@mui/material";
+import { Sensor } from "../../utils/sensor.type";
 
 const pointsFirstWave = [
 	{ x: 0, y: 0 },
@@ -77,9 +77,9 @@ export default () => {
 			<div className={styles.Info}>
 				<div className={styles.ControlsContainer}>
 					<h2 className={styles.title}>NPK sensor</h2>
-					<Table lines={lines} />
+					<Table lines={lines} sensorType={Sensor.NPK} />
 					<h2 className={styles.title}>4-in-1 sensor</h2>
-					<Table lines={lines2} />
+					<Table lines={lines2} sensorType={Sensor.ALL} />
 				</div>
 			</div>
 			<div className={styles.taskControlContainer}>

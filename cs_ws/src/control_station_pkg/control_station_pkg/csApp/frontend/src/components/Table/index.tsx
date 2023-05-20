@@ -1,11 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import styles from "./style.module.sass";
+import { Sensor } from "../../utils/sensor.type";
 
 interface TableProps {
 	lines: { id: string; content: number }[];
+	sensorType: Sensor;
 }
 
-export const Table = ({ lines }: TableProps) => {
+export const Table = ({ lines, sensorType }: TableProps) => {
 	return (
 		<table className={styles.table}>
 			<thead>
