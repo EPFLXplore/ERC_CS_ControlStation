@@ -50,6 +50,13 @@ const pointsSecondWave = [
 const values1 = [10, 5.4, 12];
 const values2 = [10, 5.4, 12, 6];
 
+const candidates = [
+	{ percentage: 78, element: "Phosphate" },
+	{ percentage: 77.8, element: "Materiau1" },
+	{ percentage: 74, element: "Materiau2" },
+	{ percentage: 73.9, element: "Materiau3" },
+];
+
 export default () => {
 	return (
 		<div className="page">
@@ -57,10 +64,9 @@ export default () => {
 			<BackButton />
 			<div className={styles.InfoContainer}>
 				<WaveGraph
-					pointsFirstWave={pointsFirstWave}
+					measure={pointsFirstWave}
 					pointsSecondWave={pointsSecondWave}
-					percentage={78}
-					mainComponent="Phosphate"
+					candidates={candidates}
 				/>
 			</div>
 			<div className={styles.Info}>
@@ -72,7 +78,25 @@ export default () => {
 			<div className={styles.taskControlContainer}>
 				<TaskControl task={Task.SCIENCE} />
 			</div>
-			<div className={styles.InfoControllerContainer}></div>
+			<div className={styles.InfoControllerContainer}>
+				<thead>
+					<tr>
+						<th>Candidate 1</th>
+						<th>Candidate 2</th>
+						<th>Candidate 3</th>
+						<th>Candidate 4</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						{candidates.map((candidate, index) => (
+							<td>
+								{candidate.percentage}%, {candidate.element}
+							</td>
+						))}
+					</tr>
+				</tbody>
+			</div>
 		</div>
 	);
 };

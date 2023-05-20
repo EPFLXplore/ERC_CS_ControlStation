@@ -4,18 +4,12 @@ import styles from "./style.module.sass";
 Chart.register(...registerables);
 
 interface GraphProps {
-	pointsFirstWave: { x: number; y: number }[];
+	measure: { x: number; y: number }[];
 	pointsSecondWave: { x: number; y: number }[];
-	percentage: number;
-	mainComponent: string;
+	candidates: { percentage: number; element: string }[];
 }
 
-export const WaveGraph: React.FC<GraphProps> = ({
-	pointsFirstWave,
-	pointsSecondWave,
-	percentage,
-	mainComponent,
-}) => {
+export const WaveGraph: React.FC<GraphProps> = ({ measure, pointsSecondWave, candidates }) => {
 	const chartRef = useRef<HTMLCanvasElement | null>(null);
 	const chartInstanceRef = useRef<Chart | null>(null);
 
@@ -31,19 +25,19 @@ export const WaveGraph: React.FC<GraphProps> = ({
 				chartInstanceRef.current = new Chart(ctx, {
 					type: "line",
 					data: {
-						labels: pointsFirstWave.map((_, index) => index.toString()),
+						labels: measure.map((_, index) => index.toString()),
 						datasets: [
 							{
-								label: "1st Graph",
-								data: pointsFirstWave.map((point) => ({ x: point.x, y: point.y })),
-								fill: false,
-								borderColor: "blue",
-							},
-							{
-								label: "2nd Graph",
-								data: pointsSecondWave.map((point) => ({ x: point.x, y: point.y })),
+								label: "Measure",
+								data: measure.map((point) => ({ x: point.x, y: point.y })),
 								fill: false,
 								borderColor: "red",
+							},
+							{
+								label: "Closest candidate",
+								data: pointsSecondWave.map((point) => ({ x: point.x, y: point.y })),
+								fill: false,
+								borderColor: "blue",
 							},
 						],
 					},
@@ -67,13 +61,15 @@ export const WaveGraph: React.FC<GraphProps> = ({
 				chartInstanceRef.current.destroy();
 			}
 		};
-	}, [pointsFirstWave, pointsSecondWave]);
+	}, [measure, pointsSecondWave]);
 
 	return (
 		<div className={styles.GraphContainer}>
-			<p className={styles.text}>
-				{percentage}%, {mainComponent}
-			</p>
+			<div className={styles.text}>
+				<p>
+					{candidates[0].percentage}%, {candidates[0].element}
+				</p>
+			</div>
 			<canvas ref={chartRef} />
 		</div>
 	);
