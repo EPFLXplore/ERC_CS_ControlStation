@@ -76,10 +76,9 @@ class CS:
         # CS --> ROVER 
 
         #Doit etre remplacé par un service 
-        self.Task_pub               = self.node.create_publisher(Int8MultiArray,    'CS/Task',                1)
+        self.Task_pub               = self.node.create_publisher(Int8MultiArray,    'CS/Task',             1)
         self.CS_confirm_pub         = self.node.create_publisher(Bool,              'CS/Confirm',          1)
 
-        #CS --> ROVER (GAMEPAD)
 
         # CS --> ROVER (HD)
         self.HD_mode_pub            = self.node.create_publisher(Int8,              'CS/HD_mode',          1)
@@ -87,13 +86,12 @@ class CS:
         self.HD_Angles_pub          = self.node.create_publisher(Int8MultiArray,    'CS/HD_Angles',        1)
         self.HD_id                  = self.node.create_publisher(Int8,              'CS/HD_element_id',    1)
         self.HD_toggle_camera_pub   = self.node.create_publisher(Bool,              'CS/HD_toggle_camera', 1)
-        #self.Gamepad_pub            = self.node.create_publisher(Joy,    'Gamepad',             1)
 
-        # CS --> ROVER (HD)
-        self.HD_Gamepad_pub         = self.node.create_publisher(Joy,               'CS/HD_gamepad',       1)
+        # CS --> ROVER (GAMEPAD)
+        self.HD_Gamepad_pub         = self.node.create_publisher(Float32MultiArray,  'CS/HD_gamepad',       1)
         self.NAV_Gamepad_pub         = self.node.create_publisher(Joy,               'CS/NAV_gamepad',       1)
 
-        #TODO necessary? 
+        #TODO necessary?
         #self.HD_ManualVelocity_pub  = self.node.create_publisher('HD_ManualVelocity',  Float32,        1)
         self.HD_InvManual_Coord_pub = self.node.create_publisher(Int8MultiArray,    'CS/HD_InvManual_Coord',  1)
         self.HD_homeGo_pub          = self.node.create_publisher(Bool,              'CS/HD_reset_arm_pos',    1)
@@ -180,23 +178,55 @@ class CS:
     #            GAMEPAD
     # ===============================
 
-    def send_gamepad_data(self, axes, buttons, id, target):
+    def send_gamepad_data(self, axes, buttons, id, target, speed= 0.5):
         '''
             send gamepad data to rover
         '''
         axes = [float(i) for i in axes]
 
-
-
         if(target == 'HD'):
-            #new_axes, new_buttons = utils.gamepad.hd_maping(axes, buttons)
-            joy_msg = Joy()
-            joy_msg.axes = axes
-            joy_msg.buttons = buttons
-            self.HD_Gamepad_pub.publish(joy_msg)
+            new_axes = utils.gamepad.permute(axes, utils.gamepad.selected_hd_profile.axes)
+            new_buttons = utils.gamepad.permute(buttons, utils.gamepad.selected_hd_profile.buttons)
+
+            # Need to rescale axes 2 and 5 starting at -1
+            ax4 = axes[4]
+            ax5 = axes[5]
+            if (ax4 < 0):
+                axes[4] = -ax4/2
+            if (ax5 < 0):
+                axes[5] = -ax5/2
+            if (ax4 >= 0):
+                axes[4] = ax4/2 + 0.5
+            if (ax5 >= 0):
+                axes[5] = ax5/2 + 0.5
+
+            # Buttons 4 and 5 tells if we are going forward or backward
+            if (buttons[4] == 1):
+                axes[4] = -axes[4]
+            if (buttons[5] == 1):
+                axes[5] = -axes[5]
+
+            speed = Float32MultiArray()
+            speed.data = axes[:6]
+
+             # Gripper are buttons 1 and 2
+            # transform them into speeds
+            if (buttons[2] == 1):
+                speed.append(buttons[4]* (-speed))
+            elif (buttons[1] == 1):
+                speed.append(buttons[5]* (speed))
+            else:
+                speed.append(0)
+
+            self.HD_Gamepad_pub.publish(speed)
+
         elif(target == 'NAV'):
-            #new_axes, new_buttons = utils.gamepad.nav_maping(axes, buttons)
             joy_msg = Joy()
+            new_axes = utils.gamepad.permute(axes, utils.gamepad.selected_nav_profile.axes)
+            new_buttons = utils.gamepad.permute(buttons, utils.gamepad.selected_nav_profile.buttons)
+
             joy_msg.axes = axes
             joy_msg.buttons = buttons
             self.NAV_Gamepad_pub.publish(joy_msg)
+
+            
