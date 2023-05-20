@@ -212,9 +212,9 @@ class CS:
              # Gripper are buttons 1 and 2
             # transform them into speeds
             if (buttons[2] == 1):
-                speed.data.append(buttons[4]* (-speed))
+                speed.data.append(buttons[4]* (-1))
             elif (buttons[1] == 1):
-                speed.data.append(buttons[5]* (speed))
+                speed.data.append(buttons[5]* (1))
             else:
                 speed.data.append(0)
 
