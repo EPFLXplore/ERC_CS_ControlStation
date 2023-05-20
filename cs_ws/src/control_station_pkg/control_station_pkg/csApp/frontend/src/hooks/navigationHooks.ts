@@ -8,8 +8,10 @@ export const useGoalTracker = () => {
 	const [goals, setGoals] = useState<Goal[]>([]);
 
 	const addGoal = (x: number, y: number, o: number) => {
-		const id = Date.now(); //Generate a unique id for the goal
-		setGoals([...goals, { id, x, y, o }]);
+		if (x.toString() !== "NaN" && y.toString() !== "NaN" && o.toString() !== "NaN") {
+			const id = Date.now(); //Generate a unique id for the goal
+			setGoals([...goals, { id, x, y, o }]);
+		}
 	};
 
 	const resetGoals = () => {
