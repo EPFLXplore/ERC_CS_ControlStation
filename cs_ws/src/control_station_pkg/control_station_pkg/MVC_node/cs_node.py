@@ -188,17 +188,9 @@ class CS:
             #new_axes = utils.gamepad.permute(axes, utils.gamepad.selected_hd_profile.axes)
             #new_buttons = utils.gamepad.permute(buttons, utils.gamepad.selected_hd_profile.buttons)
 
-            # Need to rescale axes 2 and 5 starting at -1
-            ax2 = axes[2]
-            ax5 = axes[5]
-            if (ax2 < 0):
-                axes[2] = (-ax2)/2
-            if (ax5 < 0):
-                axes[5] = (-ax5)/2
-            if (ax2 >= 0):
-                axes[2] = ax2/2 + 0.5
-            if (ax5 >= 0):
-                axes[5] = ax5/2 + 0.5
+            # Need to interpolate axes 2 and 5 to go from range [-1,1] to [0,1]
+            axes[2] = (axes[2] + 1) / 2
+            axes[5] = (axes[5] + 1) / 2
 
             # Buttons 4 and 5 tells if we are going forward or backward
             if (buttons[4] == 1):
@@ -212,9 +204,9 @@ class CS:
              # Gripper are buttons 1 and 2
             # transform them into speeds
             if (buttons[2] == 1):
-                speed.data.append(-buttons[1])
+                speed.data.append(-1)
             elif (buttons[1] == 1):
-                speed.data.append(buttons[2])
+                speed.data.append(1)
             else:
                 speed.data.append(0)
 
