@@ -6,6 +6,8 @@ import { Task } from "../../utils/tasks.type";
 import TaskControl from "../../components/TaskControl";
 import styles from "./style.module.sass";
 import { WaveGraph } from "../../components/WaveGraph";
+import { Table } from "../../components/Table";
+import { Tab } from "@mui/material";
 
 const pointsFirstWave = [
 	{ x: 0, y: 0 },
@@ -45,6 +47,20 @@ const pointsSecondWave = [
 	{ x: 3, y: 2 },
 ];
 
+// Sample data for the table
+const lines = [
+	{ id: "Phosphate", content: 10 },
+	{ id: "Azote", content: 5.4 },
+	{ id: "Potassium", content: 12 },
+];
+
+const lines2 = [
+	{ id: "Humidity", content: 10 },
+	{ id: "Temperature", content: 5.4 },
+	{ id: "Elec", content: 12 },
+	{ id: "PH", content: 6 },
+];
+
 export default () => {
 	return (
 		<div className="page">
@@ -59,7 +75,12 @@ export default () => {
 				</div>
 			</div>
 			<div className={styles.Info}>
-				<div className={styles.ControlsContainer}></div>
+				<div className={styles.ControlsContainer}>
+					<h2 className={styles.title}>NPK sensor</h2>
+					<Table lines={lines} />
+					<h2 className={styles.title}>4-in-1 sensor</h2>
+					<Table lines={lines2} />
+				</div>
 			</div>
 			<div className={styles.taskControlContainer}>
 				<TaskControl task={Task.SCIENCE} />
