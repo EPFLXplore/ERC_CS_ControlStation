@@ -202,7 +202,7 @@ class CS:
 
             # Buttons 4 and 5 tells if we are going forward or backward
             if (buttons[4] == 1):
-                axes[4] = -axes[4]
+                axes[2] = -axes[2]
             if (buttons[5] == 1):
                 axes[5] = -axes[5]
 
@@ -212,9 +212,9 @@ class CS:
              # Gripper are buttons 1 and 2
             # transform them into speeds
             if (buttons[2] == 1):
-                speed.data.append(buttons[4]* (-1))
+                speed.data.append(-buttons[1])
             elif (buttons[1] == 1):
-                speed.data.append(buttons[5]* (1))
+                speed.data.append(buttons[2])
             else:
                 speed.data.append(0)
 
