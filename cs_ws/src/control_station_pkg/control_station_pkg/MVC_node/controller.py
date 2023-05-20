@@ -21,9 +21,8 @@
 # ================================================================================
 # Libraries
 
+import datetime
 from turtle import pos
-import rclpy
-import sys
 import json
 import websocket
 import time
@@ -178,35 +177,68 @@ class Controller():
         # publish to front-end
         self.sendJson(Task.MAINTENANCE)
 
+    def hd_data(self, JointState):
+
+        joint_positon = JointState.position
+        joint_velocity = JointState.velocity
+        joint_current = JointState.effort
+
+        async_to_sync(channel_layer.group_send)("info_hd", {"type": "hd_message",
+                                                            'joint_position': [joint_positon[0], joint_positon[1], joint_positon[2], joint_positon[3], joint_positon[4], joint_positon[5]],
+                                                            'joint_velocity': [joint_velocity[0], joint_velocity[1], joint_velocity[2], joint_velocity[3], joint_velocity[4], joint_velocity[5]],
+                                                            'joint_current': [joint_current[0], joint_current[1], joint_current[2], joint_current[3], joint_current[4], joint_current[5]],
+                                                            'detected_tags' : [0,0,0,1],
+                                                            'task_outcome' : False,
+                                                                        })
+    
+
     # ========= NAVIGATION CALLBACKS =========
 
     # receives an Odometry message from NAVIGATION
     def nav_data(self, odometry):
-        data = odometry
-        nav = self.cs.rover.Nav
 
-        # position (x,y,z)
-        pos = data.pose.pose.position
-        nav.setPos([pos.x, pos.y, pos.z])
+        print("nav data received")
 
-        # orientation
-        quaternion = data.pose.pose.orientation
-        explicit_quat = [quaternion.w, quaternion.x, quaternion.y, quaternion.z]
-        roll, pitch, yaw = quat2euler(explicit_quat)
-        nav.setYaw(yaw)
+        #data = odometry
+        #nav = self.cs.rover.Nav
 
-        # linear velocity
-        twistLin = data.twist.twist.linear
-        nav.setLinVel([twistLin.x, twistLin.y, twistLin.z])
+        # # position (x,y,z)
+        # pos = data.pose.pose.position
+        # nav.setPos([pos.x, pos.y, pos.z])
 
-        # angular velocity
-        twistAng = data.twist.twist.angular
-        nav.setAngVel([twistAng.x, twistAng.y, twistAng.z])
+        # # orientation
+        # quaternion = data.pose.pose.orientation
+        # explicit_quat = [quaternion.w, quaternion.x, quaternion.y, quaternion.z]
+        # roll, pitch, yaw = quat2euler(explicit_quat)
+        # nav.setYaw(yaw)
+
+        # # linear velocity
+        # twistLin = data.twist.twist.linear
+        # nav.setLinVel([twistLin.x, twistLin.y, twistLin.z])
+
+        # # angular velocity
+        # twistAng = data.twist.twist.angular
+        # nav.setAngVel([twistAng.x, twistAng.y, twistAng.z])
 
         # self.cs.node.get_logger().info("linvel %d", nav.getLinVel())
 
+        position = odometry.pose.pose.position
+        orientation = odometry.pose.pose.orientation
+        linVel = odometry.twist.twist.linear
+        angVel = odometry.twist.twist.angular
+
+
+        async_to_sync(channel_layer.group_send)("info_nav", {"type": "nav_message",
+                                                            'position'   : [position.x, position.y, position.z],
+                                                            'orientation': [orientation.w, orientation.x, orientation.y, orientation.z],
+                                                            'linVel'     : [linVel.x, linVel.y, linVel.z],
+                                                            'angVel'     : [angVel.x, angVel.y, angVel.z],
+                                                            'current_goal' : "",
+                                                            'wheel_ang' : [1,2,3,4]
+                                                                        })
+
         # publish to front-end
-        self.sendJson(Task.NAVIGATION)
+        #self.sendJson(Task.NAVIGATION)
 
     # callback for exceptions thrown from rover or from the CS
     def exception_clbk(self, str):
@@ -219,14 +251,35 @@ class Controller():
         # publish to front-end
         self.sendJson(Task.LOGS)
 
-    def log_clbk(self, str):
-        val = str.data
-        self.cs.node.get_logger().info("Diagnostic: " + val)
-        #self.cs.rover.log.add(val)
+    def log_clbk(self, data):
 
-        # publish to front-end
-        #self.sendJson(Task.LOGS)
+        return
 
+        print("log_clbk ")
+
+        #asyncio.set_event_loop(self.cs.loop)
+
+        # asyncio.get_event_loop().run_until_complete(channel_layer.group_send("log", {"type": "log.message",'hours': str(datetime.datetime.now().hour),
+        #                                                                 'minutes': str(datetime.datetime.now().minute),
+        #                                                                 'seconds': str(datetime.datetime.now().second),
+        #                                                                 'severity': int.from_bytes(data.level, "big"),
+        #                                                                 'message': data.message,}))
+
+
+
+        # asyncio.run(channel_layer.group_send("log", {"type": "log.message",'hours': str(datetime.datetime.now().hour),
+        #                                                                 'minutes': str(datetime.datetime.now().minute),
+        #                                                                 'seconds': str(datetime.datetime.now().second),
+        #                                                                 'severity': int.from_bytes(data.level, "big"),
+        #                                                                 'message': data.message,}))
+        
+        
+        async_to_sync(channel_layer.group_send)("log", {"type": "log.message",'hours': str(datetime.datetime.now().hour),
+                                                                        'minutes': str(datetime.datetime.now().minute),
+                                                                        'seconds': str(datetime.datetime.now().second),
+                                                                        'severity': int.from_bytes(data.level, "big"),
+                                                                        'message': data.message,})
+        
 
     # =================================================================================================================
 
@@ -272,6 +325,8 @@ class Controller():
             publishes task instructions to the self.cs.rover
         '''
         # checkArgs(task, instr)
+
+        print("pub_Task called") 
 
         arr = [task, instr]
 
@@ -319,21 +374,21 @@ class Controller():
 
     # send the coordinates the rover must reach and the orientation it must reach them in
     def pub_nav_goal(self, x, y, yaw):
-        self.cs.node.get_logger().info("NAV: set goal (%.2f, %.2f) + %.2f (orientation)", x, y, yaw)
+        #self.cs.node.get_logger().info("NAV: set goal (%.2f, %.2f) + %.2f (orientation)", x, y, yaw)
 
-        self.cs.rover.Nav.setGoal([x, y, yaw])
+        self.cs.rover.Nav.addGoal([x, y, yaw])
 
         # PoseStamped message construction: Header + Pose
         # ----- Header -----
         nav = self.cs.rover.Nav
         h = Header()
-        h.frame_id = str(nav.getId())  # goal has an id by which it is recognized
+        #h.frame_id = str(nav.getId())  # goal has an id by which it is recognized
 
         # ----- Pose: Point + Quaternion -----
         pose = Pose()
 
         # z = 0.0 (the rover can't fly yet)
-        point = Point(x, y, 0.0)
+        point = Point(x=x, y=y, z=0.0)
         pose.position = point
 
         # rover orientation
@@ -343,8 +398,10 @@ class Controller():
         pose.orientation.y = q[2]
         pose.orientation.z = q[3]
 
-        # -----------------------------------
-        # publish goal to rover
+
+        #TODO: should be replaced by a service
+        #pour avoir le goal, call self.cs.rover.Nav.getGoal()
+        #apres avoir recu confirmation du rover, appeler self.cs.rover.Nav.popGoal()
         self.cs.Nav_Goal_pub.publish(PoseStamped(header=h, pose=pose))
 
     # cancel a specific Navigation goal by giving the goal's id
@@ -458,7 +515,7 @@ class Controller():
         # Info to display on MANUAL tab
         if(subsyst == Task.MANUAL):
 
-            consumer = "nav_manual"
+            consumer = "tab_info_nav"
             nav = self.cs.rover.Nav
             hd = self.cs.rover.HD
 
@@ -538,6 +595,12 @@ class Controller():
                 'exceptions': l
             }
 
-        # send info to front-end
-        message = json.dumps(Dictionary)
-        async_to_sync(channel_layer.group_send)(consumer, message)
+        # channel_layer = get_channel_layer()
+        # # send info to front-end
+        # message = json.dumps(Dictionary)
+        # #async_to_sync(channel_layer.group_send)("chat", message)
+        # async_to_sync(channel_layer.group_send)("log", {"type": "log.message",'hours': str(datetime.datetime.now().hour),
+        #                                                                 'minutes': str(datetime.datetime.now().minute),
+        #                                                                 'seconds': str(datetime.datetime.now().second),
+        #                                                                 'severity': "",
+        #                                                                 'message': "Emile <3",})

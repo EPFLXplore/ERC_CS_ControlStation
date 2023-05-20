@@ -19,10 +19,11 @@ from django.http            import HttpResponse, JsonResponse
 from django.shortcuts       import render
 from django.shortcuts       import redirect
 
-import MVC_node.cs_node
 from MVC_node.controller import *
 from MVC_node.models.rover  import Task
 from manage          import setup
+
+from MVC_node.models import gamepad
 
 
 # ===============================================================
@@ -63,67 +64,67 @@ def parseState():
 # ------------------------------------
 # General views
 
-def handlingdevice(request):
+# def handlingdevice(request):
 
-    state = parseState()
-    #ws_hd.connect(HD_WS_URL)
-    #ws_time.connect(TIME_WS_URL)
-    return render(request, 'pages/handlingdevice.html', { 
-        'tab_name': "handlingdevice",
-        'current_state' : state
-    }) 
+#     state = parseState()
+#     #ws_hd.connect(HD_WS_URL)
+#     #ws_time.connect(TIME_WS_URL)
+#     return render(request, 'pages/handlingdevice.html', { 
+#         'tab_name': "handlingdevice",
+#         'current_state' : state
+#     }) 
 
-def homepage(request):
-    if not request.session.session_key:
-        request.session.create()
-    print("home page requested : " + request.session.session_key)
-    state = parseState()
-    #ws_hp.connect(HP_WS_URL)
-    # ws_time.connect(TIME_WS_URL)
-    return render(request, 'pages/homepage.html', { 
-        'tab_name': "homepage",
-        'current_state' : state
-    }) 
+# def homepage(request):
+#     if not request.session.session_key:
+#         request.session.create()
+#     print("home page requested : " + request.session.session_key)
+#     state = parseState()
+#     #ws_hp.connect(HP_WS_URL)
+#     # ws_time.connect(TIME_WS_URL)
+#     return render(request, 'pages/homepage.html', { 
+#         'tab_name': "homepage",
+#         'current_state' : state
+#     }) 
 
-def manualcontrol(request):
+# def manualcontrol(request):
 
-    state = parseState()
-    #ws_man.connect(MAN_WS_URL)
-    #ws_time.connect(TIME_WS_URL)
-    return render(request, 'pages/manualcontrol.html', { 
-        'tab_name': "manual",
-        'current_state' : state
-    }) 
+#     state = parseState()
+#     #ws_man.connect(MAN_WS_URL)
+#     #ws_time.connect(TIME_WS_URL)
+#     return render(request, 'pages/manualcontrol.html', { 
+#         'tab_name': "manual",
+#         'current_state' : state
+#     }) 
 
-def navigation(request):
+# def navigation(request):
 
-    state = parseState()
-    #ws_nav.connect(NAV_WS_URL)
-    # ws_time.connect(TIME_WS_URL)
-    return render(request, 'pages/navigation.html', { 
-        'tab_name': "navigation",
-        'current_state' : state
-    })  
+#     state = parseState()
+#     #ws_nav.connect(NAV_WS_URL)
+#     # ws_time.connect(TIME_WS_URL)
+#     return render(request, 'pages/navigation.html', { 
+#         'tab_name': "navigation",
+#         'current_state' : state
+#     })  
 
-def science(request):
+# def science(request):
 
-    state = parseState()
-    #ws_sc.connect(SC_WS_URL)
-    #ws_time.connect(TIME_WS_URL)
-    return render(request, 'pages/science.html', { 
-        'tab_name': "science",
-        'current_state' : state
-    }) 
+#     state = parseState()
+#     #ws_sc.connect(SC_WS_URL)
+#     #ws_time.connect(TIME_WS_URL)
+#     return render(request, 'pages/science.html', { 
+#         'tab_name': "science",
+#         'current_state' : state
+#     }) 
 
-def logs(request):
+# def logs(request):
 
-    state = parseState()
-    #ws_av.connect(AV_WS_URL)
-    #ws_time.connect(TIME_WS_URL)
-    return render(request, 'pages/logs.html', { 
-        'tab_name': "logs",
-        'current_state' : state
-    }) 
+#     state = parseState()
+#     #ws_av.connect(AV_WS_URL)
+#     #ws_time.connect(TIME_WS_URL)
+#     return render(request, 'pages/logs.html', { 
+#         'tab_name': "logs",
+#         'current_state' : state
+#     }) 
 
 # -----------------------------------
 # manual control views
@@ -157,10 +158,12 @@ def resume_manual(request):
 # navigation
 
 def launch_nav(request):
+
+    #cs.controller.sendJson(Task.NAVIGATION)
+
     cs.node.get_logger().info("Navigation: Launch")
     cs.controller.pub_Task(2,1)
     cs.rover.setState(Task.NAVIGATION)
-    # return empty json response to update the page without refreshing
     return JsonResponse({})
 
 def abort_nav(request):
@@ -179,15 +182,29 @@ def resume_nav(request):
     cs.controller.pub_Task(2,4)
     return JsonResponse({})
 
-def set_nav(request):
+#def set_nav(request):
+#
+#
+#    
+#    cs.controller.pub_nav_goal(x, y, yaw)
+#    goal = cs.rover.Nav.getGoal()
+#
+#    return JsonResponse({})
+def add_goal_nav(request):
+
+    print(request.POST)
 
     x = float(request.POST.get("x"))
     y = float(request.POST.get("y"))
     yaw = float(request.POST.get("yaw"))
-    
+
+    #print("the goal is (x = %.2f, y = %.2f, yaw = %.2f):", x, y, yaw)
+
     cs.controller.pub_nav_goal(x, y, yaw)
-    goal = cs.rover.Nav.getGoal()
-    print("the goal is (x = %.2f, y = %.2f, yaw = %.2f):", goal[0], goal[1], goal[2])
+    return JsonResponse({})
+
+def remove_goal_nav(request):
+
 
     return JsonResponse({})
 
@@ -222,10 +239,27 @@ def retry_hd(request):
     return JsonResponse({})
 
 def set_id(request):
+    print(request.POST.get("id"))
     cs.rover.HD.set_joint_positions([10,0,0,0,0,0])
-    cs.controller.sendJson(Task.MAINTENANCE)
+    #cs.controller.sendJson(Task.MAINTENANCE)
+    id = int(request.POST.get("id"))
+    cs.rover.HD.setElemId(id)
+    cs.HD_id.publish(Int8(data=id))
+    cs.node.get_logger().info("Maintenance: Set HD id to " + str(id))
     #print(cs.rover.HD.getElemId())
     #cs.controller.pub_hd_elemId(id)
+    return JsonResponse({})
+
+def set_hd_mode(request):
+    mode = int(request.POST.get("mode"))
+    cs.rover.HD.setHDMode(mode)
+    cs.HD_mode_pub.publish(Int8(data=mode))
+    cs.node.get_logger().info("Maintenance: Set HD mode to " +  str(mode))
+    return JsonResponse({})
+
+def toggle_hd_camera(request):
+    #TODO AFTER UGO SET IT
+    
     return JsonResponse({})
 
 # -----------------------------------
@@ -305,7 +339,23 @@ def capture_image(request):
     return JsonResponse({})
 
 
-def get_gamepad_profile(request):
+# -----------------------------------
+# gamepad views
+
+def get_nav_gamepad_profile(request):
+
+    return JsonResponse(gamepad.get_nav_profile())
+
+def get_hd_gamepad_profile(request):
+
+    return JsonResponse(gamepad.get_hd_profile())
+
+def set_nav_gamepad_profile(request):
+
+    return JsonResponse({})
+
+def set_hd_gamepad_profile(request):
+
     return JsonResponse({})
 
 

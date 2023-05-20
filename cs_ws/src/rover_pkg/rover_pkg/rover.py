@@ -14,7 +14,7 @@ from std_msgs.msg       import Int8, Int16, Int32, Bool, String, Int8MultiArray,
 #from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
 from geometry_msgs.msg  import Twist, PoseStamped
 from actionlib_msgs.msg import GoalID
-from sensor_msgs.msg import JointState
+from sensor_msgs.msg import JointState, Joy
 from nav_msgs.msg import Odometry
 from diagnostic_msgs.msg import DiagnosticStatus
 
@@ -67,48 +67,64 @@ class Rover():
 
         # ===== PUBLISHERS =====
 
-        self.RoverConfirm_pub  = self.node.create_publisher(String,            'ROVER_RoverConfirm'            , 1)
-        self.Exception_pub     = self.node.create_publisher(String,            'ROVER_Exception'               , 1)
-        self.TaskProgress_pub  = self.node.create_publisher(Int8,              'ROVER_TaskProgress'            , 1)
+        self.RoverConfirm_pub  = self.node.create_publisher(String,            'ROVER/RoverConfirm'            , 1)
+        self.Exception_pub     = self.node.create_publisher(String,            'ROVER/Exception'               , 1)
+        self.TaskProgress_pub  = self.node.create_publisher(Int8,              'ROVER/TaskProgress'            , 1)
         # Rover(SC) --> CS
-        self.SC_state_pub      = self.node.create_publisher(String,            'ROVER_SC_state'                , 1)
-        self.SC_infos_pub      = self.node.create_publisher(String,            'ROVER_SC_info'                 , 1)
-        self.SC_humidities_pub = self.node.create_publisher(Int16,             'ROVER_SC_measurements_humidity', 1)
-        self.SC_params_pub     = self.node.create_publisher(Int16MultiArray,   'ROVER_SC_params'               , 1)
+        self.SC_state_pub      = self.node.create_publisher(String,            'ROVER/SC_state'                , 1)
+        self.SC_infos_pub      = self.node.create_publisher(String,            'ROVER/SC_info'                 , 1)
+        self.SC_humidities_pub = self.node.create_publisher(Int16,             'ROVER/SC_measurements_humidity', 1)
+        self.SC_params_pub     = self.node.create_publisher(Int16MultiArray,   'ROVER/SC_params'               , 1)
         # Rover(HD) --> CS
-        self.HD_telemetry_pub  = self.node.create_publisher(JointState,        'ROVER_HD_telemetry'            , 1)
-        self.HD_tof            = self.node.create_publisher(Int32,             'ROVER_HD_tof'                  , 1)
-        self.NAV_odometry_pub  = self.node.create_publisher(Odometry,          'ROVER_NAV_odometry'            , 1)
-        self.HD_element_pub    = self.node.create_publisher(Float32MultiArray, 'ROVER_HD_detected_element'     , 3)
+        self.HD_telemetry_pub  = self.node.create_publisher(JointState,        'ROVER/HD_telemetry'            , 1)
+        self.HD_tof            = self.node.create_publisher(Int32,             'ROVER/HD_tof'                  , 1)
+        self.NAV_odometry_pub  = self.node.create_publisher(Odometry,          'ROVER/NAV_odometry'            , 1)
+        self.HD_element_pub    = self.node.create_publisher(Float32MultiArray, 'ROVER/HD_detected_element'     , 3)
         #self.diagnostic        = self.node.create_publisher(DiagnosticStatus,  'CS_log'                        ,10)
 
         # ===== SUBSCRIBERS =====
 
         # messages from CS
-        self.node.create_subscription(Int8MultiArray, 'Task'             , self.task_instr             , 10)
-        self.node.create_subscription(Bool,           'CS_Confirm'       , self.cs_confirm             , 10)
+        self.node.create_subscription(Int8MultiArray, 'CS/Task'             , self.task_instr             , 10)
+        self.node.create_subscription(Bool,           'CS/Confirm'       , self.cs_confirm             , 10)
         # messages form CS (HD)
-        self.node.create_subscription(Int8,           'CS_HD_mode'       , self.model.HD.setHDMode     , 10)
-        self.node.create_subscription(Int8,           'CS_HD_SemiAuto_Id', self.model.HD.set_semiAutoID, 10)
+        self.node.create_subscription(Int8,           'CS/HD_mode'       , self.model.HD.setHDMode     , 10)
+        self.node.create_subscription(Int8,           'CS/HD_SemiAuto_Id', self.model.HD.set_semiAutoID, 10)
+        self.node.create_subscription(Int8,           'CS/HD_element_id' , self.model.HD.send_element_id_hd     , 10)
+        self.node.create_subscription(Bool,           'CS/HD_toggle_camera', self.model.HD.send_toggle_info     , 10)
+        self.node.create_subscription(Joy,            'CS/HD_gamepad'    , self.model.HD.handle_hd_gamepad, 10)
         # messages from CS (NAV)
-        self.node.create_subscription(PoseStamped,    'CS_NAV_goal'      , self.model.Nav.setGoal      , 10)
+        self.node.create_subscription(PoseStamped,    'CS/NAV_goal'      , self.model.Nav.setGoal      , 10)
+        self.node.create_subscription(Joy,            'CS/NAV_gamepad'   , self.model.Nav.gamepad  , 10)
+        
+        #self.node.create_subscription(Joy,    'Gamepad',   self.handle_gamepad,          1)
+        #TODO: add cancel goal and other messages from CS to NAV
+
 
         # ==========================================================
-        #           MESSAGES BETWEEN ROVER AND SUBSYSTEMS
+        #           MESSAGES BETWEEN ROVER AND SUBSYSTEMSROVER
         # ==========================================================
 
         # ===== PUBLISHERS =====
+        
+
+        #ROVER --> All
 
         # Rover --> HD
-        self.Maintenance_pub    = self.node.create_publisher(Int8,        'Maintenance'      , 1)
-        self.HD_mode_pub        = self.node.create_publisher(Int8,        'HD_mode'          , 1)
-        self.HD_SemiAuto_Id_pub = self.node.create_publisher(Int8,        'HD_SemiAuto_Id'   , 1)
+        self.Maintenance_pub         = self.node.create_publisher(Int8,        'ROVER/Maintenance'      , 1)
+        self.HD_mode_pub             = self.node.create_publisher(Int8,        'ROVER/HD_mode'          , 1)
+        self.HD_SemiAuto_Id_pub      = self.node.create_publisher(Int8,        'ROVER/HD_SemiAuto_Id'   , 1)
+        self.send_HD_element_id_pub  = self.node.create_publisher(Int8,        'ROVER/element_id'       , 1)
+        self.send_toggle_info_pub    = self.node.create_publisher(Bool,        'ROVER/HD_toggle_camera' , 1)
+        
         # Rover --> NAV
-        self.Nav_pub            = self.node.create_publisher(Int8,        'Navigation'       , 1)
-        self.Nav_Goal_pub       = self.node.create_publisher(PoseStamped, 'CS/NAV_goal'      , 1)
-        self.Nav_CancelGoal_pub = self.node.create_publisher(GoalID,      '/move_base/cancel', 1)
+        self.Nav_Goal_pub       = self.node.create_publisher(PoseStamped, 'ROVER/NAV_goal'    , 1)
+        self.Nav_Status         = self.node.create_publisher(String,      'ROVER/NAV_STATUS'  , 1)
+        self.Nav_gamepad_pub    = self.node.create_publisher(Joy,         'ROVER/NAV_gamepad' , 1)
+
+
         # Rover --> SC
-        self.SC_pub             = self.node.create_publisher(Int8,        'sc_cmd'           , 1)
+        self.SC_pub             = self.node.create_publisher(Int8,        'ROVER/SCIENCE_CMD'           , 1)
 
         # ===== SUBSCRIBERS =====
 
@@ -119,7 +135,7 @@ class Rover():
         self.node.create_subscription(Int16MultiArray, 'sc_params'                   , self.model.SC.params          , 10)
         self.node.create_subscription(Int8,            'TaskProgress'                , self.model.setProgress        , 10)
         # NAV --> Rover
-        self.node.create_subscription(Odometry,        '/odometry/filtered'          , self.NAV_odometry_pub.publish , 10)
+        # self.node.create_subscription(Odometry,        '/odometry/filtered'          , self.NAV_odometry_pub.publish , 10) # CS DIRECTLY SUBSCRIBED
         # HD --> Rover
         self.node.create_subscription(JointState,      '/arm_control/joint_telemetry', self.HD_telemetry_pub.publish , 10)
         self.node.create_subscription(Int32,           '/avionics_ToF'               , self.HD_tof.publish           , 10)
@@ -135,6 +151,8 @@ class Rover():
         #res = SetBool.Response()
         response.success = True
         return response
+
+    
 
 
     #        self.node.create_subscription(object_list,       '/detected_elements',           self.model.HD.pub_detected_elements)
@@ -193,20 +211,24 @@ class Rover():
                     self.ROVER_STATE = Task.NAVIGATION
                     self.node.get_logger().info("goal launched")
                     goal = self.model.Nav.getGoal()
+                    print("goal : " + str(goal))
                     self.Nav_Goal_pub.publish(PoseStamped(header=goal.header, pose=goal.pose))
                 else:
                     self.log_task_already_launched("Navigation")
-                    # self.node.get_logger().info("Can't launch Navigation if another task is still running!")
+                    self.node.get_logger().info("Can't launch Navigation if another task is still running, task : " + str(self.ROVER_STATE))
 
             elif (self.ROVER_STATE == Task.NAVIGATION):
                 # ABORT
                 if instr == Instruction.ABORT.value:
                     self.model.Nav.cancelGoal()
+                    self.Nav_Status.publish(String(data="stop"))
                     self.ROVER_STATE = Task.IDLE
                 # WAIT/RESUME
-                else:
-                    self.Nav_pub.publish(Int8(data=instr))
-
+                if instr == Instruction.WAIT.value:
+                    self.Nav_Status.publish(String(data="pause"))
+                if instr == Instruction.RESUME.value:
+                    self.Nav_Status.publish(String(data="resume"))
+                
         #-------------------------------MAINTENANCE----------------------------------
         if task == Task.MAINTENANCE.value:
             # LAUNCH---------------------------
@@ -279,6 +301,7 @@ class Rover():
     def run(self):
         print("Listening")
         rclpy.spin(self.node)
+
 
         # ===== TIMEOUT MECANISM =====
 

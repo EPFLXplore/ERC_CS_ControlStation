@@ -2,6 +2,8 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 import MVC_node.models.utils as utils
+from ..views import *
+
 
 
 """
@@ -9,6 +11,7 @@ import MVC_node.models.utils as utils
 Data format :
 {
     'id' : string,
+    'target' : string,
     'buttons' : [button_1, button_2, ... , button_11] Array int,
     'axes' : [axis_1, axis_2, ... , axis_6] Array float
 }
@@ -20,7 +23,7 @@ class GamepadConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
         
-        self.tab_group_name = 'tab_gamepad'
+        self.tab_group_name = 'gamepad'
 
         utils.gamepad.id = ""
         utils.gamepad.buttons = []
@@ -28,10 +31,14 @@ class GamepadConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     # Receive message from WebSocket
-    async def receive(self, data):
-        utils.gamepad.id = json.loads(data)['id']
-        utils.gamepad.buttons = json.loads(data)['buttons']
-        utils.gamepad.axes = json.loads(data)['axes']
+    async def receive(self, text_data):
+        json_data = json.loads(text_data)
+        cs.send_gamepad_data(json_data['axes'],
+                            json_data['buttons'],
+                            "",
+                            "NAV")
+
+
 
     async def disconnect(self, close_code):
         utils.gamepad.id = ""

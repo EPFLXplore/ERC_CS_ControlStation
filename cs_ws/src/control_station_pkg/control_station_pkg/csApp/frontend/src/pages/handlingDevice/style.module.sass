@@ -7,15 +7,14 @@
     background-color: rgba($primaryDark2Color, 0.8)
     border-radius: 2vh
     align-items: flex-startcenter
-    justify-content: space-evenly
+    justify-content: space-between
     margin: 10px
-    flex-grow: 1
+    overflow: auto
+    max-height: 30vh
     
 
 .globalContainer
     width: 20%
-    height: 50%
-    //background-color: rgba($primaryDark2Color, 0.8)
     position: absolute
     bottom: 0
     right: 0
@@ -40,11 +39,11 @@
     border: 3px solid $secondaryColor
     border-radius: 20px
     padding: 5px 10px
+    margin: 5px 0
     cursor: pointer
     font-size: 1.1rem         //adjust font size as needed
     text-align: center        // center the text within the button
     white-space: nowrap       // prevent line breaks within the button
-    overflow: hidden          // hide any overflow text 
     text-overflow: ellipsis
 
     &:hover

@@ -5,14 +5,19 @@ from rclpy.node import Node
 from std_msgs.msg import String
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import PoseStamped
+from diagnostic_msgs.msg import DiagnosticStatus
 
 from std_msgs.msg import Int8MultiArray, Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16, Float32MultiArray
 
+from diagnostic_msgs.msg  import DiagnosticStatus
 
 class NavTestNode(Node):
 
     def __init__(self):
         super().__init__('nav_test_publisher')
+        
+        # Log publisher
+        self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
 
         self.publisher_odometry = self.create_publisher(Odometry, 'NAV/odometry/filtered', 10)
         
@@ -27,30 +32,42 @@ class NavTestNode(Node):
         self.i = 0
 
     def timer_callback(self):
+        msg_log = DiagnosticStatus()
+       
+        msg_log.name = 'Nav Test'
+        msg_log.level = (self.i % 3). to_bytes(1,"big")
+        msg_log.message = 'Diagnostic Status Message from Nav Test'
+        self.publisher_log.publish(msg_log)
+
+        msg_log = DiagnosticStatus()
+        msg_log.name = 'Nav Test'
+        msg_log.level = (self.i%3).to_bytes(1, 'big')
+        msg_log.message = 'Diagnostic Status Message from Nav Test'
+        self.publisher_log.publish(msg_log)
 
         msg = Odometry()
-        msg.pose.pose.position.x = self.i
-        msg.pose.pose.position.y = self.i + 10
-        msg.pose.pose.position.z = self.i + 20
-        msg.pose.pose.orientation.x = self.i + 30
-        msg.pose.pose.orientation.y = self.i + 40
-        msg.pose.pose.orientation.z = self.i + 50
+        msg.pose.pose.position.x = float(self.i)
+        msg.pose.pose.position.y = float(self.i + 10)
+        msg.pose.pose.position.z = float(self.i + 20)
+        msg.pose.pose.orientation.x = float(self.i + 30)
+        msg.pose.pose.orientation.y = float(self.i + 40)
+        msg.pose.pose.orientation.z = float(self.i + 50)
         msg.child_frame_id = "nav test child frame id"
         msg.header.frame_id = "nav test header"
         msg.header.stamp = self.get_clock().now().to_msg()
-        msg.twist.twist.linear.x = self.i + 60
-        msg.twist.twist.linear.y = self.i + 70
-        msg.twist.twist.linear.z = self.i + 80
-        msg.twist.twist.angular.x = self.i + 90
-        msg.twist.twist.angular.y = self.i + 100
-        msg.twist.twist.angular.z = self.i + 110
+        msg.twist.twist.linear.x = float(self.i + 60)
+        msg.twist.twist.linear.y = float(self.i + 70)
+        msg.twist.twist.linear.z = float(self.i + 80)
+        msg.twist.twist.angular.x = float(self.i + 90)
+        msg.twist.twist.angular.y = float(self.i + 100)
+        msg.twist.twist.angular.z = float(self.i + 110)
 
         self.publisher_odometry.publish(msg)
         self.i += 1
 
 
     def goal_callback(self, msg):
-        self.get_logger().info('Goal callback: "%s"' % msg.data)
+        self.get_logger().info('Goal callback :' + str(msg.pose.position.x) + " " + str(msg.pose.position.y) + " " + str(msg.pose.position.z))
 
     def navigation_callback(self, msg):
         self.get_logger().info('Navigation callback: "%s"' % msg.data)

@@ -4,6 +4,7 @@
     ],
     "python.analysis.extraPaths": [
         "/opt/ros/melodic/lib/python2.7/dist-packages",
-        "./cs_ws/src/control_station_pkg/control_station_pkg/MVC_node/models"
+        "./cs_ws/src/control_station_pkg/control_station_pkg/MVC_node/models",
+        "./cs_ws/src/control_station_pkg/control_station_pkg/MVC_node"
     ]
 }

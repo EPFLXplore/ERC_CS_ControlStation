@@ -99,6 +99,8 @@ class Navigation:
     # -------callback for received PoseStamped from the CS-------
     def setGoal(self, goal):
 
+        #TODO: MODIFY IT SO THAT IT CAN HANDLE A LIST OF GOALS
+
         #self.__cancelled = False
         self.setCancelled(False)
 
@@ -115,15 +117,18 @@ class Navigation:
         return self.__currGoal
 
     # -------called when CS sends an ABORT instruction to NAV task --> it cancels the goal and the rover stops-------
+    # -------Also called when the CS sends a cancel instruction to the rover-------
     def cancelGoal(self):
         self.rover.RoverConfirm_pub.publish(String(data="received NAV goal cancellation"))
 
         if(not self.__cancelled): 
             self.setCancelled(True)
-            self.__currGoal = np.zeros(0)
-            self.rover.Nav_CancelGoal_pub.publish(GoalID())
+            self.__currGoal = np.zeros(0) # TODO: IN FUTURE, this will go to the next element in the list of goals
+            self.rover.Nav_Status.publish("cancel")
 
     #-------------------------------------
+    def gamepad(self, joy):
+        self.rover.Nav_gamepad_pub.publish(joy)
 
 
 class Science:
@@ -200,6 +205,7 @@ class HandlingDevice:
     def setHDMode(self, mode_ros):
 
         self.rover.RoverConfirm_pub.publish(String(data="HD mode set"))
+        self.rover.node.get_logger().info("HD mode callback entered")
 
         mode = mode_ros.data
         if(mode < 0 or mode > 3):
@@ -208,6 +214,15 @@ class HandlingDevice:
         else:
             self.__hd_mode = mode
             self.rover.HD_mode_pub.publish(mode_ros)
+            self.rover.node.get_logger().info("mode HD sent")
+
+
+    def send_element_id_hd(self, id):
+        self.rover.send_HD_element_id_pub.publish(id)
+        self.rover.node.get_logger().info("HD element ID sent")
+
+    def send_toggle_info(self, toggle):
+        self.rover.send_toggle_info_pub.publish(Bool(data=toggle))
 
     def getHDMode(self):
         return self.__hd_mode
@@ -224,6 +239,16 @@ class HandlingDevice:
         else:
             self.__semiAutoId = id
             #self.rover.HD_SemiAuto_Id_pub.publish(id) TODO: SEE WHY THIS IS USEFUL
+
+    
+    def handle_hd_gamepad(self, joy):
+        self.rover.HD_Gamepad_pub.publish(joy)
+
+    def set_joint_telemetry(self, telemetry_ros):
+        telemetry = telemetry_ros.data
+        self.set_joint_positions(telemetry.position)
+        self.set_joint_velocities(telemetry.velocity)
+        self.rover.HD_telemetry_pub.publish(telemetry)
 
     def getId(self):
         return self.__semiAutoId
@@ -267,6 +292,9 @@ class HandlingDevice:
             panel = obj_list[i]
             msg = Float32MultiArray(data= [panel.id, panel. x_pos, panel.y_pos, panel.z_pos, panel.x_rot, panel.y_rot, panel.z_rot])
             self.rover.HD_element_pub.publish(msg)
+
+    def gamepad(self, joy):
+        self.rover.HD_gamepad_pub.publish(joy)
 
 
 # TASK: 

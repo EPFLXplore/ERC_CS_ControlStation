@@ -2,10 +2,12 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import rclpy
 
 
 
 def main():
+
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_settings.settings')
     try:
         from django.core.management import execute_from_command_line
@@ -16,8 +18,10 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     print("http://127.0.0.1:8000/launcher")
+
     execute_from_command_line(sys.argv)
-    
+
+
     # rospy.init_node("csApp", anonymous=False)
 
 # ============================================================================
@@ -31,7 +35,6 @@ class setup:
             print("import error")
 
         self.CONTROL_STATION = CS()
-        
 
 # ============================================================================
 

@@ -22,7 +22,7 @@ export default () => {
 				optionsCallback={selectCamera}
 			/>
 			<Timer end={Date.now() + 10000} />
-			<CameraView camera={Cameras.NOCAM} />
+			<CameraView camera={camera} />
 		</div>
 	);
 };

@@ -1,24 +1,19 @@
 import styles from "./style.module.sass";
 
 interface Props {
-	joint1: number;
-	joint2: number;
-	joint3: number;
-	joint4: number;
-	joint5: number;
-	joint6: number;
+	speeds: number[];
 }
 
-export default ({ joint1, joint2, joint3, joint4, joint5, joint6 }: Props) => {
+export default ({ speeds }: Props) => {
 	return (
 		<div className={styles.container}>
 			<h3 className={styles.text}>Joint Speed</h3>
-			<p className={styles.text}>{joint1}</p>
-			<p className={styles.text}>{joint2}</p>
-			<p className={styles.text}>{joint3}</p>
-			<p className={styles.text}>{joint4}</p>
-			<p className={styles.text}>{joint5}</p>
-			<p className={styles.text}>{joint6}</p>
+			<p className={styles.text}>{speeds[0]} °/s</p>
+			<p className={styles.text}>{speeds[1]} °/s</p>
+			<p className={styles.text}>{speeds[2]} °/s</p>
+			<p className={styles.text}>{speeds[3]} °/s</p>
+			<p className={styles.text}>{speeds[4]} °/s</p>
+			<p className={styles.text}>{speeds[5]} °/s</p>
 		</div>
 	);
 };
