@@ -48,13 +48,14 @@ const pointsSecondWave = [
 ];
 
 const values1 = [10, 5.4, 12];
-const values2 = [10, 5.4, 12, 6];
+const values2 = [10, 16, 12, 6];
 
 const candidates = [
 	{ percentage: 78, element: "Phosphate" },
 	{ percentage: 77.8, element: "Materiau1" },
 	{ percentage: 74, element: "Materiau2" },
 	{ percentage: 73.9, element: "Materiau3" },
+	{ percentage: 73.3, element: "Materiau4" },
 ];
 
 export default () => {
@@ -79,23 +80,26 @@ export default () => {
 				<TaskControl task={Task.SCIENCE} />
 			</div>
 			<div className={styles.InfoControllerContainer}>
-				<thead>
-					<tr>
-						<th>Candidate 1</th>
-						<th>Candidate 2</th>
-						<th>Candidate 3</th>
-						<th>Candidate 4</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						{candidates.map((candidate, index) => (
-							<td>
-								{candidate.percentage}%, {candidate.element}
-							</td>
-						))}
-					</tr>
-				</tbody>
+				<div className={styles.table}>
+					<thead>
+						<tr>
+							<th>Candidate 1</th>
+							<th>Candidate 2</th>
+							<th>Candidate 3</th>
+							<th>Candidate 4</th>
+							<th>Candidate 5</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							{candidates.map((candidate, index) => (
+								<td>
+									{candidate.percentage}%, {candidate.element}
+								</td>
+							))}
+						</tr>
+					</tbody>
+				</div>
 			</div>
 		</div>
 	);

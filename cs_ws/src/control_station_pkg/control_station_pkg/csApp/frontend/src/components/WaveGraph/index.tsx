@@ -28,7 +28,7 @@ export const WaveGraph: React.FC<GraphProps> = ({ measure, pointsSecondWave, can
 						labels: measure.map((_, index) => index.toString()),
 						datasets: [
 							{
-								label: "Measure",
+								label: "Current measure",
 								data: measure.map((point) => ({ x: point.x, y: point.y })),
 								fill: false,
 								borderColor: "red",
@@ -37,7 +37,7 @@ export const WaveGraph: React.FC<GraphProps> = ({ measure, pointsSecondWave, can
 								label: "Closest candidate",
 								data: pointsSecondWave.map((point) => ({ x: point.x, y: point.y })),
 								fill: false,
-								borderColor: "blue",
+								borderColor: "#6F8FAF",
 							},
 						],
 					},
@@ -66,9 +66,9 @@ export const WaveGraph: React.FC<GraphProps> = ({ measure, pointsSecondWave, can
 	return (
 		<div className={styles.GraphContainer}>
 			<div className={styles.text}>
-				<p>
+				<h3>
 					{candidates[0].percentage}%, {candidates[0].element}
-				</p>
+				</h3>
 			</div>
 			<canvas ref={chartRef} />
 		</div>
