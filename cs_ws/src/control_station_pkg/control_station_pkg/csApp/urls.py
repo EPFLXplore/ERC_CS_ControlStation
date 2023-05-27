@@ -14,7 +14,7 @@ urlpatterns = [
     
     #STATE BUTTONS
     #Manualcontrol
-    path('manualcontrol/launch/',    launch_manual,  name='launch_manual'),
+    path('manualcontrol/launch',   launch_manual,  name='launch_manual'),
     path('manualcontrol/wait',      wait_manual,    name='wait_manual'),
     path('manualcontrol/abort',     abort_manual,   name='abort_manual'),
     path('manualcontrol/resume',    resume_manual,  name='resume_manual'),
@@ -36,17 +36,19 @@ urlpatterns = [
     path('handlingdevice/set_hd_mode',   set_hd_mode,         name='set_hd_mode'),
     
     #Science
-    #path('science/launch/',          launch_science, name='launch_science'),
-    #path('science/wait',            wait_science,   name='wait_science'),
-    
-    path('science/confirm',         confirm_science, name='confirm_science'),
-    path('science/abort',           abort_science,  name='abort_science'),
-    path('science/retry',           retry_science,  name='retry_science'),
-    path('science/set_tube_cmd',    set_tube_cmd,   name='set_tube_cmd'),
-    path('science/get_humidity',    get_humidity,   name='get_humidity'),
-    path('science/get_parameters',  get_parameters, name='get_parameters'),
-    path('science/get_sc_info',     get_sc_info, name='get_sc_info'),
-    path('science/get_sc_state',    get_sc_state, name='get_sc_state'),
+    path('science/launch',         launch_science, name='launch_science'),
+    path('science/wait',            wait_science,   name='wait_science'),
+    path('science/abort',           abort_science, name='abort_science'),
+    path('science/resume',          resume_science,   name='resume_science'),
+
+    # path('science/confirm',         confirm_science, name='confirm_science'),
+    # path('science/abort',           abort_science,  name='abort_science'),
+    # path('science/retry',           retry_science,  name='retry_science'),
+    # path('science/set_tube_cmd',    set_tube_cmd,   name='set_tube_cmd'),
+    # path('science/get_humidity',    get_humidity,   name='get_humidity'),
+    # path('science/get_parameters',  get_parameters, name='get_parameters'),
+    # path('science/get_sc_info',     get_sc_info, name='get_sc_info'),
+    # path('science/get_sc_state',    get_sc_state, name='get_sc_state'),
 
     # timer
     path('logs/timer',          start_timer,    name='start_timer')
