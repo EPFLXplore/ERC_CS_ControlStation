@@ -1,0 +1,67 @@
+@import '../../styles/variables'
+
+.InfoContainer
+    width: 60vw                      //80% of its parent container
+    height: 70vh                    //80% of its parent container
+    display: flex                   //sets the display property to flex, which enables the use of flexbox layout
+    flex-direction: row             //arranges the child elements horizontally
+    margin-top: 7vh
+    margin-left: 25vh
+    justify-content: space-between  
+
+.taskControlContainer
+    position: fixed
+    right: 5vw
+    bottom: 2vh
+
+.Info
+    width: 20%
+    height: 100%
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: space-evenly
+    margin: 0
+
+.ControlsContainer
+    position: fixed
+    top: 7vh
+    right: 5vw
+    width: 15vw
+    height: 70vh
+    display: flex
+    flex-direction: column
+    padding: 2vh 2vw
+    background-color: rgba($primaryDark2Color, 0.8)
+    border-radius: 2vh
+    align-items: flex-startcenter
+    justify-content: space-evenly
+    margin: 0
+
+.InfoControllerContainer
+    position: fixed
+    bottom: 2vh
+    left: 25vh
+    height: 15vh
+    width: 60vw
+    border-radius: 2vh
+    background-color: rgba($primaryDark2Color, 0.8)
+    display: flex
+    align-items: center
+    justify-content: center
+
+.table 
+  width: auto
+  border-collapse: collapse
+  
+
+th,
+td 
+  padding: 8px
+  border: 2px solid $secondaryColor
+  color: white
+  width: fit-content
+
+
+th 
+  background-color: $secondaryColor

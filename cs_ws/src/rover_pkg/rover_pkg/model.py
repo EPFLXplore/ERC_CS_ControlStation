@@ -146,6 +146,10 @@ class Science:
         self.__info = "info"
         self.__state = "state"
 
+    def science_fsm_callback(self, state):
+        print("data received from sceince fsm")
+        self.rover.SC_fsm_state_pub.publish(state)
+
     # -------text info from SC-------
     def set_text_info(self, str_ros):
         self.__info = str_ros.data
