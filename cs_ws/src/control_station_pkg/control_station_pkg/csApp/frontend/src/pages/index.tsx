@@ -12,7 +12,19 @@ import Logs from "./logs";
 import Camera from "./camera";
 import Menu from "./menu";
 import NotFound from "./notFound";
+import Drill from "./drill";
 
 export const DefaultPage = () => <Home />;
 
-export { Home, Navigation, HandlingDevice, ManualTask, Science, Logs, Camera, Menu, NotFound };
+export {
+	Home,
+	Navigation,
+	HandlingDevice,
+	ManualTask,
+	Science,
+	Logs,
+	Camera,
+	Menu,
+	NotFound,
+	Drill,
+};
