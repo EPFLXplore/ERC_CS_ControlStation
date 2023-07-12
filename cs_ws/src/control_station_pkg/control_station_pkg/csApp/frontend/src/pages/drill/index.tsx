@@ -26,7 +26,7 @@ export default () => {
 				<TaskControl task={Task.SCIENCE} />
 			</div>
 			<PageHeader
-				title="Maintenance"
+				title="Camera Selector"
 				settings
 				optionTitle="Cameras"
 				options={["Camera 1", "Camera 2", "Camera 3"]}
