@@ -1,7 +1,5 @@
-import React from "react";
 import BackButton from "../../components/BackButton";
 import Background from "../../components/Background";
-import WorkInProgress from "../../components/WorkInProgress";
 import { Task } from "../../utils/tasks.type";
 import TaskControl from "../../components/TaskControl";
 import styles from "./style.module.sass";
