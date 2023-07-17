@@ -4,13 +4,13 @@ const menuLinks = {
 			name: "Autopilot",
 			url: "/navigation/auto",
 		},
-		{
-			name: "Semiautopilot",
-			url: "/navigation/semi-auto",
-		},
+		// {
+		// 	name: "Semiautopilot",
+		// 	url: "/navigation/semi-auto",
+		// },
 		{
 			name: "Manual",
-			url: "/navigation/manual",
+			url: "/manual-control",
 		},
 	],
 	Science: [
@@ -30,7 +30,7 @@ const menuLinks = {
 		},
 		{
 			name: "Manual",
-			url: "/handlingDevice/manual",
+			url: "/manual-control",
 		},
 	],
 	Information: [

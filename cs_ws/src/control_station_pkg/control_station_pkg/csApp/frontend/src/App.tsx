@@ -19,6 +19,7 @@ import {
 import { Mode } from "./utils/mode.type";
 import useSession from "./hooks/sessionHooks";
 import ManualNavigation from "./pages/manualNavigation";
+import Manual from "./pages/manual";
 
 const router = createBrowserRouter([
 	{
@@ -38,17 +39,17 @@ const router = createBrowserRouter([
 		element: <Navigation mode={Mode.SEMI_AUTONOMOUS} />,
 	},
 	{
-		path: "/navigation/manual",
-		element: <ManualNavigation />,
+		path: "/manual-control",
+		element: <Manual />,
 	},
 	{
 		path: "/handlingDevice/auto",
 		element: <HandlingDevice mode={Mode.AUTONOMOUS} />,
 	},
-	{
-		path: "/handlingDevice/manual",
-		element: <HandlingDevice mode={Mode.MANUAL} />,
-	},
+	// {
+	// 	path: "/handlingDevice/manual",
+	// 	element: <HandlingDevice mode={Mode.MANUAL} />,
+	// },
 	{
 		path: "/science/data",
 		element: <Science />,
