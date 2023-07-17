@@ -7,7 +7,7 @@ import cv2
 from cv_bridge import CvBridge
 
 
-CAMERA_FRAMERATE = 30
+CAMERA_FRAMERATE = 1
 
 
 class CamerasPublisher(Node):
@@ -26,6 +26,10 @@ class CamerasPublisher(Node):
         self.cam_5_pub = self.create_publisher(CompressedImage, 'camera_5', 1)
 
         self.camera_0 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=0))
+        self.camera_1 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=1))
+        self.camera_2 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=2))
+        self.camera_4 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=4))
+
         self.bridge = CvBridge()
 
         self.timer = self.create_timer(1/CAMERA_FRAMERATE, self.publish_feeds)
@@ -36,14 +40,23 @@ class CamerasPublisher(Node):
         ret_0, frame_cam_0 = self.camera_0.read()
         if ret_0 :
             self.cam_0_pub.publish(self.bridge.cv2_to_compressed_imgmsg(frame_cam_0))
+        ret_1, frame_cam_1 = self.camera_1.read()
+        if ret_1 :
+            self.cam_1_pub.publish(self.bridge.cv2_to_compressed_imgmsg(frame_cam_1))
+        ret_2, frame_cam_2 = self.camera_2.read()
+        if ret_2 :
+            self.cam_2_pub.publish(self.bridge.cv2_to_compressed_imgmsg(frame_cam_2))
+        ret_4, frame_cam_4 = self.camera_4.read()
+        if ret_4 :
+            self.cam_4_pub.publish(self.bridge.cv2_to_compressed_imgmsg(frame_cam_4))
 
 
 def gstreamer_pipeline(
     sensor_id=0,
-    capture_width=1920,
-    capture_height=1080,
-    display_width=1920,
-    display_height=1080,
+    capture_width=1080,
+    capture_height=720,
+    display_width=1080,
+    display_height=720,
     framerate=CAMERA_FRAMERATE,
     flip_method=0,
 ):
@@ -106,7 +119,9 @@ if __name__ == '__main__':
 
 
 
-
+"""
+gst-laumch-1.0 nvarguscamerasrc sensor-id=0 ! 'video/x-raw(memory:NVMM), width=(int)1948, height=(int)1096, framerate=(fraction)30/1' ! nvvidconv ! xvimagesink -e
+"""
 
 
 
