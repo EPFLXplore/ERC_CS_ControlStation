@@ -22,6 +22,7 @@ from std_srvs.srv import SetBool
 
 
 from .model import *
+from .launcher import *
 
 # from .Globals   import *
 # from vision_no_ros.msg import *
@@ -40,6 +41,7 @@ class Rover():
         rclpy.init(args=sys.argv)
         self.node = rclpy.create_node('ROVER')
 
+        self.launcher = Launcher()
         self.model = Model(self)
 
         # variables used for the timeout system
@@ -271,6 +273,12 @@ class Rover():
 
         # SCIENCE
         if (task == Task.SCIENCE.value):
+
+            # ACTIVATE SCIENCE SUBSYSTEM
+            if(instr == Instruction.START.value and self.ROVER_STATE == Task.IDLE):
+                self.launcher.start_drill()
+
+
             #LAUNCH
             if (instr == Instruction.LAUNCH.value):
                 if(self.ROVER_STATE == Task.IDLE):

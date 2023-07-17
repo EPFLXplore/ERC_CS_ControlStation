@@ -23,6 +23,8 @@ class Instruction(IntEnum):
   RETRY   = 5
   LATCH   = 6
   OKDRONE = 7
+
+
 class ScienceTask(IntEnum):
   ABORT    = 0
   RETRY    = 1
