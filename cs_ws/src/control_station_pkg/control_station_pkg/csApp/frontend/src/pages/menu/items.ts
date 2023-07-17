@@ -10,7 +10,7 @@ const menuLinks = {
 		// },
 		{
 			name: "Manual",
-			url: "/manual-control",
+			url: "/manual-control?defaultMode=nav",
 		},
 	],
 	Science: [
@@ -30,7 +30,7 @@ const menuLinks = {
 		},
 		{
 			name: "Manual",
-			url: "/manual-control",
+			url: "/manual-control?defaultMode=hd",
 		},
 	],
 	Information: [

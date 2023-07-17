@@ -20,6 +20,7 @@ import { Mode } from "./utils/mode.type";
 import useSession from "./hooks/sessionHooks";
 import ManualNavigation from "./pages/manualNavigation";
 import Manual from "./pages/manual";
+import { Task } from "./utils/tasks.type";
 
 const router = createBrowserRouter([
 	{

@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const ModeSlider = () => {
 	const [activeIndex, setActiveIndex] = useState(0);
-	const texts = ["IK", "FK", "SA"];
+	const texts = ["IK", "FK"];
 
 	const _setActiveIndex = (mode: number) => {
 		hdModeSelect(mode);
@@ -12,12 +12,12 @@ const ModeSlider = () => {
 	};
 
 	const handlePrev = () => {
-		const newMode = (activeIndex - 1 + 3) % texts.length;
+		const newMode = (activeIndex - 1 + texts.length) % texts.length;
 		_setActiveIndex(newMode);
 	};
 
 	const handleNext = () => {
-		const newMode = (activeIndex + 1 + 3) % texts.length;
+		const newMode = (activeIndex + 1 + texts.length) % texts.length;
 		_setActiveIndex(newMode);
 	};
 

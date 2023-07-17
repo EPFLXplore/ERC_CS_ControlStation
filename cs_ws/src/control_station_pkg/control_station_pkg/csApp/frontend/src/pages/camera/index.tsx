@@ -18,7 +18,7 @@ export default () => {
 				title="Camera"
 				settings
 				optionTitle="Cameras"
-				options={["Camera 1", "Camera 2", "Camera 3"]}
+				options={["Camera 1", "Camera 2", "Camera 3", "Camera 4", "Camera 5", "Camera 6"]}
 				optionsCallback={selectCamera}
 			/>
 			<Timer end={Date.now() + 10000} />

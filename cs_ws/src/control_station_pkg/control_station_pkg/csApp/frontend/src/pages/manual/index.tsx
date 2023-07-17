@@ -21,6 +21,13 @@ import { Task } from "../../utils/tasks.type";
 import TaskControl from "../../components/TaskControl";
 import { useNavigation } from "../../hooks/navigationHooks";
 import ManualModeSelector from "../../components/ManualModeSelector";
+import { useLocation } from "react-router-dom";
+
+function useQuery() {
+	const { search } = useLocation();
+
+	return React.useMemo(() => new URLSearchParams(search), [search]);
+}
 
 export default () => {
 	const [camera, selectCamera] = useCameraManager(Cameras.CAM1);
@@ -28,8 +35,13 @@ export default () => {
 		useHandlingDevice();
 	const [currentPosition, currentOrientation, wheelsPosition, linearVelocity, angularVelocity] =
 		useNavigation();
+	const defaultMode = useQuery().get("defaultMode");
 
-	const [mode, setMode] = useState(Task.HANDLING_DEVICE);
+	console.log(defaultMode);
+
+	const [mode, setMode] = useState(
+		defaultMode === "nav" ? Task.NAVIGATION : Task.HANDLING_DEVICE
+	);
 
 	if (mode === Task.HANDLING_DEVICE) {
 		return (
@@ -40,13 +52,20 @@ export default () => {
 					title="Manual Control (HD)"
 					settings
 					optionTitle="Cameras"
-					options={["Camera 1", "Camera 2", "Camera 3"]}
+					options={[
+						"Camera 1",
+						"Camera 2",
+						"Camera 3",
+						"Camera 4",
+						"Camera 5",
+						"Camera 6",
+					]}
 					optionsCallback={selectCamera}
 				/>
 				<div className={styles.Subheader}>
 					<ManualModeSelector mode={Task.HANDLING_DEVICE} callback={setMode} />
 				</div>
-				<DistanceHint distance={10} />
+				{/* <DistanceHint distance={10} /> */}
 
 				<div className={styles.jointContainer}>
 					<JointPositions positions={jointPositions} />
@@ -56,11 +75,11 @@ export default () => {
 
 				<div className={styles.globalContainer}>
 					<ModeSlider />
-					<GamepadHint />
 					<TaskControl task={Task.HANDLING_DEVICE} />
 				</div>
 
 				<Timer end={Date.now() + 10000} size={Size.SMALL} />
+				<GamepadHint />
 				<CameraView camera={camera} />
 			</div>
 		);
@@ -73,7 +92,14 @@ export default () => {
 					title="Manual Control (NAV)"
 					settings
 					optionTitle="Cameras"
-					options={["Camera 1", "Camera 2", "Camera 3"]}
+					options={[
+						"Camera 1",
+						"Camera 2",
+						"Camera 3",
+						"Camera 4",
+						"Camera 5",
+						"Camera 6",
+					]}
 					optionsCallback={selectCamera}
 				/>
 				<div className={styles.Subheader}>
@@ -143,6 +169,7 @@ export default () => {
 						</div>
 						<Timer end={Date.now() + 10000} size={Size.SMALL} />
 						<TaskControl task={Task.MANUAL_CONTROL} />
+						<GamepadHint />
 						<CameraView camera={camera} />
 					</div>
 				</div>
