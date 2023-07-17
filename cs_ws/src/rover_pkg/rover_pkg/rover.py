@@ -198,6 +198,7 @@ class Rover():
         if (task == Task.MANUAL.value):
             if (instr == Instruction.LAUNCH.value):
                 if (self.ROVER_STATE == Task.IDLE):
+                    self.launcher.start_manual()
                     self.ROVER_STATE = Task.MANUAL
                 else:
                     # self.node.get_logger().info("Can't launch Manual if another task is still running!")
