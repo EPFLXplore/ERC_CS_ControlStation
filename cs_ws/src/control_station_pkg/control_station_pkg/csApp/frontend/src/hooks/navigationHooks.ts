@@ -24,37 +24,40 @@ export const useGoalTracker = () => {
     }
 
 	const addGoal = (x: number, y: number, o: number) => {
-		const id = Date.now(); //Generate a unique id for the goal
-		setGoals([...goals, { id, x, y, o }]);
-		const csrftoken = getCookie('csrftoken');
-
-		let formData = new FormData();
-		formData.append("x",  x.toString());
-		formData.append('y',  y.toString());
-		formData.append('yaw', o.toString());
-
-		let request = new Request("http://127.0.0.1:8000/csApp/navigation/add_goal_nav",
-		{
-			method: "POST",
-			headers: {
-				"X-CSRFToken": csrftoken ?? ''
-			},
-			body: formData,
-		})
-
-		fetch(request).then((res) => res.json()).then((data) => console.log(data));
-
-		// let formData = new FormData();
-		// 								formData.append("x",  x.toString());
-		// 								formData.append('y',  y.toString());
-		// 								formData.append('yaw', o.toString());
-						
-		// 								let request = new Request('http://127.0.0.1:8000/csApp/navigation/add_goal_nav', {method: 'POST',
-		// 																	body: formData,
-		// 																	headers: {"X-CSRFToken": csrftoken ?? ''}})
-		// 								fetch(request)
-		// 									.then(response => response.json())
-		// 									.then(result => {})
+		if (x.toString() !== "NaN" && y.toString() !== "NaN" && o.toString() !== "NaN") {
+			const id = Date.now(); //Generate a unique id for the goal
+			setGoals([...goals, { id, x, y, o }]);
+			const csrftoken = getCookie('csrftoken');
+	
+			let formData = new FormData();
+			formData.append("x",  x.toString());
+			formData.append('y',  y.toString());
+			formData.append('yaw', o.toString());
+	
+			let request = new Request("http://127.0.0.1:8000/csApp/navigation/add_goal_nav",
+			{
+				method: "POST",
+				headers: {
+					"X-CSRFToken": csrftoken ?? ''
+				},
+				body: formData,
+			})
+	
+			fetch(request).then((res) => res.json()).then((data) => console.log(data));
+	
+			// let formData = new FormData();
+			// 								formData.append("x",  x.toString());
+			// 								formData.append('y',  y.toString());
+			// 								formData.append('yaw', o.toString());
+							
+			// 								let request = new Request('http://127.0.0.1:8000/csApp/navigation/add_goal_nav', {method: 'POST',
+			// 																	body: formData,
+			// 																	headers: {"X-CSRFToken": csrftoken ?? ''}})
+			// 								fetch(request)
+			// 									.then(response => response.json())
+			// 									.then(result => {})
+			
+		}
 
 
 	};

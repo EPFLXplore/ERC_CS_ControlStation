@@ -71,10 +71,11 @@ class Rover():
         self.Exception_pub     = self.node.create_publisher(String,            'ROVER/Exception'               , 1)
         self.TaskProgress_pub  = self.node.create_publisher(Int8,              'ROVER/TaskProgress'            , 1)
         # Rover(SC) --> CS
-        self.SC_state_pub      = self.node.create_publisher(String,            'ROVER/SC_state'                , 1)
-        self.SC_infos_pub      = self.node.create_publisher(String,            'ROVER/SC_info'                 , 1)
-        self.SC_humidities_pub = self.node.create_publisher(Int16,             'ROVER/SC_measurements_humidity', 1)
-        self.SC_params_pub     = self.node.create_publisher(Int16MultiArray,   'ROVER/SC_params'               , 1)
+        self.SC_fsm_state_pub  = self.node.create_publisher(Int8,                'ROVER/SC_fsm_state'            , 1)
+        # self.SC_cmd_pub        = self.node.create_publisher(String,            'ROVER/SC_cmd'                  , 1)
+        # self.SC_infos_pub      = self.node.create_publisher(String,            'ROVER/SC_info'                 , 1)
+        # self.SC_humidities_pub = self.node.create_publisher(Int16,             'ROVER/SC_measurements_humidity', 1)
+        # self.SC_params_pub     = self.node.create_publisher(Int16MultiArray,   'ROVER/SC_params'               , 1)
         # Rover(HD) --> CS
         self.HD_telemetry_pub  = self.node.create_publisher(JointState,        'ROVER/HD_telemetry'            , 1)
         self.HD_tof            = self.node.create_publisher(Int32,             'ROVER/HD_tof'                  , 1)
@@ -124,16 +125,17 @@ class Rover():
 
 
         # Rover --> SC
-        self.SC_pub             = self.node.create_publisher(Int8,        'ROVER/SCIENCE_CMD'           , 1)
+        self.SC_pub             = self.node.create_publisher(Int8,        'ROVER/SC_cmd'           , 1)
 
         # ===== SUBSCRIBERS =====
 
         # SC --> Rover
-        self.node.create_subscription(String,          'sc_state'                    , self.model.SC.set_state_info  , 10)
-        self.node.create_subscription(String,          'sc_info'                     , self.model.SC.set_text_info   , 10)  # self.SC_infos_pub.publish)
-        self.node.create_subscription(Int16,           'sc_measurements_humidity'    , self.SC_humidities_pub.publish, 10)
-        self.node.create_subscription(Int16MultiArray, 'sc_params'                   , self.model.SC.params          , 10)
-        self.node.create_subscription(Int8,            'TaskProgress'                , self.model.setProgress        , 10)
+        self.node.create_subscription(Int8,              'SC/fsm_state_to_cs'          , self.model.SC.science_fsm_callback   , 10)  # self.SC_infos_pub.publish)
+        # self.node.create_subscription(String,          'sc_state'                    , self.model.SC.set_state_info  , 10)
+        # self.node.create_subscription(String,          'sc_info'                     , self.model.SC.set_text_info   , 10)  # self.SC_infos_pub.publish)
+        # self.node.create_subscription(Int16,           'sc_measurements_humidity'    , self.SC_humidities_pub.publish, 10)
+        # self.node.create_subscription(Int16MultiArray, 'sc_params'                   , self.model.SC.params          , 10)
+        # self.node.create_subscription(Int8,            'TaskProgress'                , self.model.setProgress        , 10)
         # NAV --> Rover
         # self.node.create_subscription(Odometry,        '/odometry/filtered'          , self.NAV_odometry_pub.publish , 10) # CS DIRECTLY SUBSCRIBED
         # HD --> Rover
@@ -209,9 +211,7 @@ class Rover():
             if instr == Instruction.LAUNCH.value:
                 if (self.ROVER_STATE == Task.IDLE):
                     self.ROVER_STATE = Task.NAVIGATION
-                    self.node.get_logger().info("goal launched")
                     goal = self.model.Nav.getGoal()
-                    print("goal : " + str(goal))
                     self.Nav_Goal_pub.publish(PoseStamped(header=goal.header, pose=goal.pose))
                 else:
                     self.log_task_already_launched("Navigation")
@@ -292,10 +292,11 @@ class Rover():
                     self.wait(self.SC_infos_pub, String(data=self.model.SC.get_text_info()))
                 # REQUEST TO RESEND STATE
                 elif (instr == ScienceTask.STATE.value):
-                    self.wait(self.SC_state_pub, String(data=self.model.SC.get_state_info()))
+                    self.wait(self.SC_cmd_pub, String(data=self.model.SC.get_state_info()))
                 # COMMANDS SENT TO SC
                 else:
                     self.SC_pub.publish(Int8(data=instr))
+                    self.wait(self.SC_cmd_pub, String(data=self.model.SC.get_state_info()))
 
     # run ros
     def run(self):
