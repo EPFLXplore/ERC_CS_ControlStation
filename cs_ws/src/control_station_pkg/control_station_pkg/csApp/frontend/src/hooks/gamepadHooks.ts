@@ -25,7 +25,7 @@ function useGamepad() {
 		const gamepad = new GamepadController();
 		setGamepad(gamepad);
 
-		let gamepadSocket = new WebSocket("ws://127.0.0.1:8000/ws/csApp/gamepad/");
+		let gamepadSocket = new WebSocket("ws://" + window.location.host + "/ws/csApp/gamepad/");
 
 		setSocket(gamepadSocket);
 	}, []);

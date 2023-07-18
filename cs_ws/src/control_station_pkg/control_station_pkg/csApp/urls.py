@@ -14,7 +14,7 @@ urlpatterns = [
     
     #STATE BUTTONS
     #Manualcontrol
-    path('manualcontrol/launch',   launch_manual,  name='launch_manual'),
+    path('manualcontrol/launch',    launch_manual,  name='launch_manual'),
     path('manualcontrol/wait',      wait_manual,    name='wait_manual'),
     path('manualcontrol/abort',     abort_manual,   name='abort_manual'),
     path('manualcontrol/resume',    resume_manual,  name='resume_manual'),

@@ -18,9 +18,10 @@ import JointCurrents from "../../components/JointCurrents";
 import buttonSelect from "../../utils/buttonSelect";
 import { Task } from "../../utils/tasks.type";
 import TaskControl from "../../components/TaskControl";
+import useCameraSelector from "../../hooks/cameraHooks";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
-	const [camera, selectCamera] = useCameraManager(Cameras.CAM1);
+	const [image, camera, selectCamera] = useCameraSelector(Cameras.CAM1);
 	const [jointPositions, jointVelocities, jointCurrents, detectedTags, taskSuccess] =
 		useHandlingDevice();
 
@@ -90,7 +91,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 					<TaskControl task={Task.HANDLING_DEVICE} />
 				</div>
 				<Timer end={Date.now() + 10000} size={Size.SMALL} />
-				<CameraView camera={camera} />
+				<CameraView image={image} />
 			</div>
 		);
 
@@ -121,7 +122,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 
 			<Timer end={Date.now() + 10000} size={Size.SMALL} />
 
-			<CameraView camera={camera} />
+			<CameraView image={image} />
 		</div>
 	);
 };

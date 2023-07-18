@@ -20,7 +20,7 @@ function createRequest(id: number) {
 	const data = new FormData();
 	data.append("mode", id.toString());
 
-	return new Request("http://127.0.0.1:8000/csApp/handlingdevice/set_hd_mode", {
+	return new Request("http://" + window.location.host + "/csApp/handlingdevice/set_hd_mode", {
 		method: "POST",
 		body: data,
 		headers: { "X-CSRFToken": csrftoken ?? "" },
