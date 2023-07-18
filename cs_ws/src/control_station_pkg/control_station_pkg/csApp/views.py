@@ -357,3 +357,16 @@ def set_hd_gamepad_profile(request):
     return JsonResponse({})
 
 
+# -----------------------------------
+# cameras views
+
+def enable_cameras(request):
+    print("enable_cameras")
+    camera_list = request.POST.get("index")
+    print(camera_list)
+
+    return JsonResponse({})
+
+    #cs.Cam_index_pub
+
+
