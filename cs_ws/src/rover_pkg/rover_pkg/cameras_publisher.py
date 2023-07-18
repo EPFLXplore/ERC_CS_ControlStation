@@ -2,17 +2,13 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import CompressedImage
-from std_msgs.msg import Int16MultiArray
+from std_msgs.msg import Int8MultiArray
 
 import cv2
 from cv_bridge import CvBridge
 
 
-<<<<<<< HEAD
 CAMERA_FRAMERATE = 20
-=======
-CAMERA_FRAMERATE = 1
->>>>>>> e9e705f8c7646ce1c3cb96cbbef8cb6b54b60652
 
 
 class CamerasPublisher(Node):
@@ -21,47 +17,60 @@ class CamerasPublisher(Node):
 
         super().__init__('cameras_publisher')
 
-        self.camera_index = self.create_subscription(Int16MultiArray, 'CS/CAM_index', self.enable_camera, 10)
+        self.camera_index = self.create_subscription(Int8MultiArray, 'CS/CAM_index', self.enable_camera, 10)
 
         self.cam_1_pub = self.create_publisher(CompressedImage, 'camera_1', 1)
         self.cam_2_pub = self.create_publisher(CompressedImage, 'camera_2', 1)
         self.cam_3_pub = self.create_publisher(CompressedImage, 'camera_3', 1)
         self.cam_4_pub = self.create_publisher(CompressedImage, 'camera_4', 1)
 
-<<<<<<< HEAD
-        self.cam_publisher = [self.cam_1_pub, self.cam_2_pub, self.cam_3_pub, self.cam_4_pub]
-
-        self.camera_list = []
-=======
         self.camera_0 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=0))
         self.camera_1 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=1))
         self.camera_2 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=2))
+        self.camera_3 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=3))
         self.camera_4 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=4))
->>>>>>> e9e705f8c7646ce1c3cb96cbbef8cb6b54b60652
+        self.camera_5 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=5))
 
         self.bridge = CvBridge()
+
+        self.camera_list = []
+        self.camera_list.append(self.camera_0)
+        self.camera_list.append(self.camera_1)
+        self.camera_list.append(self.camera_2)
+        self.camera_list.append(self.camera_3)
+        self.camera_list.append(self.camera_4)
+        self.camera_list.append(self.camera_5)
+
+
+        self.cam_publisher = []
+        self.cam_publisher.append(self.cam_1_pub)
+        self.cam_publisher.append(self.cam_2_pub)
+        self.cam_publisher.append(self.cam_3_pub)
+        self.cam_publisher.append(self.cam_4_pub)
+
+        self.update_camera = []
 
         self.timer = self.create_timer(1/CAMERA_FRAMERATE, self.publish_feeds)
 
 
     def enable_camera(self, camera_index):
+        print("Enabling camera: ", camera_index.data)
+
         self.disable_camera()
-
-        for i in camera_index:
-            self.camera_list.append(cv2.VideoCapture(gstreamer_pipeline(sensor_id=i)))
-
+        for i in camera_index.data:
+            self.update_camera.append(self.camera_list[i])
 
     def disable_camera(self):
+        self.update_camera = []
+
+    def stop_camera(self):
         for i in self.camera_list:
             i.release()
-        self.camera_list = []
-
 
     def publish_feeds(self):
 
-<<<<<<< HEAD
-        for i in range(len(self.camera_list)):
-            ret, frame = self.camera_list[i].read()
+        for i in range(len(self.update_camera)):
+            ret, frame = self.update_camera[i].read()
             if ret:
                 self.cam_publisher[i].publish(self.bridge.cv2_to_compressed_imgmsg(frame))
         
@@ -73,24 +82,6 @@ class CamerasPublisher(Node):
         # ret, frame = self.camera_list[i].read()
         # if ret:
         #         self.cam_0_pub.publish(self.bridge.cv2_to_compressed_imgmsg(frame))
-
-
-
-
-=======
-        ret_0, frame_cam_0 = self.camera_0.read()
-        if ret_0 :
-            self.cam_0_pub.publish(self.bridge.cv2_to_compressed_imgmsg(frame_cam_0))
-        ret_1, frame_cam_1 = self.camera_1.read()
-        if ret_1 :
-            self.cam_1_pub.publish(self.bridge.cv2_to_compressed_imgmsg(frame_cam_1))
-        ret_2, frame_cam_2 = self.camera_2.read()
-        if ret_2 :
-            self.cam_2_pub.publish(self.bridge.cv2_to_compressed_imgmsg(frame_cam_2))
-        ret_4, frame_cam_4 = self.camera_4.read()
-        if ret_4 :
-            self.cam_4_pub.publish(self.bridge.cv2_to_compressed_imgmsg(frame_cam_4))
->>>>>>> e9e705f8c7646ce1c3cb96cbbef8cb6b54b60652
 
 
 def gstreamer_pipeline(
@@ -148,7 +139,7 @@ def main(args=None):
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    cameras_publisher.disable_camera()
+    cameras_publisher.stop_camera()
     cameras_publisher.destroy_node()
     rclpy.shutdown()
 
