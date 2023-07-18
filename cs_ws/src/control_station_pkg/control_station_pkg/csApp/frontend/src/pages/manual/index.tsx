@@ -63,7 +63,7 @@ export default () => {
 					optionsCallback={selectCamera}
 				/>
 				<div className={styles.Subheader}>
-					<ManualModeSelector mode={Task.HANDLING_DEVICE} callback={setMode} />
+					<ManualModeSelector mode={Task.MANUAL_CONTROL} callback={setMode} />
 				</div>
 				{/* <DistanceHint distance={10} /> */}
 
@@ -75,7 +75,7 @@ export default () => {
 
 				<div className={styles.globalContainer}>
 					<ModeSlider />
-					<TaskControl task={Task.HANDLING_DEVICE} />
+					<TaskControl task={Task.MANUAL_CONTROL} />
 				</div>
 
 				<Timer end={Date.now() + 10000} size={Size.SMALL} />
