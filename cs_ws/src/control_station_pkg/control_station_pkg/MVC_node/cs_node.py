@@ -108,7 +108,7 @@ class CS:
         #self.Nav_DebugWheels_pub    = self.node.create_publisher(Int16MultiArray,   '/debug/wheel_cmds',   1)
 
         # Cam
-        self.Cam_index_pub = self.node.create_publisher(Int16MultiArray, 'CS/CAM_index', 1)
+        self.Cam_index_pub = self.node.create_publisher(Int8MultiArray, 'CS/CAM_index', 1)
 
         # ---------------------------------------------------
         # ===== Subscribers =====

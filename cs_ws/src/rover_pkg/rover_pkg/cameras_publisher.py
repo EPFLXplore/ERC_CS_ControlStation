@@ -2,17 +2,13 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import CompressedImage
-from std_msgs.msg import Int16MultiArray
+from std_msgs.msg import Int8MultiArray
 
 import cv2
 from cv_bridge import CvBridge
 
 
-<<<<<<< HEAD
 CAMERA_FRAMERATE = 20
-=======
-CAMERA_FRAMERATE = 1
->>>>>>> e9e705f8c7646ce1c3cb96cbbef8cb6b54b60652
 
 
 class CamerasPublisher(Node):
@@ -21,33 +17,31 @@ class CamerasPublisher(Node):
 
         super().__init__('cameras_publisher')
 
-        self.camera_index = self.create_subscription(Int16MultiArray, 'CS/CAM_index', self.enable_camera, 10)
+        self.camera_index = self.create_subscription(Int8MultiArray, 'CS/CAM_index', self.enable_camera, 10)
 
         self.cam_1_pub = self.create_publisher(CompressedImage, 'camera_1', 1)
         self.cam_2_pub = self.create_publisher(CompressedImage, 'camera_2', 1)
         self.cam_3_pub = self.create_publisher(CompressedImage, 'camera_3', 1)
         self.cam_4_pub = self.create_publisher(CompressedImage, 'camera_4', 1)
 
-<<<<<<< HEAD
-        self.cam_publisher = [self.cam_1_pub, self.cam_2_pub, self.cam_3_pub, self.cam_4_pub]
-
-        self.camera_list = []
-=======
         self.camera_0 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=0))
         self.camera_1 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=1))
         self.camera_2 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=2))
         self.camera_4 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=4))
->>>>>>> e9e705f8c7646ce1c3cb96cbbef8cb6b54b60652
 
         self.bridge = CvBridge()
+
+        self.camera_list = []
 
         self.timer = self.create_timer(1/CAMERA_FRAMERATE, self.publish_feeds)
 
 
     def enable_camera(self, camera_index):
+        print("Enabling camera: ", camera_index.data)
         self.disable_camera()
 
-        for i in camera_index:
+        for i in camera_index.data:
+            print(i)
             self.camera_list.append(cv2.VideoCapture(gstreamer_pipeline(sensor_id=i)))
 
 
@@ -59,7 +53,6 @@ class CamerasPublisher(Node):
 
     def publish_feeds(self):
 
-<<<<<<< HEAD
         for i in range(len(self.camera_list)):
             ret, frame = self.camera_list[i].read()
             if ret:
@@ -77,20 +70,6 @@ class CamerasPublisher(Node):
 
 
 
-=======
-        ret_0, frame_cam_0 = self.camera_0.read()
-        if ret_0 :
-            self.cam_0_pub.publish(self.bridge.cv2_to_compressed_imgmsg(frame_cam_0))
-        ret_1, frame_cam_1 = self.camera_1.read()
-        if ret_1 :
-            self.cam_1_pub.publish(self.bridge.cv2_to_compressed_imgmsg(frame_cam_1))
-        ret_2, frame_cam_2 = self.camera_2.read()
-        if ret_2 :
-            self.cam_2_pub.publish(self.bridge.cv2_to_compressed_imgmsg(frame_cam_2))
-        ret_4, frame_cam_4 = self.camera_4.read()
-        if ret_4 :
-            self.cam_4_pub.publish(self.bridge.cv2_to_compressed_imgmsg(frame_cam_4))
->>>>>>> e9e705f8c7646ce1c3cb96cbbef8cb6b54b60652
 
 
 def gstreamer_pipeline(
