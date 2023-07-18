@@ -17,7 +17,7 @@ export default () => {
 	const [image, camera, selectCamera] = useCameraSelector(Cameras.CAM1);
 	const [currentPosition, currentOrientation, wheelsPosition, linearVelocity, angularVelocity] =
 		useNavigation();
-	
+
 	return (
 		<div className="page center">
 			<Background />

@@ -9,7 +9,6 @@ import PageHeader from "../../components/PageHeader";
 import DistanceHint from "../../components/DistanceHint";
 import CameraView from "../../components/CameraView";
 import { Cameras } from "../../utils/cameras.type";
-import useCameraManager from "../../hooks/cameraManager";
 import Timer from "../../components/Timer";
 import { Size } from "../../utils/size.type";
 import ModeSlider from "../../components/ModeSlider";
@@ -22,6 +21,7 @@ import TaskControl from "../../components/TaskControl";
 import { useNavigation } from "../../hooks/navigationHooks";
 import ManualModeSelector from "../../components/ManualModeSelector";
 import { useLocation } from "react-router-dom";
+import useCameraSelector from "../../hooks/cameraHooks";
 
 function useQuery() {
 	const { search } = useLocation();
@@ -30,7 +30,7 @@ function useQuery() {
 }
 
 export default () => {
-	const [camera, selectCamera] = useCameraManager(Cameras.CAM1);
+	const [image, camera, selectCamera] = useCameraSelector(Cameras.CAM1);
 	const [jointPositions, jointVelocities, jointCurrents, detectedTags, taskSuccess] =
 		useHandlingDevice();
 	const [currentPosition, currentOrientation, wheelsPosition, linearVelocity, angularVelocity] =
@@ -80,7 +80,7 @@ export default () => {
 
 				<Timer end={Date.now() + 10000} size={Size.SMALL} />
 				<GamepadHint />
-				<CameraView camera={camera} />
+				<CameraView image={image} />
 			</div>
 		);
 	} else {
@@ -170,7 +170,7 @@ export default () => {
 						<Timer end={Date.now() + 10000} size={Size.SMALL} />
 						<TaskControl task={Task.MANUAL_CONTROL} />
 						<GamepadHint />
-						<CameraView camera={camera} />
+						<CameraView image={image} />
 					</div>
 				</div>
 			</div>
