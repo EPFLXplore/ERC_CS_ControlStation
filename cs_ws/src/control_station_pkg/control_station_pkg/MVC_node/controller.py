@@ -432,23 +432,27 @@ class Controller():
     #            SCIENCE         #
     ##############################
 
-    # select tube on which we'll execute a selected operation
-    def selectedTube(self, id):
-        if (id < 0 or id > 2): raise ValueError("tube ids are: 0, 1, 2")
-        self.cs.rover.SC.selectTube(id)
+    def science_state(self, data):
+        #TODO add it to the frontend
+        print(data)
 
-    # select operation to execute on a tube: mass calculation, sampling, rotation to camera
-    def selectedOp(self, op):
-        self.cs.rover.SC.setOperation(op)
+    # # select tube on which we'll execute a selected operation
+    # def selectedTube(self, id):
+    #     if (id < 0 or id > 2): raise ValueError("tube ids are: 0, 1, 2")
+    #     self.cs.rover.SC.selectTube(id)
 
-    # set not tube-specific command: take picture, picture analysis, humidity.
-    # (tube-specific commands are updated automatically as you do one of the above operations)
-    def set_sc_cmd(self, cmd):
-        self.cs.rover.SC.setCmd(cmd)
+    # # select operation to execute on a tube: mass calculation, sampling, rotation to camera
+    # def selectedOp(self, op):
+    #     self.cs.rover.SC.setOperation(op)
 
-    # set humidity value of concerned tube
-    def setHumidity(self, val):
-        self.cs.rover.SC.setTubeHum(val)
+    # # set not tube-specific command: take picture, picture analysis, humidity.
+    # # (tube-specific commands are updated automatically as you do one of the above operations)
+    # def set_sc_cmd(self, cmd):
+    #     self.cs.rover.SC.setCmd(cmd)
+
+    # # set humidity value of concerned tube
+    # def setHumidity(self, val):
+    #     self.cs.rover.SC.setTubeHum(val)
 
     ##############################
     #            MANUAL          #

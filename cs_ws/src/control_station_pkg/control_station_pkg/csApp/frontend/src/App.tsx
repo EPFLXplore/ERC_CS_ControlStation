@@ -5,7 +5,17 @@ import { Provider } from "react-redux";
 import store from "./redux";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Home, Menu, Navigation, HandlingDevice, Science, Camera, Logs, NotFound } from "./pages";
+import {
+	Home,
+	Menu,
+	Navigation,
+	HandlingDevice,
+	Science,
+	Camera,
+	Logs,
+	NotFound,
+	Drill,
+} from "./pages";
 import { Mode } from "./utils/mode.type";
 import useSession from "./hooks/sessionHooks";
 import ManualNavigation from "./pages/manualNavigation";
@@ -45,7 +55,7 @@ const router = createBrowserRouter([
 	},
 	{
 		path: "/science/drill",
-		element: <Science />,
+		element: <Drill />,
 	},
 	{
 		path: "/camera",
