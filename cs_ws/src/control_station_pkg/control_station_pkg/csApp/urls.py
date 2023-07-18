@@ -41,6 +41,9 @@ urlpatterns = [
     path('science/abort',           abort_science, name='abort_science'),
     path('science/resume',          resume_science,   name='resume_science'),
 
+    #Cameras
+    path('cameras/enable_cameras', enable_cameras, name='enable_cameras'),
+
     # path('science/confirm',         confirm_science, name='confirm_science'),
     # path('science/abort',           abort_science,  name='abort_science'),
     # path('science/retry',           retry_science,  name='retry_science'),
