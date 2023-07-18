@@ -46,7 +46,8 @@ function useCameraSelector(startCamera: Cameras) {
 
 		fetch(request)
 			.then((res) => res.json())
-			.then((data) => console.log(data));
+			.then((data) => console.log(data))
+			.catch((err) => console.log(err));
 
 		let cameraSocket = new WebSocket(
 			"ws://" + window.location.host + "/ws/cameras/" + "video" + camera + "/"

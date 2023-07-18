@@ -37,7 +37,7 @@ export default () => {
 		useNavigation();
 	const defaultMode = useQuery().get("defaultMode");
 
-	console.log(defaultMode);
+	console.log("Render manual");
 
 	const [mode, setMode] = useState(
 		defaultMode === "nav" ? Task.NAVIGATION : Task.HANDLING_DEVICE
@@ -63,7 +63,7 @@ export default () => {
 					optionsCallback={selectCamera}
 				/>
 				<div className={styles.Subheader}>
-					<ManualModeSelector mode={Task.MANUAL_CONTROL} callback={setMode} />
+					<ManualModeSelector mode={Task.HANDLING_DEVICE} callback={setMode} />
 				</div>
 				{/* <DistanceHint distance={10} /> */}
 
@@ -79,7 +79,7 @@ export default () => {
 				</div>
 
 				<Timer end={Date.now() + 10000} size={Size.SMALL} />
-				<GamepadHint />
+				<GamepadHint selectorCallback={() => setMode(Task.NAVIGATION)} visible />
 				<CameraView image={image} />
 			</div>
 		);
@@ -169,7 +169,10 @@ export default () => {
 						</div>
 						<Timer end={Date.now() + 10000} size={Size.SMALL} />
 						<TaskControl task={Task.MANUAL_CONTROL} />
-						<GamepadHint />
+						<GamepadHint
+							selectorCallback={() => setMode(Task.HANDLING_DEVICE)}
+							visible
+						/>
 						<CameraView image={image} />
 					</div>
 				</div>

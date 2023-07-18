@@ -8,58 +8,57 @@ export const useGoalTracker = () => {
 	const [goals, setGoals] = useState<Goal[]>([]);
 
 	const getCookie = (name: string): string | null => {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
+		let cookieValue = null;
+		if (document.cookie && document.cookie !== "") {
+			const cookies = document.cookie.split(";");
+			for (let i = 0; i < cookies.length; i++) {
+				const cookie = cookies[i].trim();
+				// Does this cookie string begin with the name we want?
+				if (cookie.substring(0, name.length + 1) === name + "=") {
+					cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+					break;
+				}
+			}
+		}
+		return cookieValue;
+	};
 
 	const addGoal = (x: number, y: number, o: number) => {
 		if (x.toString() !== "NaN" && y.toString() !== "NaN" && o.toString() !== "NaN") {
 			const id = Date.now(); //Generate a unique id for the goal
 			setGoals([...goals, { id, x, y, o }]);
-			const csrftoken = getCookie('csrftoken');
-	
+			const csrftoken = getCookie("csrftoken");
+
 			let formData = new FormData();
-			formData.append("x",  x.toString());
-			formData.append('y',  y.toString());
-			formData.append('yaw', o.toString());
-	
-			let request = new Request("http://127.0.0.1:8000/csApp/navigation/add_goal_nav",
-			{
+			formData.append("x", x.toString());
+			formData.append("y", y.toString());
+			formData.append("yaw", o.toString());
+
+			let request = new Request("http://127.0.0.1:8000/csApp/navigation/add_goal_nav", {
 				method: "POST",
 				headers: {
-					"X-CSRFToken": csrftoken ?? ''
+					"X-CSRFToken": csrftoken ?? "",
 				},
 				body: formData,
-			})
-	
-			fetch(request).then((res) => res.json()).then((data) => console.log(data));
-	
+			});
+
+			fetch(request)
+				.then((res) => res.json())
+				.then((data) => console.log(data))
+				.catch((err) => console.log(err));
+
 			// let formData = new FormData();
 			// 								formData.append("x",  x.toString());
 			// 								formData.append('y',  y.toString());
 			// 								formData.append('yaw', o.toString());
-							
+
 			// 								let request = new Request('http://127.0.0.1:8000/csApp/navigation/add_goal_nav', {method: 'POST',
 			// 																	body: formData,
 			// 																	headers: {"X-CSRFToken": csrftoken ?? ''}})
 			// 								fetch(request)
 			// 									.then(response => response.json())
 			// 									.then(result => {})
-			
 		}
-
-
 	};
 
 	const resetGoals = () => {
@@ -89,19 +88,21 @@ export function useNavigation() {
 	const [angularVelocity, setAngularVelocity] = useState([0, 0, 0]);
 
 	useEffect(() => {
-		let navigationSocket = new WebSocket(
-			"ws://127.0.0.1:8000/ws/csApp/info_nav/"
-		);
+		let navigationSocket = new WebSocket("ws://127.0.0.1:8000/ws/csApp/info_nav/");
 
 		navigationSocket.onmessage = (e) => {
 			const data = JSON.parse(e.data);
 
 			setCurrentPosition(data.position);
-			setCurrentOrientation(data.orientation)
+			setCurrentOrientation(data.orientation);
 			setWheelsPosition(data.wheel_ang);
 			setLinearVelocity(data.linVel);
 			setAngularVelocity(data.angVel);
-			drawCurrentPosition({ x: data.position[0], y: data.position[1], o: data.orientation[2] });
+			drawCurrentPosition({
+				x: data.position[0],
+				y: data.position[1],
+				o: data.orientation[2],
+			});
 		};
 
 		navigationSocket.onerror = (e) => {
@@ -112,5 +113,11 @@ export function useNavigation() {
 		setSocket(navigationSocket);
 	}, []);
 
-	return [currentPosition, currentOrientation, wheelsPosition, linearVelocity, angularVelocity] as const;
+	return [
+		currentPosition,
+		currentOrientation,
+		wheelsPosition,
+		linearVelocity,
+		angularVelocity,
+	] as const;
 }

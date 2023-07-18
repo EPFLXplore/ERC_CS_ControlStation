@@ -1,10 +1,16 @@
 import React from "react";
-import useGamepad from "../../hooks/gamepadHooks";
+import useGamepad, { GamepadCommandState } from "../../hooks/gamepadHooks";
 import GamepadDisplay from "./GamepadDisplay";
 import styles from "./style.module.sass";
 
-const GamepadHint = ({}: {}) => {
-	const [gamepad, gamepadState] = useGamepad();
+const GamepadHint = ({
+	selectorCallback,
+	visible = false,
+}: {
+	selectorCallback?: () => void;
+	visible?: boolean;
+}) => {
+	const [gamepad, gamepadState, gamepadCommandState] = useGamepad(selectorCallback);
 
 	const calcDirectionVertical = (axe: number) => {
 		// Up
@@ -32,9 +38,13 @@ const GamepadHint = ({}: {}) => {
 		return "";
 	};
 
-	if (gamepad?.getGamepad() && gamepadState) {
+	if (gamepad?.getGamepad() && gamepadState && visible) {
 		return (
-			<div className={styles.Container}>
+			<div
+				className={`${styles.Container} ${
+					gamepadCommandState === GamepadCommandState.UI ? styles.Outline : ""
+				}`}
+			>
 				<GamepadDisplay
 					buttonDown={gamepadState.buttons[0]}
 					buttonRight={gamepadState.buttons[1]}
