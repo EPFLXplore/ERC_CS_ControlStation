@@ -5,12 +5,13 @@ class Launcher:
     #def __init__(self):
         #self.process = Popen()
 
+    # TODO potential ambiguity with the ethercat_device_config package because manual_hd uses that too
     def start_science(self):
+        Popen(["gnome-terminal", "-x", "sh", "-c", ". ~/.bashrc & ros2 run ethercat_device_configurator motor_control '/home/xplore/Desktop/ROVER/rover_ws/src/drill_workspace/src/ethercat_device_configurator/config_mot/setup.yaml'; bash"], stdout=PIPE, stderr=PIPE)
         Popen(["gnome-terminal", "-x", "sh", "-c", ". ~/.bashrc & ros2 run sc_fsm_drill science_fsm; bash"], stdout=PIPE, stderr=PIPE)
-        #Popen(["gnome-terminal", "-x", "sh", "-c", ". ~/.bashrc & ros2 launch sc_fsm_drill drill.py; bash"], stdout=PIPE, stderr=PIPE)
 
     def start_manual(self):
-        #self.__start_cameras()
+        # self.__start_cameras()
         self.__start_manual_nav()
         self.__start_manual_hd()
 

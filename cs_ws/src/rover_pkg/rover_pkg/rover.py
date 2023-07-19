@@ -232,13 +232,14 @@ class Rover():
                     self.model.Nav.cancelGoal()
                     self.Nav_Status.publish(String(data="stop"))
                     self.ROVER_STATE = Task.IDLE
-                # WAIT/RESUME
+                # WAIT
                 if instr == Instruction.WAIT.value:
                     self.node.get_logger().info("PAUSING NAVIGATION")
                     self.Nav_Status.publish(String(data="pause"))
                     self.ROVER_STATE == Task.WAITING
 
             elif (self.ROVER_STATE == Task.WAITING):
+                # RESUME
                 if(instr == Instruction.RESUME.value):
                     self.node.get_logger().info("RESUMING NAVIGATION")
                     self.Nav_Status.publish(String(data="resume"))
