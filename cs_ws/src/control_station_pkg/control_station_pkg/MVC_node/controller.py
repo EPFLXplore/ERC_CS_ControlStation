@@ -472,7 +472,7 @@ class Controller():
     # the problem could come from the abort or due to how the gamepad was coded
     def abort_Manual(self):
         self.cs.node.get_logger().info("\nAborting manual controls\n")
-        self.gpad._running = False
+        #self.gpad._running = False
 
     # TIMEOUT system
     # invoked after sending a message to the rover and expecting a confirmation
