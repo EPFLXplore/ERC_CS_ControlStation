@@ -68,44 +68,45 @@ class Rover():
         # ==========================================================
 
         # ===== PUBLISHERS =====
-
+        # Rover --> CS
         self.RoverConfirm_pub  = self.node.create_publisher(String,            'ROVER/RoverConfirm'            , 1)
         self.Exception_pub     = self.node.create_publisher(String,            'ROVER/Exception'               , 1)
         self.TaskProgress_pub  = self.node.create_publisher(Int8,              'ROVER/TaskProgress'            , 1)
+
         # Rover(SC) --> CS
         self.SC_fsm_state_pub  = self.node.create_publisher(Int8,                'ROVER/SC_fsm_state'            , 1)
         # self.SC_cmd_pub        = self.node.create_publisher(String,            'ROVER/SC_cmd'                  , 1)
         # self.SC_infos_pub      = self.node.create_publisher(String,            'ROVER/SC_info'                 , 1)
         # self.SC_humidities_pub = self.node.create_publisher(Int16,             'ROVER/SC_measurements_humidity', 1)
         # self.SC_params_pub     = self.node.create_publisher(Int16MultiArray,   'ROVER/SC_params'               , 1)
+
         # Rover(HD) --> CS
         self.HD_telemetry_pub  = self.node.create_publisher(JointState,        'ROVER/HD_telemetry'            , 1)
-        self.HD_tof            = self.node.create_publisher(Int32,             'ROVER/HD_tof'                  , 1)
         self.NAV_odometry_pub  = self.node.create_publisher(Odometry,          'ROVER/NAV_odometry'            , 1)
         self.HD_element_pub    = self.node.create_publisher(Float32MultiArray, 'ROVER/HD_detected_element'     , 3)
-        #self.diagnostic        = self.node.create_publisher(DiagnosticStatus,  'CS_log'                        ,10)
+        self.diagnostic        = self.node.create_publisher(DiagnosticStatus,  'ROVER/CS_log'                  ,10)
 
         # ===== SUBSCRIBERS =====
 
         # messages from CS
-        self.node.create_subscription(Int8MultiArray, 'CS/Task'             , self.task_instr             , 10)
-        self.node.create_subscription(Bool,           'CS/Confirm'       , self.cs_confirm             , 10)
+        self.node.create_subscription(Int8MultiArray, 'CS/Task',    self.task_instr, 10)
+        self.node.create_subscription(Bool,           'CS/Confirm', self.cs_confirm,    10)
         # messages form CS (HD)
-        self.node.create_subscription(Int8,           'CS/HD_mode'       , self.model.HD.setHDMode     , 10)
-        self.node.create_subscription(Int8,           'CS/HD_SemiAuto_Id', self.model.HD.set_semiAutoID, 10)
-        self.node.create_subscription(Int8,           'CS/HD_element_id' , self.model.HD.send_element_id_hd     , 10)
-        self.node.create_subscription(Bool,           'CS/HD_toggle_camera', self.model.HD.send_toggle_info     , 10)
-        self.node.create_subscription(Joy,            'CS/HD_gamepad'    , self.model.HD.handle_hd_gamepad, 10)
+        self.node.create_subscription(Int8, 'CS/HD_mode',          self.model.HD.setHDMode,          10)
+        self.node.create_subscription(Int8, 'CS/HD_SemiAuto_Id',   self.model.HD.set_semiAutoID,     10)
+        self.node.create_subscription(Int8, 'CS/HD_element_id',    self.model.HD.send_element_id_hd, 10)
+        self.node.create_subscription(Bool, 'CS/HD_toggle_camera', self.model.HD.send_toggle_info, 10)
+        self.node.create_subscription(Joy,  'CS/HD_gamepad',       self.model.HD.handle_hd_gamepad,  10)
         # messages from CS (NAV)
-        self.node.create_subscription(PoseStamped,    'CS/NAV_goal'      , self.model.Nav.setGoal      , 10)
-        self.node.create_subscription(Joy,            'CS/NAV_gamepad'   , self.model.Nav.gamepad  , 10)
+        self.node.create_subscription(PoseStamped, 'CS/NAV_goal',    self.model.Nav.setGoal, 10)
+        self.node.create_subscription(Joy,         'CS/NAV_gamepad', self.model.Nav.gamepad, 10)
         
         #self.node.create_subscription(Joy,    'Gamepad',   self.handle_gamepad,          1)
         #TODO: add cancel goal and other messages from CS to NAV
 
 
         # ==========================================================
-        #           MESSAGES BETWEEN ROVER AND SUBSYSTEMSROVER
+        #           MESSAGES BETWEEN THE ROVER AND ITS SUBSYSTEMS 
         # ==========================================================
 
         # ===== PUBLISHERS =====
@@ -114,20 +115,20 @@ class Rover():
         #ROVER --> All
 
         # Rover --> HD
-        self.Maintenance_pub         = self.node.create_publisher(Int8,        'ROVER/Maintenance'      , 1)
-        self.HD_mode_pub             = self.node.create_publisher(Int8,        'ROVER/HD_mode'          , 1)
-        self.HD_SemiAuto_Id_pub      = self.node.create_publisher(Int8,        'ROVER/HD_SemiAuto_Id'   , 1)
-        self.send_HD_element_id_pub  = self.node.create_publisher(Int8,        'ROVER/element_id'       , 1)
-        self.send_toggle_info_pub    = self.node.create_publisher(Bool,        'ROVER/HD_toggle_camera' , 1)
+        self.Maintenance_pub         = self.node.create_publisher(Int8, 'ROVER/Maintenance'      , 1)
+        self.HD_mode_pub             = self.node.create_publisher(Int8, 'ROVER/HD_mode'          , 1)
+        self.HD_SemiAuto_Id_pub      = self.node.create_publisher(Int8, 'ROVER/HD_SemiAuto_Id'   , 1)
+        self.send_HD_element_id_pub  = self.node.create_publisher(Int8, 'ROVER/element_id'       , 1)
+        self.send_toggle_info_pub    = self.node.create_publisher(Bool, 'ROVER/HD_toggle_camera' , 1)
         
         # Rover --> NAV
-        self.Nav_Goal_pub       = self.node.create_publisher(PoseStamped, 'ROVER/NAV_goal'    , 1)
-        self.Nav_Status         = self.node.create_publisher(String,      'ROVER/NAV_STATUS'  , 1)
-        self.Nav_gamepad_pub    = self.node.create_publisher(Joy,         'ROVER/NAV_gamepad' , 1)
+        self.Nav_Goal_pub     = self.node.create_publisher(PoseStamped, 'ROVER/NAV_goal'    , 1)
+        self.Nav_Status       = self.node.create_publisher(String,      'ROVER/NAV_STATUS'  , 1)
+        self.Nav_gamepad_pub  = self.node.create_publisher(Joy,         'ROVER/NAV_gamepad' , 1)
 
 
         # Rover --> SC
-        self.SC_pub             = self.node.create_publisher(Int8,        'ROVER/SC_cmd'           , 1)
+        self.SC_pub = self.node.create_publisher(Int8,        'ROVER/SC_cmd'           , 1)
 
         # ===== SUBSCRIBERS =====
 
@@ -141,8 +142,7 @@ class Rover():
         # NAV --> Rover
         # self.node.create_subscription(Odometry,        '/odometry/filtered'          , self.NAV_odometry_pub.publish , 10) # CS DIRECTLY SUBSCRIBED
         # HD --> Rover
-        self.node.create_subscription(JointState,      '/arm_control/joint_telemetry', self.HD_telemetry_pub.publish , 10)
-        self.node.create_subscription(Int32,           '/avionics_ToF'               , self.HD_tof.publish           , 10)
+        self.node.create_subscription(JointState,      'HD/arm_control/joint_telemetry', self.HD_telemetry_pub.publish , 10)
 
 
         # ======Services server=====
@@ -198,6 +198,7 @@ class Rover():
         if (task == Task.MANUAL.value):
             if (instr == Instruction.LAUNCH.value):
                 if (self.ROVER_STATE == Task.IDLE):
+                    self.node.get_logger().info("LAUNCHING MANUAL")
                     self.launcher.start_manual()
                     self.ROVER_STATE = Task.MANUAL
                 else:
@@ -206,16 +207,20 @@ class Rover():
             elif (self.ROVER_STATE == Task.MANUAL):
                 # ABORT
                 if instr == Instruction.ABORT.value:
+                    self.node.get_logger().info("ABORTING MANUAL")
+                    self.Maintenance_pub.publish(Int8(data = -1))
+                    self.Nav_Status.publish(String(data = "stop"))
                     self.ROVER_STATE = Task.IDLE
 
         #--------------------------NAVIGATION-----------------------------
         if task == Task.NAVIGATION.value:
-            # LAUNCH -------------------------
+            # LAUNCH 
             if instr == Instruction.LAUNCH.value:
                 if (self.ROVER_STATE == Task.IDLE):
-                    self.ROVER_STATE = Task.NAVIGATION
+                    self.node.get_logger().info("LAUNCHING NAVIGATION")
                     goal = self.model.Nav.getGoal()
                     self.Nav_Goal_pub.publish(PoseStamped(header=goal.header, pose=goal.pose))
+                    self.ROVER_STATE = Task.NAVIGATION
                 else:
                     self.log_task_already_launched("Navigation")
                     self.node.get_logger().info("Can't launch Navigation if another task is still running, task : " + str(self.ROVER_STATE))
@@ -223,20 +228,28 @@ class Rover():
             elif (self.ROVER_STATE == Task.NAVIGATION):
                 # ABORT
                 if instr == Instruction.ABORT.value:
+                    self.node.get_logger().info("ABORTING NAVIGATION")
                     self.model.Nav.cancelGoal()
                     self.Nav_Status.publish(String(data="stop"))
                     self.ROVER_STATE = Task.IDLE
                 # WAIT/RESUME
                 if instr == Instruction.WAIT.value:
+                    self.node.get_logger().info("PAUSING NAVIGATION")
                     self.Nav_Status.publish(String(data="pause"))
-                if instr == Instruction.RESUME.value:
+                    self.ROVER_STATE == Task.WAITING
+
+            elif (self.ROVER_STATE == Task.WAITING):
+                if(instr == Instruction.RESUME.value):
+                    self.node.get_logger().info("RESUMING NAVIGATION")
                     self.Nav_Status.publish(String(data="resume"))
+                    self.ROVER_STATE = Task.NAVIGATION
                 
         #-------------------------------MAINTENANCE----------------------------------
         if task == Task.MAINTENANCE.value:
-            # LAUNCH---------------------------
+            # LAUNCH
             if (instr == Instruction.LAUNCH.value):
                 if(self.ROVER_STATE == Task.IDLE):
+                    self.node.get_logger().info("LAUNCHING MAINTENANCE")
                     self.ROVER_STATE = Task.MAINTENANCE
                     self.HD_SemiAuto_Id_pub.publish(Int8(data=self.model.HD.getId()))
                 else:
@@ -245,13 +258,23 @@ class Rover():
 
 
             elif(self.ROVER_STATE == Task.MAINTENANCE):
-                # ABORT--------------------------------------
+                # ABORT
                 if (instr == Instruction.ABORT.value):
+                    self.node.get_logger().info("ABORTING MAINTENANCE")
                     self.HD_SemiAuto_Id_pub.publish(Int8(data=-1))
                     self.ROVER_STATE = Task.IDLE
-                # WAIT/RESUME--------------------------------- TODO: see how to not be able to wait 2 times
-                else:
+                # WAIT--------------------------------- TODO: see how to not be able to wait 2 times
+                elif (instr == Instruction.WAIT.value):
+                    self.node.get_logger().info("PAUSING MAINTENANCE")
                     self.Maintenance_pub.publish(Int8(data=instr))
+                    self.ROVER_STATE = Task.WAITING
+
+            elif(self.ROVER_STATE == Task.WAITING):
+                # RESUME
+                if(instr == Instruction.RESUME.value):
+                    self.node.get_logger().info("RESUMING MAINTENANCE")
+                    self.Maintenance_pub.publish(Int8(data=instr))
+                    self.ROVER_STATE = Task.MAINTENANCE
 
         # -------------------------DRONE-------------------------------------------------
         if (task == Task.DRONE.value):
@@ -275,45 +298,50 @@ class Rover():
         # SCIENCE
         if (task == Task.SCIENCE.value):
 
-            # ACTIVATE SCIENCE SUBSYSTEM
-            if(instr == Instruction.START.value and self.ROVER_STATE == Task.IDLE):
-                self.launcher.start_drill()
-
-
-            #LAUNCH
+            # LAUNCH
             if (instr == Instruction.LAUNCH.value):
                 if(self.ROVER_STATE == Task.IDLE):
+                    self.node.get_logger().info("LAUNCHING SCIENCE")
+                    self.launcher.start_science()
                     self.ROVER_STATE = Task.SCIENCE
                 else:
                     self.node.get_logger().info("Can't launch Science if another task is still running!")
                     self.log_task_already_launched("Science")
 
-            #OTHER SCIENCE INSTR TODO: ADD abort in science
             elif(self.ROVER_STATE == Task.SCIENCE):
-                #ABORT
+                # ABORT
                 if (instr == Instruction.ABORT.value):
-                    self.ROVER_STATE = Task.IDLE
-                # REQUEST TO RESEND PARAMETERS
-                if (instr == ScienceTask.PARAMS.value):
-                    self.wait(self.SC_params_pub, Int16MultiArray(data=self.model.SC.getParams()))
-                # REQUEST TO RESEND INFO
-                elif (instr == ScienceTask.INFO.value):
-                    self.wait(self.SC_infos_pub, String(data=self.model.SC.get_text_info()))
-                # REQUEST TO RESEND STATE
-                elif (instr == ScienceTask.STATE.value):
-                    self.wait(self.SC_cmd_pub, String(data=self.model.SC.get_state_info()))
-                # COMMANDS SENT TO SC
-                else:
+                    self.node.get_logger().info("ABORTING SCIENCE")
                     self.SC_pub.publish(Int8(data=instr))
-                    self.wait(self.SC_cmd_pub, String(data=self.model.SC.get_state_info()))
+                    self.ROVER_STATE = Task.IDLE
+
+                # WAIT
+                if(instr == Instruction.WAIT.value):
+                    self.node.get_logger().info("PAUSING SCIENCE")
+                    self.SC_pub.publish(Int8(data = instr))
+                    self.ROVER_STATE = Task.WAITING
+
+            elif(self.ROVER_STATE == Task.WAITING):
+                # RESUME
+                if(instr == Instruction.RESUME.value):
+                    self.node.get_logger().info("RESUMING SCIENCE")
+                    self.SC_pub.publish(Int8(data=instr))
+                    self.ROVER_STATE = Task.SCIENCE
+
+            else:
+                msg = "Unhandled situation, task = " + str(task) + ", instr = " + str(instr) + ", rover state = " + str(self.ROVER_STATE.value)
+                self.node.get_logger().info(msg)
+                self.notify_cs(DiagnosticStatus.WARN, msg)
+
 
     # run ros
     def run(self):
         print("Listening")
         rclpy.spin(self.node)
+        rclpy.shutdown()
 
 
-        # ===== TIMEOUT MECANISM =====
+        # ===== TIMEOUT MECHANISM =====
 
     def cs_confirm(self, bool):
         if (self.waiting):
@@ -347,6 +375,13 @@ class Rover():
         # status.name = "Task already running"
         # self.diagnostic.publish(status)
         return
+
+    def notify_cs(self, diagnostic_level, msg):
+        status = DiagnosticStatus()
+        status.name = "ROVER"
+        status.level = diagnostic_level
+        status.message = msg
+        self.diagnostic.publish(status)
 
 
 def main():

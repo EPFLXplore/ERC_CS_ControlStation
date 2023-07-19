@@ -13,6 +13,7 @@ class Task(IntEnum):
     MAINTENANCE = 3
     SCIENCE     = 4
     DRONE       = 5
+    WAITING     = 6
     
   
 class Instruction(IntEnum):
