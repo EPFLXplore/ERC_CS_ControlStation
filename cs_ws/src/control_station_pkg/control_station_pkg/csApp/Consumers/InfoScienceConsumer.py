@@ -54,6 +54,8 @@ class InfoScienceConsumer(AsyncWebsocketConsumer):
                 'drill_speed': data_json['drill_speed'],
                 'limt_switch_1': data_json['limt_switch_1'],
                 'limt_switch_2': data_json['limt_switch_2'],
+                'limt_switch_3': data_json['limt_switch_3'],
+                'limt_switch_4': data_json['limt_switch_4'],
             }
         )
 
@@ -69,4 +71,6 @@ class InfoScienceConsumer(AsyncWebsocketConsumer):
                 'drill_speed': data_json['drill_speed'],
                 'limt_switch_1': data_json['limt_switch_1'],
                 'limt_switch_2': data_json['limt_switch_2'],
+                'limt_switch_3': data_json['limt_switch_3'],
+                'limt_switch_4': data_json['limt_switch_4'],
         }))
