@@ -141,14 +141,6 @@ class CS:
         self.node.create_subscription(CompressedImage,            '/camera_2',                 cameras_reciever.display_cam_2   , 1)
         self.node.create_subscription(CompressedImage,            '/camera_3',                 cameras_reciever.display_cam_2   , 1)
         self.node.create_subscription(CompressedImage,            '/camera_4',                 cameras_reciever.display_cam_4   , 1)
-
-        # TODO
-        # c'est quoi ?
-        # self.node.create_subscription('detection/state', UInt8, detection_state)
-        # self.node.create_subscription('detection/bounding_boxes', Image, ...)
-        # self.node.create_subscription('detection/RGB_intel', Image, ...)
-        # self.node.create_subscription('detection/RGB_webcam_1', Image, ...)
-        # self.node.create_subscription('detection/RGB_webcam_2', Image, ...)
         
         # Elpased time
         #self.node.create_subscription(Int32MultiArray,  'Time',                            self.controller.elapsed_time       , 10) #useless
