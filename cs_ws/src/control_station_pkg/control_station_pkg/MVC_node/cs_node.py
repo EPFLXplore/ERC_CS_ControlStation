@@ -128,11 +128,7 @@ class CS:
         self.node.create_subscription(Int8,               'EL/npk',                     self.controller.science_npk          , 10)
         self.node.create_subscription(Int8,               'EL/four_in_one',             self.controller.science_4in1         , 10)
 
-        #TODO : changer le nom du subscriber
-        self.node.create_subscription(Image,            'sc_camera',                       self.controller.sc_image           , 10)
-
         # -- HD messages --
-        self.node.create_subscription(Float32MultiArray,'ROVER/HD_detected_element',       self.controller.hd_detected_element, 10)
         self.node.create_subscription(JointState,       'HD/arm_control/joint_telemetry',  self.controller.hd_data       , 10)
         
         # -- NAV messages --
