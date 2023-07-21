@@ -48,14 +48,10 @@ class InfoScienceConsumer(AsyncWebsocketConsumer):
             {
                 'type': 'broadcast_info_drill',
                 'state': data_json['state'],
-                'motor_pos': data_json['motor_pos'],
-                'motor_speed': data_json['motor_speed'],
-                'motor_current': data_json['motor_current'],
-                'drill_speed': data_json['drill_speed'],
-                'limt_switch_1': data_json['limt_switch_1'],
-                'limt_switch_2': data_json['limt_switch_2'],
-                'limt_switch_3': data_json['limt_switch_3'],
-                'limt_switch_4': data_json['limt_switch_4'],
+                'motors_pos': data_json['motors_pos'],
+                'motors_velocities': data_json['motors_velocities'],
+                'motors_currents': data_json['motors_currents'],
+                'limit_switches': data_json['limit_switches'],
             }
         )
 
@@ -65,12 +61,8 @@ class InfoScienceConsumer(AsyncWebsocketConsumer):
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
                 'state': data_json['state'],
-                'motor_pos': data_json['motor_pos'],
-                'motor_speed': data_json['motor_speed'],
-                'motor_current': data_json['motor_current'],
-                'drill_speed': data_json['drill_speed'],
-                'limt_switch_1': data_json['limt_switch_1'],
-                'limt_switch_2': data_json['limt_switch_2'],
-                'limt_switch_3': data_json['limt_switch_3'],
-                'limt_switch_4': data_json['limt_switch_4'],
+                'motors_pos': data_json['motors_pos'],
+                'motors_velocities': data_json['motors_velocities'],
+                'motors_currents': data_json['motors_currents'],
+                'limit_switches': data_json['limit_switches'],
         }))

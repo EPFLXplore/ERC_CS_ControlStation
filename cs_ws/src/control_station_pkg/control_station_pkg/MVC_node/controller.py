@@ -73,7 +73,6 @@ class Controller():
     '''
         Controller (Model View Controller (MVC) template)
     '''
-
     def __init__(self, cs):
         self.cs = cs
 
@@ -116,7 +115,7 @@ class Controller():
 
     def science_state(self, string):
         print(string.data)
-        async_to_sync(channel_layer.group_send)("tab_info_science", 
+        async_to_sync(channel_layer.group_send)("tab_info_drill", 
             {
                 'type': 'broadcast_info_drill',
                 'state': [string.data],
@@ -124,12 +123,45 @@ class Controller():
                 'motor_speed': [''],
                 'motor_current': [''],
                 'drill_speed': [''],
-                'limt_switch_1': [''],
-                'limt_switch_2': [''],
-                'limt_switch_3': [''],
-                'limt_switch_4': [''],
+                'limit_switches': [''],
             })
         
+    
+    def science_motors_pos(self, motors_pos):
+        async_to_sync(channel_layer.group_send)("tab_info_drill", 
+            {
+                'type': 'broadcast_info_drill',
+                'state': [''],
+                'motors_pos': [motors_pos.data],
+                'motors_velocities': [''],
+                'motors_currents': [''],
+                'limit_switches': [''],
+            })
+        
+    def science_motors_vels(self, motors_velocities):
+        async_to_sync(channel_layer.group_send)("tab_info_drill", 
+            {
+                'type': 'broadcast_info_drill',
+                'state': [''],
+                'motors_pos': [''],
+                'motors_velocities': [motors_velocities.data],
+                'motors_currents': [''],
+                'limit_switches': [''],
+            })
+
+
+    def science_motors_currents(self, currents):
+        async_to_sync(channel_layer.group_send)("tab_info_drill", 
+            {
+                'type': 'broadcast_info_drill',
+                'state': [''],
+                'motor_pos': [''],
+                'motor_speed': [''],
+                'motor_current': [currents.data],
+                'drill_speed': [''],
+                'limt_switches': [''],
+            })
+
 
     def science_mass(self, data):
         async_to_sync(channel_layer.group_send)("tab_info_science", 
@@ -165,7 +197,7 @@ class Controller():
                 'npk-sensor' : [''],
                 'four-in-one' : [array.data],
             })
-
+        
 
     # ========= HD CALLBACKS ========= 
 

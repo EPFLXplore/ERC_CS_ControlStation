@@ -117,11 +117,16 @@ class CS:
         self.node.create_subscription(DiagnosticStatus, 'ROVER/CS_log',                    self.controller.log_clbk   , 10)
         
         # -- SC messages --
-        self.node.create_subscription(Int8,               'ROVER/SC_fsm_state',              self.controller.science_state        , 10)
-        self.node.create_subscription(Int8,               'EL/mass',                         self.controller.science_mass         , 10)
-        self.node.create_subscription(Int8,               'EL/spectrometer',                 self.controller.science_spectrometer , 10)
-        self.node.create_subscription(Int8,               'EL/npk',                          self.controller.science_npk          , 10)
-        self.node.create_subscription(Int8,               'EL/four_in_one',                  self.controller.science_4in1         , 10)
+        self.node.create_subscription(Int8,               'ROVER/SC_fsm_state',         self.controller.science_state        , 10)
+        self.node.create_subscription(Int8,               'ROVER/module_motors_pos',    self.controller.science_motors_pos   , 10)
+        self.node.create_subscription(Int8,               'ROVER/motors_velocities',    self.controller.science_motors_vels  , 10)
+        self.node.create_subscription(Int8,               'ROVER/motors_currents',      self.controller.science_motors_currents, 10)
+
+        # -- EL(SC) messages --
+        self.node.create_subscription(Int8,               'EL/mass',                    self.controller.science_mass         , 10)
+        self.node.create_subscription(Int8,               'EL/spectrometer',            self.controller.science_spectrometer , 10)
+        self.node.create_subscription(Int8,               'EL/npk',                     self.controller.science_npk          , 10)
+        self.node.create_subscription(Int8,               'EL/four_in_one',             self.controller.science_4in1         , 10)
 
         #TODO : changer le nom du subscriber
         self.node.create_subscription(Image,            'sc_camera',                       self.controller.sc_image           , 10)
