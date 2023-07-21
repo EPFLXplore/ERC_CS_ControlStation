@@ -117,10 +117,11 @@ class CS:
         self.node.create_subscription(DiagnosticStatus, 'ROVER/CS_log',                    self.controller.log_clbk   , 10)
         
         # -- SC messages --
-        self.node.create_subscription(Int8,               'ROVER/SC_fsm_state',         self.controller.science_state        , 10)
-        self.node.create_subscription(Int8,               'ROVER/module_motors_pos',    self.controller.science_motors_pos   , 10)
-        self.node.create_subscription(Int8,               'ROVER/motors_velocities',    self.controller.science_motors_vels  , 10)
-        self.node.create_subscription(Int8,               'ROVER/motors_currents',      self.controller.science_motors_currents, 10)
+        self.node.create_subscription(Int8,               'ROVER/SC_fsm_state',      self.controller.science_state        , 10)
+        self.node.create_subscription(Float32MultiArray,  'ROVER/module_motors_pos', self.controller.science_motors_pos   , 10)
+        self.node.create_subscription(Float32MultiArray,  'ROVER/motors_velocities', self.controller.science_motors_vels  , 10)
+        self.node.create_subscription(Float32MultiArray,  'ROVER/motors_currents',   self.controller.science_motors_currents, 10)
+        self.node.create_subscription(Int8MultiArray,     'ROVER/limit_switches',    self.controller.science_limit_switches, 10)
 
         # -- EL(SC) messages --
         self.node.create_subscription(Int8,               'EL/mass',                    self.controller.science_mass         , 10)

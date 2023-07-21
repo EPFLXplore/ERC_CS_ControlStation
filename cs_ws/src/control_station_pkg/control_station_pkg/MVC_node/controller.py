@@ -161,6 +161,19 @@ class Controller():
                 'drill_speed': [''],
                 'limt_switches': [''],
             })
+        
+    
+    def science_limit_switches(self, limits):
+        async_to_sync(channel_layer.group_send)("tab_info_drill", 
+            {
+                'type': 'broadcast_info_drill',
+                'state': [''],
+                'motor_pos': [''],
+                'motor_speed': [''],
+                'motor_current': [''],
+                'drill_speed': [''],
+                'limt_switches': [limits.data],
+            })
 
 
     def science_mass(self, data):
