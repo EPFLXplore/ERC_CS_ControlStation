@@ -8,9 +8,13 @@ Data format :
 
 {
 
-    "candidates" : candidates,
-    "npk-sensor" : npk-sensor,
-    "four-in-one" : four-in-one
+    "state" : state,
+    'motor_pos' : float,
+    'motor_speed' : float,
+    'motor_current' : float,
+    'drill_speed' : float,
+    'limt_switch_1' : bool,
+    'limt_switch_2' : bool,
 
 }
 
@@ -43,9 +47,15 @@ class InfoScienceConsumer(AsyncWebsocketConsumer):
             self.tab_group_name,
             {
                 'type': 'broadcast_info_drill',
-                'candidates' : data_json['candidates'],
-                'npk-sensor' : data_json['npk-sensor'],
-                'four-in-one' : data_json['four-in-one'],
+                'state': data_json['state'],
+                'motor_pos': data_json['motor_pos'],
+                'motor_speed': data_json['motor_speed'],
+                'motor_current': data_json['motor_current'],
+                'drill_speed': data_json['drill_speed'],
+                'limt_switch_1': data_json['limt_switch_1'],
+                'limt_switch_2': data_json['limt_switch_2'],
+                'limt_switch_3': data_json['limt_switch_3'],
+                'limt_switch_4': data_json['limt_switch_4'],
             }
         )
 
@@ -54,7 +64,13 @@ class InfoScienceConsumer(AsyncWebsocketConsumer):
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-                'candidates' : data_json['candidates'],
-                'npk-sensor' : data_json['npk-sensor'],
-                'four-in-one' : data_json['four-in-one'],
+                'state': data_json['state'],
+                'motor_pos': data_json['motor_pos'],
+                'motor_speed': data_json['motor_speed'],
+                'motor_current': data_json['motor_current'],
+                'drill_speed': data_json['drill_speed'],
+                'limt_switch_1': data_json['limt_switch_1'],
+                'limt_switch_2': data_json['limt_switch_2'],
+                'limt_switch_3': data_json['limt_switch_3'],
+                'limt_switch_4': data_json['limt_switch_4'],
         }))
