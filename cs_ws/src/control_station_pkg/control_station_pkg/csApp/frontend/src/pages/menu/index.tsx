@@ -43,6 +43,13 @@ export default () => {
 					setOpen={() => setOpen(2)}
 				/>
 				<MenuCategory
+					icon={HDIcon}
+					name={"Manual"}
+					links={menuLinks["Manual"]}
+					open={false}
+					setOpen={() => {}}
+				/>
+				<MenuCategory
 					icon={InformationIcon}
 					name={"Information"}
 					links={menuLinks.Information}

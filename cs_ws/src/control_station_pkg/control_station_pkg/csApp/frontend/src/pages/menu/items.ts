@@ -8,10 +8,10 @@ const menuLinks = {
 		// 	name: "Semiautopilot",
 		// 	url: "/navigation/semi-auto",
 		// },
-		{
-			name: "Manual",
-			url: "/manual-control?defaultMode=nav",
-		},
+		// {
+		// 	name: "Manual",
+		// 	url: "/manual-control?defaultMode=nav",
+		// },
 	],
 	Science: [
 		{
@@ -28,10 +28,10 @@ const menuLinks = {
 			name: "Autopilot",
 			url: "/handlingDevice/auto",
 		},
-		{
-			name: "Manual",
-			url: "/manual-control?defaultMode=hd",
-		},
+		// {
+		// 	name: "Manual",
+		// 	url: "/manual-control?defaultMode=hd",
+		// },
 	],
 	Information: [
 		{
@@ -41,6 +41,12 @@ const menuLinks = {
 		{
 			name: "Camera",
 			url: "/camera",
+		},
+	],
+	Manual: [
+		{
+			name: "Manual",
+			url: "/manual-control",
 		},
 	],
 };
