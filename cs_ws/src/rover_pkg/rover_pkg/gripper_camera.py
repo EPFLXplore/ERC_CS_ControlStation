@@ -33,7 +33,7 @@ def main(args=None):
 
     threading.Thread(target=rclpy.spin, args=(vision_node,), daemon=True).start()
 
-    rate = vision_node.create_rate(1)  # 10hz
+    rate = vision_node.create_rate(1)  # 1hz
 
 
     while True:
@@ -53,7 +53,7 @@ class CameraFluxPublisher:
         self.parent_node = node
         self.publisher_ = node.create_publisher(CompressedImage, 'HD/camera_flux', 10)
         self.bridge_ = CvBridge()
-        self.enabled_ = True  # Flag to indicate if the publisher is enabled
+        self.enabled_ = False  # Flag to indicate if the publisher is enabled
 
         # Configure Realsense camera
         self.pipeline_ = rs.pipeline()
