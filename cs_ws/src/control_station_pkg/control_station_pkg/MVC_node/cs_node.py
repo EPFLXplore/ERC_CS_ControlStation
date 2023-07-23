@@ -142,6 +142,8 @@ class CS:
         self.node.create_subscription(CompressedImage,            '/camera_2',                 cameras_reciever.display_cam_2   , 1)
         self.node.create_subscription(CompressedImage,            '/camera_3',                 cameras_reciever.display_cam_2   , 1)
         self.node.create_subscription(CompressedImage,            '/camera_4',                 cameras_reciever.display_cam_4   , 1)
+
+        self.node.create_subscription(Image, "HD/camera_flux", cameras_reciever.display_cam_gripper, 1)
         
         # Elpased time
         #self.node.create_subscription(Int32MultiArray,  'Time',                            self.controller.elapsed_time       , 10) #useless
