@@ -109,6 +109,7 @@ class CS:
 
         # Cam
         self.Cam_index_pub = self.node.create_publisher(Int8MultiArray, 'CS/CAM_index', 1)
+        self.gripper_cam_pub = self.node.create_publisher(Int8, 'ROVER/HD_toggle_cameras', 1)
 
         # ---------------------------------------------------
         # ===== Subscribers =====
