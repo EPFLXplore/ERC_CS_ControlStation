@@ -30,7 +30,7 @@ function useQuery() {
 }
 
 export default () => {
-	const [image, camera, selectCamera] = useCameraSelector(Cameras.CAM1);
+	const [images, cameras, selectCamera] = useCameraSelector([Cameras.CAM1]);
 	const [jointPositions, jointVelocities, jointCurrents, detectedTags, taskSuccess] =
 		useHandlingDevice();
 	const [currentPosition, currentOrientation, wheelsPosition, linearVelocity, angularVelocity] =
@@ -61,6 +61,7 @@ export default () => {
 						"Camera 6",
 					]}
 					optionsCallback={selectCamera}
+					currentOptions={cameras.map((camera) => "Camera " + (camera + 1))}
 				/>
 				<div className={styles.Subheader}>
 					<ManualModeSelector mode={Task.HANDLING_DEVICE} callback={setMode} />
@@ -80,7 +81,7 @@ export default () => {
 
 				<Timer end={Date.now() + 10000} size={Size.SMALL} />
 				<GamepadHint selectorCallback={() => setMode(Task.NAVIGATION)} visible />
-				<CameraView image={image} />
+				<CameraView images={images} />
 			</div>
 		);
 	} else {
@@ -101,6 +102,7 @@ export default () => {
 						"Camera 6",
 					]}
 					optionsCallback={selectCamera}
+					currentOptions={cameras.map((camera) => "Camera " + (camera + 1))}
 				/>
 				<div className={styles.Subheader}>
 					<ManualModeSelector mode={Task.NAVIGATION} callback={setMode} />
@@ -173,7 +175,7 @@ export default () => {
 							selectorCallback={() => setMode(Task.HANDLING_DEVICE)}
 							visible
 						/>
-						<CameraView image={image} />
+						<CameraView images={images} />
 					</div>
 				</div>
 			</div>

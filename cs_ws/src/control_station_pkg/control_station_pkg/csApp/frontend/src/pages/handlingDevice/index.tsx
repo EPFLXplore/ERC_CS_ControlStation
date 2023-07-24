@@ -21,7 +21,7 @@ import TaskControl from "../../components/TaskControl";
 import useCameraSelector from "../../hooks/cameraHooks";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
-	const [image, camera, selectCamera] = useCameraSelector(Cameras.CAM1);
+	const [images, cameras, selectCamera] = useCameraSelector([Cameras.CAM1]);
 	const [jointPositions, jointVelocities, jointCurrents, detectedTags, taskSuccess] =
 		useHandlingDevice();
 
@@ -91,7 +91,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 					<TaskControl task={Task.HANDLING_DEVICE} />
 				</div>
 				<Timer end={Date.now() + 10000} size={Size.SMALL} />
-				<CameraView image={image} />
+				<CameraView images={images} />
 			</div>
 		);
 
@@ -105,6 +105,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 				optionTitle="Cameras"
 				options={["Camera 1", "Camera 2", "Camera 3"]}
 				optionsCallback={selectCamera}
+				currentOptions={cameras.map((camera) => "Camera " + (camera + 1))}
 			/>
 			<DistanceHint distance={10} />
 
@@ -122,7 +123,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 
 			<Timer end={Date.now() + 10000} size={Size.SMALL} />
 
-			<CameraView image={image} />
+			<CameraView images={images} />
 		</div>
 	);
 };
