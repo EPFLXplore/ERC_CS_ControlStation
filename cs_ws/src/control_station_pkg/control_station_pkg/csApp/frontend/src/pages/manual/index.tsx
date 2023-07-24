@@ -59,6 +59,7 @@ export default () => {
 						"Camera 4",
 						"Camera 5",
 						"Camera 6",
+						"Camera 7",
 					]}
 					optionsCallback={selectCamera}
 					currentOptions={cameras.map((camera) => "Camera " + (camera + 1))}
