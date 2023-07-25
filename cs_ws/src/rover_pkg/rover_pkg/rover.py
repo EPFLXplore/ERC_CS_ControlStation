@@ -296,7 +296,7 @@ class Rover():
                 else:
                     self.node.get_logger().info("Not allowed")
 
-        # SCIENCE
+        # ----------------------SCIENCE------------------------------------------
         if (task == Task.SCIENCE.value):
 
             # LAUNCH
