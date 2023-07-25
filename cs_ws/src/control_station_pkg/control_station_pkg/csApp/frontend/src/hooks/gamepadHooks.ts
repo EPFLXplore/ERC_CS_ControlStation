@@ -101,7 +101,7 @@ function useGamepad(selectorCallback?: () => void) {
 
 						if (
 							(gamepad.getState().buttons[15] && OS === "Windows") ||
-							(gamepad.getState().axes[7] > 0 && OS === "Linux")
+							(gamepad.getState().axes[6] > 0 && OS === "Linux")
 						) {
 							nextItem();
 							console.log(gamepadFocus);
