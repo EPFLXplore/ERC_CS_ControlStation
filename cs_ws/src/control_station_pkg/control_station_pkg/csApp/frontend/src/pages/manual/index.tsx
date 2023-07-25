@@ -67,7 +67,9 @@ export default () => {
 						"Camera Gripper",
 					]}
 					optionsCallback={selectCamera}
-					currentOptions={cameras.map((camera) => "Camera " + (camera + 1))}
+					currentOptions={cameras.map((camera) =>
+						camera < 6 ? "Camera " + (camera + 1) : "Camera Gripper"
+					)}
 				/>
 				<div className={styles.Subheader}>
 					<ManualModeSelector mode={Task.HANDLING_DEVICE} callback={setMode} />
@@ -109,7 +111,9 @@ export default () => {
 						"Camera Gripper",
 					]}
 					optionsCallback={selectCamera}
-					currentOptions={cameras.map((camera) => "Camera " + (camera + 1))}
+					currentOptions={cameras.map((camera) =>
+						camera < 6 ? "Camera " + (camera + 1) : "Camera Gripper"
+					)}
 				/>
 				<div className={styles.Subheader}>
 					<ManualModeSelector mode={Task.NAVIGATION} callback={setMode} />
