@@ -1,0 +1,3 @@
+gst-launch-1.0 nvarguscamerasrc sensor-id=0 sensor-mode=0 ! 'video/x-raw(memory:NVMM), width=(int)1948, height=(int)1096, format=(string)NV12, framerate=(fraction)30/1' ! nvvidconv ! xvimagesink -e
+
+gst-launch-1.0 v4l2src io-mode=4 device=/dev/video0 do-timestamp=true ! 'video/x-raw, width=1920, height=1080, framerate=30/1, format=UYVY' ! xvimagesink sync=false
