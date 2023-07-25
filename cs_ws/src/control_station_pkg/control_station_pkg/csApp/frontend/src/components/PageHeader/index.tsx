@@ -5,25 +5,30 @@ import SettingsButton from "../SettingsButton";
 const PageHeader = ({
 	title,
 	optionTitle,
-	currentOption,
+	currentOptions,
 	options = [],
 	optionsCallback = (option) => {},
 	settings = false,
 	settingsCallback = () => {},
+	multiselect = false,
 }: {
 	title: string;
 	optionTitle?: string;
-	currentOption?: string;
+	currentOptions?: Array<string>;
 	options?: string[];
 	optionsCallback?: (option: string) => void;
 	settings?: boolean;
 	settingsCallback?: () => void;
+	multiselect?: boolean;
 }) => {
 	// if (optionTitle || options || currentOption)
 	// 	assert(
 	// 		optionTitle && options && currentOption,
 	// 		"If you want to use options, you must provide optionTitle, options and currentOption"
 	// 	);
+
+	console.log(currentOptions);
+	console.log(options);
 
 	return (
 		<div className={styles.Container}>
@@ -32,11 +37,16 @@ const PageHeader = ({
 				{options.length > 0 && (
 					<select
 						className={styles.Select}
-						value={currentOption}
 						onChange={(e) => optionsCallback(e.target.value)}
 					>
-						{options.map((option) => (
-							<option className={styles.Options} key={option} value={option}>
+						{options.map((option, i) => (
+							<option
+								className={`${styles.Options} ${
+									currentOptions?.includes(option) ? styles.Selected : ""
+								}`}
+								key={option}
+								value={option}
+							>
 								{option}
 							</option>
 						))}

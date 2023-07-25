@@ -37,6 +37,9 @@ im_3 = np.zeros((300, 300, 3))
 im_4 = np.zeros((300, 300, 3))
 im_5 = np.zeros((300, 300, 3))
 
+# gripper camera
+im_6 = np.zeros((300, 300, 3))
+
 
 
 # ==================================================================
@@ -104,6 +107,15 @@ def display_cam_5(msg):
 
     img = encode_stream(im5)
     async_to_sync(channel_layer.group_send)("video5", {"type": "video_message",
+                                                            'video_data' : "data:image/jpg;base64,"+ img })
+    
+
+def display_cam_gripper(msg):
+    global im6
+    im6 = bridge.compressed_imgmsg_to_cv2(msg)
+
+    img = encode_stream(im6)
+    async_to_sync(channel_layer.group_send)("video6", {"type": "video_message",
                                                             'video_data' : "data:image/jpg;base64,"+ img })
 
 

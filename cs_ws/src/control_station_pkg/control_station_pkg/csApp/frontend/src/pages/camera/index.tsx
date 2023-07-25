@@ -8,7 +8,7 @@ import { Cameras } from "../../utils/cameras.type";
 import useCameraSelector from "../../hooks/cameraHooks";
 
 export default () => {
-	const [image, camera, selectCamera] = useCameraSelector(Cameras.CAM1);
+	const [images, cameras, selectCamera] = useCameraSelector([Cameras.CAM1]);
 
 	return (
 		<div className="page center">
@@ -18,11 +18,22 @@ export default () => {
 				title="Camera"
 				settings
 				optionTitle="Cameras"
-				options={["Camera 1", "Camera 2", "Camera 3", "Camera 4", "Camera 5", "Camera 6"]}
+				options={[
+					"Camera 1",
+					"Camera 2",
+					"Camera 3",
+					"Camera 4",
+					"Camera 5",
+					"Camera 6",
+					"Camera Gripper",
+				]}
 				optionsCallback={selectCamera}
+				currentOptions={cameras.map((camera) =>
+					camera < 6 ? "Camera " + (camera + 1) : "Camera Gripper"
+				)}
 			/>
 			<Timer end={Date.now() + 10000} />
-			<CameraView image={image} />
+			<CameraView images={images} />
 		</div>
 	);
 };

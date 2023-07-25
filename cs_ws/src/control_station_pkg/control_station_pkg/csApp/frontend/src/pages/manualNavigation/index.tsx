@@ -14,7 +14,7 @@ import useCameraSelector from "../../hooks/cameraHooks";
 import PageHeader from "../../components/PageHeader";
 
 export default () => {
-	const [image, camera, selectCamera] = useCameraSelector(Cameras.CAM1);
+	const [images, cameras, selectCamera] = useCameraSelector([Cameras.CAM1]);
 	const [currentPosition, currentOrientation, wheelsPosition, linearVelocity, angularVelocity] =
 		useNavigation();
 
@@ -93,8 +93,8 @@ export default () => {
 					</div>
 					<Timer end={Date.now() + 10000} size={Size.SMALL} />
 					<TaskControl task={Task.MANUAL_CONTROL} />
-					<GamepadHint />
-					<CameraView image={image} />
+					<GamepadHint mode={"NAV"} />
+					<CameraView images={images} />
 				</div>
 			</div>
 		</div>

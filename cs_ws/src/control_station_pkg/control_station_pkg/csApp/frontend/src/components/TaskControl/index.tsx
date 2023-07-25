@@ -23,20 +23,24 @@ export default ({ task }: { task: Task }) => {
 				onClick={() => FSMControl.abortTask(task)}
 				radius={10}
 			/>
-			<Button
-				text="Wait"
-				size={Size.SMALL}
-				theme={Themes.BROWN}
-				onClick={() => FSMControl.waitTask(task)}
-				radius={10}
-			/>
-			<Button
-				text="Resume"
-				size={Size.SMALL}
-				theme={Themes.BROWN}
-				onClick={() => FSMControl.resumeTask(task)}
-				radius={10}
-			/>
+			{task != Task.MANUAL_CONTROL && (
+				<Button
+					text="Wait"
+					size={Size.SMALL}
+					theme={Themes.BROWN}
+					onClick={() => FSMControl.waitTask(task)}
+					radius={10}
+				/>
+			)}
+			{task != Task.MANUAL_CONTROL && (
+				<Button
+					text="Resume"
+					size={Size.SMALL}
+					theme={Themes.BROWN}
+					onClick={() => FSMControl.resumeTask(task)}
+					radius={10}
+				/>
+			)}
 		</div>
 	);
 };

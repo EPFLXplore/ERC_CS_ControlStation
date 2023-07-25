@@ -29,5 +29,7 @@ function createRequest(id: number) {
 
 export default (mode: number) => {
 	const req = createRequest(mode);
-	fetch(req).then((response) => response.json()).then((data => console.log(data)));
+	fetch(req)
+		.then((response) => response.json())
+		.then((data) => console.log(data));
 };
