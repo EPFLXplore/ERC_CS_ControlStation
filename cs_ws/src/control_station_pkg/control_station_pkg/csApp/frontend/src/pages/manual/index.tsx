@@ -30,14 +30,19 @@ function useQuery() {
 }
 
 export default () => {
-	const [image, camera, selectCamera] = useCameraSelector(Cameras.CAM1);
+	const [images, cameras, selectCamera] = useCameraSelector([
+		Cameras.CAM1,
+		Cameras.CAM2,
+		Cameras.CAM3,
+		Cameras.CAM4,
+	]);
 	const [jointPositions, jointVelocities, jointCurrents, detectedTags, taskSuccess] =
 		useHandlingDevice();
 	const [currentPosition, currentOrientation, wheelsPosition, linearVelocity, angularVelocity] =
 		useNavigation();
 	const defaultMode = useQuery().get("defaultMode");
 
-	console.log(defaultMode);
+	console.log("Render manual");
 
 	const [mode, setMode] = useState(
 		defaultMode === "nav" ? Task.NAVIGATION : Task.HANDLING_DEVICE
@@ -59,11 +64,15 @@ export default () => {
 						"Camera 4",
 						"Camera 5",
 						"Camera 6",
+						"Camera Gripper",
 					]}
 					optionsCallback={selectCamera}
+					currentOptions={cameras.map((camera) =>
+						camera < 6 ? "Camera " + (camera + 1) : "Camera Gripper"
+					)}
 				/>
 				<div className={styles.Subheader}>
-					<ManualModeSelector mode={Task.MANUAL_CONTROL} callback={setMode} />
+					<ManualModeSelector mode={Task.HANDLING_DEVICE} callback={setMode} />
 				</div>
 				{/* <DistanceHint distance={10} /> */}
 
@@ -79,8 +88,8 @@ export default () => {
 				</div>
 
 				<Timer end={Date.now() + 10000} size={Size.SMALL} />
-				<GamepadHint />
-				<CameraView image={image} />
+				<GamepadHint mode="HD" selectorCallback={() => setMode(Task.NAVIGATION)} visible />
+				<CameraView images={images} />
 			</div>
 		);
 	} else {
@@ -99,8 +108,12 @@ export default () => {
 						"Camera 4",
 						"Camera 5",
 						"Camera 6",
+						"Camera Gripper",
 					]}
 					optionsCallback={selectCamera}
+					currentOptions={cameras.map((camera) =>
+						camera < 6 ? "Camera " + (camera + 1) : "Camera Gripper"
+					)}
 				/>
 				<div className={styles.Subheader}>
 					<ManualModeSelector mode={Task.NAVIGATION} callback={setMode} />
@@ -169,8 +182,12 @@ export default () => {
 						</div>
 						<Timer end={Date.now() + 10000} size={Size.SMALL} />
 						<TaskControl task={Task.MANUAL_CONTROL} />
-						<GamepadHint />
-						<CameraView image={image} />
+						<GamepadHint
+							mode="NAV"
+							selectorCallback={() => setMode(Task.HANDLING_DEVICE)}
+							visible
+						/>
+						<CameraView images={images} />
 					</div>
 				</div>
 			</div>

@@ -36,7 +36,7 @@ class GamepadConsumer(AsyncWebsocketConsumer):
         cs.send_gamepad_data(json_data['axes'],
                             json_data['buttons'],
                             "",
-                            "NAV")
+                            json_data['mode'])
 
 
 

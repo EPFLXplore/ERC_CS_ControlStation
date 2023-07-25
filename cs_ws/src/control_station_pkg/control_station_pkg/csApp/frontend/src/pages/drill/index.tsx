@@ -12,7 +12,7 @@ import useCameraSelector from "../../hooks/cameraHooks";
 const state = "Extracting sample..";
 
 export default () => {
-	const [image, camera, selectCamera] = useCameraSelector(Cameras.CAM1);
+	const [images, cameras, selectCamera] = useCameraSelector([Cameras.CAM1]);
 	return (
 		<div>
 			<Background />
@@ -29,11 +29,20 @@ export default () => {
 				title="Camera Selector"
 				settings
 				optionTitle="Cameras"
-				options={["Camera 1", "Camera 2", "Camera 3", "Camera 4", "Camera 5", "Camera 6"]}
+				options={[
+					"Camera 1",
+					"Camera 2",
+					"Camera 3",
+					"Camera 4",
+					"Camera 5",
+					"Camera 6",
+					"Camera 7",
+				]}
 				optionsCallback={selectCamera}
+				currentOptions={cameras.map((camera) => "Camera " + (camera + 1))}
 			/>
 
-			<CameraView image={image} />
+			<CameraView images={images} />
 		</div>
 	);
 };

@@ -11,12 +11,13 @@ class Launcher:
         Popen(["gnome-terminal", "-x", "sh", "-c", ". ~/.bashrc & ros2 run sc_fsm_drill science_fsm; bash"], stdout=PIPE, stderr=PIPE)
 
     def start_manual(self):
-        # self.__start_cameras()
+        self.__start_cameras()
         self.__start_manual_nav()
         self.__start_manual_hd()
 
     def __start_cameras(self):
         Popen(["gnome-terminal", "-x", "sh", "-c", ". ~/.bashrc & ros2 run rover_pkg cameras_publisher; bash"], stdout=PIPE, stderr=PIPE)
+        Popen(["gnome-terminal", "-x", "sh", "-c", ". ~/.bashrc & ros2 run rover_pkg gripper_camera; bash"], stdout=PIPE, stderr=PIPE)
 
     def __start_manual_nav(args):
         Popen(["gnome-terminal", "-x", "sh", "-c", ". ~/.bashrc & ros2 launch wheels_cmds wheels_control.launch.xml; bash"], stdout=PIPE, stderr=PIPE)

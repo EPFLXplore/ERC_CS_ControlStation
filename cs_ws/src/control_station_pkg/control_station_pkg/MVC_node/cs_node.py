@@ -109,47 +109,42 @@ class CS:
 
         # Cam
         self.Cam_index_pub = self.node.create_publisher(Int8MultiArray, 'CS/CAM_index', 1)
+        self.gripper_cam_pub = self.node.create_publisher(Int8, 'ROVER/HD_toggle_cameras', 1)
 
         # ---------------------------------------------------
         # ===== Subscribers =====
         self.node.create_subscription(String,           'ROVER/RoverConfirm',              self.controller.rover_confirmation , 10)
-        self.node.create_subscription(String,           'ROVER/Exception',                 self.controller.exception_clbk     , 10)
        # self.node.create_subscription(Int8,             'ROVER/TaskProgress',              self.controller.task_progress      , 10)
         self.node.create_subscription(DiagnosticStatus, 'ROVER/CS_log',                    self.controller.log_clbk   , 10)
         
-        # SC messages
-        # self.node.create_subscription(String,           'ROVER/SC_state',                  self.controller.sc_text_info       , 10)
-        # self.node.create_subscription(String,           'ROVER/SC_info',                   self.controller.sc_text_info       , 10)
-        # self.node.create_subscription(Int16MultiArray,  'ROVER/SC_params',                 self.controller.sc_params          , 10)
-        # self.node.create_subscription(Int16,            'ROVER/SC_measurements_humidity',  self.controller.sc_humidity        , 10)
-        self.node.create_subscription(Int8,               'ROVER/SC_fsm_state',              self.controller.science_state    , 10)
+        # -- SC messages --
+        self.node.create_subscription(Int8,               'ROVER/SC_fsm_state',      self.controller.science_state        , 10)
+        self.node.create_subscription(Float32MultiArray,  'ROVER/module_motors_pos', self.controller.science_motors_pos   , 10)
+        self.node.create_subscription(Float32MultiArray,  'ROVER/motors_velocities', self.controller.science_motors_vels  , 10)
+        self.node.create_subscription(Float32MultiArray,  'ROVER/motors_currents',   self.controller.science_motors_currents, 10)
+        self.node.create_subscription(Int8MultiArray,     'ROVER/limit_switches',    self.controller.science_limit_switches, 10)
 
-        #TODO : changer le nom du subscriber
-        self.node.create_subscription(Image,            'sc_camera',                       self.controller.sc_image           , 10)
+        # -- EL(SC) messages --
+        self.node.create_subscription(Int8,               'EL/mass',                    self.controller.science_mass         , 10)
+        self.node.create_subscription(Int8,               'EL/spectrometer',            self.controller.science_spectrometer , 10)
+        self.node.create_subscription(Int8,               'EL/npk',                     self.controller.science_npk          , 10)
+        self.node.create_subscription(Int8,               'EL/four_in_one',             self.controller.science_4in1         , 10)
 
-        # HD messages
-        self.node.create_subscription(Int32,            'ROVER/HD_tof',                    self.controller.hd_tof             , 10)
-        self.node.create_subscription(Float32MultiArray,'ROVER/HD_detected_element',       self.controller.hd_detected_element, 10)
+        # -- HD messages --
         self.node.create_subscription(JointState,       'HD/arm_control/joint_telemetry',  self.controller.hd_data       , 10)
         
-        # NAV messages
+        # -- NAV messages --
         #self.node.create_subscription(Twist,            '/cmd_vel',                        self.controller.test_joystick      , 10) 
         #self.node.create_subscription(Odometry,         'ROVER_NAV_odometry',              self.controller.nav_data           , 10)
         self.node.create_subscription(Odometry,         'NAV/odometry/filtered',            self.controller.nav_data           , 10)
 
-        #Camera messages
+        # -- Camera messages --
         self.node.create_subscription(CompressedImage,            '/camera_1',                 cameras_reciever.display_cam_1   , 1)
         self.node.create_subscription(CompressedImage,            '/camera_2',                 cameras_reciever.display_cam_2   , 1)
         self.node.create_subscription(CompressedImage,            '/camera_3',                 cameras_reciever.display_cam_2   , 1)
-        self.node.create_subscription(CompressedImage,            '/camera_4',                 cameras_reciever.display_cam_4   , 1)
+        self.node.create_subscription(CompressedImage,            '/camera_4',                 cameras_reciever.display_cam_3   , 1)
 
-        # TODO
-        # c'est quoi ?
-        # self.node.create_subscription('detection/state', UInt8, detection_state)
-        # self.node.create_subscription('detection/bounding_boxes', Image, ...)
-        # self.node.create_subscription('detection/RGB_intel', Image, ...)
-        # self.node.create_subscription('detection/RGB_webcam_1', Image, ...)
-        # self.node.create_subscription('detection/RGB_webcam_2', Image, ...)
+        self.node.create_subscription(CompressedImage, 'HD/camera_flux', cameras_reciever.display_cam_gripper, 10)
         
         # Elpased time
         #self.node.create_subscription(Int32MultiArray,  'Time',                            self.controller.elapsed_time       , 10) #useless

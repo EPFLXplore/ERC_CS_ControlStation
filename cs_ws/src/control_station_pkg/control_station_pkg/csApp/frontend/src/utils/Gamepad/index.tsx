@@ -10,7 +10,7 @@ class GamepadController {
 	private gamepad: Gamepad | null;
 
 	constructor() {
-		if (navigator.getGamepads().length > 0) {
+		if (navigator.getGamepads().length > 0 && navigator.getGamepads()[0]) {
 			this.gamepad = navigator.getGamepads()[0];
 			this.isConnected = true;
 		} else {
