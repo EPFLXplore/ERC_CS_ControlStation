@@ -15,7 +15,16 @@ export default ({
 	open?: boolean;
 	setOpen: (open: boolean) => void;
 }) => {
-	if (open) {
+	if (links.length < 2) {
+		return (
+			<a className={`${styles.MenuCard} ${styles.Focusable}`} href={links[0].url}>
+				<div className={styles.MenuCardIcon}>
+					<img src={icon} alt={name} className={styles.MenuCardIcon} />
+				</div>
+				<h2 className={styles.MenuCardName}>{name}</h2>
+			</a>
+		);
+	} else if (open) {
 		return (
 			<div className={styles.MenuCard} onClick={() => setOpen(false)}>
 				<div className={styles.MenuCardIcon}>

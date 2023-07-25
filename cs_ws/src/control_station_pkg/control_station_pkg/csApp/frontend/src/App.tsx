@@ -5,10 +5,22 @@ import { Provider } from "react-redux";
 import store from "./redux";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Home, Menu, Navigation, HandlingDevice, Science, Camera, Logs, NotFound } from "./pages";
+import {
+	Home,
+	Menu,
+	Navigation,
+	HandlingDevice,
+	Science,
+	Camera,
+	Logs,
+	NotFound,
+	Drill,
+} from "./pages";
 import { Mode } from "./utils/mode.type";
 import useSession from "./hooks/sessionHooks";
 import ManualNavigation from "./pages/manualNavigation";
+import Manual from "./pages/manual";
+import { Task } from "./utils/tasks.type";
 
 const router = createBrowserRouter([
 	{
@@ -28,24 +40,24 @@ const router = createBrowserRouter([
 		element: <Navigation mode={Mode.SEMI_AUTONOMOUS} />,
 	},
 	{
-		path: "/navigation/manual",
-		element: <ManualNavigation />,
+		path: "/manual-control",
+		element: <Manual />,
 	},
 	{
 		path: "/handlingDevice/auto",
 		element: <HandlingDevice mode={Mode.AUTONOMOUS} />,
 	},
-	{
-		path: "/handlingDevice/manual",
-		element: <HandlingDevice mode={Mode.MANUAL} />,
-	},
+	// {
+	// 	path: "/handlingDevice/manual",
+	// 	element: <HandlingDevice mode={Mode.MANUAL} />,
+	// },
 	{
 		path: "/science/data",
 		element: <Science />,
 	},
 	{
 		path: "/science/drill",
-		element: <Science />,
+		element: <Drill />,
 	},
 	{
 		path: "/camera",
@@ -62,7 +74,7 @@ const router = createBrowserRouter([
 ]);
 
 export const App = () => {
-	const [userCount] = useSession();
+	//const [userCount] = useSession();
 
 	return (
 		<Provider store={store}>

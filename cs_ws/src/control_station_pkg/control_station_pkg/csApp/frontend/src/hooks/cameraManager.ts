@@ -16,6 +16,15 @@ function useCameraManager(startCamera: Cameras) {
 			case "Camera 3":
 				setCamera(Cameras.CAM3);
 				break;
+			case "Camera 4":
+				setCamera(Cameras.CAM4);
+				break;
+			case "Camera 5":
+				setCamera(Cameras.CAM5);
+				break;
+			case "Camera 6":
+				setCamera(Cameras.CAM6);
+				break;
 			default:
 				setCamera(Cameras.NOCAM);
 		}

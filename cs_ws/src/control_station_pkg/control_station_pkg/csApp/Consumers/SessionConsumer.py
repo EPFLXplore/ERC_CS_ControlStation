@@ -28,18 +28,13 @@ class SessionConsumer(WebsocketConsumer):
             #print(str(Session.objects.get(session_key=self.scope["session"].session_key).get_decoded()))
             print("session key : " + str(self.scope["session"].session_key))
             try :
-                print("exist deja : " + str(self.scope['session']['userID']))
+                self.scope['session']['userID']
                 
             except :
                 self.scope['session']['userID'] = utils.session.nb_users
-                print("exist pas : " + str(self.scope['session']['userID']))
                 utils.session.nb_users += 1
-                #utils.session.sessions_list
-                print("nb users : " + str(utils.session.nb_users))
 
-        else :
-            print("no session key")
-           
+
         self.tab_name = 'homepage'
         self.tab_group_name = 'tab_%s' % self.tab_name
 
@@ -77,10 +72,10 @@ class SessionConsumer(WebsocketConsumer):
     def receive(self, data):
         data_json = json.loads(data)
         async_to_sync(self.channel_layer.group_send)(
-            self.tab_group_name, {"type": "broadcast_session", "nb_users": data_json["current_tab"]}
+            self.tab_group_name, {"type": "broadcast", "nb_users": data_json["current_tab"]}
         )
 
     # Receive message from room group
-    def broadcast_session(self, data_json):
+    def broadcast(self, data_json):
 
         self.send(text_data=json.dumps({"nb_users": data_json["nb_users"]}))

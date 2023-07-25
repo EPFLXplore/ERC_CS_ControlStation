@@ -14,7 +14,7 @@ urlpatterns = [
     
     #STATE BUTTONS
     #Manualcontrol
-    path('manualcontrol/launch',   launch_manual,  name='launch_manual'),
+    path('manualcontrol/launch',    launch_manual,  name='launch_manual'),
     path('manualcontrol/wait',      wait_manual,    name='wait_manual'),
     path('manualcontrol/abort',     abort_manual,   name='abort_manual'),
     path('manualcontrol/resume',    resume_manual,  name='resume_manual'),
@@ -40,6 +40,9 @@ urlpatterns = [
     path('science/wait',            wait_science,   name='wait_science'),
     path('science/abort',           abort_science, name='abort_science'),
     path('science/resume',          resume_science,   name='resume_science'),
+
+    #Cameras
+    path('cameras/enable_cameras', enable_cameras, name='enable_cameras'),
 
     # path('science/confirm',         confirm_science, name='confirm_science'),
     # path('science/abort',           abort_science,  name='abort_science'),

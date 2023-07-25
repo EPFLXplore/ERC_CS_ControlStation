@@ -2,48 +2,88 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import CompressedImage
+from std_msgs.msg import Int8MultiArray
 
 import cv2
 from cv_bridge import CvBridge
 
 
-CAMERA_FRAMERATE = 30
+CAMERA_FRAMERATE = 24
 
 
 class CamerasPublisher(Node):
 
     def __init__(self):
 
-
-
         super().__init__('cameras_publisher')
 
-        self.cam_0_pub = self.create_publisher(CompressedImage, 'camera_0', 1)
+        self.camera_index = self.create_subscription(Int8MultiArray, 'CS/CAM_index', self.enable_camera, 10)
+
         self.cam_1_pub = self.create_publisher(CompressedImage, 'camera_1', 1)
         self.cam_2_pub = self.create_publisher(CompressedImage, 'camera_2', 1)
         self.cam_3_pub = self.create_publisher(CompressedImage, 'camera_3', 1)
         self.cam_4_pub = self.create_publisher(CompressedImage, 'camera_4', 1)
-        self.cam_5_pub = self.create_publisher(CompressedImage, 'camera_5', 1)
 
         self.camera_0 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=0))
+        self.camera_1 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=1))
+        self.camera_2 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=2))
+        # self.camera_3 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=3))
+        # self.camera_4 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=4))
+        # self.camera_5 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=5))
+
         self.bridge = CvBridge()
 
+        self.camera_list = []
+        self.camera_list.append((self.camera_0, self.cam_1_pub))
+        self.camera_list.append((self.camera_1, self.cam_2_pub))
+        self.camera_list.append((self.camera_2, self.cam_3_pub))
+        # self.camera_list.append(self.camera_3)
+        # self.camera_list.append(self.camera_4)
+        # self.camera_list.append(self.camera_5)
+
+
+        self.cam_publisher = []
+        self.cam_publisher.append(self.cam_1_pub)
+        self.cam_publisher.append(self.cam_2_pub)
+        self.cam_publisher.append(self.cam_3_pub)
+        #self.cam_publisher.append(self.cam_4_pub)
+
+        self.active_cameras = []
+        
         self.timer = self.create_timer(1/CAMERA_FRAMERATE, self.publish_feeds)
+
+
+    def enable_camera(self, camera_index):
+        print("Enabling camera: ", camera_index.data)
+        self.active_cameras = []
+
+        for i in camera_index.data:
+            self.active_cameras.append(self.camera_list[i])
 
 
     def publish_feeds(self):
 
-        ret_0, frame_cam_0 = self.camera_0.read()
-        if ret_0 :
-            self.cam_0_pub.publish(self.bridge.cv2_to_compressed_imgmsg(frame_cam_0))
+        for camera in self.active_cameras:
+            ret, frame = camera[0].read()
+            if ret:
+                camera[1].publish(self.bridge.cv2_to_compressed_imgmsg(frame))
+        
+
+        # ret_0, frame_cam_0 = self.camera_0.read()
+        # if ret_0 :
+        #     self.cam_0_pub.publish(self.bridge.cv2_to_compressed_imgmsg(frame_cam_0))
+
+        # ret, frame = self.camera_list[i].read()
+        # if ret:
+        #         self.cam_0_pub.publish(self.bridge.cv2_to_compressed_imgmsg(frame))
 
 
 def gstreamer_pipeline(
     sensor_id=0,
-    capture_width=1920,
-    capture_height=1080,
-    display_width=1920,
-    display_height=1080,
+    capture_width=500,
+    capture_height=500,
+    display_width=500,
+    display_height=500,
     framerate=CAMERA_FRAMERATE,
     flip_method=0,
 ):
@@ -81,6 +121,9 @@ def gstreamer_pipeline(
     #return ('sudo gst-launch-1.0 v4l2src ! videoconvert ! video/x-raw, format=(string)BGR ! appsink')
 
 def main(args=None):
+
+    print("Start cameras_publisher node")
+    
     rclpy.init(args=args)
 
     cameras_publisher = CamerasPublisher()
@@ -90,6 +133,7 @@ def main(args=None):
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
+    cameras_publisher.stop_camera()
     cameras_publisher.destroy_node()
     rclpy.shutdown()
 
@@ -99,14 +143,16 @@ if __name__ == '__main__':
 
 
 
-'sudo gst-launch-1.0 v4l2src ! videoconvert ! x264enc pass=qual quantizer=20 tune=zerolatency ! rtph264pay ! udpsink host=127.0.0.1 port=8080'
+#'sudo gst-launch-1.0 v4l2src ! videoconvert ! x264enc pass=qual quantizer=20 tune=zerolatency ! rtph264pay ! udpsink host=127.0.0.1 port=8080'
 
 
 
 
 
 
-
+"""
+gst-laumch-1.0 nvarguscamerasrc sensor-id=0 ! 'video/x-raw(memory:NVMM), width=(int)1948, height=(int)1096, framerate=(fraction)30/1' ! nvvidconv ! xvimagesink -e
+"""
 
 
 

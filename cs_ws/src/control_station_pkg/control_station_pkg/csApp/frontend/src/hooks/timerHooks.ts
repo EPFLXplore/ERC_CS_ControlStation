@@ -38,7 +38,7 @@ function useTimer(onFinished?: () => void) {
 
 		console.log("Computed time: " + Math.floor((time / 1000) % 60))
 
-		setMinutes(Math.floor((time / 1000 / 60) % 60));
+		setMinutes(Math.floor((time / 1000 / 60) % 100));
 		setSeconds(Math.floor((time / 1000) % 60));
 		setFinished(false);
 	};
