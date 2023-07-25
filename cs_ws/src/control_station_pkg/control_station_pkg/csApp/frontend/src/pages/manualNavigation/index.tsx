@@ -93,7 +93,7 @@ export default () => {
 					</div>
 					<Timer end={Date.now() + 10000} size={Size.SMALL} />
 					<TaskControl task={Task.MANUAL_CONTROL} />
-					<GamepadHint />
+					<GamepadHint mode={"NAV"} />
 					<CameraView images={images} />
 				</div>
 			</div>

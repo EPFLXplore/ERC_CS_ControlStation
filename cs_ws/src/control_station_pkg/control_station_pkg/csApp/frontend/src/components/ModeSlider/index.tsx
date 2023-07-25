@@ -3,7 +3,7 @@ import styles from "./style.module.sass";
 import { useState } from "react";
 
 const ModeSlider = () => {
-	const [activeIndex, setActiveIndex] = useState(0);
+	const [activeIndex, setActiveIndex] = useState(1);
 	const texts = ["IK", "FK"];
 
 	const _setActiveIndex = (mode: number) => {

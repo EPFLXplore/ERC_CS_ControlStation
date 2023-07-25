@@ -125,7 +125,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 
 			<div className={styles.globalContainer}>
 				<ModeSlider />
-				<GamepadHint />
+				<GamepadHint mode={"HD"} />
 				<TaskControl task={Task.HANDLING_DEVICE} />
 			</div>
 

@@ -25,10 +25,12 @@ export default () => {
 					"Camera 4",
 					"Camera 5",
 					"Camera 6",
-					"Camera 7",
+					"Camera Gripper",
 				]}
 				optionsCallback={selectCamera}
-				currentOptions={cameras.map((camera) => "Camera " + (camera + 1))}
+				currentOptions={cameras.map((camera) =>
+					camera < 6 ? "Camera " + (camera + 1) : "Camera Gripper"
+				)}
 			/>
 			<Timer end={Date.now() + 10000} />
 			<CameraView images={images} />
