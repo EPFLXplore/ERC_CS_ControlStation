@@ -138,10 +138,10 @@ class CS:
         self.node.create_subscription(Odometry,         'NAV/odometry/filtered',            self.controller.nav_data           , 10)
 
         #Camera messages
-        self.node.create_subscription(CompressedImage,            '/camera_1',                 cameras_reciever.display_cam_1   , 1)
-        self.node.create_subscription(CompressedImage,            '/camera_2',                 cameras_reciever.display_cam_2   , 1)
+        self.node.create_subscription(CompressedImage,            '/camera_1',                 cameras_reciever.display_cam_0   , 1)
+        self.node.create_subscription(CompressedImage,            '/camera_2',                 cameras_reciever.display_cam_1   , 1)
         self.node.create_subscription(CompressedImage,            '/camera_3',                 cameras_reciever.display_cam_2   , 1)
-        self.node.create_subscription(CompressedImage,            '/camera_4',                 cameras_reciever.display_cam_4   , 1)
+        self.node.create_subscription(CompressedImage,            '/camera_4',                 cameras_reciever.display_cam_3   , 1)
 
         # TODO
         # c'est quoi ?
