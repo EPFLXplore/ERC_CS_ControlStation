@@ -34,10 +34,13 @@ class GamepadConsumer(AsyncWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         json_data = json.loads(text_data)
+        print("===========GamepadConsumer=============")
+        print(json_data)
         cs.send_gamepad_data(json_data['axes'],
                             json_data['buttons'],
                             "",
                             json_data['mode'])
+        
 
 
 
