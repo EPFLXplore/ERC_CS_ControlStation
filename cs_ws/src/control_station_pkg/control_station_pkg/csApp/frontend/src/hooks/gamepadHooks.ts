@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import GamepadController, { GamepadControllerState } from "../utils/Gamepad";
+import { Task } from "../utils/tasks.type";
 
 export enum GamepadCommandState {
 	UI,
@@ -16,7 +17,7 @@ function getOS() {
 	return "Linux";
 }
 
-function useGamepad(selectorCallback?: () => void) {
+function useGamepad(mode: string, selectorCallback?: () => void) {
 	const [socket, setSocket] = useState<WebSocket | null>(null);
 	const [gamepad, setGamepad] = useState<GamepadController | null>(null);
 	const [gamepadState, setGamepadState] = useState<GamepadControllerState | null>(null);
@@ -69,6 +70,7 @@ function useGamepad(selectorCallback?: () => void) {
 						axes: gamepad.getState().axes,
 						buttons: gamepad.getState().buttons,
 						id: gamepad.getState().controller?.id ?? "",
+						mode: mode,
 					};
 					console.log(stateSent);
 					socket?.send(JSON.stringify(stateSent));

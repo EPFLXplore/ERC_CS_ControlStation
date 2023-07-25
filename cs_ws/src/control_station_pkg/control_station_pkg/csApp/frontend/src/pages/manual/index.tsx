@@ -30,7 +30,12 @@ function useQuery() {
 }
 
 export default () => {
-	const [images, cameras, selectCamera] = useCameraSelector([Cameras.CAM1]);
+	const [images, cameras, selectCamera] = useCameraSelector([
+		Cameras.CAM1,
+		Cameras.CAM2,
+		Cameras.CAM3,
+		Cameras.CAM4,
+	]);
 	const [jointPositions, jointVelocities, jointCurrents, detectedTags, taskSuccess] =
 		useHandlingDevice();
 	const [currentPosition, currentOrientation, wheelsPosition, linearVelocity, angularVelocity] =
@@ -81,7 +86,7 @@ export default () => {
 				</div>
 
 				<Timer end={Date.now() + 10000} size={Size.SMALL} />
-				<GamepadHint selectorCallback={() => setMode(Task.NAVIGATION)} visible />
+				<GamepadHint mode="HD" selectorCallback={() => setMode(Task.NAVIGATION)} visible />
 				<CameraView images={images} />
 			</div>
 		);
@@ -173,6 +178,7 @@ export default () => {
 						<Timer end={Date.now() + 10000} size={Size.SMALL} />
 						<TaskControl task={Task.MANUAL_CONTROL} />
 						<GamepadHint
+							mode="NAV"
 							selectorCallback={() => setMode(Task.HANDLING_DEVICE)}
 							visible
 						/>

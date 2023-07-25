@@ -5,12 +5,14 @@ import styles from "./style.module.sass";
 
 const GamepadHint = ({
 	selectorCallback,
+	mode,
 	visible = false,
 }: {
 	selectorCallback?: () => void;
+	mode: "NAV" | "HD";
 	visible?: boolean;
 }) => {
-	const [gamepad, gamepadState, gamepadCommandState] = useGamepad(selectorCallback);
+	const [gamepad, gamepadState, gamepadCommandState] = useGamepad(mode, selectorCallback);
 
 	const calcDirectionVertical = (axe: number) => {
 		// Up
