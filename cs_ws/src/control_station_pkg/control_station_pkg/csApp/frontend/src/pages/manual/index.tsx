@@ -64,7 +64,7 @@ export default () => {
 						"Camera 4",
 						"Camera 5",
 						"Camera 6",
-						"Camera 7",
+						"Camera Gripper",
 					]}
 					optionsCallback={selectCamera}
 					currentOptions={cameras.map((camera) => "Camera " + (camera + 1))}
@@ -106,6 +106,7 @@ export default () => {
 						"Camera 4",
 						"Camera 5",
 						"Camera 6",
+						"Camera Gripper",
 					]}
 					optionsCallback={selectCamera}
 					currentOptions={cameras.map((camera) => "Camera " + (camera + 1))}
