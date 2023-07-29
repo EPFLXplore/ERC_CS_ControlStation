@@ -17,7 +17,6 @@ export default () => {
 		<div>
 			<Background />
 			<BackButton />
-			<BackButton />
 			<div className={styles.InfoControllerContainer}>
 				<div className={styles.title}>Drill State</div>
 				<div className={styles.stateDisplay}>{state}</div>
@@ -32,6 +31,7 @@ export default () => {
 				options={["Camera 1", "Camera 2", "Camera 3"]}
 				optionsCallback={selectCamera}
 			/>
+			<div className={styles.rightContainer}></div>
 
 			<CameraView camera={camera} />
 		</div>

@@ -31,15 +31,23 @@ export const Table = ({ values, sensorType }: TableProps) => {
 			<table className={styles.table}>
 				<thead>
 					<tr>
-						<th>Element</th>
-						<th>Value</th>
+						<th>
+							<text>Element</text>
+						</th>
+						<th>
+							<text>Value</text>
+						</th>
 					</tr>
 				</thead>
 				<tbody>
 					{lines.map((line) => (
 						<tr key={line.id}>
-							<td>{line.id}</td>
-							<td>{line.content}</td>
+							<td>
+								<text>{line.id}</text>
+							</td>
+							<td>
+								<text>{line.content}</text>
+							</td>
 						</tr>
 					))}
 				</tbody>

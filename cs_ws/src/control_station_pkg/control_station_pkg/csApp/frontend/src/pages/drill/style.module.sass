@@ -14,7 +14,7 @@
 .InfoControllerContainer
     position: fixed
     bottom: 2vh
-    left: 25vh
+    left: 12vw
     height: 15vh
     width: 60vw
     border-radius: 2vh
@@ -58,3 +58,31 @@
     font-size: 3vh
     color: white
     margin: 0
+
+.rightContainer
+    position: fixed
+    bottom: 20vh
+    right: 1.5vw
+    height: 60vh
+    width: 20vw
+    border-radius: 2vh
+    background-color: rgba($primaryDark2Color, 0.8)
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-direction: column
+
+.tab
+    border: 1px solid $secondaryColor
+    flex: 1
+
+.row
+    display: flex
+
+.cell
+    flex: 1
+    border: 1px solid $secondaryColor
+    padding: 10px
+
+.cellHashed
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, $secondaryColor 10px, black 20px)
