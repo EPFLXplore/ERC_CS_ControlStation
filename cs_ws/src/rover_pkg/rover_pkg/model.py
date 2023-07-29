@@ -146,6 +146,11 @@ class Science:
         self.__info = "info"
         self.__state = "state"
 
+    def science_fsm_callback(self, state):
+        print("data received from sceince fsm")
+        self.__state = state.data #TODO: Check if .data is needed
+        self.rover.SC_fsm_state_pub.publish(state)
+    #---------------------------FUNCTIONS BELOW ARE NOT USED------------------------------
     # -------text info from SC-------
     def set_text_info(self, str_ros):
         self.__info = str_ros.data
@@ -241,8 +246,8 @@ class HandlingDevice:
             #self.rover.HD_SemiAuto_Id_pub.publish(id) TODO: SEE WHY THIS IS USEFUL
 
     
-    def handle_hd_gamepad(self, joy):
-        self.rover.HD_Gamepad_pub.publish(joy)
+    def handle_hd_gamepad(self, axes):
+        self.rover.HD_Gamepad_pub.publish(axes)
 
     def set_joint_telemetry(self, telemetry_ros):
         telemetry = telemetry_ros.data

@@ -14,6 +14,7 @@ Data format :
     'target' : string,
     'buttons' : [button_1, button_2, ... , button_11] Array int,
     'axes' : [axis_1, axis_2, ... , axis_6] Array float
+    'mode' : string, "NAV" or "HD"
 }
 
 """
@@ -36,7 +37,8 @@ class GamepadConsumer(AsyncWebsocketConsumer):
         cs.send_gamepad_data(json_data['axes'],
                             json_data['buttons'],
                             "",
-                            "NAV")
+                            json_data['mode'])
+        
 
 
 

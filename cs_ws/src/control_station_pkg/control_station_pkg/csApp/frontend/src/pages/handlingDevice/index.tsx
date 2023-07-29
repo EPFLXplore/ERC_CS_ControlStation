@@ -18,9 +18,10 @@ import JointCurrents from "../../components/JointCurrents";
 import buttonSelect from "../../utils/buttonSelect";
 import { Task } from "../../utils/tasks.type";
 import TaskControl from "../../components/TaskControl";
+import useCameraSelector from "../../hooks/cameraHooks";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
-	const [camera, selectCamera] = useCameraManager(Cameras.CAM1);
+	const [images, cameras, selectCamera] = useCameraSelector([Cameras.CAM1]);
 	const [jointPositions, jointVelocities, jointCurrents, detectedTags, taskSuccess] =
 		useHandlingDevice();
 
@@ -90,7 +91,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 					<TaskControl task={Task.HANDLING_DEVICE} />
 				</div>
 				<Timer end={Date.now() + 10000} size={Size.SMALL} />
-				<CameraView camera={camera} />
+				<CameraView images={images} />
 			</div>
 		);
 
@@ -102,8 +103,17 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 				title="Maintenance"
 				settings
 				optionTitle="Cameras"
-				options={["Camera 1", "Camera 2", "Camera 3"]}
+				options={[
+					"Camera 1",
+					"Camera 2",
+					"Camera 3",
+					"Camera 4",
+					"Camera 5",
+					"Camera 6",
+					"Camera 7",
+				]}
 				optionsCallback={selectCamera}
+				currentOptions={cameras.map((camera) => "Camera " + (camera + 1))}
 			/>
 			<DistanceHint distance={10} />
 
@@ -115,13 +125,13 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 
 			<div className={styles.globalContainer}>
 				<ModeSlider />
-				<GamepadHint />
+				<GamepadHint mode={"HD"} />
 				<TaskControl task={Task.HANDLING_DEVICE} />
 			</div>
 
 			<Timer end={Date.now() + 10000} size={Size.SMALL} />
 
-			<CameraView camera={camera} />
+			<CameraView images={images} />
 		</div>
 	);
 };

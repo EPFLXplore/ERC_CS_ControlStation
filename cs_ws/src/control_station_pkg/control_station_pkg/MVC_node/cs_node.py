@@ -76,10 +76,9 @@ class CS:
         # CS --> ROVER 
 
         #Doit etre remplacé par un service 
-        self.Task_pub               = self.node.create_publisher(Int8MultiArray,    'CS/Task',                1)
+        self.Task_pub               = self.node.create_publisher(Int8MultiArray,    'CS/Task',             1)
         self.CS_confirm_pub         = self.node.create_publisher(Bool,              'CS/Confirm',          1)
 
-        #CS --> ROVER (GAMEPAD)
 
         # CS --> ROVER (HD)
         self.HD_mode_pub            = self.node.create_publisher(Int8,              'CS/HD_mode',          1)
@@ -87,13 +86,12 @@ class CS:
         self.HD_Angles_pub          = self.node.create_publisher(Int8MultiArray,    'CS/HD_Angles',        1)
         self.HD_id                  = self.node.create_publisher(Int8,              'CS/HD_element_id',    1)
         self.HD_toggle_camera_pub   = self.node.create_publisher(Bool,              'CS/HD_toggle_camera', 1)
-        #self.Gamepad_pub            = self.node.create_publisher(Joy,    'Gamepad',             1)
 
-        # CS --> ROVER (HD)
-        self.HD_Gamepad_pub         = self.node.create_publisher(Joy,               'CS/HD_gamepad',       1)
+        # CS --> ROVER (GAMEPAD)
+        self.HD_Gamepad_pub         = self.node.create_publisher(Float32MultiArray,  'CS/HD_gamepad',       1)
         self.NAV_Gamepad_pub         = self.node.create_publisher(Joy,               'CS/NAV_gamepad',       1)
 
-        #TODO necessary? 
+        #TODO necessary?
         #self.HD_ManualVelocity_pub  = self.node.create_publisher('HD_ManualVelocity',  Float32,        1)
         self.HD_InvManual_Coord_pub = self.node.create_publisher(Int8MultiArray,    'CS/HD_InvManual_Coord',  1)
         self.HD_homeGo_pub          = self.node.create_publisher(Bool,              'CS/HD_reset_arm_pos',    1)
@@ -107,44 +105,44 @@ class CS:
         self.Nav_Joystick_pub       = self.node.create_publisher(Twist,             '/cmd_vel',            1)
         #self.Nav_DebugWheels_pub    = self.node.create_publisher(Int16MultiArray,   '/debug/wheel_cmds',   1)
 
+        # Cam
+        self.Cam_index_pub = self.node.create_publisher(Int8MultiArray, 'CS/CAM_index', 1)
+        self.gripper_cam_pub = self.node.create_publisher(Int8, 'ROVER/HD_toggle_cameras', 1)
+
         # ---------------------------------------------------
         # ===== Subscribers =====
         self.node.create_subscription(String,           'ROVER/RoverConfirm',              self.controller.rover_confirmation , 10)
-        self.node.create_subscription(String,           'ROVER/Exception',                 self.controller.exception_clbk     , 10)
        # self.node.create_subscription(Int8,             'ROVER/TaskProgress',              self.controller.task_progress      , 10)
         self.node.create_subscription(DiagnosticStatus, 'ROVER/CS_log',                    self.controller.log_clbk   , 10)
         
-        # SC messages
-        self.node.create_subscription(String,           'ROVER/SC_state',                  self.controller.sc_text_info       , 10)
-        self.node.create_subscription(String,           'ROVER/SC_info',                   self.controller.sc_text_info       , 10)
-        self.node.create_subscription(Int16MultiArray,  'ROVER/SC_params',                 self.controller.sc_params          , 10)
-        self.node.create_subscription(Int16,            'ROVER/SC_measurements_humidity',  self.controller.sc_humidity        , 10)
+        # -- SC messages --
+        self.node.create_subscription(Int8,               'ROVER/SC_fsm_state',      self.controller.science_state        , 10)
+        self.node.create_subscription(Float32MultiArray,  'ROVER/module_motors_pos', self.controller.science_motors_pos   , 10)
+        self.node.create_subscription(Float32MultiArray,  'ROVER/motors_velocities', self.controller.science_motors_vels  , 10)
+        self.node.create_subscription(Float32MultiArray,  'ROVER/motors_currents',   self.controller.science_motors_currents, 10)
+        self.node.create_subscription(Int8MultiArray,     'ROVER/limit_switches',    self.controller.science_limit_switches, 10)
 
-        #TODO : changer le nom du subscriber
-        self.node.create_subscription(Image,            'sc_camera',                       self.controller.sc_image           , 10)
+        # -- EL(SC) messages --
+        self.node.create_subscription(Int8,               'EL/mass',                    self.controller.science_mass         , 10)
+        self.node.create_subscription(Int8,               'EL/spectrometer',            self.controller.science_spectrometer , 10)
+        self.node.create_subscription(Int8,               'EL/npk',                     self.controller.science_npk          , 10)
+        self.node.create_subscription(Int8,               'EL/four_in_one',             self.controller.science_4in1         , 10)
 
-        # HD messages
-        self.node.create_subscription(Int32,            'ROVER/HD_tof',                    self.controller.hd_tof             , 10)
-        self.node.create_subscription(Float32MultiArray,'ROVER/HD_detected_element',       self.controller.hd_detected_element, 10)
-        self.node.create_subscription(JointState,       'HD/arm_control/joint_telemetry',              self.controller.hd_data       , 10)
+        # -- HD messages --
+        self.node.create_subscription(JointState,       'HD/arm_control/joint_telemetry',  self.controller.hd_data       , 10)
         
-        # NAV messages
+        # -- NAV messages --
         #self.node.create_subscription(Twist,            '/cmd_vel',                        self.controller.test_joystick      , 10) 
         #self.node.create_subscription(Odometry,         'ROVER_NAV_odometry',              self.controller.nav_data           , 10)
         self.node.create_subscription(Odometry,         'NAV/odometry/filtered',            self.controller.nav_data           , 10)
 
-        #Camera messages
-        self.node.create_subscription(CompressedImage,            '/camera_0',                 cameras_reciever.display_cam_0   , 1)
+        # -- Camera messages --
         self.node.create_subscription(CompressedImage,            '/camera_1',                 cameras_reciever.display_cam_1   , 1)
         self.node.create_subscription(CompressedImage,            '/camera_2',                 cameras_reciever.display_cam_2   , 1)
+        self.node.create_subscription(CompressedImage,            '/camera_3',                 cameras_reciever.display_cam_2   , 1)
+        self.node.create_subscription(CompressedImage,            '/camera_4',                 cameras_reciever.display_cam_3   , 1)
 
-        # TODO
-        # c'est quoi ?
-        # self.node.create_subscription('detection/state', UInt8, detection_state)
-        # self.node.create_subscription('detection/bounding_boxes', Image, ...)
-        # self.node.create_subscription('detection/RGB_intel', Image, ...)
-        # self.node.create_subscription('detection/RGB_webcam_1', Image, ...)
-        # self.node.create_subscription('detection/RGB_webcam_2', Image, ...)
+        self.node.create_subscription(CompressedImage, 'HD/camera_flux', cameras_reciever.display_cam_gripper, 10)
         
         # Elpased time
         #self.node.create_subscription(Int32MultiArray,  'Time',                            self.controller.elapsed_time       , 10) #useless
@@ -180,23 +178,47 @@ class CS:
     #            GAMEPAD
     # ===============================
 
-    def send_gamepad_data(self, axes, buttons, id, target):
+    def send_gamepad_data(self, axes, buttons, id, target, speed= 0.5):
         '''
             send gamepad data to rover
         '''
         axes = [float(i) for i in axes]
 
-
-
         if(target == 'HD'):
-            #new_axes, new_buttons = utils.gamepad.hd_maping(axes, buttons)
-            joy_msg = Joy()
-            joy_msg.axes = axes
-            joy_msg.buttons = buttons
-            self.HD_Gamepad_pub.publish(joy_msg)
+            #new_axes = utils.gamepad.permute(axes, utils.gamepad.selected_hd_profile.axes)
+            #new_buttons = utils.gamepad.permute(buttons, utils.gamepad.selected_hd_profile.buttons)
+
+            # Need to interpolate axes 2 and 5 to go from range [-1,1] to [0,1]
+            axes[2] = (axes[2] + 1) / 2
+            axes[5] = (axes[5] + 1) / 2
+
+            # Buttons 4 and 5 tells if we are going forward or backward
+            if (buttons[4] == 1):
+                axes[2] = -axes[2]
+            if (buttons[5] == 1):
+                axes[5] = -axes[5]
+
+            speed = Float32MultiArray()
+            speed.data = axes[:6]
+
+             # Gripper are buttons 1 and 2
+            # transform them into speeds
+            if (buttons[2] == 1):
+                speed.data.append(-1)
+            elif (buttons[1] == 1):
+                speed.data.append(1)
+            else:
+                speed.data.append(0)
+
+            self.HD_Gamepad_pub.publish(speed)
+
         elif(target == 'NAV'):
-            #new_axes, new_buttons = utils.gamepad.nav_maping(axes, buttons)
             joy_msg = Joy()
+            #new_axes = utils.gamepad.permute(axes, utils.gamepad.selected_nav_profile.axes)
+            #new_buttons = utils.gamepad.permute(buttons, utils.gamepad.selected_nav_profile.buttons)
+
             joy_msg.axes = axes
             joy_msg.buttons = buttons
             self.NAV_Gamepad_pub.publish(joy_msg)
+
+            
