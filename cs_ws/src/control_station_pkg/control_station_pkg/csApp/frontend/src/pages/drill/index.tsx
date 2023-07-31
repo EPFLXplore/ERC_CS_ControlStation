@@ -10,13 +10,49 @@ import useCameraSelector from "../../hooks/cameraHooks";
 
 //to replace by the real data
 const state = "Extracting sample..";
+const data: DataRow[] = [
+	{
+		id: "Module1",
+		velocity: 10,
+		distance: 3,
+		current: 12,
+	},
+	{
+		id: "Module2",
+		velocity: 10,
+		distance: 2,
+		current: 9,
+	},
+	{
+		id: "Drill",
+		velocity: 5,
+		distance: null,
+		current: 9,
+	},
+];
 
+const circlesData = [
+	{ label: "1st LS", value: 1 },
+	{ label: "2nd LS", value: 1 },
+	{ label: "3rd LS", value: 1 },
+	{ label: "4th LS", value: 0 },
+];
+
+type DataRow = {
+	id: string;
+	velocity: number;
+	distance: number | null;
+	current: number;
+};
 export default () => {
 	const [images, cameras, selectCamera] = useCameraSelector([Cameras.CAM1]);
+	const sensorType = "Sensor Data";
+	const rows = ["Velocity", "Distance", "Current"]; // Rows titles
+	const columns = ["Module1", "Module2", "Drill"]; // Columns titles
+
 	return (
 		<div>
 			<Background />
-			<BackButton />
 			<BackButton />
 			<div className={styles.InfoControllerContainer}>
 				<div className={styles.title}>Drill State</div>
@@ -41,6 +77,84 @@ export default () => {
 				optionsCallback={selectCamera}
 				currentOptions={cameras.map((camera) => "Camera " + (camera + 1))}
 			/>
+			<div className={styles.rightContainer}>
+				<div>
+					<h2 className={styles.title}>{sensorType}</h2>
+					<table className={styles.table}>
+						<thead>
+							<tr>
+								<th>
+									<text>Data</text>
+								</th>
+								{columns.map((columnTitle) => (
+									<th key={columnTitle}>
+										<text>{columnTitle}</text>
+									</th>
+								))}
+							</tr>
+						</thead>
+						<tbody>
+							{rows.map((rowTitle, rowIndex) => (
+								<tr key={rowTitle}>
+									<td>
+										<text>{rowTitle}</text>
+									</td>
+									{columns.map((columnTitle) => {
+										const rowData = data.find(
+											(item) => item.id === columnTitle
+										);
+										const value = rowData
+											? rowData[rowTitle.toLowerCase() as keyof DataRow]
+											: null;
+										return (
+											<td
+												key={`${rowIndex}-${columnTitle}`}
+												className={value === null ? styles.cellHashed : ""}
+											>
+												<text>{value !== null ? value : ""}</text>
+											</td>
+										);
+									})}
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+
+				<div>
+					<h2 className={styles.title}>Limit switches</h2>
+					<table className={styles.table}>
+						<thead>
+							<tr>
+								<th>
+									<text>Limit Switch</text>
+								</th>
+								<th>
+									<text>State</text>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{circlesData.map((circle, index) => (
+								<tr key={index}>
+									<td>
+										<text>{circle.label}</text>
+									</td>
+									<td>
+										<div
+											className={
+												circle.value === 1
+													? styles.greenCircle
+													: styles.redCircle
+											}
+										></div>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</div>
 
 			<CameraView images={images} />
 		</div>
