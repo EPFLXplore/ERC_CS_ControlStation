@@ -59,6 +59,8 @@ class CS:
         self.controller = Controller(self) # controller
         self.rover      = Rover()          # model
         self.roverConnected = False
+        # self.nav_mode_control = 1 # 1 is default
+    
 
 
         #==================Service CLIENT==========================
@@ -185,6 +187,7 @@ class CS:
         axes = [float(i) for i in axes]
 
         if(target == 'HD'):
+            print("HD DEBUG")
             #new_axes = utils.gamepad.permute(axes, utils.gamepad.selected_hd_profile.axes)
             #new_buttons = utils.gamepad.permute(buttons, utils.gamepad.selected_hd_profile.buttons)
 
@@ -213,9 +216,31 @@ class CS:
             self.HD_Gamepad_pub.publish(speed)
 
         elif(target == 'NAV'):
+
+            # if(buttons[8] == 1):
+            #     print("switching modes")
+            #     if self.nav_mode_control == 1 :
+            #         self.nav_mode_control = 0
+            #     else:
+            #         self.nav_mode_control = 1
+
             joy_msg = Joy()
             #new_axes = utils.gamepad.permute(axes, utils.gamepad.selected_nav_profile.axes)
             #new_buttons = utils.gamepad.permute(buttons, utils.gamepad.selected_nav_profile.buttons)
+
+            # Need to interpolate axes 2 and 5 to go from [-1,1] to [0,2]
+            # print("Axes before interpolation")
+            # print(axes[2])
+            
+            axes[2] = (axes[2] + 1 ) 
+            axes[5] = (axes[5] + 1) 
+
+            # print("Axes after interpolation")
+            # print(axes[2])
+            # buttons[8] = self.nav_mode_control
+
+            if (buttons[8] == 1):
+                print("change state on")
 
             joy_msg.axes = axes
             joy_msg.buttons = buttons
