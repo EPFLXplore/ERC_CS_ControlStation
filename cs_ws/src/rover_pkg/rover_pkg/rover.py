@@ -122,12 +122,12 @@ class Rover():
         self.HD_SemiAuto_Id_pub      = self.node.create_publisher(Int8, 'ROVER/HD_SemiAuto_Id'   , 1)
         self.send_HD_element_id_pub  = self.node.create_publisher(Int8, 'ROVER/element_id'       , 1)
         self.send_toggle_info_pub    = self.node.create_publisher(Bool, 'ROVER/HD_toggle_camera' , 1)
-        self.HD_gamepad_pub          = self.node.create_publisher(Float32MultiArray, 'ROVER/HD_gamepad' , 1)
+        #self.HD_gamepad_pub          = self.node.create_publisher(Float32MultiArray, 'ROVER/HD_gamepad' , 1)
         
         # Rover --> NAV
         self.Nav_Goal_pub     = self.node.create_publisher(PoseStamped, 'ROVER/NAV_goal'    , 1)
         self.Nav_Status       = self.node.create_publisher(String,      'ROVER/NAV_STATUS'  , 1)
-        self.Nav_gamepad_pub  = self.node.create_publisher(Joy,         'ROVER/NAV_gamepad' , 1)
+        #self.Nav_gamepad_pub  = self.node.create_publisher(Joy,         'ROVER/NAV_gamepad' , 1)
 
 
         # Rover --> SC
@@ -149,8 +149,8 @@ class Rover():
 
 
         # ==========================================================GAMEPAD FROM CS
-        self.node.create_subscription(Float32MultiArray,  'CS/HD_gamepad'    , self.HD_gamepad_pub.publish, 10)
-        self.node.create_subscription(Joy,               'CS/NAV_gamepad', self.model.Nav.gamepad, 10)
+        #self.node.create_subscription(Float32MultiArray,  'CS/HD_gamepad'    , self.HD_gamepad_pub.publish, 10)
+        #self.node.create_subscription(Joy,               'CS/NAV_gamepad', self.model.Nav.gamepad, 10)
 
 
         # ======Services server=====
