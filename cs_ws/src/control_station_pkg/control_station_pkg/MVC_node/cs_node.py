@@ -125,10 +125,10 @@ class CS:
         self.node.create_subscription(Int8MultiArray,     'ROVER/limit_switches',    self.controller.science_limit_switches, 10)
 
         # -- EL(SC) messages --
-        self.node.create_subscription(Int8,               'EL/mass',                    self.controller.science_mass         , 10)
-        self.node.create_subscription(Int8,               'EL/spectrometer',            self.controller.science_spectrometer , 10)
-        self.node.create_subscription(Int8,               'EL/npk',                     self.controller.science_npk          , 10)
-        self.node.create_subscription(Int8,               'EL/four_in_one',             self.controller.science_4in1         , 10)
+        self.node.create_subscription(Float32MultiArray,               'EL/mass',                    self.controller.science_mass         , 10)
+        self.node.create_subscription(Float32MultiArray,               'EL/spectrometer',            self.controller.science_spectrometer , 10)
+        self.node.create_subscription(Float32MultiArray,               'EL/npk',                     self.controller.science_npk          , 10)
+        self.node.create_subscription(Float32MultiArray,               'EL/four_in_one',             self.controller.science_4in1         , 10)
 
         # -- HD messages --
         self.node.create_subscription(JointState,       'HD/arm_control/joint_telemetry',  self.controller.hd_data       , 10)

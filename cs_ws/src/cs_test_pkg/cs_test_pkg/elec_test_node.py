@@ -31,12 +31,12 @@ class ElecTestNode(Node):
 
         msg_log = DiagnosticStatus()
         msg_log.name = 'Elec Test'
-        msg_log.level = self.i % 3
+        #msg_log.level = self.i % 3
         msg_log.message = 'Diagnostic Status Message from Elec Test'
         self.publisher_log.publish(msg_log)
 
         msg_float_32_multi = Float32MultiArray()
-        msg_float_32_multi.data = [self.i, self.i + 10]
+        msg_float_32_multi.data = [float(self.i), float(self.i + 10)]
 
         msg_int_8 = Int8()
         msg_int_8.data = self.i
@@ -52,6 +52,8 @@ class ElecTestNode(Node):
         self.publisher_HD_voltmeter.publish(msg_int_8)
         self.publisher_HD_laser.publish(msg_bool)
         self.publisher_four_in_one.publish(msg_float_32_multi)
+
+        print("SENDING")
         
         self.i += 1
 

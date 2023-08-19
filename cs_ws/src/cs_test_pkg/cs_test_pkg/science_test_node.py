@@ -17,6 +17,7 @@ class ScienceTestNode(Node):
 
         self.publisher_task_progress = self.create_publisher(String, 'topic', 10)
         self.publisher_sc_params = self.create_publisher(String, 'topic', 10)
+        self.publisher_sc_fsm_state = self.create_publisher(String, 'ROVER/SC_fsm_state', 10)
 
         self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
 
@@ -28,7 +29,7 @@ class ScienceTestNode(Node):
 
         msg_log = DiagnosticStatus()
         msg_log.name = 'Science Test'
-        msg_log.level = self.i % 3
+        #msg_log.level = self.i % 3
         msg_log.message = 'Diagnostic Status Message from Science Test'
         self.publisher_log.publish(msg_log)
 
@@ -36,9 +37,13 @@ class ScienceTestNode(Node):
 
         msg = String()
         msg.data = 'Hello World: %d' % self.i
-        self.publisher_.publish(msg)
+        #self.publisher_.publish(msg)
         self.get_logger().info('Publishing: "%s"' % msg.data)
         self.i += 1
+
+
+        msg = "IDLE" + str(self.i)
+        self.publisher_sc_fsm_state.publish(msg)
 
 
 def main(args=None):
