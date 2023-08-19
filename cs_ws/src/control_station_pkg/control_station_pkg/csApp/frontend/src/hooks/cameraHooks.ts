@@ -60,25 +60,30 @@ function useCameraSelector(startCamera: Array<Cameras>) {
 		let newSockets: Array<WebSocket> = [];
 		setImages(new Array(cameras.length).fill(null));
 
+		const csrftoken = getCookie("csrftoken");
+		let formData = new FormData();
+
+		formData.append("index", cameras.toString());
+		// for (let i = 0; i < cameras.length; i++) {
+		// 	formData.append("index", cameras.toString());
+		// }
+		console.log(formData.get("index"));
+
+		let request = new Request("http://127.0.0.1:8000/csApp/cameras/enable_cameras", {
+			method: "POST",
+			headers: {
+				"X-CSRFToken": csrftoken ?? "",
+			},
+			body: formData,
+		});
+
+
+		fetch(request)
+		.then((res) => res.json())
+		.then((data) => console.log(data))
+		.catch((err) => console.log(err));
+
 		for (let i = 0; i < cameras.length; i++) {
-			const csrftoken = getCookie("csrftoken");
-			let formData = new FormData();
-			formData.append("index", cameras[i].toString());
-			//formData.append('y',  y.toString());
-			//formData.append('yaw', o.toString());
-
-			let request = new Request("http://127.0.0.1:8000/csApp/cameras/enable_cameras", {
-				method: "POST",
-				headers: {
-					"X-CSRFToken": csrftoken ?? "",
-				},
-				body: formData,
-			});
-
-			fetch(request)
-				.then((res) => res.json())
-				.then((data) => console.log(data))
-				.catch((err) => console.log(err));
 
 			let cameraSocket = new WebSocket(
 				"ws://" + window.location.host + "/ws/cameras/" + "video" + cameras[i] + "/"

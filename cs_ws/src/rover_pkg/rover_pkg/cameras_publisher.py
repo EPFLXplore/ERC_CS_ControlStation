@@ -67,6 +67,9 @@ class CamerasPublisher(Node):
             ret, frame = camera[0].read()
             if ret:
                 camera[1].publish(self.bridge.cv2_to_compressed_imgmsg(frame))
+
+        for i in range(len(self.camera_list)):
+            ret, frame = self.camera_list[i][0].read()
         
 
         # ret_0, frame_cam_0 = self.camera_0.read()
