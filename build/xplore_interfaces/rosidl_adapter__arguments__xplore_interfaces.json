@@ -1,0 +1,8 @@
+{
+  "package_name": "xplore_interfaces",
+  "non_idl_tuples": [
+    "/home/evan/Desktop/Xplore/CS_workspace/cs_ws/src/xplore_interfaces:msg/CameraError.msg",
+    "/home/evan/Desktop/Xplore/CS_workspace/cs_ws/src/xplore_interfaces:srv/DisableCamera.srv",
+    "/home/evan/Desktop/Xplore/CS_workspace/cs_ws/src/xplore_interfaces:srv/EnableCamera.srv"
+  ]
+}

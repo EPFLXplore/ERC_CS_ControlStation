@@ -1,0 +1,54 @@
+[1.281s] Invoking command in '/home/evan/Desktop/Xplore/CS_workspace/cs_ws/src/rover_pkg': PYTHONPATH=/home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/prefix_override:/home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../../build/rover_pkg build --build-base /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build install --record /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/install.log --single-version-externally-managed
+[1.578s] running egg_info
+[1.578s] creating ../../../build/rover_pkg/rover_pkg.egg-info
+[1.578s] writing ../../../build/rover_pkg/rover_pkg.egg-info/PKG-INFO
+[1.578s] writing dependency_links to ../../../build/rover_pkg/rover_pkg.egg-info/dependency_links.txt
+[1.579s] writing entry points to ../../../build/rover_pkg/rover_pkg.egg-info/entry_points.txt
+[1.579s] writing requirements to ../../../build/rover_pkg/rover_pkg.egg-info/requires.txt
+[1.579s] writing top-level names to ../../../build/rover_pkg/rover_pkg.egg-info/top_level.txt
+[1.580s] writing manifest file '../../../build/rover_pkg/rover_pkg.egg-info/SOURCES.txt'
+[1.618s] reading manifest file '../../../build/rover_pkg/rover_pkg.egg-info/SOURCES.txt'
+[1.619s] writing manifest file '../../../build/rover_pkg/rover_pkg.egg-info/SOURCES.txt'
+[1.620s] running build
+[1.620s] running build_py
+[1.620s] creating /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build
+[1.620s] creating /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build/lib
+[1.621s] creating /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+[1.621s] copying rover_pkg/gripper_camera.py -> /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+[1.621s] copying rover_pkg/__init__.py -> /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+[1.622s] copying rover_pkg/Globals.py -> /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+[1.622s] copying rover_pkg/model.py -> /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+[1.622s] copying rover_pkg/launcher.py -> /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+[1.622s] copying rover_pkg/rover.py -> /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+[1.623s] copying rover_pkg/cameras_publisher.py -> /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+[1.623s] running install
+[1.624s] running install_lib
+[1.626s] creating /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+[1.626s] copying /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build/lib/rover_pkg/gripper_camera.py -> /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+[1.631s] copying /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build/lib/rover_pkg/__init__.py -> /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+[1.631s] copying /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build/lib/rover_pkg/Globals.py -> /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+[1.631s] copying /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build/lib/rover_pkg/model.py -> /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+[1.631s] copying /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build/lib/rover_pkg/launcher.py -> /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+[1.631s] copying /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build/lib/rover_pkg/rover.py -> /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+[1.631s] copying /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build/lib/rover_pkg/cameras_publisher.py -> /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+[1.631s] byte-compiling /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg/gripper_camera.py to gripper_camera.cpython-38.pyc
+[1.632s] byte-compiling /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg/__init__.py to __init__.cpython-38.pyc
+[1.633s] byte-compiling /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg/Globals.py to Globals.cpython-38.pyc
+[1.633s] byte-compiling /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg/model.py to model.cpython-38.pyc
+[1.636s] byte-compiling /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg/launcher.py to launcher.cpython-38.pyc
+[1.637s] byte-compiling /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg/rover.py to rover.cpython-38.pyc
+[1.639s] byte-compiling /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg/cameras_publisher.py to cameras_publisher.cpython-38.pyc
+[1.640s] running install_data
+[1.647s] creating /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/share/ament_index
+[1.647s] creating /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/share/ament_index/resource_index
+[1.648s] creating /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/share/ament_index/resource_index/packages
+[1.648s] copying resource/rover_pkg -> /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/share/ament_index/resource_index/packages
+[1.648s] copying package.xml -> /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/share/rover_pkg
+[1.648s] running install_egg_info
+[1.648s] Copying ../../../build/rover_pkg/rover_pkg.egg-info to /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg-0.0.0-py3.8.egg-info
+[1.648s] running install_scripts
+[1.663s] Installing cameras_publisher script to /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/rover_pkg
+[1.663s] Installing gripper_camera script to /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/rover_pkg
+[1.663s] Installing rover script to /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/rover_pkg
+[1.663s] writing list of installed files to '/home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/install.log'
+[1.703s] Invoked command in '/home/evan/Desktop/Xplore/CS_workspace/cs_ws/src/rover_pkg' returned '0': PYTHONPATH=/home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/prefix_override:/home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../../build/rover_pkg build --build-base /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build install --record /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/install.log --single-version-externally-managed
