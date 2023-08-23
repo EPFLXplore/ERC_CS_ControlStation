@@ -14,7 +14,7 @@
 .InfoControllerContainer
     position: fixed
     bottom: 2vh
-    left: 25vh
+    left: 12vw
     height: 15vh
     width: 60vw
     border-radius: 2vh
@@ -54,7 +54,79 @@
     justify-content: space-evenly
     margin: 0
 
-.title 
-    font-size: 3vh
-    color: white
-    margin: 0
+
+.rightContainer
+    position: fixed
+    bottom: 20vh
+    right: 1.5vw
+    height: 60vh
+    width: 20vw
+    border-radius: 2vh
+    background-color: rgba($primaryDark2Color, 0.8)
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-direction: column
+    overflow: scroll
+
+.rightContainer::-webkit-scrollbar-track 
+    background-color: $primaryDark2Color
+
+.rightContainer::-webkit-scrollbar 
+    width: 3px
+    height: 3px
+    background-color: $primaryDark2Color
+
+.rightContainer::-webkit-scrollbar-thumb 
+    background-color: $secondaryColor
+    border-radius: 20px
+
+.rightContainer::-webkit-scrollbar-thumb:hover 
+    background-color: $secondaryColor
+    width: 5px
+    height: 5px
+
+.title
+  color: white
+  font-size: 1.5vw
+  text-align: center
+  margin: 1vh
+  font-weight: semi-bold
+
+.cellHashed
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, $secondaryColor 10px, black 20px)
+
+.table 
+  width: fill-available
+  border-collapse: collapse
+
+th,
+td 
+  padding: 0.7vh
+  border: 2px solid $secondaryColor
+  color: white
+  width: fit-content
+
+
+th 
+  background-color: $secondaryColor
+
+text 
+  color: white
+  font-size: 1vw
+  margin: 0
+  text-align: center
+  font-weight: semi-bold
+
+.greenCircle
+    width: 20px
+    height: 20px
+    border-radius: 50%
+    background-color: green
+
+.redCircle
+    width: 20px
+    height: 20px
+    border-radius: 50%
+    background-color: red
+

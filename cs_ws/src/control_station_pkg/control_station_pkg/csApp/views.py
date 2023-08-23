@@ -362,8 +362,8 @@ def set_hd_gamepad_profile(request):
 
 def enable_cameras(request):
     camera = request.POST.get("index")
-    camera_list = [int(camera)]
+    camera_list = list(map(int, camera.split(',')))
     cs.Cam_index_pub.publish(Int8MultiArray(data=camera_list))
+    print("camera enabled")
+    print(camera_list)
     return JsonResponse({})
-
-
