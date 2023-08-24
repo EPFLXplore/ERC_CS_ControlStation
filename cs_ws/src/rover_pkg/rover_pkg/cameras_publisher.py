@@ -77,7 +77,7 @@ class CamerasPublisher(Node):
         print("camera stop called")
         for i in self.camera_list:
             i.release()
-            sleep(1000)
+            sleep(1)
         self.camera_list = []
 
 

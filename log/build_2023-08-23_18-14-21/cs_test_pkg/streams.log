@@ -1,0 +1,28 @@
+[1.405s] Invoking command in '/home/evan/Desktop/Xplore/CS_workspace/cs_ws/src/cs_test_pkg': PYTHONPATH=/home/evan/Desktop/Xplore/CS_workspace/build/cs_test_pkg/prefix_override:/home/evan/Desktop/Xplore/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../../build/cs_test_pkg build --build-base /home/evan/Desktop/Xplore/CS_workspace/build/cs_test_pkg/build install --record /home/evan/Desktop/Xplore/CS_workspace/build/cs_test_pkg/install.log --install-scripts $base/lib/cs_test_pkg --single-version-externally-managed
+[1.673s] running egg_info
+[1.674s] writing ../../../build/cs_test_pkg/cs_test_pkg.egg-info/PKG-INFO
+[1.674s] writing dependency_links to ../../../build/cs_test_pkg/cs_test_pkg.egg-info/dependency_links.txt
+[1.678s] writing entry points to ../../../build/cs_test_pkg/cs_test_pkg.egg-info/entry_points.txt
+[1.678s] writing requirements to ../../../build/cs_test_pkg/cs_test_pkg.egg-info/requires.txt
+[1.678s] writing top-level names to ../../../build/cs_test_pkg/cs_test_pkg.egg-info/top_level.txt
+[1.716s] reading manifest file '../../../build/cs_test_pkg/cs_test_pkg.egg-info/SOURCES.txt'
+[1.717s] writing manifest file '../../../build/cs_test_pkg/cs_test_pkg.egg-info/SOURCES.txt'
+[1.718s] running build
+[1.718s] running build_py
+[1.719s] copying cs_test_pkg/nav_test_node.py -> /home/evan/Desktop/Xplore/CS_workspace/build/cs_test_pkg/build/lib/cs_test_pkg
+[1.719s] running install
+[1.720s] running install_lib
+[1.721s] copying /home/evan/Desktop/Xplore/CS_workspace/build/cs_test_pkg/build/lib/cs_test_pkg/nav_test_node.py -> /home/evan/Desktop/Xplore/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg
+[1.721s] byte-compiling /home/evan/Desktop/Xplore/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg/nav_test_node.py to nav_test_node.cpython-38.pyc
+[1.723s] running install_data
+[1.724s] running install_egg_info
+[1.726s] removing '/home/evan/Desktop/Xplore/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg-0.0.0-py3.8.egg-info' (and everything under it)
+[1.728s] Copying ../../../build/cs_test_pkg/cs_test_pkg.egg-info to /home/evan/Desktop/Xplore/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg-0.0.0-py3.8.egg-info
+[1.731s] running install_scripts
+[1.748s] Installing elec_test_node script to /home/evan/Desktop/Xplore/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg
+[1.750s] Installing gamepad_test_node script to /home/evan/Desktop/Xplore/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg
+[1.750s] Installing hd_test_node script to /home/evan/Desktop/Xplore/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg
+[1.750s] Installing nav_test_node script to /home/evan/Desktop/Xplore/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg
+[1.750s] Installing science_test_node script to /home/evan/Desktop/Xplore/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg
+[1.750s] writing list of installed files to '/home/evan/Desktop/Xplore/CS_workspace/build/cs_test_pkg/install.log'
+[1.773s] Invoked command in '/home/evan/Desktop/Xplore/CS_workspace/cs_ws/src/cs_test_pkg' returned '0': PYTHONPATH=/home/evan/Desktop/Xplore/CS_workspace/build/cs_test_pkg/prefix_override:/home/evan/Desktop/Xplore/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../../build/cs_test_pkg build --build-base /home/evan/Desktop/Xplore/CS_workspace/build/cs_test_pkg/build install --record /home/evan/Desktop/Xplore/CS_workspace/build/cs_test_pkg/install.log --install-scripts $base/lib/cs_test_pkg --single-version-externally-managed

@@ -38,6 +38,8 @@ const Map: React.FC<Props> = ({ origin }) => {
 	}, [map]);
 
 	useEffect(() => {
+
+		console.log("use effect draw grid called");
 		// Draw the grid on the canvas
 		const canvas = canvasRef.current;
 		if (canvas && image) {
@@ -143,7 +145,8 @@ const Map: React.FC<Props> = ({ origin }) => {
 				}
 			}
 		}
-	}, [origin, image, imageWidth, imageHeight]);
+	//}, [origin, image, imageWidth, imageHeight]); 		//origin trigger draw grid a chaque fois que la position est draw
+	}, [image, imageWidth, imageHeight]);
 
 	return (
 		<div className={styles.Map}>
@@ -203,16 +206,50 @@ export const drawGoal = (goal: Point) => {
 };
 
 export const drawCurrentPosition = (point: Point) => {
+	// if (mapCTX) {
+	// 	mapCTX.fillStyle = "black";
+	// 	mapCTX.beginPath();
+	// 	mapCTX.arc(
+	// 		point.x * pointSpacing + mapOrigin.x,
+	// 		-point.y * pointSpacing + mapOrigin.y,
+	// 		3,
+	// 		0,
+	// 		2 * Math.PI
+	// 	);
+	// 	mapCTX.fill();
+	// }
+
 	if (mapCTX) {
-		mapCTX.fillStyle = "black";
+		let yaw: number = point.o;
+		let x_px: number = point.x * pointSpacing + mapOrigin.x;
+		let y_px: number = -point.y * pointSpacing + mapOrigin.y;
+
+		//set the three points of the triangle to be drawn before rotation
+		let p1 = [x_px, y_px + 7];
+		let p2 = [x_px, y_px - 7];
+		let p3 = [x_px + 20, y_px];
+
+		//======= rotation of p1, p2 and p2 around {x_px, y_px} by yaw ========//
+
+		// Convert the angle from degrees to radians
+		let angle = (-yaw * Math.PI) / 180;
+
+		// Define the rotated points of the triangle
+		p1 = rotatePoint(angle, p1, x_px, y_px);
+		p2 = rotatePoint(angle, p2, x_px, y_px);
+		p3 = rotatePoint(angle, p3, x_px, y_px);
+
+		// Begin the path and set the starting point to p1
 		mapCTX.beginPath();
-		mapCTX.arc(
-			point.x * pointSpacing + mapOrigin.x,
-			-point.y * pointSpacing + mapOrigin.y,
-			3,
-			0,
-			2 * Math.PI
-		);
+		mapCTX.moveTo(p1[0], p1[1]);
+
+		// Draw lines from p1 to p2, p2 to p3, and from p3 back to p1
+		mapCTX.lineTo(p2[0], p2[1]);
+		mapCTX.lineTo(p3[0], p3[1]);
+		mapCTX.lineTo(p1[0], p1[1]);
+
+		// Fill the triangle with the given color
+		mapCTX.fillStyle = "green";
 		mapCTX.fill();
 	}
 };
