@@ -108,7 +108,6 @@ export function useNavigation() {
 					o: data.orientation[2],
 				},
 			]);
-			drawTrajectory(trajectoryPoints);
 		};
 
 		navigationSocket.onerror = (e) => {
@@ -118,6 +117,10 @@ export function useNavigation() {
 
 		setSocket(navigationSocket);
 	}, []);
+
+	useEffect(() => {
+		drawTrajectory(trajectoryPoints);
+	}, [trajectoryPoints]);
 
 	return [
 		currentPosition,

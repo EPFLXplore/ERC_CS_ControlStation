@@ -35,23 +35,23 @@ class NavTestNode(Node):
         msg_log = DiagnosticStatus()
        
         msg_log.name = 'Nav Test'
-        msg_log.level = (self.i % 3). to_bytes(1,"big")
+        #msg_log.level = (self.i % 3). to_bytes(1,"big")
         msg_log.message = 'Diagnostic Status Message from Nav Test'
         self.publisher_log.publish(msg_log)
 
         msg_log = DiagnosticStatus()
         msg_log.name = 'Nav Test'
-        msg_log.level = (self.i%3).to_bytes(1, 'big')
+        #msg_log.level = (self.i%3).to_bytes(1, 'big')
         msg_log.message = 'Diagnostic Status Message from Nav Test'
         self.publisher_log.publish(msg_log)
 
         msg = Odometry()
         msg.pose.pose.position.x = float(self.i)
-        msg.pose.pose.position.y = float(self.i + 10)
-        msg.pose.pose.position.z = float(self.i + 20)
-        msg.pose.pose.orientation.x = float(self.i + 30)
-        msg.pose.pose.orientation.y = float(self.i + 40)
-        msg.pose.pose.orientation.z = float(self.i + 50)
+        msg.pose.pose.position.y = float(self.i*3 + 1)
+        msg.pose.pose.position.z = float(self.i + 2)
+        msg.pose.pose.orientation.x = float(self.i*10 + 3)
+        msg.pose.pose.orientation.y = float(self.i*10 + 4)
+        msg.pose.pose.orientation.z = float(self.i*15 + 5)
         msg.child_frame_id = "nav test child frame id"
         msg.header.frame_id = "nav test header"
         msg.header.stamp = self.get_clock().now().to_msg()
@@ -63,7 +63,7 @@ class NavTestNode(Node):
         msg.twist.twist.angular.z = float(self.i + 110)
 
         self.publisher_odometry.publish(msg)
-        self.i += 1
+        self.i += 0.1
 
 
     def goal_callback(self, msg):
