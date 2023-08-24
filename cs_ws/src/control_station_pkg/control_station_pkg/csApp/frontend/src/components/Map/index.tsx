@@ -38,6 +38,8 @@ const Map: React.FC<Props> = ({ origin }) => {
 	}, [map]);
 
 	useEffect(() => {
+
+		console.log("use effect draw grid called");
 		// Draw the grid on the canvas
 		const canvas = canvasRef.current;
 		if (canvas && image) {
@@ -143,7 +145,8 @@ const Map: React.FC<Props> = ({ origin }) => {
 				}
 			}
 		}
-	}, [origin, image, imageWidth, imageHeight]);
+	//}, [origin, image, imageWidth, imageHeight]); 		//origin trigger draw grid a chaque fois que la position est draw
+	}, [image, imageWidth, imageHeight]);
 
 	return (
 		<div className={styles.Map}>
@@ -166,7 +169,7 @@ const rotatePoint = (angle: number, point: number[], x_px: number, y_px: number)
 	return [x, y];
 };
 
-export const drawGoal = (goal: Point) => {
+export const drawGoal = (goal: Point, color: string) => {
 	if (mapCTX) {
 		let yaw: number = goal.o;
 		let x_px: number = goal.x * pointSpacing + mapOrigin.x;
@@ -197,23 +200,36 @@ export const drawGoal = (goal: Point) => {
 		mapCTX.lineTo(p1[0], p1[1]);
 
 		// Fill the triangle with the given color
-		mapCTX.fillStyle = "red";
+		mapCTX.fillStyle = color;
 		mapCTX.fill();
 	}
 };
 
-export const drawCurrentPosition = (point: Point) => {
-	if (mapCTX) {
-		mapCTX.fillStyle = "black";
+export const drawTrajectory = (points: Point[]) => {
+	if (mapCTX && points.length > 1) {
+		mapCTX.strokeStyle = "green";
+		mapCTX.lineWidth = 3;
 		mapCTX.beginPath();
-		mapCTX.arc(
-			point.x * pointSpacing + mapOrigin.x,
-			-point.y * pointSpacing + mapOrigin.y,
-			3,
-			0,
-			2 * Math.PI
-		);
-		mapCTX.fill();
+
+		// Calculate the pixel coordinates of the first point
+		const startPoint = points[0];
+		let startX = startPoint.x * pointSpacing + mapOrigin.x;
+		let startY = -startPoint.y * pointSpacing + mapOrigin.y;
+		mapCTX.moveTo(startX, startY);
+
+		// Draw lines to connect subsequent points
+		for (let i = 1; i < points.length; i++) {
+			const currentPoint = points[i];
+			let currentX = currentPoint.x * pointSpacing + mapOrigin.x;
+			let currentY = -currentPoint.y * pointSpacing + mapOrigin.y;
+			mapCTX.lineTo(currentX, currentY);
+		}
+
+		// Draw the trajectory lines
+		mapCTX.stroke();
+
+		// Call drawGoal on the last point
+		drawGoal(points[points.length - 1], "green");
 	}
 };
 

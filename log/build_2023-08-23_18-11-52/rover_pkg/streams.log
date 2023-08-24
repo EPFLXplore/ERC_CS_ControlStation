@@ -1,0 +1,23 @@
+[1.645s] Invoking command in '/home/evan/Desktop/Xplore/CS_workspace/cs_ws/src/rover_pkg': PYTHONPATH=/home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/prefix_override:/home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../../build/rover_pkg build --build-base /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build install --record /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/install.log --single-version-externally-managed
+[1.942s] running egg_info
+[1.943s] writing ../../../build/rover_pkg/rover_pkg.egg-info/PKG-INFO
+[1.944s] writing dependency_links to ../../../build/rover_pkg/rover_pkg.egg-info/dependency_links.txt
+[1.944s] writing entry points to ../../../build/rover_pkg/rover_pkg.egg-info/entry_points.txt
+[1.945s] writing requirements to ../../../build/rover_pkg/rover_pkg.egg-info/requires.txt
+[1.945s] writing top-level names to ../../../build/rover_pkg/rover_pkg.egg-info/top_level.txt
+[1.989s] reading manifest file '../../../build/rover_pkg/rover_pkg.egg-info/SOURCES.txt'
+[1.990s] writing manifest file '../../../build/rover_pkg/rover_pkg.egg-info/SOURCES.txt'
+[1.990s] running build
+[1.991s] running build_py
+[1.992s] running install
+[1.992s] running install_lib
+[1.993s] running install_data
+[1.993s] running install_egg_info
+[1.994s] removing '/home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg-0.0.0-py3.8.egg-info' (and everything under it)
+[1.997s] Copying ../../../build/rover_pkg/rover_pkg.egg-info to /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg-0.0.0-py3.8.egg-info
+[1.997s] running install_scripts
+[2.023s] Installing cameras_publisher script to /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/rover_pkg
+[2.023s] Installing gripper_camera script to /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/rover_pkg
+[2.023s] Installing rover script to /home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/rover_pkg
+[2.028s] writing list of installed files to '/home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/install.log'
+[2.063s] Invoked command in '/home/evan/Desktop/Xplore/CS_workspace/cs_ws/src/rover_pkg' returned '0': PYTHONPATH=/home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/prefix_override:/home/evan/Desktop/Xplore/CS_workspace/install/rover_pkg/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../../build/rover_pkg build --build-base /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/build install --record /home/evan/Desktop/Xplore/CS_workspace/build/rover_pkg/install.log --single-version-externally-managed
