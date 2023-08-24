@@ -1,7 +1,0 @@
-[console_scripts]
-elec_test_node = cs_test_pkg.elec_test_node:main
-gamepad_test_node = cs_test_pkg.gamepad_test_node:main
-hd_test_node = cs_test_pkg.hd_test_node:main
-nav_test_node = cs_test_pkg.nav_test_node:main
-science_test_node = cs_test_pkg.science_test_node:main
-
