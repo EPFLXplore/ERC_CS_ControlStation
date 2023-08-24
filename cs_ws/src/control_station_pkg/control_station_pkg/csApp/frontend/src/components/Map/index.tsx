@@ -169,7 +169,7 @@ const rotatePoint = (angle: number, point: number[], x_px: number, y_px: number)
 	return [x, y];
 };
 
-export const drawGoal = (goal: Point) => {
+export const drawGoal = (goal: Point, color: string) => {
 	if (mapCTX) {
 		let yaw: number = goal.o;
 		let x_px: number = goal.x * pointSpacing + mapOrigin.x;
@@ -200,57 +200,36 @@ export const drawGoal = (goal: Point) => {
 		mapCTX.lineTo(p1[0], p1[1]);
 
 		// Fill the triangle with the given color
-		mapCTX.fillStyle = "red";
+		mapCTX.fillStyle = color;
 		mapCTX.fill();
 	}
 };
 
-export const drawCurrentPosition = (point: Point) => {
-	// if (mapCTX) {
-	// 	mapCTX.fillStyle = "black";
-	// 	mapCTX.beginPath();
-	// 	mapCTX.arc(
-	// 		point.x * pointSpacing + mapOrigin.x,
-	// 		-point.y * pointSpacing + mapOrigin.y,
-	// 		3,
-	// 		0,
-	// 		2 * Math.PI
-	// 	);
-	// 	mapCTX.fill();
-	// }
-
-	if (mapCTX) {
-		let yaw: number = point.o;
-		let x_px: number = point.x * pointSpacing + mapOrigin.x;
-		let y_px: number = -point.y * pointSpacing + mapOrigin.y;
-
-		//set the three points of the triangle to be drawn before rotation
-		let p1 = [x_px, y_px + 7];
-		let p2 = [x_px, y_px - 7];
-		let p3 = [x_px + 20, y_px];
-
-		//======= rotation of p1, p2 and p2 around {x_px, y_px} by yaw ========//
-
-		// Convert the angle from degrees to radians
-		let angle = (-yaw * Math.PI) / 180;
-
-		// Define the rotated points of the triangle
-		p1 = rotatePoint(angle, p1, x_px, y_px);
-		p2 = rotatePoint(angle, p2, x_px, y_px);
-		p3 = rotatePoint(angle, p3, x_px, y_px);
-
-		// Begin the path and set the starting point to p1
+export const drawTrajectory = (points: Point[]) => {
+	if (mapCTX && points.length > 1) {
+		mapCTX.strokeStyle = "green";
+		mapCTX.lineWidth = 3;
 		mapCTX.beginPath();
-		mapCTX.moveTo(p1[0], p1[1]);
 
-		// Draw lines from p1 to p2, p2 to p3, and from p3 back to p1
-		mapCTX.lineTo(p2[0], p2[1]);
-		mapCTX.lineTo(p3[0], p3[1]);
-		mapCTX.lineTo(p1[0], p1[1]);
+		// Calculate the pixel coordinates of the first point
+		const startPoint = points[0];
+		let startX = startPoint.x * pointSpacing + mapOrigin.x;
+		let startY = -startPoint.y * pointSpacing + mapOrigin.y;
+		mapCTX.moveTo(startX, startY);
 
-		// Fill the triangle with the given color
-		mapCTX.fillStyle = "green";
-		mapCTX.fill();
+		// Draw lines to connect subsequent points
+		for (let i = 1; i < points.length; i++) {
+			const currentPoint = points[i];
+			let currentX = currentPoint.x * pointSpacing + mapOrigin.x;
+			let currentY = -currentPoint.y * pointSpacing + mapOrigin.y;
+			mapCTX.lineTo(currentX, currentY);
+		}
+
+		// Draw the trajectory lines
+		mapCTX.stroke();
+
+		// Call drawGoal on the last point
+		drawGoal(points[points.length - 1], "green");
 	}
 };
 

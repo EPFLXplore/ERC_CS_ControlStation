@@ -133,7 +133,7 @@ function useGamepad(mode: string, selectorCallback?: () => void) {
 				}
 			}, 150)
 		);
-	}, [socket, gamepadCommandState, gamepadFocus]);
+	}, [socket, gamepadCommandState, gamepadFocus, mode]);
 
 	useEffect(() => {
 		requestAnimationFrame(update);

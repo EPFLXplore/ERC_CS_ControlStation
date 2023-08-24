@@ -47,11 +47,11 @@ class NavTestNode(Node):
 
         msg = Odometry()
         msg.pose.pose.position.x = float(self.i)
-        msg.pose.pose.position.y = float(self.i + 1)
+        msg.pose.pose.position.y = float(self.i*3 + 1)
         msg.pose.pose.position.z = float(self.i + 2)
-        msg.pose.pose.orientation.x = float(self.i + 3)
-        msg.pose.pose.orientation.y = float(self.i + 4)
-        msg.pose.pose.orientation.z = float(self.i + 5)
+        msg.pose.pose.orientation.x = float(self.i*10 + 3)
+        msg.pose.pose.orientation.y = float(self.i*10 + 4)
+        msg.pose.pose.orientation.z = float(self.i*15 + 5)
         msg.child_frame_id = "nav test child frame id"
         msg.header.frame_id = "nav test header"
         msg.header.stamp = self.get_clock().now().to_msg()

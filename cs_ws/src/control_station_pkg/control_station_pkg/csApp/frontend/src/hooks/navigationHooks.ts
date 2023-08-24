@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { drawGoal } from "../components/Map";
-import { drawCurrentPosition } from "../components/Map";
+import { drawTrajectory } from "../components/Map";
 
 type Goal = { id: number; x: number; y: number; o: number };
+type Point = { x: number; y: number; o: number };
 
 export const useGoalTracker = () => {
 	const [goals, setGoals] = useState<Goal[]>([]);
@@ -72,7 +73,7 @@ export const useGoalTracker = () => {
 
 	useEffect(() => {
 		goals.forEach((goal) => {
-			drawGoal({ x: goal.x, y: goal.y, o: goal.o });
+			drawGoal({ x: goal.x, y: goal.y, o: goal.o }, "red");
 		});
 	}, [goals]);
 
@@ -86,6 +87,7 @@ export function useNavigation() {
 	const [wheelsPosition, setWheelsPosition] = useState([0, 0, 0, 0]);
 	const [linearVelocity, setLinearVelocity] = useState([0, 0, 0]);
 	const [angularVelocity, setAngularVelocity] = useState([0, 0, 0]);
+	const [trajectoryPoints, setTrajectoryPoints] = useState<Point[]>([]);
 
 	useEffect(() => {
 		let navigationSocket = new WebSocket("ws://127.0.0.1:8000/ws/csApp/info_nav/");
@@ -98,11 +100,14 @@ export function useNavigation() {
 			setWheelsPosition(data.wheel_ang);
 			setLinearVelocity(data.linVel);
 			setAngularVelocity(data.angVel);
-			drawCurrentPosition({
-				x: data.position[0],
-				y: data.position[1],
-				o: data.orientation[2],
-			});
+			setTrajectoryPoints((prevPoints) => [
+				...prevPoints,
+				{
+					x: data.position[0],
+					y: data.position[1],
+					o: data.orientation[2],
+				},
+			]);
 		};
 
 		navigationSocket.onerror = (e) => {
@@ -112,6 +117,10 @@ export function useNavigation() {
 
 		setSocket(navigationSocket);
 	}, []);
+
+	useEffect(() => {
+		drawTrajectory(trajectoryPoints);
+	}, [trajectoryPoints]);
 
 	return [
 		currentPosition,
