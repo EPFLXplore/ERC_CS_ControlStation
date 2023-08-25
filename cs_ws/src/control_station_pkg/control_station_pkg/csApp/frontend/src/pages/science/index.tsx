@@ -6,6 +6,7 @@ import styles from "./style.module.sass";
 import { WaveGraph } from "../../components/WaveGraph";
 import { Table } from "../../components/Table";
 import { Sensor } from "../../utils/sensor.type";
+import useElecInfos from "../../hooks/elecHooks";
 
 const pointsFirstWave = [
 	{ x: 0, y: 0 },
@@ -57,6 +58,8 @@ const candidates = [
 ];
 
 export default () => {
+	const [humidity, temperature, conductivity, pH] = useElecInfos();
+
 	return (
 		<div className="page">
 			<Background />
@@ -71,7 +74,10 @@ export default () => {
 			<div className={styles.Info}>
 				<div className={styles.ControlsContainer}>
 					<Table values={values1} sensorType={Sensor.NPK} />
-					<Table values={values2} sensorType={Sensor.ALL} />
+					<Table
+						values={[humidity, temperature, conductivity, pH]}
+						sensorType={Sensor.ALL}
+					/>
 				</div>
 			</div>
 			<div className={styles.taskControlContainer}>
