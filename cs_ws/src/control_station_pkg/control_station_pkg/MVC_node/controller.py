@@ -114,7 +114,6 @@ class Controller():
     # ========= SCIENCE CALLBACKS ========= 
 
     def science_state(self, string):
-        print(string.data)
         async_to_sync(channel_layer.group_send)("tab_info_drill", 
             {
                 'type': 'broadcast_info_drill',
@@ -177,9 +176,10 @@ class Controller():
 
 
     def science_mass(self, data):
-        async_to_sync(channel_layer.group_send)("tab_info_science", 
+        print("science_mass")
+        async_to_sync(channel_layer.group_send)("info_science", 
             {
-                "type": "broadcast_info_science",
+                "type": "science_message",
                 'mass' : [data.data],
                 'candidates' : [''],
                 'npk-sensor' : [''],
@@ -202,15 +202,17 @@ class Controller():
             })
 
     def science_4in1(self, array):
-        async_to_sync(channel_layer.group_send)("tab_info_science", 
+        print("science_4in1")
+        async_to_sync(channel_layer.group_send)("info_science", 
             {
-                "type": "broadcast_info_science",
+                "type": "science_message",
                 'mass' : [''],
                 'candidates' : [''],
                 'npk-sensor' : [''],
                 'four-in-one' : [array.data],
             })
         
+
 
     # ========= HD CALLBACKS ========= 
 

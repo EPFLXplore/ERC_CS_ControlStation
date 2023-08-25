@@ -44,16 +44,16 @@ class ElecTestNode(Node):
         msg_bool = Bool()
         msg_bool.data = self.i % 2 == 0
 
-        self.publisher_mass.publish(msg_float_32_multi)
-        self.publisher_spectrometer.publish(msg_float_32_multi)
-        self.publisher_npk.publish(msg_float_32_multi)
-        self.publisher_potentiometers.publish(msg_float_32_multi)
-        self.publisher_LED_confirm.publish(msg_float_32_multi)
-        self.publisher_HD_voltmeter.publish(msg_int_8)
-        self.publisher_HD_laser.publish(msg_bool)
+        # self.publisher_mass.publish(msg_float_32_multi)
+        # self.publisher_spectrometer.publish(msg_float_32_multi)
+        # self.publisher_npk.publish(msg_float_32_multi)
+        # self.publisher_potentiometers.publish(msg_float_32_multi)
+        # self.publisher_LED_confirm.publish(msg_float_32_multi)
+        # self.publisher_HD_voltmeter.publish(msg_int_8)
+        # self.publisher_HD_laser.publish(msg_bool)
         self.publisher_four_in_one.publish(msg_float_32_multi)
 
-        print("SENDING")
+        print(msg_float_32_multi.data)
         
         self.i += 1
 

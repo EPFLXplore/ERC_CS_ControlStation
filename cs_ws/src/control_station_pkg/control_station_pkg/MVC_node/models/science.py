@@ -17,6 +17,16 @@ class Science:
         #   - mass of each tube
         self.__params = []
 
+        # self.el_mass = 
+        # self.el_spectrometer = 
+        # self.el_npk = 
+        # self.el_potentiometers = 
+        # self.el_led_confirm = 
+        # self.el_hd_volmeter = 
+        # self.el_hd_laser = 
+        # self.el_four_in_one = 
+
+
         # smthg to do with the picture analysis of images from the science bay
         # unfortunately it wasn't implemented this year
         self.__volumes = [0,0,0]

@@ -21,7 +21,7 @@ Data format :
 """
 
 
-class InfoScienceConsumer(AsyncWebsocketConsumer):
+class ScienceDrillConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
         

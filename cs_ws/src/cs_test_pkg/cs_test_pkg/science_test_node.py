@@ -2,7 +2,7 @@
 import rclpy
 from rclpy.node import Node
 
-from std_msgs.msg import String
+from std_msgs.msg import String, Int8, Float32MultiArray
 from diagnostic_msgs.msg import DiagnosticStatus
 
 
@@ -14,12 +14,10 @@ class ScienceTestNode(Node):
         # Log publisher
         self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
 
+        #self.publisher_mass = self.create_publisher(Int8, 'SC/mass_instruction', 10)
+        self.publisher_fsm = self.create_publisher(Int8, 'SC/fsm_state_to_cs', 10)
+        self.publisher_motors_pos = self.create_publisher(Float32MultiArray, 'SC/motors_pos', 10)
 
-        self.publisher_task_progress = self.create_publisher(String, 'topic', 10)
-        self.publisher_sc_params = self.create_publisher(String, 'topic', 10)
-        self.publisher_sc_fsm_state = self.create_publisher(String, 'ROVER/SC_fsm_state', 10)
-
-        self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
 
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
