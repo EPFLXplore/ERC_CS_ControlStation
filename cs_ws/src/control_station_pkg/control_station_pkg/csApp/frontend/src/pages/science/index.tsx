@@ -7,6 +7,7 @@ import { WaveGraph } from "../../components/WaveGraph";
 import { Table } from "../../components/Table";
 import { Sensor } from "../../utils/sensor.type";
 import useElecInfos from "../../hooks/elecHooks";
+import useScienceDataInfos from "../../hooks/scienceDataHooks";
 
 const pointsFirstWave = [
 	{ x: 0, y: 0 },
@@ -58,7 +59,7 @@ const candidates = [
 ];
 
 export default () => {
-	const [humidity, temperature, conductivity, pH] = useElecInfos();
+	const [mass, npkSensor, fourInOneSensor] = useScienceDataInfos();
 
 	return (
 		<div className="page">
@@ -73,11 +74,9 @@ export default () => {
 			</div>
 			<div className={styles.Info}>
 				<div className={styles.ControlsContainer}>
-					<Table values={values1} sensorType={Sensor.NPK} />
-					<Table
-						values={[humidity, temperature, conductivity, pH]}
-						sensorType={Sensor.ALL}
-					/>
+					<Table values={npkSensor} sensorType={Sensor.NPK} />
+					<Table values={fourInOneSensor} sensorType={Sensor.ALL} />
+					<Table values={mass} sensorType={Sensor.MASS} />
 				</div>
 			</div>
 			<div className={styles.taskControlContainer}>
