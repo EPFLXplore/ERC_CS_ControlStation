@@ -11,7 +11,6 @@ from ..views import *
 Data format :
 {
     'id' : string,
-    'target' : string,
     'buttons' : [button_1, button_2, ... , button_11] Array int,
     'axes' : [axis_1, axis_2, ... , axis_6] Array float
     'mode' : string, "NAV" or "HD"

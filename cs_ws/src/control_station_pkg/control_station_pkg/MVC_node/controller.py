@@ -75,18 +75,19 @@ class Controller():
     '''
     def __init__(self, cs):
         self.cs = cs
+        self.science = models.Science()
 
 
     # ===============================
     #            CALLBACKS
     # ===============================
 
-    def test_joystick(self, twist):
-        '''
-            debug joystick
-        '''
-        tl = twist.linear
-        ta = twist.angular
+    # def test_joystick(self, twist):
+    #     '''
+    #         debug joystick
+    #     '''
+    #     tl = twist.linear
+    #     ta = twist.angular
         # self.cs.node.get_logger().info("Linear %d %d %d", tl.x, tl.y, tl.z)
         # self.cs.node.get_logger().info("Angular %d %d %d", ta.x, ta.y, ta.z)
 
@@ -113,17 +114,9 @@ class Controller():
 
     # ========= SCIENCE CALLBACKS ========= 
 
-    def science_state(self, string):
-        async_to_sync(channel_layer.group_send)("tab_info_drill", 
-            {
-                'type': 'broadcast_info_drill',
-                'state': [string.data],
-                'motor_pos': [''],
-                'motor_speed': [''],
-                'motor_current': [''],
-                'drill_speed': [''],
-                'limit_switches': [''],
-            })
+    def science_state(self, data):
+        self.science.state = data.data
+        self.science.UpdateScienceDrillSocket()
         
     
     def science_motors_pos(self, motors_pos):
@@ -176,42 +169,20 @@ class Controller():
 
 
     def science_mass(self, data):
-        print("science_mass")
-        async_to_sync(channel_layer.group_send)("info_science", 
-            {
-                "type": "science_message",
-                'mass' : [data.data],
-                'candidates' : [''],
-                'npk-sensor' : [''],
-                'four-in-one' : [''],
-            })
+        self.science.mass = data.data
+        self.science.UpdateScienceDataSocket()
 
-    # TODO ============================
     def science_spectrometer(self, data):
-        pass
-    # =================================
+        self.science.spectrometer = data.data
+        self.science.UpdateScienceDataSocket()
 
-    def science_npk(self, array):
-        async_to_sync(channel_layer.group_send)("tab_info_science", 
-            {
-                "type": "broadcast_info_science",
-                'mass' : [''],
-                'candidates' : [''],
-                'npk-sensor' : [array.data],
-                'four-in-one' : [''],
-            })
+    def science_npk(self, data):
+        self.science.npk_sensor = data.data
+        self.science.UpdateScienceDataSocket()
 
-    def science_4in1(self, array):
-        print("science_4in1")
-        async_to_sync(channel_layer.group_send)("info_science", 
-            {
-                "type": "science_message",
-                'mass' : [''],
-                'candidates' : [''],
-                'npk-sensor' : [''],
-                'four-in-one' : [array.data],
-            })
-        
+    def science_4in1(self, data):
+        self.science.four_in_one = data.data
+        self.science.UpdateScienceDataSocket()
 
 
     # ========= HD CALLBACKS ========= 
