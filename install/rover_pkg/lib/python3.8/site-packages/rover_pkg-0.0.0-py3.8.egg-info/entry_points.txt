@@ -1,5 +1,0 @@
-[console_scripts]
-cameras_publisher = rover_pkg.cameras_publisher:main
-gripper_camera = rover_pkg.gripper_camera:main
-rover = rover_pkg.rover:main
-

@@ -38,6 +38,8 @@ const Map: React.FC<Props> = ({ origin }) => {
 	}, [map]);
 
 	useEffect(() => {
+
+		console.log("use effect draw grid called");
 		// Draw the grid on the canvas
 		const canvas = canvasRef.current;
 		if (canvas && image) {
@@ -143,7 +145,8 @@ const Map: React.FC<Props> = ({ origin }) => {
 				}
 			}
 		}
-	}, [origin, image, imageWidth, imageHeight]);
+	//}, [origin, image, imageWidth, imageHeight]); 		//origin trigger draw grid a chaque fois que la position est draw
+	}, [image, imageWidth, imageHeight]);
 
 	return (
 		<div className={styles.Map}>

@@ -1,0 +1,22 @@
+[1.851s] Invoking command in '/home/evan/Desktop/Xplore/CS_workspace/cs_ws/src/control_station_pkg': PYTHONPATH=/home/evan/Desktop/Xplore/CS_workspace/build/control_station_pkg/prefix_override:/home/evan/Desktop/Xplore/CS_workspace/install/control_station_pkg/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../../build/control_station_pkg build --build-base /home/evan/Desktop/Xplore/CS_workspace/build/control_station_pkg/build install --record /home/evan/Desktop/Xplore/CS_workspace/build/control_station_pkg/install.log --single-version-externally-managed
+[2.219s] running egg_info
+[2.221s] writing ../../../build/control_station_pkg/control_station_pkg.egg-info/PKG-INFO
+[2.232s] writing dependency_links to ../../../build/control_station_pkg/control_station_pkg.egg-info/dependency_links.txt
+[2.242s] writing entry points to ../../../build/control_station_pkg/control_station_pkg.egg-info/entry_points.txt
+[2.243s] writing requirements to ../../../build/control_station_pkg/control_station_pkg.egg-info/requires.txt
+[2.243s] writing top-level names to ../../../build/control_station_pkg/control_station_pkg.egg-info/top_level.txt
+[2.276s] reading manifest file '../../../build/control_station_pkg/control_station_pkg.egg-info/SOURCES.txt'
+[2.276s] writing manifest file '../../../build/control_station_pkg/control_station_pkg.egg-info/SOURCES.txt'
+[2.276s] running build
+[2.276s] running build_py
+[2.276s] running install
+[2.276s] running install_lib
+[2.278s] running install_data
+[2.279s] running install_egg_info
+[2.281s] removing '/home/evan/Desktop/Xplore/CS_workspace/install/control_station_pkg/lib/python3.8/site-packages/control_station_pkg-0.0.0-py3.8.egg-info' (and everything under it)
+[2.281s] Copying ../../../build/control_station_pkg/control_station_pkg.egg-info to /home/evan/Desktop/Xplore/CS_workspace/install/control_station_pkg/lib/python3.8/site-packages/control_station_pkg-0.0.0-py3.8.egg-info
+[2.283s] running install_scripts
+[2.308s] Installing cameras_reciever script to /home/evan/Desktop/Xplore/CS_workspace/install/control_station_pkg/lib/control_station_pkg
+[2.308s] Installing control_station script to /home/evan/Desktop/Xplore/CS_workspace/install/control_station_pkg/lib/control_station_pkg
+[2.308s] writing list of installed files to '/home/evan/Desktop/Xplore/CS_workspace/build/control_station_pkg/install.log'
+[2.368s] Invoked command in '/home/evan/Desktop/Xplore/CS_workspace/cs_ws/src/control_station_pkg' returned '0': PYTHONPATH=/home/evan/Desktop/Xplore/CS_workspace/build/control_station_pkg/prefix_override:/home/evan/Desktop/Xplore/CS_workspace/install/control_station_pkg/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../../build/control_station_pkg build --build-base /home/evan/Desktop/Xplore/CS_workspace/build/control_station_pkg/build install --record /home/evan/Desktop/Xplore/CS_workspace/build/control_station_pkg/install.log --single-version-externally-managed
