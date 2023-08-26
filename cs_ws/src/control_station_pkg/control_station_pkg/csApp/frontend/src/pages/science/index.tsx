@@ -6,47 +6,7 @@ import styles from "./style.module.sass";
 import { WaveGraph } from "../../components/WaveGraph";
 import { Table } from "../../components/Table";
 import { Sensor } from "../../utils/sensor.type";
-
-const pointsFirstWave = [
-	{ x: 0, y: 0 },
-	{ x: 1, y: 1 },
-	{ x: 2, y: 3 },
-	{ x: 3, y: 2 },
-	{ x: 0, y: 0 },
-	{ x: 1, y: 1 },
-	{ x: 2, y: 3 },
-	{ x: 3, y: 2 },
-	{ x: 0, y: 0 },
-	{ x: 1, y: 1 },
-	{ x: 2, y: 3 },
-	{ x: 3, y: 2 },
-	{ x: 0, y: 0 },
-	{ x: 1, y: 1 },
-	{ x: 2, y: 3 },
-	{ x: 3, y: 2 },
-];
-
-const pointsSecondWave = [
-	{ x: 0, y: 0 },
-	{ x: 2, y: 2 },
-	{ x: 3, y: 2 },
-	{ x: 0, y: 2 },
-	{ x: 0, y: 2 },
-	{ x: 0, y: 0 },
-	{ x: 2, y: 2 },
-	{ x: 3, y: 2 },
-	{ x: 0, y: 2 },
-	{ x: 0, y: 2 },
-	{ x: 0, y: 0 },
-	{ x: 2, y: 2 },
-	{ x: 3, y: 2 },
-	{ x: 0, y: 2 },
-	{ x: 0, y: 2 },
-	{ x: 3, y: 2 },
-];
-
-const values1 = [10, 5.4, 12];
-const values2 = [10, 16, 12, 6];
+import useScienceDataInfos from "../../hooks/scienceDataHooks";
 
 const candidates = [
 	{ percentage: 78, element: "Phosphate" },
@@ -57,21 +17,28 @@ const candidates = [
 ];
 
 export default () => {
+	const [mass, npkSensor, fourInOneSensor, spectrometer, spectrometerCandidate] =
+		useScienceDataInfos();
+
 	return (
 		<div className="page">
 			<Background />
 			<BackButton />
 			<div className={styles.InfoContainer}>
 				<WaveGraph
-					measure={pointsFirstWave}
-					pointsSecondWave={pointsSecondWave}
+					measure={spectrometer.map((measure, index) => ({ x: index, y: measure }))}
+					pointsSecondWave={spectrometerCandidate.map((measure, index) => ({
+						x: index,
+						y: measure,
+					}))}
 					candidates={candidates}
 				/>
 			</div>
 			<div className={styles.Info}>
 				<div className={styles.ControlsContainer}>
-					<Table values={values1} sensorType={Sensor.NPK} />
-					<Table values={values2} sensorType={Sensor.ALL} />
+					<Table values={npkSensor} sensorType={Sensor.NPK} />
+					<Table values={fourInOneSensor} sensorType={Sensor.ALL} />
+					<Table values={mass} sensorType={Sensor.MASS} />
 				</div>
 			</div>
 			<div className={styles.taskControlContainer}>

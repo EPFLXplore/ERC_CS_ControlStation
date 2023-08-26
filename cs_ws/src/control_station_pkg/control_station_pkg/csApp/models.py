@@ -34,30 +34,30 @@ class TaskProgress(models.Model):
         return str(self.state)
 
 
-class Science(models.Model):
-    '''name = models.TextField(editable=False, default="Science")
+# class Science(models.Model):
+#     '''name = models.TextField(editable=False, default="Science")
 
-    sc_text = models.TextField(default = "Nothing yet.")
+#     sc_text = models.TextField(default = "Nothing yet.")
 
-    t1_hum = models.PositiveSmallIntegerField(default = -1)
-    t2_hum = models.PositiveSmallIntegerField(default = -1)
-    t3_hum = models.PositiveSmallIntegerField(default = -1)
+#     t1_hum = models.PositiveSmallIntegerField(default = -1)
+#     t2_hum = models.PositiveSmallIntegerField(default = -1)
+#     t3_hum = models.PositiveSmallIntegerField(default = -1)
 
-    mass = models.PositiveSmallIntegerField(default = 0)
-    '''
+#     mass = models.PositiveSmallIntegerField(default = 0)
+#     '''
 
-    name = models.TextField(default="Science")
+#     name = models.TextField(default="Science")
 
-    sc_text = models.TextField(null=True)
+#     sc_text = models.TextField(null=True)
 
-    t1_hum = models.PositiveSmallIntegerField(null=True)
-    t2_hum = models.PositiveSmallIntegerField(null=True)
-    t3_hum = models.PositiveSmallIntegerField(null=True)
+#     t1_hum = models.PositiveSmallIntegerField(null=True)
+#     t2_hum = models.PositiveSmallIntegerField(null=True)
+#     t3_hum = models.PositiveSmallIntegerField(null=True)
 
-    mass = models.PositiveSmallIntegerField(default = 0)
+#     mass = models.PositiveSmallIntegerField(default = 0)
 
-    def __str__(self):
-        return str(self.sc_text)
+#     def __str__(self):
+#         return str(self.sc_text)
 
 
 class Navigation(models.Model):

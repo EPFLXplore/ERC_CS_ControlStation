@@ -7,9 +7,9 @@ import PageHeader from "../../components/PageHeader";
 import { Cameras } from "../../utils/cameras.type";
 import CameraView from "../../components/CameraView";
 import useCameraSelector from "../../hooks/cameraHooks";
+import useScienceDrillInfos from "../../hooks/scienceDrillHooks";
 
 //to replace by the real data
-const state = "Extracting sample..";
 const data: DataRow[] = [
 	{
 		id: "Module1",
@@ -31,13 +31,6 @@ const data: DataRow[] = [
 	},
 ];
 
-const circlesData = [
-	{ label: "1st LS", value: 1 },
-	{ label: "2nd LS", value: 1 },
-	{ label: "3rd LS", value: 1 },
-	{ label: "4th LS", value: 0 },
-];
-
 type DataRow = {
 	id: string;
 	velocity: number;
@@ -46,6 +39,7 @@ type DataRow = {
 };
 export default () => {
 	const [images, cameras, selectCamera] = useCameraSelector([Cameras.CAM1]);
+	const [state, limitSwitches] = useScienceDrillInfos();
 	const sensorType = "Sensor Data";
 	const rows = ["Velocity", "Distance", "Current"]; // Rows titles
 	const columns = ["Module1", "Module2", "Drill"]; // Columns titles
@@ -69,13 +63,15 @@ export default () => {
 					"Camera 1",
 					"Camera 2",
 					"Camera 3",
-					"Camera 4",
-					"Camera 5",
-					"Camera 6",
-					"Camera 7",
+					// "Camera 4",
+					// "Camera 5",
+					// "Camera 6",
+					"Camera Gripper",
 				]}
 				optionsCallback={selectCamera}
-				currentOptions={cameras.map((camera) => "Camera " + (camera + 1))}
+				currentOptions={cameras.map((camera) =>
+					camera < 6 ? "Camera " + (camera + 1) : "Camera Gripper"
+				)}
 			/>
 			<div className={styles.rightContainer}>
 				<div>
@@ -135,7 +131,7 @@ export default () => {
 							</tr>
 						</thead>
 						<tbody>
-							{circlesData.map((circle, index) => (
+							{limitSwitches.map((circle, index) => (
 								<tr key={index}>
 									<td>
 										<text>{circle.label}</text>

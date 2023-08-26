@@ -24,8 +24,9 @@
 import datetime
 from turtle import pos
 import json
-import websocket
 import time
+
+import numpy as np
 
 from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray, Header
 from geometry_msgs.msg import Pose, Point, Twist, PoseStamped, Quaternion
@@ -34,8 +35,7 @@ from transforms3d.euler import euler2quat, quat2euler
 
 from .models.rover   import Task
 
-from nav_msgs.msg import Odometry
-from csApp import models
+from .models.science import Science
 
 # ================================================================================
 # Webscokets for ASGI
@@ -75,18 +75,18 @@ class Controller():
     '''
     def __init__(self, cs):
         self.cs = cs
-
+        self.science = Science()
 
     # ===============================
     #            CALLBACKS
     # ===============================
 
-    def test_joystick(self, twist):
-        '''
-            debug joystick
-        '''
-        tl = twist.linear
-        ta = twist.angular
+    # def test_joystick(self, twist):
+    #     '''
+    #         debug joystick
+    #     '''
+    #     tl = twist.linear
+    #     ta = twist.angular
         # self.cs.node.get_logger().info("Linear %d %d %d", tl.x, tl.y, tl.z)
         # self.cs.node.get_logger().info("Angular %d %d %d", ta.x, ta.y, ta.z)
 
@@ -113,18 +113,9 @@ class Controller():
 
     # ========= SCIENCE CALLBACKS ========= 
 
-    def science_state(self, string):
-        print(string.data)
-        async_to_sync(channel_layer.group_send)("tab_info_drill", 
-            {
-                'type': 'broadcast_info_drill',
-                'state': [string.data],
-                'motor_pos': [''],
-                'motor_speed': [''],
-                'motor_current': [''],
-                'drill_speed': [''],
-                'limit_switches': [''],
-            })
+    def science_state(self, data):
+        self.science.state = data.data
+        self.science.UpdateScienceDrillSocket()
         
     
     def science_motors_pos(self, motors_pos):
@@ -177,40 +168,22 @@ class Controller():
 
 
     def science_mass(self, data):
-        async_to_sync(channel_layer.group_send)("tab_info_science", 
-            {
-                "type": "broadcast_info_science",
-                'mass' : [data.data],
-                'candidates' : [''],
-                'npk-sensor' : [''],
-                'four-in-one' : [''],
-            })
+        self.science.mass = data.data
+        self.science.UpdateScienceDataSocket()
 
-    # TODO ============================
     def science_spectrometer(self, data):
-        pass
-    # =================================
+        self.science.spectrometer = data.data
+        self.science.FindClosestCandidate()
+        self.science.UpdateScienceDataSocket()
 
-    def science_npk(self, array):
-        async_to_sync(channel_layer.group_send)("tab_info_science", 
-            {
-                "type": "broadcast_info_science",
-                'mass' : [''],
-                'candidates' : [''],
-                'npk-sensor' : [array.data],
-                'four-in-one' : [''],
-            })
+    def science_npk(self, data):
+        self.science.npk_sensor = data.data
+        self.science.UpdateScienceDataSocket()
 
-    def science_4in1(self, array):
-        async_to_sync(channel_layer.group_send)("tab_info_science", 
-            {
-                "type": "broadcast_info_science",
-                'mass' : [''],
-                'candidates' : [''],
-                'npk-sensor' : [''],
-                'four-in-one' : [array.data],
-            })
-        
+    def science_4in1(self, data):
+        self.science.four_in_one = data.data
+        self.science.UpdateScienceDataSocket()
+
 
     # ========= HD CALLBACKS ========= 
 
@@ -247,15 +220,13 @@ class Controller():
     # receives an Odometry message from NAVIGATION
     def nav_data(self, odometry):
 
-        print("nav data received")
-
         position = odometry.pose.pose.position
         orientation = odometry.pose.pose.orientation
         linVel = odometry.twist.twist.linear
         angVel = odometry.twist.twist.angular
 
 
-        async_to_sync(channel_layer.group_send)("info_nav", {"type": "nav_message",
+        async_to_sync(channel_layer.group_send)("nav", {"type": "nav_message",
                                                             'position'   : [position.x, position.y, position.z],
                                                             'orientation': [orientation.w, orientation.x, orientation.y, orientation.z],
                                                             'linVel'     : [linVel.x, linVel.y, linVel.z],

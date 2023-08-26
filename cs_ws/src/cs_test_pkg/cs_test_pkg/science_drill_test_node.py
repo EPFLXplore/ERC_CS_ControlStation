@@ -2,7 +2,7 @@
 import rclpy
 from rclpy.node import Node
 
-from std_msgs.msg import String
+from std_msgs.msg import String, Int8, Float32MultiArray
 from diagnostic_msgs.msg import DiagnosticStatus
 
 
@@ -15,11 +15,11 @@ class ScienceTestNode(Node):
         self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
 
 
-        self.publisher_task_progress = self.create_publisher(String, 'topic', 10)
-        self.publisher_sc_params = self.create_publisher(String, 'topic', 10)
-        self.publisher_sc_fsm_state = self.create_publisher(String, 'ROVER/SC_fsm_state', 10)
-
-        self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
+        self.publisher_fsm = self.create_publisher(Int8, 'SC/fsm_state_to_cs', 10)
+        self.publisher_motors_pos = self.create_publisher(Float32MultiArray, 'SC/motors_pos', 10)
+        self.publisher_motors_speed = self.create_publisher(Float32MultiArray, 'SC/motors_speed', 10)
+        self.publisher_motors_currents = self.create_publisher(Float32MultiArray, 'SC/motors_currents', 10)
+        self.publisher_limit_switches = self.create_publisher(Float32MultiArray, 'SC/limit_switches', 10)
 
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
@@ -27,13 +27,13 @@ class ScienceTestNode(Node):
 
     def timer_callback(self):
 
-        msg_log = DiagnosticStatus()
-        msg_log.name = 'Science Test'
-        #msg_log.level = self.i % 3
-        msg_log.message = 'Diagnostic Status Message from Science Test'
-        self.publisher_log.publish(msg_log)
+        print('Science drill test is running: "%d"' % self.i)
 
-
+        # msg_log = DiagnosticStatus()
+        # msg_log.name = 'Science drill Test'
+        # msg_log.level = self.i % 3
+        # msg_log.message = 'Diagnostic Status Message from Science drill Test'
+        # self.publisher_log.publish(msg_log)
 
         msg = String()
         msg.data = 'Hello World: %d' % self.i

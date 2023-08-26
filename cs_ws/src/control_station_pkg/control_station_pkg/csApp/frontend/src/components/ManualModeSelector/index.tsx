@@ -11,12 +11,12 @@ const ManualModeSelector = ({ mode, callback }: { mode: Task; callback: (mode: T
 	};
 
 	const handlePrev = () => {
-		const newMode = (modes.indexOf(mode) - 1) % texts.length;
+		const newMode = (modes.indexOf(mode) - 1 + modes.length) % texts.length;
 		_setActiveIndex(newMode);
 	};
 
 	const handleNext = () => {
-		const newMode = (modes.indexOf(mode) + 1) % texts.length;
+		const newMode = (modes.indexOf(mode) + 1 + modes.length) % texts.length;
 		_setActiveIndex(newMode);
 	};
 

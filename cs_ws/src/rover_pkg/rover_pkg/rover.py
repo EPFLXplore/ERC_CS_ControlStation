@@ -126,7 +126,7 @@ class Rover():
         
         # Rover --> NAV
         self.Nav_Goal_pub     = self.node.create_publisher(PoseStamped, 'ROVER/NAV_goal'    , 1)
-        self.Nav_Status       = self.node.create_publisher(String,      'ROVER/NAV_STATUS'  , 1)
+        self.Nav_Status       = self.node.create_publisher(String,      'ROVER/NAV_status'  , 1)
         #self.Nav_gamepad_pub  = self.node.create_publisher(Joy,         'ROVER/NAV_gamepad' , 1)
 
 
@@ -185,7 +185,7 @@ class Rover():
     #       - Retry  = 5
 
     def task_instr(self, array):
-        print('task_instr call : ' + str(array.data))
+        #print('task_instr call : ' + str(array.data))
         task = array.data[0]
         instr = array.data[1]
 
@@ -210,8 +210,9 @@ class Rover():
                     self.launcher.start_manual()
                     self.ROVER_STATE = Task.MANUAL
                 else:
+                    pass
                     # self.node.get_logger().info("Can't launch Manual if another task is still running!")
-                    self.log_task_already_launched("Manual")
+                    #self.log_task_already_launched("Manual")
             elif (self.ROVER_STATE == Task.MANUAL):
                 # ABORT
                 if instr == Instruction.ABORT.value:
@@ -225,13 +226,13 @@ class Rover():
             # LAUNCH 
             if instr == Instruction.LAUNCH.value:
                 if (self.ROVER_STATE == Task.IDLE):
-                    self.node.get_logger().info("LAUNCHING NAVIGATION")
-                    goal = self.model.Nav.getGoal()
-                    self.Nav_Goal_pub.publish(PoseStamped(header=goal.header, pose=goal.pose))
+                    self.node.get_logger().info("LAUNCHING NAVIGATION ...")
                     self.ROVER_STATE = Task.NAVIGATION
                 else:
-                    self.log_task_already_launched("Navigation")
-                    self.node.get_logger().info("Can't launch Navigation if another task is still running, task : " + str(self.ROVER_STATE))
+                    self.node.get_logger().info("SEND GOAL :" + str(self.model.Nav.getGoal().pose.position.x) + " " + str(self.model.Nav.getGoal().pose.position.y) + " " + str(self.model.Nav.getGoal().pose.position.z))
+                    goal = self.model.Nav.getGoal()
+                    self.Nav_Goal_pub.publish(PoseStamped(header=goal.header, pose=goal.pose))
+                    #self.log_task_already_launched("Navigation")
 
             elif (self.ROVER_STATE == Task.NAVIGATION):
                 # ABORT
@@ -262,7 +263,8 @@ class Rover():
                     self.ROVER_STATE = Task.MAINTENANCE
                     self.HD_SemiAuto_Id_pub.publish(Int8(data=self.model.HD.getId()))
                 else:
-                    self.log_task_already_launched("Maintenance")
+                    pass
+                    #self.log_task_already_launched("Maintenance")
                     #self.node.get_logger().info("Can't launch Maintenance if another task is still running!")
 
 
@@ -346,7 +348,7 @@ class Rover():
 
     # run ros
     def run(self):
-        print("Listening")
+        print("Rover node started !")
         rclpy.spin(self.node)
         rclpy.shutdown()
 
@@ -395,8 +397,5 @@ class Rover():
 
 
 def main():
-    print("main launched")
     rover = Rover()
-    print("rover created")
     rover.run()
-    print("running")
