@@ -1,5 +1,6 @@
 import styles from "./style.module.sass";
 import map from "../../assets/images/mars_yard_2023.png";
+import roverIconImage from "../../assets/images//icons/rover_icon.svg";
 import React, { useState, useEffect, useRef } from "react";
 
 type Point = {
@@ -31,7 +32,7 @@ const Map = ({
 }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [image, setImage] = useState<HTMLImageElement>();
-	const [roverIcon, setRoverIcon] = useState<HTMLImageElement>();
+	const [roverIcon, setRoverIcon] = useState<HTMLImageElement>(new Image());
 	const [imageWidth, setImageWidth] = useState<number>(0);
 	const [imageHeight, setImageHeight] = useState<number>(0);
 
@@ -44,6 +45,13 @@ const Map = ({
 			setImageHeight(img.height);
 		};
 		img.src = map;
+
+		// Load the rover icon
+		const rover = new Image();
+		rover.onload = () => {
+			setRoverIcon(rover);
+		};
+		rover.src = roverIconImage;
 	}, [map]);
 
 	useEffect(() => {
@@ -56,7 +64,7 @@ const Map = ({
 
 			if (ctx) {
 				drawMap(canvas, ctx, image, origin);
-				drawTrajectory(trajectory);
+				drawTrajectory(trajectory, roverIcon);
 				goals.forEach((goal: Point) => drawGoal(goal, "#e324a0"));
 			}
 		}
@@ -194,21 +202,22 @@ export const drawGoal = (goal: Point, color: string, image?: CanvasImageSource) 
 		let x_px: number = goal.x * pointSpacing + mapOrigin.x;
 		let y_px: number = -goal.y * pointSpacing + mapOrigin.y;
 
-		//set the three points of the triangle to be drawn before rotation
-		let p1 = [x_px, y_px + 7];
-		let p2 = [x_px, y_px - 7];
-		let p3 = [x_px + 20, y_px];
-
-		//======= rotation of p1, p2 and p2 around {x_px, y_px} by yaw ========//
-
 		// Convert the angle from degrees to radians
 		let angle = (-yaw * Math.PI) / 180;
 
 		if (image) {
 			// Draw the rover
-			mapCTX.beginPath();
-			mapCTX.drawImage(image, x_px, y_px, 20, 20);
+			mapCTX.translate(x_px, y_px);
+			mapCTX.rotate(angle);
+			mapCTX.drawImage(image, -36 / 2, -25 / 2, 36, 25);
 		} else {
+			//set the three points of the triangle to be drawn before rotation
+			let p1 = [x_px, y_px + 7];
+			let p2 = [x_px, y_px - 7];
+			let p3 = [x_px + 20, y_px];
+
+			//======= rotation of p1, p2 and p2 around {x_px, y_px} by yaw ========//
+
 			// Define the rotated points of the triangle
 			p1 = rotatePoint(angle, p1, x_px, y_px);
 			p2 = rotatePoint(angle, p2, x_px, y_px);
@@ -230,7 +239,7 @@ export const drawGoal = (goal: Point, color: string, image?: CanvasImageSource) 
 	}
 };
 
-export const drawTrajectory = (points: Point[]) => {
+export const drawTrajectory = (points: Point[], icon: CanvasImageSource) => {
 	if (mapCTX && points.length > 1) {
 		mapCTX.strokeStyle = "#8f351a";
 		mapCTX.lineWidth = 3;
@@ -254,7 +263,7 @@ export const drawTrajectory = (points: Point[]) => {
 		mapCTX.stroke();
 
 		// Call drawGoal on the last point
-		drawGoal(points[points.length - 1], "#004466");
+		drawGoal(points[points.length - 1], "#004466", icon);
 	}
 };
 
