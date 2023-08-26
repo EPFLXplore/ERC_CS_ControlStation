@@ -1,6 +1,6 @@
 import json
-from channels.generic.websocket import AsyncWebsocketConsumer
-
+from channels.generic.websocket import WebsocketConsumer
+from asgiref.sync import async_to_sync
 
 """
 
@@ -8,61 +8,65 @@ Data format :
 
 {
 
-    "state" : state,
-    'motor_pos' : float,
-    'motor_speed' : float,
-    'motor_current' : float,
-    'drill_speed' : float,
-    'limt_switch_1' : bool,
-    'limt_switch_2' : bool,
+    "state" : int,
+    'motors_pos' : float * 2,
+    'motors_speed' : float * 3,
+    'motors_currents' : float * 3 (?),
+    'limit_switches' : int * 4 
 
 }
 
 """
 
 
-class ScienceDrillConsumer(AsyncWebsocketConsumer):
+class ScienceDrillConsumer(WebsocketConsumer):
     
-    async def connect(self):
+    def connect(self):
         
-        self.tab_group_name = 'tab_info_drill'
+        self.tab_group_name = 'science_drill'
 
         # Join tab group
-        await self.channel_layer.group_add(
+        async_to_sync(self.channel_layer.group_add)(
             self.tab_group_name,
             self.channel_name
         )
 
-        await self.accept()
+        self.accept()
 
+    def disconnect(self, close_code):
+        # Leave tab group
+        async_to_sync(self.channel_layer.group_discard)(
+            self.tab_group_name,
+            self.channel_name
+        )
 
 
     # Receive message from WebSocket
-    async def receive(self, data):
+    def receive(self, text_data):
 
-        data_json = json.loads(data)
+        data_json = json.loads(text_data)
 
         # Send message to room group
-        await self.channel_layer.group_send(
+        async_to_sync(self.channel_layer.group_send)(
             self.tab_group_name,
             {
-                'type': 'broadcast_info_drill',
+                'type': 'science_drill_message',
                 'state': data_json['state'],
                 'motors_pos': data_json['motors_pos'],
-                'motors_velocities': data_json['motors_velocities'],
+                'motors_speed': data_json['motors_speed'],
                 'motors_currents': data_json['motors_currents'],
                 'limit_switches': data_json['limit_switches'],
             }
         )
 
     # Receive message from room group
-    async def broadcast_info_science(self, data_json):
+    async def science_drill_message(self, event):
 
         # Send message to WebSocket
-        await self.send(text_data=json.dumps({
-                'state': data_json['state'],
-                'motors_pos': data_json['motors_pos'],
-                'motors_velocities': data_json['motors_velocities'],
-                'motors_currents': data_json['motors_currents'],
-                'limit_switches': data_json['limit_switches'],
+        self.send(text_data=json.dumps({
+                'state': event['state'],
+                'motors_pos': event['motors_pos'],
+                'motors_speed': event['motors_speed'],
+                'motors_currents': event['motors_currents'],
+                'limit_switches': event['limit_switches'],
         }))

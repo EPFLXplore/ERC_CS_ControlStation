@@ -1,5 +1,5 @@
 import json
-from channels.generic.websocket import AsyncWebsocketConsumer, WebsocketConsumer
+from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 
 """
@@ -23,9 +23,9 @@ class ScienceDataConsumer(WebsocketConsumer):
     
     def connect(self):
 
-        print("connect to science")
+        print("connect to science data")
         
-        self.tab_group_name = 'info_science'
+        self.tab_group_name = 'science_data'
 
         # Join tab group
         async_to_sync(self.channel_layer.group_add)(
@@ -53,7 +53,7 @@ class ScienceDataConsumer(WebsocketConsumer):
         async_to_sync(self.channel_layer.group_send)(
             self.tab_group_name,
             {
-                'type': 'science_message',
+                'type': 'science_data_message',
                 'mass' : data_json['mass'],
                 'candidates' : data_json['candidates'],
                 'npk-sensor' : data_json['npk-sensor'],
@@ -62,7 +62,7 @@ class ScienceDataConsumer(WebsocketConsumer):
         )
 
     # Receive message from room group
-    def science_message(self, event):
+    def science_data_message(self, event):
 
         print("broadcast_info_science")
 
