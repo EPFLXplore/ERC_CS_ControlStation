@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { drawGoal } from "../components/Map";
-import { drawTrajectory } from "../components/Map";
 
 type Goal = { id: number; x: number; y: number; o: number };
 type Point = { x: number; y: number; o: number };
@@ -118,15 +117,12 @@ export function useNavigation() {
 		setSocket(navigationSocket);
 	}, []);
 
-	useEffect(() => {
-		drawTrajectory(trajectoryPoints);
-	}, [trajectoryPoints]);
-
 	return [
 		currentPosition,
 		currentOrientation,
 		wheelsPosition,
 		linearVelocity,
 		angularVelocity,
+		trajectoryPoints,
 	] as const;
 }
