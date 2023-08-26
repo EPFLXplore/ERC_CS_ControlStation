@@ -99,8 +99,6 @@ class Navigation:
     # -------callback for received PoseStamped from the CS-------
     def setGoal(self, goal):
 
-        #TODO: MODIFY IT SO THAT IT CAN HANDLE A LIST OF GOALS
-
         #self.__cancelled = False
         self.setCancelled(False)
 
@@ -123,8 +121,8 @@ class Navigation:
 
         if(not self.__cancelled): 
             self.setCancelled(True)
-            self.__currGoal = np.zeros(0) # TODO: IN FUTURE, this will go to the next element in the list of goals
-            self.rover.Nav_Status.publish("cancel")
+            self.__currGoal = np.zeros(0)
+            self.rover.Nav_Status.publish(String(data="cancel"))
 
     #-------------------------------------
     def gamepad(self, joy):

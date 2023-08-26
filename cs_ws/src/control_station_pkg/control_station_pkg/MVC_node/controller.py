@@ -173,6 +173,7 @@ class Controller():
 
     def science_spectrometer(self, data):
         self.science.spectrometer = data.data
+        self.science.FindClosestCandidate()
         self.science.UpdateScienceDataSocket()
 
     def science_npk(self, data):
@@ -227,7 +228,7 @@ class Controller():
         angVel = odometry.twist.twist.angular
 
 
-        async_to_sync(channel_layer.group_send)("info_nav", {"type": "nav_message",
+        async_to_sync(channel_layer.group_send)("nav", {"type": "nav_message",
                                                             'position'   : [position.x, position.y, position.z],
                                                             'orientation': [orientation.w, orientation.x, orientation.y, orientation.z],
                                                             'linVel'     : [linVel.x, linVel.y, linVel.z],

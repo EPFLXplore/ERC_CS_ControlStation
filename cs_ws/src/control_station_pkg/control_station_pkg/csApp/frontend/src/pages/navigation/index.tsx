@@ -79,14 +79,14 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 							</div>
 						</div>
 						<Button
-							text="Add Goal"
+							text="Go"
 							size={Size.SMALL}
 							theme={Themes.BROWN}
 							onClick={handleAddGoal}
 							radius={10}
 						/>
 						<Button
-							text="Reset Goals"
+							text="Cancel"
 							size={Size.SMALL}
 							theme={Themes.BROWN}
 							onClick={resetGoals}
