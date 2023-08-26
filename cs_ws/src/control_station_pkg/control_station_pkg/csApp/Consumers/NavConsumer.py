@@ -1,7 +1,7 @@
 import json
 from re import X
 from zlib import Z_NO_COMPRESSION
-from channels.generic.websocket import AsyncWebsocketConsumer, WebsocketConsumer
+from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 
 
@@ -22,11 +22,11 @@ Data format :
 
 
 
-class InfoNavConsumer(WebsocketConsumer):
+class NavConsumer(WebsocketConsumer):
     
     def connect(self):
 
-        self.tab_group_name = 'info_nav'
+        self.tab_group_name = 'nav'
 
         # Join tab group
         async_to_sync(self.channel_layer.group_add)(
@@ -49,8 +49,6 @@ class InfoNavConsumer(WebsocketConsumer):
     def receive(self, text_data):
         data_json = json.loads(text_data)
 
-        print("received in nav")
-
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
             self.tab_group_name,
@@ -65,13 +63,8 @@ class InfoNavConsumer(WebsocketConsumer):
             }
         )
 
-
-
-
     # Receive message from room group
     def nav_message(self, event):
-
-        print("broadcast_info_nav")
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({

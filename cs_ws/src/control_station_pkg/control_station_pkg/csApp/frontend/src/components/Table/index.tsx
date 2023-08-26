@@ -8,7 +8,8 @@ interface TableProps {
 }
 
 const NPKComponents = ["Phosphate", "Azote", "Potassium"];
-const ALLComponents = ["Humidity", "Temp", "Elec", "PH"];
+const ALLComponents = ["Temp", "Humidity", "Elec", "PH"];
+const MASSComponents = ["Mass 1", "Mass 2"];
 
 export const Table = ({ values, sensorType }: TableProps) => {
 	let lines: { id: string; content: number }[];
@@ -16,6 +17,11 @@ export const Table = ({ values, sensorType }: TableProps) => {
 	if (sensorType === Sensor.NPK) {
 		lines = values.map((value, index) => ({
 			id: NPKComponents[index],
+			content: value,
+		}));
+	} else if (sensorType === Sensor.MASS) {
+		lines = values.map((value, index) => ({
+			id: MASSComponents[index],
 			content: value,
 		}));
 	} else {

@@ -49,7 +49,12 @@ export const WaveGraph: React.FC<GraphProps> = ({ measure, pointsSecondWave, can
 							},
 							y: {
 								display: true,
+								max: 10,
+								min: 0,
 							},
+						},
+						animation: {
+							duration: 0,
 						},
 					},
 				});

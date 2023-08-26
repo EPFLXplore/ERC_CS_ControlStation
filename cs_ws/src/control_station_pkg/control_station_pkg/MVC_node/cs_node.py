@@ -123,6 +123,7 @@ class CS:
         self.node.create_subscription(Float32MultiArray,  'ROVER/motors_velocities', self.controller.science_motors_vels  , 10)
         self.node.create_subscription(Float32MultiArray,  'ROVER/motors_currents',   self.controller.science_motors_currents, 10)
         self.node.create_subscription(Int8MultiArray,     'ROVER/limit_switches',    self.controller.science_limit_switches, 10)
+        
 
         # -- EL(SC) messages --
         self.node.create_subscription(Float32MultiArray,               'EL/mass',                    self.controller.science_mass         , 10)
