@@ -56,26 +56,20 @@ class CamerasPublisher(Node):
         self.camera_0 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=0))
         self.camera_1 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=1))
         self.camera_2 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=2))
-        # self.camera_3 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=3))
-        # self.camera_4 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=4))
-        # self.camera_5 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=5))
+        self.camera_3 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=3))
+        self.camera_4 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=4))
+        self.camera_5 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=5))
         self.cam_hd = CameraFluxPublisher(self)
 
 
         self.camera_list = [self.camera_0, 
                             self.camera_1,
                             self.camera_2,
-                            #self.camera_3,
+                            self.camera_3,
+                            self.camera_4, 
+                            self.camera_5,
                             self.cam_hd]
-                            # self.camera_4, 
-                            # self.camera_5]
         
-        # self.camera_list.append(self.camera_0)
-        # self.camera_list.append(self.camera_1)
-        # self.camera_list.append(self.camera_2)
-        # self.camera_list.append(self.camera_3)
-        # self.camera_list.append(self.camera_4)
-        # self.camera_list.append(self.camera_5)
 
         self.bridge = CvBridge()
 
@@ -91,22 +85,22 @@ class CamerasPublisher(Node):
         print("Enabling camera: ", camera_indices)
         # self.active_cameras = []
         for i in range(len(enabled)):
-            if i in camera_indices and i < 5: 
+            if i in camera_indices and i < 7: 
                 print("enabled ", i)
                 # if the camera wasn't enabled then enable it, otherwise it is already turned on => thread already launched
                 if enabled[i] == False:
                     enabled[i] = True
-                    # Handle the gripper camera differently (index = 3)
-                    if (i == 3) :
+                    # Handle the gripper camera differently (index = 6)
+                    if (i == 6) :
                         self.camera_list[i].enabled_ = True
-                        threading.Thread(target=run_gripper, args= self.camera_list[i]).start()
+                        threading.Thread(target=run_gripper, args= (self,self.camera_list[i])).start()
                     else:
                         threading.Thread(target=run_camera, args=(self, self.camera_list[i], self.camera_publishers[i], i)).start()
 
             else:
                 enabled[i] = False
                 #Handles the gripper camera differently (index = 3)
-                if i == 3 :
+                if i == 6:
                     self.camera_list[i].enabled_ = False
 
 
@@ -182,7 +176,7 @@ def gstreamer_pipeline(
 def run_gripper(self, camera: CameraFluxPublisher):
     rate = self.create_rate(1)  # 1hz
     # While the gripper is enabled
-    while enabled[3]:
+    while enabled[6]:
         camera.publish_frame()
         rate.sleep()
 
