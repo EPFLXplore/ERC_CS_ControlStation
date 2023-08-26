@@ -8,44 +8,6 @@ import { Table } from "../../components/Table";
 import { Sensor } from "../../utils/sensor.type";
 import useScienceDataInfos from "../../hooks/scienceDataHooks";
 
-const pointsFirstWave = [
-	{ x: 0, y: 0 },
-	{ x: 1, y: 1 },
-	{ x: 2, y: 3 },
-	{ x: 3, y: 2 },
-	{ x: 0, y: 0 },
-	{ x: 1, y: 1 },
-	{ x: 2, y: 3 },
-	{ x: 3, y: 2 },
-	{ x: 0, y: 0 },
-	{ x: 1, y: 1 },
-	{ x: 2, y: 3 },
-	{ x: 3, y: 2 },
-	{ x: 0, y: 0 },
-	{ x: 1, y: 1 },
-	{ x: 2, y: 3 },
-	{ x: 3, y: 2 },
-];
-
-const pointsSecondWave = [
-	{ x: 0, y: 0 },
-	{ x: 2, y: 2 },
-	{ x: 3, y: 2 },
-	{ x: 0, y: 2 },
-	{ x: 0, y: 2 },
-	{ x: 0, y: 0 },
-	{ x: 2, y: 2 },
-	{ x: 3, y: 2 },
-	{ x: 0, y: 2 },
-	{ x: 0, y: 2 },
-	{ x: 0, y: 0 },
-	{ x: 2, y: 2 },
-	{ x: 3, y: 2 },
-	{ x: 0, y: 2 },
-	{ x: 0, y: 2 },
-	{ x: 3, y: 2 },
-];
-
 const candidates = [
 	{ percentage: 78, element: "Phosphate" },
 	{ percentage: 77.8, element: "Materiau1" },
@@ -55,7 +17,8 @@ const candidates = [
 ];
 
 export default () => {
-	const [mass, npkSensor, fourInOneSensor] = useScienceDataInfos();
+	const [mass, npkSensor, fourInOneSensor, spectrometer, spectrometerCandidate] =
+		useScienceDataInfos();
 
 	return (
 		<div className="page">
@@ -63,8 +26,11 @@ export default () => {
 			<BackButton />
 			<div className={styles.InfoContainer}>
 				<WaveGraph
-					measure={pointsFirstWave}
-					pointsSecondWave={pointsSecondWave}
+					measure={spectrometer.map((measure, index) => ({ x: index, y: measure }))}
+					pointsSecondWave={spectrometerCandidate.map((measure, index) => ({
+						x: index,
+						y: measure,
+					}))}
 					candidates={candidates}
 				/>
 			</div>

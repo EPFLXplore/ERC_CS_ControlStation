@@ -5,7 +5,8 @@ function useScienceDataInfos() {
 	const [mass, setMass] = useState([0, 0]);
 	const [npkSensor, setNpkSensor] = useState([0, 0, 0]);
 	const [fourInOneSensor, setFourInOneSensor] = useState([0, 0, 0, 0]);
-	// const [candidates, setCandidates] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+	const [spectrometer, setSpectrometer] = useState(new Array(17).fill(0));
+	const [spectrometerCandidate, setSpectrometerCandidate] = useState(new Array(17).fill(0));
 
 	useEffect(() => {
 		let scienceDataSocket = new WebSocket("ws://127.0.0.1:8000/ws/csApp/science_data/");
@@ -16,6 +17,8 @@ function useScienceDataInfos() {
 			setMass(data.mass);
 			setNpkSensor(data.npk_sensor);
 			setFourInOneSensor(data.four_in_one);
+			setSpectrometer(data.spectrometer);
+			setSpectrometerCandidate(data.spectrometer_closest_candidate);
 		};
 
 		scienceDataSocket.onerror = (e) => {
@@ -26,7 +29,7 @@ function useScienceDataInfos() {
 		setSocket(scienceDataSocket);
 	}, []);
 
-	return [mass, npkSensor, fourInOneSensor] as const;
+	return [mass, npkSensor, fourInOneSensor, spectrometer, spectrometerCandidate] as const;
 }
 
 export default useScienceDataInfos;
