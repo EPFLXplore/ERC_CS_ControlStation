@@ -25,7 +25,7 @@ class NavTestNode(Node):
         #TODO
         #self.subscription_move_base = self.create_subscription(String,'ROVER/move_base/cancel',self.listener_callback,10)
         self.subscription_goal =        self.create_subscription(PoseStamped,'ROVER/NAV_goal',self.goal_callback,10)
-        self.subscription_navigation =  self.create_subscription(Int8,'ROVER/NAV_STATUS',self.navigation_callback,10)
+        self.subscription_navigation =  self.create_subscription(String,'ROVER/NAV_status',self.navigation_callback,10)
 
 
         timer_period = 1  # seconds

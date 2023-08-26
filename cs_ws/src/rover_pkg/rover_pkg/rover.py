@@ -126,7 +126,7 @@ class Rover():
         
         # Rover --> NAV
         self.Nav_Goal_pub     = self.node.create_publisher(PoseStamped, 'ROVER/NAV_goal'    , 1)
-        self.Nav_Status       = self.node.create_publisher(String,      'ROVER/NAV_STATUS'  , 1)
+        self.Nav_Status       = self.node.create_publisher(String,      'ROVER/NAV_status'  , 1)
         #self.Nav_gamepad_pub  = self.node.create_publisher(Joy,         'ROVER/NAV_gamepad' , 1)
 
 
