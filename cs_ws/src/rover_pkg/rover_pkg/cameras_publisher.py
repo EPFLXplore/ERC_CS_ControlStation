@@ -53,9 +53,9 @@ class CamerasPublisher(Node):
         # self.cam_publisher.append(self.cam_4_pub)
 
 
-        self.camera_0 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=0))
-        self.camera_1 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=1))
-        self.camera_2 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=2))
+        self.camera_0 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=0))
+        self.camera_1 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=1))
+        self.camera_2 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=2))
         # self.camera_3 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=3))
         # self.camera_4 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=4))
         # self.camera_5 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=5))
