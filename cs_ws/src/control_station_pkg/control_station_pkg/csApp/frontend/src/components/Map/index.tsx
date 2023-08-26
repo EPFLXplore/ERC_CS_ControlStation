@@ -1,5 +1,5 @@
 import styles from "./style.module.sass";
-import map from "../../assets/images/mars_yard_2022.png";
+import map from "../../assets/images/mars_yard_2023.png";
 import React, { useState, useEffect, useRef } from "react";
 
 type Point = {
@@ -14,7 +14,7 @@ type Props = {
 
 //Dimensions of the map in meters
 const YARD_WIDTH_M = 39;
-const YARD_LENGTH_M = 47;
+const YARD_LENGTH_M = 37;
 
 var mapCTX: CanvasRenderingContext2D | null;
 var mapOrigin: Point;
@@ -38,7 +38,6 @@ const Map: React.FC<Props> = ({ origin }) => {
 	}, [map]);
 
 	useEffect(() => {
-
 		console.log("use effect draw grid called");
 		// Draw the grid on the canvas
 		const canvas = canvasRef.current;
@@ -145,7 +144,7 @@ const Map: React.FC<Props> = ({ origin }) => {
 				}
 			}
 		}
-	//}, [origin, image, imageWidth, imageHeight]); 		//origin trigger draw grid a chaque fois que la position est draw
+		//}, [origin, image, imageWidth, imageHeight]); 		//origin trigger draw grid a chaque fois que la position est draw
 	}, [image, imageWidth, imageHeight]);
 
 	return (
