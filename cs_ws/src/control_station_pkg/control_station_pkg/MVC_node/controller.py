@@ -187,8 +187,6 @@ class Controller():
     # receives an Odometry message from NAVIGATION
     def nav_data(self, odometry):
 
-        print("nav data received")
-
         position = odometry.pose.pose.position
         orientation = odometry.pose.pose.orientation
         linVel = odometry.twist.twist.linear
