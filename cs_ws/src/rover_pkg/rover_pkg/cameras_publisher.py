@@ -56,7 +56,7 @@ class CamerasPublisher(Node):
         self.camera_0 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=0))
         self.camera_1 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=1))
         self.camera_2 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=2))
-        self.camera_3 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=3))
+        # self.camera_3 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=3))
         # self.camera_4 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=4))
         # self.camera_5 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=5))
         self.cam_hd = CameraFluxPublisher(self)
@@ -65,7 +65,7 @@ class CamerasPublisher(Node):
         self.camera_list = [self.camera_0, 
                             self.camera_1,
                             self.camera_2,
-                            self.camera_3,
+                            #self.camera_3,
                             self.cam_hd]
                             # self.camera_4, 
                             # self.camera_5]
@@ -96,8 +96,8 @@ class CamerasPublisher(Node):
                 # if the camera wasn't enabled then enable it, otherwise it is already turned on => thread already launched
                 if enabled[i] == False:
                     enabled[i] = True
-                    # Handle the gripper camera differently (index = 4)
-                    if (i == 4) :
+                    # Handle the gripper camera differently (index = 3)
+                    if (i == 3) :
                         self.camera_list[i].enabled_ = True
                         threading.Thread(target=run_gripper, args= self.camera_list[i]).start()
                     else:
@@ -105,8 +105,8 @@ class CamerasPublisher(Node):
 
             else:
                 enabled[i] = False
-                #Handles the gripper camera differently (index = 4)
-                if i == 4 :
+                #Handles the gripper camera differently (index = 3)
+                if i == 3 :
                     self.camera_list[i].enabled_ = False
 
 
