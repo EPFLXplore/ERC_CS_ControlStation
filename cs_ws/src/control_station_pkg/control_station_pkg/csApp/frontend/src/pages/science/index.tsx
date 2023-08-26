@@ -6,7 +6,6 @@ import styles from "./style.module.sass";
 import { WaveGraph } from "../../components/WaveGraph";
 import { Table } from "../../components/Table";
 import { Sensor } from "../../utils/sensor.type";
-import useElecInfos from "../../hooks/elecHooks";
 import useScienceDataInfos from "../../hooks/scienceDataHooks";
 
 const pointsFirstWave = [
@@ -46,9 +45,6 @@ const pointsSecondWave = [
 	{ x: 0, y: 2 },
 	{ x: 3, y: 2 },
 ];
-
-const values1 = [10, 5.4, 12];
-const values2 = [10, 16, 12, 6];
 
 const candidates = [
 	{ percentage: 78, element: "Phosphate" },
