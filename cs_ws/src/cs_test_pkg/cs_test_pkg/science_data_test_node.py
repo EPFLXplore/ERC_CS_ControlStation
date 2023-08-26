@@ -1,4 +1,5 @@
 
+import random
 import rclpy
 from rclpy.node import Node
 
@@ -37,24 +38,25 @@ class ElecTestNode(Node):
         msg_float_32_multi.data = [float(self.i * 3), float(self.i - 10)]
         self.publisher_mass.publish(msg_float_32_multi)
 
-        msg_float_32_multi.data = [float(self.i), 
-                                    float(self.i + 1),
-                                    float(self.i + 2), 
-                                    float(self.i + 3),
-                                    float(self.i + 4),
-                                    float(self.i + 5),
-                                    float(self.i + 6),
-                                    float(self.i + 7),
-                                    float(self.i + 8),
-                                    float(self.i + 9),
-                                    float(self.i + 10),
-                                    float(self.i + 11),
-                                    float(self.i + 12),
-                                    float(self.i + 13),
-                                    float(self.i + 14),
-                                    float(self.i + 15),
-                                    float(self.i + 16),
+        msg_float_32_multi.data = [random.uniform(0, 10),
+                                    random.uniform(0, 10),
+                                    random.uniform(0, 10),
+                                    random.uniform(0, 10),
+                                    random.uniform(0, 10),
+                                    random.uniform(0, 10),
+                                    random.uniform(0, 10),
+                                    random.uniform(0, 10),
+                                    random.uniform(0, 10),
+                                    random.uniform(0, 10),
+                                    random.uniform(0, 10),
+                                    random.uniform(0, 10),
+                                    random.uniform(0, 10),
+                                    random.uniform(0, 10),
+                                    random.uniform(0, 10),
+                                    random.uniform(0, 10),
+                                    random.uniform(0, 10),
                                     ]
+        
         self.publisher_spectrometer.publish(msg_float_32_multi)
 
         msg_float_32_multi.data = [float(self.i), float(self.i + 10), float(self.i + 20)]

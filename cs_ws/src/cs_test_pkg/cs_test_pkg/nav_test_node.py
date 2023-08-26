@@ -1,4 +1,5 @@
 
+import random
 import rclpy
 from rclpy.node import Node
 
@@ -24,46 +25,44 @@ class NavTestNode(Node):
         #TODO
         #self.subscription_move_base = self.create_subscription(String,'ROVER/move_base/cancel',self.listener_callback,10)
         self.subscription_goal =        self.create_subscription(PoseStamped,'ROVER/NAV_goal',self.goal_callback,10)
-        self.subscription_navigation =  self.create_subscription(Int8,'ROVER/Navigation',self.navigation_callback,10)
+        self.subscription_navigation =  self.create_subscription(Int8,'ROVER/NAV_STATUS',self.navigation_callback,10)
 
 
-        timer_period = 3  # seconds
+        timer_period = 1  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.i = 0
 
-    def timer_callback(self):
-        msg_log = DiagnosticStatus()
-       
-        msg_log.name = 'Nav Test'
-        #msg_log.level = (self.i % 3). to_bytes(1,"big")
-        msg_log.message = 'Diagnostic Status Message from Nav Test'
-        self.publisher_log.publish(msg_log)
+        print('Nav test is running...')
 
-        msg_log = DiagnosticStatus()
-        msg_log.name = 'Nav Test'
-        #msg_log.level = (self.i%3).to_bytes(1, 'big')
-        msg_log.message = 'Diagnostic Status Message from Nav Test'
-        self.publisher_log.publish(msg_log)
+    def timer_callback(self):
+
+
+
+        # msg_log = DiagnosticStatus()
+        # msg_log.name = 'Nav Test'
+        # msg_log.level = (self.i % 3). to_bytes(1,"big")
+        # msg_log.message = 'Diagnostic Status Message from Nav Test'
+        # self.publisher_log.publish(msg_log)
 
         msg = Odometry()
-        msg.pose.pose.position.x = float(self.i)
-        msg.pose.pose.position.y = float(self.i*3 + 1)
-        msg.pose.pose.position.z = float(self.i + 2)
-        msg.pose.pose.orientation.x = float(self.i*10 + 3)
-        msg.pose.pose.orientation.y = float(self.i*10 + 4)
-        msg.pose.pose.orientation.z = float(self.i*15 + 5)
+        msg.pose.pose.position.x = random.uniform(-10, 10)
+        msg.pose.pose.position.y = random.uniform(0, 25)
+        msg.pose.pose.position.z = msg.pose.pose.position.z + random.uniform(-3, 3)
+        msg.pose.pose.orientation.x = msg.pose.pose.orientation.x + random.uniform(-10, 10)
+        msg.pose.pose.orientation.y = msg.pose.pose.orientation.y + random.uniform(-10, 10)
+        msg.pose.pose.orientation.z = msg.pose.pose.orientation.z + random.uniform(-10, 10)
         msg.child_frame_id = "nav test child frame id"
         msg.header.frame_id = "nav test header"
         msg.header.stamp = self.get_clock().now().to_msg()
-        msg.twist.twist.linear.x = float(self.i + 60)
-        msg.twist.twist.linear.y = float(self.i + 70)
-        msg.twist.twist.linear.z = float(self.i + 80)
-        msg.twist.twist.angular.x = float(self.i + 90)
-        msg.twist.twist.angular.y = float(self.i + 100)
-        msg.twist.twist.angular.z = float(self.i + 110)
+        msg.twist.twist.linear.x = float(self.i/10 + 60)
+        msg.twist.twist.linear.y = float(self.i/10 + 70)
+        msg.twist.twist.linear.z = float(self.i/10 + 80)
+        msg.twist.twist.angular.x = float(self.i/10 + 90)
+        msg.twist.twist.angular.y = float(self.i/10 + 100)
+        msg.twist.twist.angular.z = float(self.i/10 + 110)
 
         self.publisher_odometry.publish(msg)
-        self.i += 0.1
+        self.i += 1
 
 
     def goal_callback(self, msg):

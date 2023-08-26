@@ -1,9 +1,7 @@
 # csApp/routing.py
 from django.urls import re_path, path
 
-from .Consumers import InfoHDConsumer, InfoNavConsumer, ScienceDrillConsumer
-
-from .Consumers import InfoElecConsumer,InfoHDConsumer, InfoNavConsumer, InfoRoverConsumer, CameraConsumer, GamepadConsumer, TimerConsumer, LogConsumer, ScienceDataConsumer
+from .Consumers import InfoElecConsumer,InfoHDConsumer, NavConsumer, InfoRoverConsumer, CameraConsumer, GamepadConsumer, TimerConsumer, LogConsumer, ScienceDataConsumer, ScienceDrillConsumer
 from .Consumers import SessionConsumer
 
 websocket_urlpatterns = [
@@ -23,7 +21,7 @@ websocket_urlpatterns = [
 
     path('ws/csApp/info_rover/'     , InfoRoverConsumer.InfoRoverConsumer.as_asgi()),
     path('ws/csApp/info_hd/'        , InfoHDConsumer.InfoHDConsumer.as_asgi()),
-    path('ws/csApp/info_nav/'       , InfoNavConsumer.InfoNavConsumer.as_asgi()),
+    path('ws/csApp/info_nav/'       , NavConsumer.NavConsumer.as_asgi()),
 
     path('ws/csApp/info_elec/'      , InfoElecConsumer.InfoElecConsumer.as_asgi()),
 
