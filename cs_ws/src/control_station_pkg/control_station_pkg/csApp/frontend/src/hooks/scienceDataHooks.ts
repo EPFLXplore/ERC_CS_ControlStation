@@ -13,8 +13,8 @@ function useScienceDataInfos() {
 			const data = JSON.parse(e.data);
 
 			setMass(data.mass);
-			setNpkSensor(data["npk-sensor"]);
-			setFourInOneSensor(data["four-in-one-sensor"]);
+			setNpkSensor(data.npk_sensor);
+			setFourInOneSensor(data.four_in_one);
 		};
 
 		scienceDataSocket.onerror = (e) => {

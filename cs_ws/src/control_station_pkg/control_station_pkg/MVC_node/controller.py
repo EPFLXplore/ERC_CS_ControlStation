@@ -24,8 +24,9 @@
 import datetime
 from turtle import pos
 import json
-import websocket
 import time
+
+import numpy as np
 
 from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray, Header
 from geometry_msgs.msg import Pose, Point, Twist, PoseStamped, Quaternion
@@ -34,8 +35,7 @@ from transforms3d.euler import euler2quat, quat2euler
 
 from .models.rover   import Task
 
-from nav_msgs.msg import Odometry
-from csApp import models
+from .models.science import Science
 
 # ================================================================================
 # Webscokets for ASGI
@@ -75,8 +75,7 @@ class Controller():
     '''
     def __init__(self, cs):
         self.cs = cs
-        self.science = models.Science()
-
+        self.science = Science()
 
     # ===============================
     #            CALLBACKS

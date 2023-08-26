@@ -7,5 +7,6 @@
         "./cs_ws/src/control_station_pkg/control_station_pkg/MVC_node/models",
         "./cs_ws/src/control_station_pkg/control_station_pkg/MVC_node"
     ],
-    "cmake.sourceDirectory": "/home/xplore/Desktop/CS_workspace/cs_ws/src/rover_pkg"
+    "cmake.sourceDirectory": "/home/xplore/Desktop/CS_workspace/cs_ws/src/rover_pkg",
+    "cmake.configureOnOpen": false
 }
