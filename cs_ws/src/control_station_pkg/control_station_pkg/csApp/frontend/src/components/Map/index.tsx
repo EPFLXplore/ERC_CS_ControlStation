@@ -225,8 +225,6 @@ export const drawGoal = (goal: Point, color: string) => {
 
 export const drawTrajectory = (points: Point[]) => {
 	if (mapCTX && points.length > 1) {
-		mapCTX.clearRect(0, 0, mapCTX.canvas.width, mapCTX.canvas.height);
-
 		mapCTX.strokeStyle = "#8f351a";
 		mapCTX.lineWidth = 3;
 		mapCTX.beginPath();
