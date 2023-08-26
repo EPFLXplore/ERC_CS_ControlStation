@@ -210,6 +210,8 @@ export const drawGoal = (goal: Point, color: string, image?: CanvasImageSource) 
 			mapCTX.translate(x_px, y_px);
 			mapCTX.rotate(angle);
 			mapCTX.drawImage(image, -36 / 2, -25 / 2, 36, 25);
+			mapCTX.rotate(-angle);
+			mapCTX.translate(-x_px, -y_px);
 		} else {
 			//set the three points of the triangle to be drawn before rotation
 			let p1 = [x_px - 20, y_px + 14];
