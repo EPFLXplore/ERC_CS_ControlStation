@@ -209,13 +209,13 @@ export const drawGoal = (goal: Point, color: string, image?: CanvasImageSource) 
 			// Draw the rover
 			mapCTX.translate(x_px, y_px);
 			mapCTX.rotate(angle);
-			mapCTX.drawImage(image, -36 / 2, -25 / 2, 36, 25);
+			mapCTX.drawImage(image, -36 / 2, -25 / 2, 72, 50);
 			mapCTX.rotate(-angle);
 			mapCTX.translate(-x_px, -y_px);
 		} else {
 			//set the three points of the triangle to be drawn before rotation
 			let p1 = [x_px - 20, y_px + 14];
-			let p2 = [x_px, y_px - 14];
+			let p2 = [x_px - 20, y_px - 14];
 			let p3 = [x_px + 20, y_px];
 
 			//======= rotation of p1, p2 and p2 around {x_px, y_px} by yaw ========//
