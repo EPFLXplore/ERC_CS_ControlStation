@@ -17,8 +17,14 @@ import { useNavigation } from "../../hooks/navigationHooks";
 export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 	const { goals, addGoal, removeGoal, resetGoals } = useGoalTracker();
 
-	const [currentPosition, currentOrientation, wheelsPosition, linearVelocity, angularVelocity] =
-		useNavigation();
+	const [
+		currentPosition,
+		currentOrientation,
+		wheelsPosition,
+		linearVelocity,
+		angularVelocity,
+		trajectoryPoints,
+	] = useNavigation();
 
 	const handleAddGoal = () => {
 		// Get the values from the input fields
@@ -52,6 +58,8 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 						y: 93,
 						o: 0,
 					}}
+					trajectory={trajectoryPoints}
+					goals={goals}
 				/>
 				<div className={styles.Info}>
 					<h2 className={styles.InfoTitle}>{mode} Navigation</h2>
