@@ -1,8 +1,9 @@
 
+import random
 import rclpy
 from rclpy.node import Node
 
-from std_msgs.msg import String, Int8, Float32MultiArray
+from std_msgs.msg import String, Int8, Float32MultiArray, Int8MultiArray
 from diagnostic_msgs.msg import DiagnosticStatus
 
 
@@ -19,7 +20,7 @@ class ScienceTestNode(Node):
         self.publisher_motors_pos = self.create_publisher(Float32MultiArray, 'SC/motors_pos', 10)
         self.publisher_motors_speed = self.create_publisher(Float32MultiArray, 'SC/motors_speed', 10)
         self.publisher_motors_currents = self.create_publisher(Float32MultiArray, 'SC/motors_currents', 10)
-        self.publisher_limit_switches = self.create_publisher(Float32MultiArray, 'SC/limit_switches', 10)
+        self.publisher_limit_switches = self.create_publisher(Int8MultiArray, 'SC/limit_switches', 10)
 
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
@@ -35,15 +36,25 @@ class ScienceTestNode(Node):
         # msg_log.message = 'Diagnostic Status Message from Science drill Test'
         # self.publisher_log.publish(msg_log)
 
-        msg = String()
-        msg.data = 'Hello World: %d' % self.i
-        #self.publisher_.publish(msg)
-        self.get_logger().info('Publishing: "%s"' % msg.data)
+        msg = Int8()
+        msg.data = self.i % 22
+        self.publisher_fsm.publish(msg)
+
+        msg = Float32MultiArray()
+        msg.data = [self.i/10, self.i/10+1]
+        self.publisher_motors_pos.publish(msg)
+
+        msg.data = [self.i/10+2, self.i/10+3, self.i/10+4]
+        self.publisher_motors_speed.publish(msg)
+
+        msg.data = [self.i/10+5, self.i/10+6, self.i/10+7]
+        self.publisher_motors_currents.publish(msg)
+
+        msg = Int8MultiArray()
+        msg.data = [random.randint(0,1), random.randint(0,1), random.randint(0,1), random.randint(0,1)]
+        self.publisher_limit_switches.publish(msg)
+
         self.i += 1
-
-
-        msg = "IDLE" + str(self.i)
-        self.publisher_sc_fsm_state.publish(msg)
 
 
 def main(args=None):

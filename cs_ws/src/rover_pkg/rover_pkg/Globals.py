@@ -21,6 +21,8 @@ class Instruction(IntEnum):
   RETRY   = 5
   LATCH   = 6
   OKDRONE = 7
+  CANCEL = 8
+  
   
 
 

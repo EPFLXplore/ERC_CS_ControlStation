@@ -22,14 +22,13 @@ class Science:
 
         #SCIENCE DRILL
         self.state = 0
-        self.potentiometers = []
         self.motors_pos = [0,0]
         self.motors_speed = [0,0,0]
         self.motors_currents = [0,0,0]
         self.limit_switches = [0,0,0,0]
 
 
-
+        self.potentiometers = []
         self.led_confirm = []
         self.hd_volmeter = []
         self.hd_laser = []
@@ -58,6 +57,11 @@ class Science:
         async_to_sync(self.channel_layer.group_send)("science_drill", 
             {
                 "type": "science_drill_message",
+                'state' : self.state,
+                'motors_pos' : [self.motors_pos[0], self.motors_pos[1]],
+                'motors_speed' : [self.motors_speed[0], self.motors_speed[1], self.motors_speed[2]],
+                'motors_currents' : [self.motors_currents[0], self.motors_currents[1], self.motors_currents[2]],
+                'limit_switches' : [self.limit_switches[0], self.limit_switches[1], self.limit_switches[2], self.limit_switches[3]],
 
             })
         

@@ -113,59 +113,26 @@ class Controller():
 
     # ========= SCIENCE CALLBACKS ========= 
 
+
     def science_state(self, data):
         self.science.state = data.data
         self.science.UpdateScienceDrillSocket()
         
-    
-    def science_motors_pos(self, motors_pos):
-        async_to_sync(channel_layer.group_send)("tab_info_drill", 
-            {
-                'type': 'broadcast_info_drill',
-                'state': [''],
-                'motors_pos': [motors_pos.data],
-                'motors_velocities': [''],
-                'motors_currents': [''],
-                'limit_switches': [''],
-            })
+    def science_motors_pos(self, data):
+        self.science.motors_pos = data.data
+        self.science.UpdateScienceDrillSocket()
         
-    def science_motors_vels(self, motors_velocities):
-        async_to_sync(channel_layer.group_send)("tab_info_drill", 
-            {
-                'type': 'broadcast_info_drill',
-                'state': [''],
-                'motors_pos': [''],
-                'motors_velocities': [motors_velocities.data],
-                'motors_currents': [''],
-                'limit_switches': [''],
-            })
+    def science_motors_vels(self, data):
+        self.science.motors_speed = data.data
+        self.science.UpdateScienceDrillSocket()
 
-
-    def science_motors_currents(self, currents):
-        async_to_sync(channel_layer.group_send)("tab_info_drill", 
-            {
-                'type': 'broadcast_info_drill',
-                'state': [''],
-                'motor_pos': [''],
-                'motor_speed': [''],
-                'motor_current': [currents.data],
-                'drill_speed': [''],
-                'limt_switches': [''],
-            })
-        
+    def science_motors_currents(self, data):
+        self.science.motors_currents = data.data
+        self.science.UpdateScienceDrillSocket()
     
-    def science_limit_switches(self, limits):
-        async_to_sync(channel_layer.group_send)("tab_info_drill", 
-            {
-                'type': 'broadcast_info_drill',
-                'state': [''],
-                'motor_pos': [''],
-                'motor_speed': [''],
-                'motor_current': [''],
-                'drill_speed': [''],
-                'limt_switches': [limits.data],
-            })
-
+    def science_limit_switches(self, data):
+        self.science.limit_switches = data.data
+        self.science.UpdateScienceDrillSocket()
 
     def science_mass(self, data):
         self.science.mass = data.data

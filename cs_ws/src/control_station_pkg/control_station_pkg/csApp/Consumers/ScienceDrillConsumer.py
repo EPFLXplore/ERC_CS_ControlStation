@@ -12,7 +12,7 @@ Data format :
     'motors_pos' : float * 2,
     'motors_speed' : float * 3,
     'motors_currents' : float * 3 (?),
-    'limit_switches' : int * 4 
+    'limit_switches' : bool * 4 
 
 }
 

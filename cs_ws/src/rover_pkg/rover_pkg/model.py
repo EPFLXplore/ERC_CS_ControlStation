@@ -145,7 +145,6 @@ class Science:
         self.__state = "state"
 
     def science_fsm_callback(self, state):
-        print("data received from sceince fsm")
         self.__state = state.data #TODO: Check if .data is needed
         self.rover.SC_fsm_state_pub.publish(state)
     #---------------------------FUNCTIONS BELOW ARE NOT USED------------------------------
