@@ -14,7 +14,7 @@ type Props = {
 
 //Dimensions of the map in meters
 const YARD_WIDTH_M = 39;
-const YARD_LENGTH_M = 37;
+const YARD_LENGTH_M = 49;
 
 var mapCTX: CanvasRenderingContext2D | null;
 var mapOrigin: Point;
