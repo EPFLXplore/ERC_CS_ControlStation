@@ -181,7 +181,8 @@ def gstreamer_pipeline(
 
 def run_gripper(self, camera: CameraFluxPublisher):
     rate = self.create_rate(1)  # 1hz
-    while True:
+    # While the gripper is enabled
+    while enabled[3]:
         camera.publish_frame()
         rate.sleep()
 
