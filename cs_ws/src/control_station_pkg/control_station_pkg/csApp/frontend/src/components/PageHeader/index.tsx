@@ -23,15 +23,6 @@ const PageHeader = ({
 	settingsCallback?: () => void;
 	multiselect?: boolean;
 }) => {
-	// if (optionTitle || options || currentOption)
-	// 	assert(
-	// 		optionTitle && options && currentOption,
-	// 		"If you want to use options, you must provide optionTitle, options and currentOption"
-	// 	);
-
-	console.log(currentOptions);
-	console.log(options);
-
 	return (
 		<div className={styles.Container}>
 			<h2 className={styles.Title}>{title}</h2>
