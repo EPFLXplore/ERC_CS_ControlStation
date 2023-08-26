@@ -50,6 +50,7 @@ const PageHeader = ({
 						selectionLimit={4}
 						style={stylesSelector}
 						customArrow={<img src={arrow} alt="arrow" />}
+						closeIcon={"cancel"}
 					/>
 				)}
 				{settings && <SettingsButton onClick={settingsCallback} />}
