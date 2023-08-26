@@ -53,6 +53,7 @@ export const WaveGraph: React.FC<GraphProps> = ({ measure, pointsSecondWave, can
 								min: 0,
 							},
 						},
+						animation: false,
 					},
 				});
 			}
