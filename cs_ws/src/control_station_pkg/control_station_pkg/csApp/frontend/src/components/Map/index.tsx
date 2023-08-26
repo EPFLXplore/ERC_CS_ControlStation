@@ -206,7 +206,7 @@ export const drawGoal = (goal: Point, color: string) => {
 
 export const drawTrajectory = (points: Point[]) => {
 	if (mapCTX && points.length > 1) {
-		mapCTX.strokeStyle = "green";
+		mapCTX.strokeStyle = "#8f351a";
 		mapCTX.lineWidth = 3;
 		mapCTX.beginPath();
 
@@ -228,7 +228,7 @@ export const drawTrajectory = (points: Point[]) => {
 		mapCTX.stroke();
 
 		// Call drawGoal on the last point
-		drawGoal(points[points.length - 1], "green");
+		drawGoal(points[points.length - 1], "#004466");
 	}
 };
 
