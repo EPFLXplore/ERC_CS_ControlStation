@@ -43,6 +43,7 @@ class ScienceDataConsumer(WebsocketConsumer):
 
     # Receive message from WebSocket
     def receive(self, text_data):
+
         data_json = json.loads(text_data)
 
         # Send message to room group
@@ -62,7 +63,6 @@ class ScienceDataConsumer(WebsocketConsumer):
     # Receive message from room group
     def science_data_message(self, event):
 
-        # Send message to WebSocket
         self.send(text_data=json.dumps({
                 'mass' : event['mass'],
                 'candidates' : event['candidates'],

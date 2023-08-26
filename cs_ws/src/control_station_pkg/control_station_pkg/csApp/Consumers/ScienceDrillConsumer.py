@@ -12,7 +12,7 @@ Data format :
     'motors_pos' : float * 2,
     'motors_speed' : float * 3,
     'motors_currents' : float * 3 (?),
-    'limit_switches' : bool * 4 
+    'limit_switches' : int * 4 
 
 }
 
@@ -22,7 +22,7 @@ Data format :
 class ScienceDrillConsumer(WebsocketConsumer):
     
     def connect(self):
-        
+
         self.tab_group_name = 'science_drill'
 
         # Join tab group
@@ -60,7 +60,7 @@ class ScienceDrillConsumer(WebsocketConsumer):
         )
 
     # Receive message from room group
-    async def science_drill_message(self, event):
+    def science_drill_message(self, event):
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({

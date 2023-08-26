@@ -9,6 +9,19 @@ function useScienceDrillInfos() {
 		{ label: "3rd LS", value: 0 },
 		{ label: "4th LS", value: 0 },
 	]);
+	const [module1, setModule1] = useState({id: "Module1",
+	velocity: 10,
+	distance: 3,
+	current: 12,});
+	const [module2, setModule2] = useState({id: "Module2",
+	velocity: 10,
+	distance: 3,
+	current: 12,});
+	const [drill, setDrill] = useState({id: "Drill",
+		velocity: 5,
+		distance: null,
+		current: 9,
+	});
 
 	useEffect(() => {
 		let scienceDrillSocket = new WebSocket("ws://127.0.0.1:8000/ws/csApp/science_drill/");
@@ -16,13 +29,37 @@ function useScienceDrillInfos() {
 		scienceDrillSocket.onmessage = (e) => {
 			const data = JSON.parse(e.data);
 
-			// setState(geStateString(data.state));
+			setState(geStateString(data.state));
 			setLimitSwitches((values) =>
 				data.limit_switches.map((value: number, index: number) => {
 					let newval = values[index];
 					return { label: values[index].label, value: value };
 				})
 			);
+			setModule1((values) => {
+				return {
+					id: values.id,
+					velocity: data.motors_speed[0],
+					distance: data.motors_pos[0],
+					current: data.motors_currents[0],
+				};
+			});
+			setModule2((values) => {
+				return {
+					id: values.id,
+					velocity: data.motors_speed[1],
+					distance: data.motors_pos[1],
+					current: data.motors_currents[1],
+				};
+			}
+			);
+			setDrill((values) => {
+				return {
+					id: values.id,
+					velocity: data.motors_speed[2],
+					distance: null,
+					current: data.motors_currents[2],
+				}})
 		};
 
 		scienceDrillSocket.onerror = (e) => {
@@ -33,7 +70,7 @@ function useScienceDrillInfos() {
 		setSocket(scienceDrillSocket);
 	}, []);
 
-	return [state, limitSwitches] as const;
+	return [state, limitSwitches, module1, module2, drill] as const;
 }
 
 const geStateString = (state: number) => {

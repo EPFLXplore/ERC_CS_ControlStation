@@ -39,7 +39,7 @@ type DataRow = {
 };
 export default () => {
 	const [images, cameras, selectCamera] = useCameraSelector([Cameras.CAM1]);
-	const [state, limitSwitches] = useScienceDrillInfos();
+	const [state, limitSwitches, module1, module2, drill] = useScienceDrillInfos();
 	const sensorType = "Sensor Data";
 	const rows = ["Velocity", "Distance", "Current"]; // Rows titles
 	const columns = ["Module1", "Module2", "Drill"]; // Columns titles
