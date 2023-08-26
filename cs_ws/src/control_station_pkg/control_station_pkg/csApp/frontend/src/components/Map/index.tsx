@@ -31,6 +31,7 @@ const Map = ({
 }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [image, setImage] = useState<HTMLImageElement>();
+	const [roverIcon, setRoverIcon] = useState<HTMLImageElement>();
 	const [imageWidth, setImageWidth] = useState<number>(0);
 	const [imageHeight, setImageHeight] = useState<number>(0);
 
@@ -187,7 +188,7 @@ const drawMap = (
 	}
 };
 
-export const drawGoal = (goal: Point, color: string) => {
+export const drawGoal = (goal: Point, color: string, image?: CanvasImageSource) => {
 	if (mapCTX) {
 		let yaw: number = goal.o;
 		let x_px: number = goal.x * pointSpacing + mapOrigin.x;
@@ -203,23 +204,29 @@ export const drawGoal = (goal: Point, color: string) => {
 		// Convert the angle from degrees to radians
 		let angle = (-yaw * Math.PI) / 180;
 
-		// Define the rotated points of the triangle
-		p1 = rotatePoint(angle, p1, x_px, y_px);
-		p2 = rotatePoint(angle, p2, x_px, y_px);
-		p3 = rotatePoint(angle, p3, x_px, y_px);
+		if (image) {
+			// Draw the rover
+			mapCTX.beginPath();
+			mapCTX.drawImage(image, x_px, y_px, 20, 20);
+		} else {
+			// Define the rotated points of the triangle
+			p1 = rotatePoint(angle, p1, x_px, y_px);
+			p2 = rotatePoint(angle, p2, x_px, y_px);
+			p3 = rotatePoint(angle, p3, x_px, y_px);
 
-		// Begin the path and set the starting point to p1
-		mapCTX.beginPath();
-		mapCTX.moveTo(p1[0], p1[1]);
+			// Begin the path and set the starting point to p1
+			mapCTX.beginPath();
+			mapCTX.moveTo(p1[0], p1[1]);
 
-		// Draw lines from p1 to p2, p2 to p3, and from p3 back to p1
-		mapCTX.lineTo(p2[0], p2[1]);
-		mapCTX.lineTo(p3[0], p3[1]);
-		mapCTX.lineTo(p1[0], p1[1]);
+			// Draw lines from p1 to p2, p2 to p3, and from p3 back to p1
+			mapCTX.lineTo(p2[0], p2[1]);
+			mapCTX.lineTo(p3[0], p3[1]);
+			mapCTX.lineTo(p1[0], p1[1]);
 
-		// Fill the triangle with the given color
-		mapCTX.fillStyle = color;
-		mapCTX.fill();
+			// Fill the triangle with the given color
+			mapCTX.fillStyle = color;
+			mapCTX.fill();
+		}
 	}
 };
 

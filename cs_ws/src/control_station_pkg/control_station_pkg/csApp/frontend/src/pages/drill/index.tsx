@@ -63,13 +63,15 @@ export default () => {
 					"Camera 1",
 					"Camera 2",
 					"Camera 3",
-					"Camera 4",
-					"Camera 5",
-					"Camera 6",
-					"Camera 7",
+					// "Camera 4",
+					// "Camera 5",
+					// "Camera 6",
+					"Camera Gripper",
 				]}
 				optionsCallback={selectCamera}
-				currentOptions={cameras.map((camera) => "Camera " + (camera + 1))}
+				currentOptions={cameras.map((camera) =>
+					camera < 6 ? "Camera " + (camera + 1) : "Camera Gripper"
+				)}
 			/>
 			<div className={styles.rightContainer}>
 				<div>
