@@ -1,3 +1,4 @@
+import { roundToTwoDecimals } from "../../utils/maths";
 import styles from "./style.module.sass";
 
 interface Props {
@@ -5,9 +6,6 @@ interface Props {
 }
 
 export default function MyComponent({ currentPoint }: Props) {
-	const roundToTwoDecimals = (num: number) => {
-		return Math.round(num * 100) / 100;
-	};
 
 	return (
 		<div className={styles.container}>

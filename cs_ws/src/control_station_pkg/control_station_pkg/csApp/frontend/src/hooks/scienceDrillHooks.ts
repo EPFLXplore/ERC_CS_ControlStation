@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { roundToTwoDecimals } from "../utils/maths";
 
 function useScienceDrillInfos() {
 	const [socket, setSocket] = useState<WebSocket | null>(null);
@@ -39,26 +40,26 @@ function useScienceDrillInfos() {
 			setModule1((values) => {
 				return {
 					id: values.id,
-					velocity: data.motors_speed[0],
-					distance: data.motors_pos[0],
-					current: data.motors_currents[0],
+					velocity: roundToTwoDecimals(data.motors_speed[0]),
+					distance: roundToTwoDecimals(data.motors_pos[0]),
+					current: roundToTwoDecimals(data.motors_currents[0]),
 				};
 			});
 			setModule2((values) => {
 				return {
 					id: values.id,
-					velocity: data.motors_speed[1],
-					distance: data.motors_pos[1],
-					current: data.motors_currents[1],
+					velocity: roundToTwoDecimals(data.motors_speed[1]),
+					distance: roundToTwoDecimals(data.motors_pos[1]),
+					current: roundToTwoDecimals(data.motors_currents[1]),
 				};
 			}
 			);
 			setDrill((values) => {
 				return {
 					id: values.id,
-					velocity: data.motors_speed[2],
+					velocity: roundToTwoDecimals(data.motors_speed[2]),
 					distance: null,
-					current: data.motors_currents[2],
+					current: roundToTwoDecimals(data.motors_currents[2]),
 				}})
 		};
 

@@ -3,6 +3,7 @@ import map from "../../assets/images/mars_yard_2023.png";
 import roverIconImage from "../../assets/images//icons/rover_icon.svg";
 import React, { useState, useEffect, useRef } from "react";
 import { get } from "http";
+import { roundToTwoDecimals } from "../../utils/maths";
 
 type Point = {
 	x: number;
@@ -89,8 +90,8 @@ const Map = ({
 							const { x, y } = getMousePos(canvasRef.current, e);
 							if (onMapClick)
 								onMapClick(
-									decimalRound(x / pointSpacing),
-									decimalRound(-y / pointSpacing)
+									roundToTwoDecimals(x / pointSpacing),
+									roundToTwoDecimals(-y / pointSpacing)
 								);
 						}
 					}}
@@ -110,10 +111,6 @@ function getMousePos(canvas: HTMLCanvasElement, evt: any) {
 		y: (evt.clientY - rect.top) * scaleY - mapOrigin.y, // been adjusted to be relative to element
 	};
 }
-
-const decimalRound = (num: number) => {
-	return Math.round(num * 100) / 100;
-};
 
 const rotatePoint = (angle: number, point: number[], x_px: number, y_px: number) => {
 	let x = (point[0] - x_px) * Math.cos(angle) - (point[1] - y_px) * Math.sin(angle) + x_px;
