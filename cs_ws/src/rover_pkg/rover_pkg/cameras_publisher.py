@@ -171,7 +171,6 @@ def run_camera(cameras_publisher, camera, pub, i):
     while enabled[i]: # cameras_publisher.enabled[i] == True:
         ret, frame = camera.read()
         if (ret):
-            print("ret tho")
             frame = cameras_publisher.bridge.cv2_to_compressed_imgmsg(frame)
             pub.publish(frame)
             #cv2.imshow('Input', frame)

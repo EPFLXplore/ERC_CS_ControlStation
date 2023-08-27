@@ -96,10 +96,7 @@ class Rover():
         self.node.create_subscription(Int8,           'CS/HD_SemiAuto_Id', self.model.HD.set_semiAutoID, 10)
         self.node.create_subscription(Int8,           'CS/HD_element_id' , self.model.HD.send_element_id_hd     , 10)
         self.node.create_subscription(Bool,           'CS/HD_toggle_camera', self.model.HD.send_toggle_info     , 10)
-        self.node.create_subscription(Int8, 'CS/HD_mode',          self.model.HD.setHDMode,          10)
-        self.node.create_subscription(Int8, 'CS/HD_SemiAuto_Id',   self.model.HD.set_semiAutoID,     10)
-        self.node.create_subscription(Int8, 'CS/HD_element_id',    self.model.HD.send_element_id_hd, 10)
-        self.node.create_subscription(Bool, 'CS/HD_toggle_camera', self.model.HD.send_toggle_info, 10)
+
         # messages from CS (NAV)
         self.node.create_subscription(PoseStamped, 'CS/NAV_goal',    self.model.Nav.setGoal, 10)
         
@@ -120,7 +117,7 @@ class Rover():
         self.Maintenance_pub         = self.node.create_publisher(Int8, 'ROVER/Maintenance'      , 1)
         self.HD_mode_pub             = self.node.create_publisher(Int8, 'ROVER/HD_mode'          , 1)
         self.HD_SemiAuto_Id_pub      = self.node.create_publisher(Int8, 'ROVER/HD_SemiAuto_Id'   , 1)
-        self.send_HD_element_id_pub  = self.node.create_publisher(Int8, 'ROVER/element_id'       , 1)
+        self.send_HD_element_id_pub  = self.node.create_publisher(Int8, 'ROVER/HD_element_id'    , 1)
         self.send_toggle_info_pub    = self.node.create_publisher(Bool, 'ROVER/HD_toggle_camera' , 1)
         #self.HD_gamepad_pub          = self.node.create_publisher(Float32MultiArray, 'ROVER/HD_gamepad' , 1)
         

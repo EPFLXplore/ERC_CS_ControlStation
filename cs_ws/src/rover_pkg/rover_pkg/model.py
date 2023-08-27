@@ -221,7 +221,7 @@ class HandlingDevice:
 
     def send_element_id_hd(self, id):
         self.rover.send_HD_element_id_pub.publish(id)
-        self.rover.node.get_logger().info("HD element ID sent")
+        self.rover.node.get_logger().info("HD element ID :" + str(id))
 
     def send_toggle_info(self, toggle):
         self.rover.send_toggle_info_pub.publish(Bool(data=toggle))
