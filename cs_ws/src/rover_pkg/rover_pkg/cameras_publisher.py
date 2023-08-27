@@ -8,6 +8,8 @@ import cv2
 from cv_bridge import CvBridge
 import threading
 
+from gripper_camera import CameraFluxPublisher
+
 
 CAMERA_FRAMERATE = 100
 
@@ -42,7 +44,7 @@ class CamerasPublisher(Node):
                               self.cam_5_pub]
 
         global enabled
-        enabled = [False] * 6
+        enabled = [False] * 7
 
         
         # self.cam_publisher.append(self.cam_1_pub)
@@ -51,26 +53,23 @@ class CamerasPublisher(Node):
         # self.cam_publisher.append(self.cam_4_pub)
 
 
-        self.camera_0 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=0))
-        self.camera_1 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=1))
-        self.camera_2 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=2))
-        self.camera_3 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=3))
-        # self.camera_4 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=4))
-        # self.camera_5 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=5))
+        self.camera_0 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=0))
+        self.camera_1 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=1))
+        self.camera_2 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=2))
+        self.camera_3 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=3))
+        self.camera_4 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=4))
+        self.camera_5 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=5))
+        self.cam_hd = CameraFluxPublisher(self)
+
 
         self.camera_list = [self.camera_0, 
                             self.camera_1,
                             self.camera_2,
-                            self.camera_3]
-                            # self.camera_4, 
-                            # self.camera_5]
+                            self.camera_3,
+                            self.camera_4, 
+                            self.camera_5,
+                            self.cam_hd]
         
-        # self.camera_list.append(self.camera_0)
-        # self.camera_list.append(self.camera_1)
-        # self.camera_list.append(self.camera_2)
-        # self.camera_list.append(self.camera_3)
-        # self.camera_list.append(self.camera_4)
-        # self.camera_list.append(self.camera_5)
 
         self.bridge = CvBridge()
 
@@ -86,15 +85,24 @@ class CamerasPublisher(Node):
         print("Enabling camera: ", camera_indices)
         # self.active_cameras = []
         for i in range(len(enabled)):
-            if i in camera_indices and i < 4: 
+            if i in camera_indices and i < 7: 
                 print("enabled ", i)
                 # if the camera wasn't enabled then enable it, otherwise it is already turned on => thread already launched
                 if enabled[i] == False:
                     enabled[i] = True
-                    threading.Thread(target=run_camera, args=(self, self.camera_list[i], self.camera_publishers[i], i)).start()
+                    # Handle the gripper camera differently (index = 6)
+                    if (i == 6) :
+                        self.camera_list[i].enabled_ = True
+                        threading.Thread(target=run_gripper, args= (self,self.camera_list[i])).start()
+                    else:
+                        threading.Thread(target=run_camera, args=(self, self.camera_list[i], self.camera_publishers[i], i)).start()
 
             else:
                 enabled[i] = False
+                #Handles the gripper camera differently (index = 3)
+                if i == 6:
+                    self.camera_list[i].enabled_ = False
+
 
         '''for i in camera_indices:
             if(i > 3):
@@ -164,6 +172,13 @@ def gstreamer_pipeline(
     # )
     #return ('sudo gst-launch-1.0 v4l2src ! videoconvert ! x264enc pass=qual quantizer=20 tune=zerolatency ! rtph264pay ! udpsink host=127.0.0.1 port=8080')
     #return ('sudo gst-launch-1.0 v4l2src ! videoconvert ! video/x-raw, format=(string)BGR ! appsink')
+
+def run_gripper(self, camera: CameraFluxPublisher):
+    rate = self.create_rate(1)  # 1hz
+    # While the gripper is enabled
+    while enabled[6]:
+        camera.publish_frame()
+        rate.sleep()
 
 def run_camera(cameras_publisher, camera, pub, i):
     print(enabled[i])

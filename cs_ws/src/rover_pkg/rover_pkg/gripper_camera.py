@@ -33,12 +33,7 @@ def main(args=None):
 
     threading.Thread(target=rclpy.spin, args=(vision_node,), daemon=True).start()
 
-    rate = vision_node.create_rate(1)  # 1hz
-
-
-    while True:
-        camera_publisher.publish_frame()
-        rate.sleep()
+    
 
 
 if __name__ == '__main__':
