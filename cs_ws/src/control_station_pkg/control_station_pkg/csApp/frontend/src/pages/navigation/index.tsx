@@ -41,7 +41,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 			(document.getElementById("input-y") as HTMLInputElement).value = "";
 			(document.getElementById("input-o") as HTMLInputElement).value = "";
 
-			setTempGoal([]);
+			setTempGoal(undefined);
 		}
 	};
 
@@ -64,7 +64,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 					}}
 					trajectory={trajectoryPoints}
 					goals={goals}
-					tempGoals={tempGoal}
+					tempGoal={tempGoal}
 					onMapClick={(x, y) => {
 						(document.getElementById("input-x") as HTMLInputElement).value =
 							x.toString();
@@ -72,7 +72,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 							y.toString();
 						(document.getElementById("input-o") as HTMLInputElement).value = "0";
 						const goal: Goal = { id: -1, x: x, y: y, o: 0 };
-						setTempGoal((prev) => [goal]);
+						setTempGoal(goal);
 					}}
 				/>
 				<div className={styles.Info}>
@@ -90,31 +90,55 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 							<div className={styles.finalContainer}>
 								X
 								<input type="number" id="input-x" name="input-x" onInput={(e) => {
-										setTempGoal((prev) => [
-											{
-												...prev[0],
-												x: parseFloat(
-													(e.target as HTMLInputElement).value.length > 0
-														? (e.target as HTMLInputElement).value
-														: "0"
-												),
-											},
-										]);
+										setTempGoal((prev) => {
+											if(!prev) {
+												return {
+													id: -1,
+													x: parseFloat(
+														(e.target as HTMLInputElement).value.length > 0
+															? (e.target as HTMLInputElement).value
+															: "0"
+													),
+													y: 0,
+													o: 0
+												}
+											} else {
+												return {
+													...prev,
+													x: parseFloat(
+														(e.target as HTMLInputElement).value.length > 0
+															? (e.target as HTMLInputElement).value
+															: "0"
+													),
+												}
+											}});
 									}} />
 							</div>
 							<div className={styles.finalContainer}>
 								Y
 								<input type="number" id="input-y" name="input-y" onInput={(e) => {
-										setTempGoal((prev) => [
-											{
-												...prev[0],
-												y: parseFloat(
-													(e.target as HTMLInputElement).value.length > 0
-														? (e.target as HTMLInputElement).value
-														: "0"
-												),
-											},
-										]);
+										setTempGoal((prev) => {
+											if(!prev) {
+												return {
+													id: -1,
+													x: 0,
+													y: parseFloat(
+														(e.target as HTMLInputElement).value.length > 0
+															? (e.target as HTMLInputElement).value
+															: "0"
+													),
+													o: 0
+												}
+											} else {
+												return {
+													...prev,
+													y: parseFloat(
+														(e.target as HTMLInputElement).value.length > 0
+															? (e.target as HTMLInputElement).value
+															: "0"
+													),
+												}
+											}});
 									}} />
 							</div>
 							<div className={styles.finalContainer}>
@@ -124,16 +148,28 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 									id="input-o"
 									name="input-o"
 									onInput={(e) => {
-										setTempGoal((prev) => [
-											{
-												...prev[0],
-												o: parseFloat(
-													(e.target as HTMLInputElement).value.length > 0
-														? (e.target as HTMLInputElement).value
-														: "0"
-												),
-											},
-										]);
+										setTempGoal((prev) => {
+											if(!prev) {
+												return {
+													id: -1,
+													x: 0,
+													y: 0,
+													o: parseFloat(
+														(e.target as HTMLInputElement).value.length > 0
+															? (e.target as HTMLInputElement).value
+															: "0"
+													),
+												}
+											} else {
+												return {
+													...prev,
+													o: parseFloat(
+														(e.target as HTMLInputElement).value.length > 0
+															? (e.target as HTMLInputElement).value
+															: "0"
+													),
+												}
+											}});
 									}}
 								/>
 							</div>
@@ -151,7 +187,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 							theme={Themes.BROWN}
 							onClick={() => {
 								resetGoals();
-								setTempGoal([]);
+								setTempGoal(undefined);
 								// Clear the input fields
 								(document.getElementById("input-x") as HTMLInputElement).value = "";
 								(document.getElementById("input-y") as HTMLInputElement).value = "";

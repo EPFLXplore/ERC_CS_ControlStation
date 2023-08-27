@@ -27,13 +27,13 @@ const Map = ({
 	origin,
 	trajectory,
 	goals,
-	tempGoals,
+	tempGoal,
 	onMapClick,
 }: {
 	origin: Point;
 	trajectory: Point[];
 	goals: Point[];
-	tempGoals: Point[];
+	tempGoal: Point | undefined;
 	onMapClick?: (x: number, y: number) => void;
 }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -72,10 +72,10 @@ const Map = ({
 				drawMap(canvas, ctx, image, origin);
 				drawTrajectory(trajectory, roverIcon);
 				goals.forEach((goal: Point) => drawGoal(goal, "#e324a0"));
-				tempGoals.forEach((goal: Point) => drawGoal(goal, "#3b3b45"));
+				if(tempGoal) drawGoal(tempGoal, "#3b3b45");
 			}
 		}
-	}, [image, imageWidth, imageHeight, trajectory, goals, tempGoals]);
+	}, [image, imageWidth, imageHeight, trajectory, goals, tempGoal]);
 
 	return (
 		<div className={styles.Map}>

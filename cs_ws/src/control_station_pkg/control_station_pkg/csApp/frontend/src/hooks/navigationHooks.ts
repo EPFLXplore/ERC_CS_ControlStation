@@ -6,7 +6,7 @@ type Point = { x: number; y: number; o: number };
 
 export const useGoalTracker = () => {
 	const [goals, setGoals] = useState<Goal[]>([]);
-	const [tempGoal, setTempGoal] = useState<Goal[]>([]);
+	const [tempGoal, setTempGoal] = useState<Goal>();
 
 	const getCookie = (name: string): string | null => {
 		let cookieValue = null;
