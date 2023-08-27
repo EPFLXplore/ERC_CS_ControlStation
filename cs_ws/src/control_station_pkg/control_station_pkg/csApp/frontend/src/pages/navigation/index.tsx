@@ -89,11 +89,33 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 						<div className={styles.inputContainer}>
 							<div className={styles.finalContainer}>
 								X
-								<input type="number" id="input-x" name="input-x" />
+								<input type="number" id="input-x" name="input-x" onInput={(e) => {
+										setTempGoal((prev) => [
+											{
+												...prev[0],
+												x: parseFloat(
+													(e.target as HTMLInputElement).value.length > 0
+														? (e.target as HTMLInputElement).value
+														: "0"
+												),
+											},
+										]);
+									}} />
 							</div>
 							<div className={styles.finalContainer}>
 								Y
-								<input type="number" id="input-y" name="input-y" />
+								<input type="number" id="input-y" name="input-y" onInput={(e) => {
+										setTempGoal((prev) => [
+											{
+												...prev[0],
+												y: parseFloat(
+													(e.target as HTMLInputElement).value.length > 0
+														? (e.target as HTMLInputElement).value
+														: "0"
+												),
+											},
+										]);
+									}} />
 							</div>
 							<div className={styles.finalContainer}>
 								O
@@ -105,11 +127,10 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 										setTempGoal((prev) => [
 											{
 												...prev[0],
-												o: parseInt(
+												o: parseFloat(
 													(e.target as HTMLInputElement).value.length > 0
 														? (e.target as HTMLInputElement).value
-														: "0",
-													10
+														: "0"
 												),
 											},
 										]);
