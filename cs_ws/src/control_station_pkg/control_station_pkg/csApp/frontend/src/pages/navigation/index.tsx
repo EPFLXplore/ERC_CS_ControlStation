@@ -11,11 +11,11 @@ import { Themes } from "../../utils/themes";
 import styles from "./style.module.sass";
 import { Size } from "../../utils/size.type";
 import Timer from "../../components/Timer";
-import { useGoalTracker } from "../../hooks/navigationHooks";
+import { Goal, useGoalTracker } from "../../hooks/navigationHooks";
 import { useNavigation } from "../../hooks/navigationHooks";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
-	const { goals, addGoal, removeGoal, resetGoals } = useGoalTracker();
+	const { goals, addGoal, removeGoal, resetGoals, tempGoal, setTempGoal } = useGoalTracker();
 
 	const [
 		currentPosition,
@@ -28,17 +28,21 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 
 	const handleAddGoal = () => {
 		// Get the values from the input fields
-		const x = parseInt((document.getElementById("input-x") as HTMLInputElement).value, 10);
-		const y = parseInt((document.getElementById("input-y") as HTMLInputElement).value, 10);
-		const o = parseInt((document.getElementById("input-o") as HTMLInputElement).value, 10);
+		const x = parseFloat((document.getElementById("input-x") as HTMLInputElement).value);
+		const y = parseFloat((document.getElementById("input-y") as HTMLInputElement).value);
+		const o = parseFloat((document.getElementById("input-o") as HTMLInputElement).value);
 
-		// Create a new goal object and add it to the list of goals
-		addGoal(x, y, o);
+		if (x.toString() !== "NaN" && y.toString() !== "NaN" && o.toString() !== "NaN") {
+			// Create a new goal object and add it to the list of goals
+			addGoal(x, y, o);
 
-		// Clear the input fields
-		(document.getElementById("input-x") as HTMLInputElement).value = "";
-		(document.getElementById("input-y") as HTMLInputElement).value = "";
-		(document.getElementById("input-o") as HTMLInputElement).value = "";
+			// Clear the input fields
+			(document.getElementById("input-x") as HTMLInputElement).value = "";
+			(document.getElementById("input-y") as HTMLInputElement).value = "";
+			(document.getElementById("input-o") as HTMLInputElement).value = "";
+
+			setTempGoal([]);
+		}
 	};
 
 	// TODO Replace all these constants by the call to functions
@@ -60,6 +64,16 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 					}}
 					trajectory={trajectoryPoints}
 					goals={goals}
+					tempGoals={tempGoal}
+					onMapClick={(x, y) => {
+						(document.getElementById("input-x") as HTMLInputElement).value =
+							x.toString();
+						(document.getElementById("input-y") as HTMLInputElement).value =
+							y.toString();
+						(document.getElementById("input-o") as HTMLInputElement).value = "0";
+						const goal: Goal = { id: -1, x: x, y: y, o: 0 };
+						setTempGoal((prev) => [goal]);
+					}}
 				/>
 				<div className={styles.Info}>
 					<h2 className={styles.InfoTitle}>{mode} Navigation</h2>
@@ -83,7 +97,24 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 							</div>
 							<div className={styles.finalContainer}>
 								O
-								<input type="number" id="input-o" name="input-o" />
+								<input
+									type="number"
+									id="input-o"
+									name="input-o"
+									onInput={(e) => {
+										setTempGoal((prev) => [
+											{
+												...prev[0],
+												o: parseInt(
+													(e.target as HTMLInputElement).value.length > 0
+														? (e.target as HTMLInputElement).value
+														: "0",
+													10
+												),
+											},
+										]);
+									}}
+								/>
 							</div>
 						</div>
 						<Button
@@ -97,7 +128,14 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 							text="Cancel"
 							size={Size.SMALL}
 							theme={Themes.BROWN}
-							onClick={resetGoals}
+							onClick={() => {
+								resetGoals();
+								setTempGoal([]);
+								// Clear the input fields
+								(document.getElementById("input-x") as HTMLInputElement).value = "";
+								(document.getElementById("input-y") as HTMLInputElement).value = "";
+								(document.getElementById("input-o") as HTMLInputElement).value = "";
+							}}
 							radius={10}
 						/>
 						{goals.length > 0 && <h3>Next Goals</h3>}

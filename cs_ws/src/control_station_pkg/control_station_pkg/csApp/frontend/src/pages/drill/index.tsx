@@ -9,28 +9,6 @@ import CameraView from "../../components/CameraView";
 import useCameraSelector from "../../hooks/cameraHooks";
 import useScienceDrillInfos from "../../hooks/scienceDrillHooks";
 
-//to replace by the real data
-const data: DataRow[] = [
-	{
-		id: "Module1",
-		velocity: 10,
-		distance: 3,
-		current: 12,
-	},
-	{
-		id: "Module2",
-		velocity: 10,
-		distance: 2,
-		current: 9,
-	},
-	{
-		id: "Drill",
-		velocity: 5,
-		distance: null,
-		current: 9,
-	},
-];
-
 type DataRow = {
 	id: string;
 	velocity: number;
@@ -56,7 +34,7 @@ export default () => {
 				<TaskControl task={Task.SCIENCE} />
 			</div>
 			<PageHeader
-				title="Camera Selector"
+				title="Science Drill"
 				settings
 				optionTitle="Cameras"
 				options={[
@@ -96,7 +74,7 @@ export default () => {
 										<text>{rowTitle}</text>
 									</td>
 									{columns.map((columnTitle) => {
-										const rowData = data.find(
+										const rowData = [module1, module2, drill].find(
 											(item) => item.id === columnTitle
 										);
 										const value = rowData
