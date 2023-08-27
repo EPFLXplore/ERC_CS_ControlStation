@@ -2,6 +2,7 @@ import styles from "./style.module.sass";
 import map from "../../assets/images/mars_yard_2023.png";
 import roverIconImage from "../../assets/images//icons/rover_icon.svg";
 import React, { useState, useEffect, useRef } from "react";
+import { get } from "http";
 
 type Point = {
 	x: number;
@@ -25,10 +26,14 @@ const Map = ({
 	origin,
 	trajectory,
 	goals,
+	tempGoals,
+	onMapClick,
 }: {
 	origin: Point;
 	trajectory: Point[];
 	goals: Point[];
+	tempGoals: Point[];
+	onMapClick?: (x: number, y: number) => void;
 }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [image, setImage] = useState<HTMLImageElement>();
@@ -66,10 +71,10 @@ const Map = ({
 				drawMap(canvas, ctx, image, origin);
 				drawTrajectory(trajectory, roverIcon);
 				goals.forEach((goal: Point) => drawGoal(goal, "#e324a0"));
+				tempGoals.forEach((goal: Point) => drawGoal(goal, "#3b3b45"));
 			}
 		}
-		//}, [origin, image, imageWidth, imageHeight]); 		//origin trigger draw grid a chaque fois que la position est draw
-	}, [image, imageWidth, imageHeight, trajectory, goals]);
+	}, [image, imageWidth, imageHeight, trajectory, goals, tempGoals]);
 
 	return (
 		<div className={styles.Map}>
@@ -79,10 +84,35 @@ const Map = ({
 					width={imageWidth}
 					height={imageHeight}
 					style={{ maxWidth: "100%" }}
+					onClick={(e) => {
+						if (canvasRef.current) {
+							const { x, y } = getMousePos(canvasRef.current, e);
+							if (onMapClick)
+								onMapClick(
+									decimalRound(x / pointSpacing),
+									decimalRound(-y / pointSpacing)
+								);
+						}
+					}}
 				/>
 			</div>
 		</div>
 	);
+};
+
+function getMousePos(canvas: HTMLCanvasElement, evt: any) {
+	var rect = canvas.getBoundingClientRect(), // abs. size of element
+		scaleX = canvas.width / rect.width, // relationship bitmap vs. element for x
+		scaleY = canvas.height / rect.height; // relationship bitmap vs. element for y
+
+	return {
+		x: (evt.clientX - rect.left) * scaleX - mapOrigin.x, // scale mouse coordinates after they have
+		y: (evt.clientY - rect.top) * scaleY - mapOrigin.y, // been adjusted to be relative to element
+	};
+}
+
+const decimalRound = (num: number) => {
+	return Math.round(num * 100) / 100;
 };
 
 const rotatePoint = (angle: number, point: number[], x_px: number, y_px: number) => {

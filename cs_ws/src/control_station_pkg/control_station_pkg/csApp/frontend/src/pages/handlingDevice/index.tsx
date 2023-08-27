@@ -50,52 +50,52 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 				<div className={styles.globalContainer}>
 					<div className={styles.container}>
 						<button className={styles.button} onClick={() => buttonSelect(0)}>
-							Button A1 1
+							Switch A 1
 						</button>
 						<button className={styles.button} onClick={() => buttonSelect(1)}>
-							Button A1 2
+							Switch A 2
 						</button>
 						<button className={styles.button} onClick={() => buttonSelect(2)}>
-							Button A1 3
+							Switch A 3
 						</button>
 						<button className={styles.button} onClick={() => buttonSelect(3)}>
-							Button A1 4
+							Switch A 4
 						</button>
 						<button className={styles.button} onClick={() => buttonSelect(4)}>
-							Button A1 5
+							Switch A 5
 						</button>
 						<button className={styles.button} onClick={() => buttonSelect(5)}>
-							Button A1 6
+							Switch A 6
 						</button>
 						<button className={styles.button} onClick={() => buttonSelect(6)}>
-							Button A1 7
+							Switch A 7
 						</button>
 						<button className={styles.button} onClick={() => buttonSelect(7)}>
-							Button A1 8
+							Switch A 8
 						</button>
 						<button className={styles.button} onClick={() => buttonSelect(8)}>
-							Button A1 9
+							Switch A 9
 						</button>
 						<button className={styles.button} onClick={() => buttonSelect(9)}>
-							Button A1 10
+							Switch A 10
 						</button>
 						<button className={styles.button} onClick={() => buttonSelect(10)}>
-							Button A2 1
+							Button Switch
 						</button>
 						<button className={styles.button} onClick={() => buttonSelect(11)}>
-							Button A2 2
+							Socket
 						</button>
 						<button className={styles.button} onClick={() => buttonSelect(12)}>
-							Button A2 3
+							Magnet
 						</button>
 						<button className={styles.button} onClick={() => buttonSelect(13)}>
-							Button A2 4
+							Mettalic Plate
 						</button>
 						<button className={styles.button} onClick={() => buttonSelect(20)}>
-							Button B1 1
+							Ethernet Socket
 						</button>
 						<button className={styles.button} onClick={() => buttonSelect(21)}>
-							Button B1 2
+							Ethernet Cable
 						</button>
 					</div>
 					<TaskControl task={Task.HANDLING_DEVICE} />

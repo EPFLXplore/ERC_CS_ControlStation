@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { drawGoal } from "../components/Map";
 
-type Goal = { id: number; x: number; y: number; o: number };
+export type Goal = { id: number; x: number; y: number; o: number };
 type Point = { x: number; y: number; o: number };
 
 export const useGoalTracker = () => {
 	const [goals, setGoals] = useState<Goal[]>([]);
+	const [tempGoal, setTempGoal] = useState<Goal[]>([]);
 
 	const getCookie = (name: string): string | null => {
 		let cookieValue = null;
@@ -24,41 +25,39 @@ export const useGoalTracker = () => {
 	};
 
 	const addGoal = (x: number, y: number, o: number) => {
-		if (x.toString() !== "NaN" && y.toString() !== "NaN" && o.toString() !== "NaN") {
-			const id = Date.now(); //Generate a unique id for the goal
-			setGoals([...goals, { id, x, y, o }]);
-			const csrftoken = getCookie("csrftoken");
+		const id = Date.now(); //Generate a unique id for the goal
+		setGoals([...goals, { id, x, y, o }]);
+		const csrftoken = getCookie("csrftoken");
 
-			let formData = new FormData();
-			formData.append("x", x.toString());
-			formData.append("y", y.toString());
-			formData.append("yaw", o.toString());
+		let formData = new FormData();
+		formData.append("x", x.toString());
+		formData.append("y", y.toString());
+		formData.append("yaw", o.toString());
 
-			let request = new Request("http://127.0.0.1:8000/csApp/navigation/add_goal_nav", {
-				method: "POST",
-				headers: {
-					"X-CSRFToken": csrftoken ?? "",
-				},
-				body: formData,
-			});
+		let request = new Request("http://127.0.0.1:8000/csApp/navigation/add_goal_nav", {
+			method: "POST",
+			headers: {
+				"X-CSRFToken": csrftoken ?? "",
+			},
+			body: formData,
+		});
 
-			fetch(request)
-				.then((res) => res.json())
-				.then((data) => console.log(data))
-				.catch((err) => console.log(err));
+		fetch(request)
+			.then((res) => res.json())
+			.then((data) => console.log(data))
+			.catch((err) => console.log(err));
 
-			// let formData = new FormData();
-			// 								formData.append("x",  x.toString());
-			// 								formData.append('y',  y.toString());
-			// 								formData.append('yaw', o.toString());
+		// let formData = new FormData();
+		// 								formData.append("x",  x.toString());
+		// 								formData.append('y',  y.toString());
+		// 								formData.append('yaw', o.toString());
 
-			// 								let request = new Request('http://127.0.0.1:8000/csApp/navigation/add_goal_nav', {method: 'POST',
-			// 																	body: formData,
-			// 																	headers: {"X-CSRFToken": csrftoken ?? ''}})
-			// 								fetch(request)
-			// 									.then(response => response.json())
-			// 									.then(result => {})
-		}
+		// 								let request = new Request('http://127.0.0.1:8000/csApp/navigation/add_goal_nav', {method: 'POST',
+		// 																	body: formData,
+		// 																	headers: {"X-CSRFToken": csrftoken ?? ''}})
+		// 								fetch(request)
+		// 									.then(response => response.json())
+		// 									.then(result => {})
 	};
 
 	const resetGoals = () => {
@@ -76,7 +75,7 @@ export const useGoalTracker = () => {
 		});
 	}, [goals]);
 
-	return { goals, addGoal, removeGoal, resetGoals };
+	return { goals, addGoal, removeGoal, resetGoals, tempGoal, setTempGoal };
 };
 
 export function useNavigation() {
