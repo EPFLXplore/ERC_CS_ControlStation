@@ -85,7 +85,10 @@ export function useNavigation() {
 	const [wheelsPosition, setWheelsPosition] = useState([0, 0, 0, 0]);
 	const [linearVelocity, setLinearVelocity] = useState([0, 0, 0]);
 	const [angularVelocity, setAngularVelocity] = useState([0, 0, 0]);
-	const [trajectoryPoints, setTrajectoryPoints] = useState<Point[]>([]);
+	const [trajectoryPoints, setTrajectoryPoints] = useState<Point[]>([
+		{ x: 0, y: 0, o: 0 },
+		{ x: -12.5, y: 20.5, o: 45 },
+	]);
 
 	useEffect(() => {
 		let navigationSocket = new WebSocket("ws://127.0.0.1:8000/ws/csApp/info_nav/");

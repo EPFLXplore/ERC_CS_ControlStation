@@ -5,8 +5,8 @@ function useScienceDataInfos() {
 	const [mass, setMass] = useState([0, 0]);
 	const [npkSensor, setNpkSensor] = useState([0, 0, 0]);
 	const [fourInOneSensor, setFourInOneSensor] = useState([0, 0, 0, 0]);
-	const [spectrometer, setSpectrometer] = useState(new Array(17).fill(0));
-	const [spectrometerCandidate, setSpectrometerCandidate] = useState(new Array(17).fill(0));
+	const [spectrometer, setSpectrometer] = useState(new Array(18).fill(0));
+	const [spectrometerCandidate, setSpectrometerCandidate] = useState(new Array(18).fill(0));
 
 	useEffect(() => {
 		let scienceDataSocket = new WebSocket("ws://127.0.0.1:8000/ws/csApp/science_data/");

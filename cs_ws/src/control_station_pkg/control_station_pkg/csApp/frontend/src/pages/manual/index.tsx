@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import BackButton from "../../components/BackButton";
 import Background from "../../components/Background";
 import JointPositions from "../../components/JointPositions";
-import { Mode } from "../../utils/mode.type";
 import styles from "./style.module.sass";
 import GamepadHint from "../../components/GamepadHint";
 import PageHeader from "../../components/PageHeader";
-import DistanceHint from "../../components/DistanceHint";
 import CameraView from "../../components/CameraView";
 import { Cameras } from "../../utils/cameras.type";
 import Timer from "../../components/Timer";
@@ -15,13 +13,13 @@ import ModeSlider from "../../components/ModeSlider";
 import JointSpeed from "../../components/JointSpeed";
 import useHandlingDevice from "../../hooks/handlingDeviceHooks";
 import JointCurrents from "../../components/JointCurrents";
-import buttonSelect from "../../utils/buttonSelect";
 import { Task } from "../../utils/tasks.type";
 import TaskControl from "../../components/TaskControl";
 import { useNavigation } from "../../hooks/navigationHooks";
 import ManualModeSelector from "../../components/ManualModeSelector";
 import { useLocation } from "react-router-dom";
 import useCameraSelector from "../../hooks/cameraHooks";
+import ToggleFeature from "../../components/ToggleFeature";
 
 function useQuery() {
 	const { search } = useLocation();
@@ -85,6 +83,12 @@ export default () => {
 
 			{mode === Task.HANDLING_DEVICE && (
 				<div className={styles.globalContainer}>
+					<ToggleFeature
+						title="Laser"
+						onChange={(m) => {
+							console.log(m);
+						}}
+					/>
 					<ModeSlider />
 					<TaskControl task={Task.MANUAL_CONTROL} />
 				</div>
