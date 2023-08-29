@@ -61,7 +61,7 @@ class ScienceDrillConsumer(WebsocketConsumer):
 
     # Receive message from room group
     def science_drill_message(self, event):
-
+        
         # Send message to WebSocket
         self.send(text_data=json.dumps({
                 'state': event['state'],
