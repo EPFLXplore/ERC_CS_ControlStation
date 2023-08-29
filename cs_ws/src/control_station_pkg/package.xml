@@ -16,6 +16,7 @@
 
   <buildtool_depend>rosidl_default_generators</buildtool_depend>
   <exec_depend>rosidl_default_runtime</exec_depend>
+  <exec_depend>avionics_interfaces</exec_depend>
 
   <depend>actionlib_msgs</depend>
   <depend>geometry_msgs</depend>

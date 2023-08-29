@@ -35,7 +35,8 @@ from transforms3d.euler import euler2quat, quat2euler
 
 from .models.rover   import Task
 
-from .models.science import Science
+from .models.science         import Science
+from .models.handling_device import HandlingDevice
 
 # ================================================================================
 # Webscokets for ASGI
@@ -76,6 +77,7 @@ class Controller():
     def __init__(self, cs):
         self.cs = cs
         self.science = Science()
+        self.handling_device = HandlingDevice()
 
     # ===============================
     #            CALLBACKS
@@ -135,20 +137,29 @@ class Controller():
         self.science.UpdateScienceDrillSocket()
 
     def science_mass(self, data):
-        self.science.mass = data.data
+        # elec uses channel 2 for the mass (MAY CHANGE IN THE FUTURE)
+        self.science.mass = data.mass[2]
         self.science.UpdateScienceDataSocket()
 
+    # TODO Chaimaa c'est pour toi, fais la moyenne wallah
     def science_spectrometer(self, data):
         self.science.spectrometer = data.data
         self.science.FindClosestCandidate()
         self.science.UpdateScienceDataSocket()
 
     def science_npk(self, data):
-        self.science.npk_sensor = data.data
+        self.science.npk_sensor = [data.nitrogen,
+                                   data.phosphorus,
+                                   data.potassium]
+        
         self.science.UpdateScienceDataSocket()
 
     def science_4in1(self, data):
-        self.science.four_in_one = data.data
+        self.science.four_in_one = [data.temperature, 
+                                    data.moisture, 
+                                    data.conductivity, 
+                                    data.ph]
+        
         self.science.UpdateScienceDataSocket()
 
 
@@ -181,6 +192,10 @@ class Controller():
                                                             'task_outcome' : False,
                                                                         })
     
+    # receive: voltage data from the handling device's voltmeter
+    def voltage_data(self, Voltage):
+        self.handling_device.voltage = Voltage.voltage
+        # TODO create socket updater
 
     # ========= NAVIGATION CALLBACKS =========
 

@@ -24,6 +24,8 @@ class HandlingDevice:
         # [x,y,z,a,b,c] (3 translations and 3 rotations)
         self.__elements = np.zeros((NBR_BUTTONS, ELEMENT_DATA_SIZE)) # 14x6 matrix
 
+        self.voltage = 0.0
+
     #--------HD mode--------
 
     def setHDMode(self, mode):
