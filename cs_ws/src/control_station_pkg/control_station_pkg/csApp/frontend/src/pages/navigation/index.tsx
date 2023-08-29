@@ -13,7 +13,7 @@ import { Size } from "../../utils/size.type";
 import Timer from "../../components/Timer";
 import { Goal, useGoalTracker } from "../../hooks/navigationHooks";
 import { useNavigation } from "../../hooks/navigationHooks";
-import { angle, roundToTwoDecimals } from "../../utils/maths";
+import { angle, getDistance, roundToTwoDecimals } from "../../utils/maths";
 import WheelsIndicator from "../../components/WheelsIndicator";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
@@ -48,7 +48,6 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 	};
 
 	// TODO Replace all these constants by the call to functions
-	const distance = 15;
 	const routeLeft = 20;
 	const EstimatedTime = "07:00";
 
@@ -246,16 +245,18 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 								radius={10}
 							/>
 						</div>
-						{goals.length > 0 && <h3>Next Goals</h3>}
-						{goals.map((goal, index) => (
-							<SuppressableCard
-								key={goal.id}
-								x={goal.x}
-								y={goal.y}
-								o={goal.o}
-								removeGoal={() => removeGoal(goal.id)}
-							/>
-						))}
+						{goals.length > 0 && <h3 style={{ marginTop: "20px" }}>Next Goals</h3>}
+						<div className={styles.buttonGoalsContainer}>
+							{goals.map((goal, index) => (
+								<SuppressableCard
+									key={goal.id}
+									x={goal.x}
+									y={goal.y}
+									o={goal.o}
+									removeGoal={() => removeGoal(goal.id)}
+								/>
+							))}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -271,9 +272,52 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 								<p>Estimated time: </p>
 							</div>
 							<div className={styles.Infos}>
-								<p>{distance} m</p>
-								<p>{routeLeft} m</p>
-								<p>{EstimatedTime}</p>
+								<p>
+									{goals.length > 0
+										? roundToTwoDecimals(
+												getDistance(
+													{
+														x: currentPosition[0],
+														y: currentPosition[1],
+														o: currentPosition[2],
+													},
+													goals[0]
+												)
+										  )
+										: "--"}{" "}
+									m
+								</p>
+								<p>{"--"} m</p>
+								<p>
+									{goals.length > 0
+										? roundToTwoDecimals(
+												getDistance(
+													{
+														x: currentPosition[0],
+														y: currentPosition[1],
+														o: currentPosition[2],
+													},
+													goals[0]
+												) /
+													(getSpeedOrDefault(linearVelocity, true) * 60),
+												0
+										  )
+										: "--"}
+									{":"}
+									{goals.length > 0
+										? roundToTwoDecimals(
+												getDistance(
+													{
+														x: currentPosition[0],
+														y: currentPosition[1],
+														o: currentPosition[2],
+													},
+													goals[0]
+												) / getSpeedOrDefault(linearVelocity, true),
+												0
+										  ) % 60
+										: "--"}
+								</p>
 							</div>
 						</div>
 					</div>
@@ -286,12 +330,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 								<p>Angular: </p>
 							</div>
 							<div className={styles.Infos}>
-								<p>
-									{Math.sqrt(
-										linearVelocity.reduce((prev, curr) => prev + curr * curr)
-									).toFixed(2)}{" "}
-									m/s
-								</p>
+								<p>{getSpeedOrDefault(linearVelocity).toFixed(2)} m/s</p>
 								<p>{angularVelocity[2]} rad/s</p>
 							</div>
 						</div>
@@ -325,4 +364,13 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 			</div>
 		</div>
 	);
+};
+
+const getSpeedOrDefault = (linearVelocity: number[], isNonNull = false) => {
+	const defaultSpeed = 0.3;
+
+	if (linearVelocity.length !== 3) return isNonNull ? defaultSpeed : 0;
+	if (linearVelocity.some((value) => isNaN(value))) return isNonNull ? defaultSpeed : 0;
+	if (linearVelocity.every((value) => value === 0)) return isNonNull ? defaultSpeed : 0;
+	return Math.sqrt(linearVelocity.reduce((prev, curr) => prev + curr * curr));
 };
