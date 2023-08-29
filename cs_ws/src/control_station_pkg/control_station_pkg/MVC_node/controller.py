@@ -136,9 +136,11 @@ class Controller():
         self.science.limit_switches = data.data
         self.science.UpdateScienceDrillSocket()
 
+
+    # TODO problems with displaying mass, websocket can't serialize numpy.float32 error
     def science_mass(self, data):
         # elec uses channel 2 for the mass (MAY CHANGE IN THE FUTURE)
-        self.science.mass = data.mass[2]
+        self.science.mass = [data.mass[0], data.mass[1], data.mass[2], data.mass[3]]
         self.science.UpdateScienceDataSocket()
 
     # TODO Chaimaa c'est pour toi, fais la moyenne wallah

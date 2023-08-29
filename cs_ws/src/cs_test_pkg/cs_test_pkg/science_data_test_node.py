@@ -1,10 +1,12 @@
-
+import numpy
 import random
 import rclpy
 from rclpy.node import Node
 
 from std_msgs.msg         import Int8MultiArray, Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16, Float32MultiArray
 from diagnostic_msgs.msg  import DiagnosticStatus
+
+from avionics_interfaces.msg import FourInOne, Voltage, NPK, MassArray, SpectroResponse
 
 class ElecTestNode(Node):
 
@@ -14,10 +16,12 @@ class ElecTestNode(Node):
         # Log publisher
         self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
 
-        self.publisher_mass             = self.create_publisher(Float32MultiArray, 'EL/mass', 10)
-        self.publisher_spectrometer     = self.create_publisher(Float32MultiArray, 'EL/spectrometer', 10)
-        self.publisher_npk              = self.create_publisher(Float32MultiArray, 'EL/npk', 10)
-        self.publisher_four_in_one      = self.create_publisher(Float32MultiArray, 'EL/four_in_one', 10)
+        self.publisher_mass             = self.create_publisher(MassArray, 'EL/mass', 10)
+        self.publisher_spectrometer     = self.create_publisher(SpectroResponse, 'EL/spectrometer', 10)
+        self.publisher_npk              = self.create_publisher(NPK, 'EL/npk', 10)
+        # self.publisher_four_in_one      = self.create_publisher(Float32MultiArray, 'EL/four_in_one', 10)
+        self.publisher_four_in_one      = self.create_publisher(FourInOne, 'EL/four_in_one', 10)
+        self.publisher_voltage          = self.create_publisher(Voltage, 'EL/voltage', 10)
 
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
@@ -35,35 +39,33 @@ class ElecTestNode(Node):
 
         msg_float_32_multi = Float32MultiArray()
 
-        msg_float_32_multi.data = [float(self.i * 3), float(self.i - 10)]
-        self.publisher_mass.publish(msg_float_32_multi)
+        mass = MassArray()
+        mass.mass = [float(self.i) + 0.1, float(self.i) + 0.2, float(self.i) + 0.3, float(self.i) + 0.8]
+        self.publisher_mass.publish(mass)
 
-        msg_float_32_multi.data = [random.uniform(0, 10),
-                                    random.uniform(0, 10),
-                                    random.uniform(0, 10),
-                                    random.uniform(0, 10),
-                                    random.uniform(0, 10),
-                                    random.uniform(0, 10),
-                                    random.uniform(0, 10),
-                                    random.uniform(0, 10),
-                                    random.uniform(0, 10),
-                                    random.uniform(0, 10),
-                                    random.uniform(0, 10),
-                                    random.uniform(0, 10),
-                                    random.uniform(0, 10),
-                                    random.uniform(0, 10),
-                                    random.uniform(0, 10),
-                                    random.uniform(0, 10),
-                                    random.uniform(0, 10),
-                                    ]
+        spectro = SpectroResponse()
+        spectro.data = [float(v) for v in numpy.random.randint(10, size=(18))]
         
-        self.publisher_spectrometer.publish(msg_float_32_multi)
+        self.publisher_spectrometer.publish(spectro)
 
-        msg_float_32_multi.data = [float(self.i), float(self.i + 10), float(self.i + 20)]
-        self.publisher_npk.publish(msg_float_32_multi)
+        npk = NPK()
+        npk.nitrogen = random.randint(0, 10)
+        npk.phosphorus = random.randint(0, 10)
+        npk.potassium = random.randint(0, 10)
+        self.publisher_npk.publish(npk)
 
-        msg_float_32_multi.data = [float(self.i), float(self.i + 1), float(self.i + 2), float(self.i + 3)]
-        self.publisher_four_in_one.publish(msg_float_32_multi)
+        # msg_float_32_multi.data = [float(self.i), float(self.i + 1), float(self.i + 2), float(self.i + 3)]
+        fio = FourInOne()
+        fio.temperature = float(self.i)
+        fio.moisture = float(self.i + 1)
+        fio.conductivity = float(self.i + 2)
+        fio.ph = float(self.i + 3)
+
+        self.publisher_four_in_one.publish(fio)
+
+        v = Voltage()
+        v.voltage = random.uniform(0, 10)
+        self.publisher_voltage.publish(v)
 
         # self.publisher_potentiometers.publish(msg_float_32_multi)
         # self.publisher_LED_confirm.publish(msg_float_32_multi)
