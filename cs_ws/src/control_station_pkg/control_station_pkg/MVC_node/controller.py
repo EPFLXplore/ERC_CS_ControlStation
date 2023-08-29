@@ -186,6 +186,8 @@ class Controller():
         joint_velocity = JointState.velocity
         joint_current = JointState.effort
 
+        
+
         async_to_sync(channel_layer.group_send)("info_hd", {"type": "hd_message",
                                                             'joint_position': [joint_positon[0], joint_positon[1], joint_positon[2], joint_positon[3], joint_positon[4], joint_positon[5]],
                                                             'joint_velocity': [joint_velocity[0], joint_velocity[1], joint_velocity[2], joint_velocity[3], joint_velocity[4], joint_velocity[5]],

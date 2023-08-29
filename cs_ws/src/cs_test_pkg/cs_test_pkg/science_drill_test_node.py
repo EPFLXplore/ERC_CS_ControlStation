@@ -40,19 +40,21 @@ class ScienceTestNode(Node):
         msg.data = self.i % 22
         self.publisher_fsm.publish(msg)
 
-        msg = Float32MultiArray()
-        msg.data = [self.i/10, self.i/10+1]
-        self.publisher_motors_pos.publish(msg)
+        msg_0 = Float32MultiArray()
+        msg_0.data = [self.i/10, self.i/10+1]
+        self.publisher_motors_pos.publish(msg_0)
 
-        msg.data = [self.i/10+2, self.i/10+3, self.i/10+4]
-        self.publisher_motors_speed.publish(msg)
+        msg_1 = Float32MultiArray()
+        msg_1.data = [self.i/10+2, self.i/10+3, self.i/10+4]
+        self.publisher_motors_speed.publish(msg_1)
 
-        msg.data = [self.i/10+5, self.i/10+6, self.i/10+7]
-        self.publisher_motors_currents.publish(msg)
+        msg_2 = Float32MultiArray()
+        msg_2.data = [self.i/10+5, self.i/10+6, self.i/10+7]
+        self.publisher_motors_currents.publish(msg_2)
 
-        msg = Int8MultiArray()
-        msg.data = [random.randint(0,1), random.randint(0,1), random.randint(0,1), random.randint(0,1)]
-        self.publisher_limit_switches.publish(msg)
+        msg_3 = Int8MultiArray()
+        msg_3.data = [random.randint(0,1), random.randint(0,1), random.randint(0,1), random.randint(0,1)]
+        self.publisher_limit_switches.publish(msg_3)
 
         self.i += 1
 

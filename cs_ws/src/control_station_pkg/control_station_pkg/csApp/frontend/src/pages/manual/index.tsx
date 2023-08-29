@@ -32,9 +32,9 @@ function useQuery() {
 export default () => {
 	const [images, cameras, selectCamera] = useCameraSelector([
 		Cameras.CAM1,
-		Cameras.CAM2,
-		Cameras.CAM3,
-		Cameras.CAM4,
+		// Cameras.CAM2,
+		// Cameras.CAM3,
+		// Cameras.CAM4,
 	]);
 	const [jointPositions, jointVelocities, jointCurrents, detectedTags, taskSuccess] =
 		useHandlingDevice();

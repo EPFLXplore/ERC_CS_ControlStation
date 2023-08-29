@@ -114,11 +114,11 @@ class CS:
         self.node.create_subscription(DiagnosticStatus, 'ROVER/CS_log',                    self.controller.log_clbk   , 10)
         
         # -- SC messages --
-        self.node.create_subscription(Int8,               'ROVER/SC_fsm_state',      self.controller.science_state        , 10)
-        self.node.create_subscription(Float32MultiArray,  'ROVER/module_motors_pos', self.controller.science_motors_pos   , 10)
-        self.node.create_subscription(Float32MultiArray,  'ROVER/motors_velocities', self.controller.science_motors_vels  , 10)
-        self.node.create_subscription(Float32MultiArray,  'ROVER/motors_currents',   self.controller.science_motors_currents, 10)
-        self.node.create_subscription(Int8MultiArray,     'ROVER/limit_switches',    self.controller.science_limit_switches, 10)
+        self.node.create_subscription(Int8,               'SC/fsm_state_to_cs',      self.controller.science_state        , 10)
+        self.node.create_subscription(Float32MultiArray,  'SC/motors_pos',           self.controller.science_motors_pos   , 10)
+        self.node.create_subscription(Float32MultiArray,  'SC/motors_speed',         self.controller.science_motors_vels  , 10)
+        self.node.create_subscription(Float32MultiArray,  'SC/motors_currents',      self.controller.science_motors_currents, 10)
+        self.node.create_subscription(Int8MultiArray,     'SC/limit_switches',    self.controller.science_limit_switches, 10)
         
 
         # -- EL(SC) messages --
@@ -189,7 +189,7 @@ class CS:
         axes = [float(i) for i in axes]
 
         if(target == 'HD'):
-            print("HD DEBUG")
+            print("HD GAMEPAD DATA")
             #new_axes = utils.gamepad.permute(axes, utils.gamepad.selected_hd_profile.axes)
             #new_buttons = utils.gamepad.permute(buttons, utils.gamepad.selected_hd_profile.buttons)
 
@@ -214,11 +214,11 @@ class CS:
                 speed.data.append(1)
             else:
                 speed.data.append(0)
-
+            print(speed.data)
             self.HD_Gamepad_pub.publish(speed)
 
         elif(target == 'NAV'):
-
+            print("NAV GAMEPAD DATA")
             # if(buttons[8] == 1):
             #     print("switching modes")
             #     if self.nav_mode_control == 1 :
@@ -246,4 +246,5 @@ class CS:
 
             joy_msg.axes = axes
             joy_msg.buttons = buttons
+            print(joy_msg)
             self.NAV_Gamepad_pub.publish(joy_msg)

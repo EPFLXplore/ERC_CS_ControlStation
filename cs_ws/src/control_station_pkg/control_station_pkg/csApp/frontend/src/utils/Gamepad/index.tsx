@@ -5,6 +5,42 @@ export interface GamepadControllerState {
 	axes: readonly number[];
 }
 
+export interface DeviceRemaping {
+	os: string;
+	navigator: string;
+	name: string;
+	gamepad: GamepadControllerState;
+	buttons: number;
+	axes: number;
+	buttonsOrder: number[];
+	axesOrder: number[];
+	axesMin: number[];
+	axesMax: number[];
+	axesZero: number[];
+	RemapingButtons(): number[];
+	RemapingAxes(): number[];
+}
+
+export interface DeviceProfile {
+	mainDevice: DeviceRemaping;
+	othersDevices: DeviceRemaping[];
+	//UI
+	moveButtons: number[];
+	selectButtons: number[];
+	backButtons: number[];
+	changeModeButtons: number[];
+	//Nav
+	upDownAxes: number;
+	leftRightAxes: number;
+	//HD
+	//Inverse
+	inverseXAxes: number;
+	inverseYAxes: number;
+	inverseZAxes: number[];
+
+}
+
+
 class GamepadController {
 	private isConnected: boolean;
 	private gamepad: Gamepad | null;
@@ -77,3 +113,55 @@ class GamepadController {
 }
 
 export default GamepadController;
+
+
+
+
+/*
+
+Gamepad Profile
+
+0738-2221-Mad Catz Saitek Pro Flight X-56 Rhino Stick
+0738-a221-Mad Catz Saitek Pro Flight X-56 Rhino Throttle
+
+Linux, firefox
+buttons: 17
+axes: 7
+min [-1,1,-1,1,-1,-1,-1]
+max [1,-1,1,-1,1,1,1]
+zero [0,0,0,0,0,0,0]
+default speed 1
+
+UI
+move buttons 10 11 12 13 //Up right down left
+select buttons 0
+back buttons 4
+change mode buttons 1
+
+Nav
+Up/Down : axes 1
+Left/Right : axes 0
+
+HD
+Inverse
+x: axes 1
+y: axes 0
+z: buttons 10 12
+pitch: axes 5
+roll: buttons 5 + axes 1
+yaw: buttons 5 + axes 0
+gripper : buttons 0 4
+speed : Throttle axes 1
+
+Forward
+Motor 1: axes 5
+Motor 2: axes 1
+Motor 3: buttons 5 + axes 1
+Motor 4: axes 0
+Motor 5: buttons 10 12
+Motor 6: buttons 5 + axes 0
+Grinder: buttons 0 4
+Speed: Throttle axes 1
+
+
+*/
