@@ -14,11 +14,7 @@ from diagnostic_msgs.msg  import DiagnosticStatus
 from std_srvs.srv import SetBool
 import MVC_node.models.utils as utils
 
-import cameras_reciever
-
-
-# TODO
-# from ros_package.src.custom_msg_python.msg     import move_base_action_goal 
+import cameras_reciever 
 
 from geometry_msgs.msg     import Twist, PoseStamped
 from actionlib_msgs.msg    import GoalID
