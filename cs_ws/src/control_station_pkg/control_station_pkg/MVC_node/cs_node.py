@@ -132,7 +132,7 @@ class CS:
         self.node.create_subscription(Float32MultiArray,               'EL/four_in_one',             self.controller.science_4in1         , 10)
 
         # -- HD messages --
-        self.node.create_subscription(JointState,       'HD/arm_control/joint_telemetry',  self.controller.hd_data       , 10)
+        self.node.create_subscription(JointState,       'ROVER/HD_telemetry',  self.controller.hd_data       , 10)
         
         # -- NAV messages --
         #self.node.create_subscription(Twist,            '/cmd_vel',                        self.controller.test_joystick      , 10) 
