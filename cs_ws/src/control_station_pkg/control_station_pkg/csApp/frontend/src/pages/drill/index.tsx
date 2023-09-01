@@ -16,7 +16,7 @@ type DataRow = {
 	current: number;
 };
 export default () => {
-	const [images, cameras, selectCamera] = useCameraSelector([Cameras.CAM1]);
+	const [images, cameras, selectCamera, flushCameras] = useCameraSelector([Cameras.CAM1]);
 	const [state, limitSwitches, module1, module2, drill] = useScienceDrillInfos();
 	const sensorType = "Sensor Data";
 	const rows = ["Velocity", "Distance", "Current"]; // Rows titles
@@ -25,7 +25,7 @@ export default () => {
 	return (
 		<div>
 			<Background />
-			<BackButton />
+			<BackButton onGoBack={() => flushCameras()} />
 			<div className={styles.InfoControllerContainer}>
 				<div className={styles.title}>Drill State</div>
 				<div className={styles.stateDisplay}>{state}</div>

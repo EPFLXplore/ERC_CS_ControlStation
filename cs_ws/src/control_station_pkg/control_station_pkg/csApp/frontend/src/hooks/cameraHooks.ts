@@ -178,7 +178,11 @@ function useCameraSelector(startCamera: Array<Cameras>) {
 		}
 	};
 
-	return [images, cameras, selectCamera] as const;
+	const flushCameras = () => {
+		setCameras([]);
+	};
+
+	return [images, cameras, selectCamera, flushCameras] as const;
 }
 
 export default useCameraSelector;

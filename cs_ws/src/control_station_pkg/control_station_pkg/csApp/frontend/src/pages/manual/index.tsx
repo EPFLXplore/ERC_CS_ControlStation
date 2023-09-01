@@ -28,7 +28,7 @@ function useQuery() {
 }
 
 export default () => {
-	const [images, cameras, selectCamera] = useCameraSelector([
+	const [images, cameras, selectCamera, flushCameras] = useCameraSelector([
 		Cameras.CAM1,
 		// Cameras.CAM2,
 		// Cameras.CAM3,
@@ -49,7 +49,7 @@ export default () => {
 	return (
 		<div className="page">
 			<Background />
-			<BackButton />
+			<BackButton onGoBack={() => flushCameras()} />
 			<PageHeader
 				title="Manual Control"
 				settings
