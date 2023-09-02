@@ -180,26 +180,27 @@ class Controller():
 
     # receive: joint telemetry (info on angles and velocity of joints)
     # Jointstate is a ros message
-    def hd_data(self, JointState):
+    def hd_joint_state(self, JointState):
 
-        joint_positon = JointState.position
-        joint_velocity = JointState.velocity
-        joint_current = JointState.effort
+        self.handling_device.joint_positions = JointState.position
+        self.handling_device.joint_velocities = JointState.velocity
+        self.handling_device.joint_current = JointState.effort
 
-        
+        self.handling_device.UpdateHandlingDeviceSocket()
 
-        async_to_sync(channel_layer.group_send)("info_hd", {"type": "hd_message",
-                                                            'joint_position': [joint_positon[0], joint_positon[1], joint_positon[2], joint_positon[3], joint_positon[4], joint_positon[5]],
-                                                            'joint_velocity': [joint_velocity[0], joint_velocity[1], joint_velocity[2], joint_velocity[3], joint_velocity[4], joint_velocity[5]],
-                                                            'joint_current': [joint_current[0], joint_current[1], joint_current[2], joint_current[3], joint_current[4], joint_current[5]],
-                                                            'detected_tags' : [0,0,0,1],
-                                                            'task_outcome' : False,
-                                                                        })
-    
     # receive: voltage data from the handling device's voltmeter
-    def voltage_data(self, Voltage):
+    def hd_voltage(self, Voltage):
         self.handling_device.voltage = Voltage.voltage
-        # TODO create socket updater
+        self.handling_device.UpdateHandlingDeviceSocket()
+
+    def hd_ARtags(self, ARtags):
+        self.handling_device.available_buttons = ARtags.data
+        #TODO convertir la liste d'ARtags en list de bouton disponible
+        self.handling_device.UpdateHandlingDeviceSocket()
+
+    def hd_task_outcome(self, outcome):
+        self.handling_device.task_outcome = outcome.data
+        self.handling_device.UpdateHandlingDeviceSocket()
 
     # ========= NAVIGATION CALLBACKS =========
 

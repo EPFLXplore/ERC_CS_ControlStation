@@ -1,5 +1,8 @@
 import numpy as np
 
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
 NBR_BUTTONS = 14
 ELEMENT_DATA_SIZE = 6
 
@@ -17,8 +20,13 @@ class HandlingDevice:
         self.__distToElem = 0
 
         # the 6 joints + gripper
-        self.__joint_positions = [0,0,0,0,0,0,0]
-        self.__joint_velocities = [0,0,0,0,0,0,0]
+        self.joint_positions = [0,0,0,0,0,0,0]
+        self.joint_velocities = [0,0,0,0,0,0,0]
+        self.joint_current = [0,0,0,0,0,0,0]
+
+        self.available_buttons = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+
+        self.task_outcome = [-1]
 
         # matrix containing info on the movements each joint must do in order to reach an element
         # [x,y,z,a,b,c] (3 translations and 3 rotations)
@@ -103,10 +111,21 @@ class HandlingDevice:
 #       - Wait   = 3 
 #       - Resume = 4 
 #       - Retry  = 5 (HD and SC specific)
-def checkArgs(task, instr):
 
-    if (task < 1 or task > 4): raise ValueError("inexistent task")
-    if (instr < 1 or instr > 6): raise ValueError("inexistent instruction")
+    def checkArgs(task, instr):
 
-    if(instr == 5):
-        if(task != 3 and task != 4): raise ValueError("This task can't run Retry")
+        if (task < 1 or task > 4): raise ValueError("inexistent task")
+        if (instr < 1 or instr > 6): raise ValueError("inexistent instruction")
+
+        if(instr == 5):
+            if(task != 3 and task != 4): raise ValueError("This task can't run Retry")
+
+
+    def UpdateHandlingDeviceSocket(self):
+            async_to_sync(self.channel_layer.group_send)("info_hd", {"type": "hd_message",
+                                                        'joint_position': [self.joint_positon[0], self.joint_positon[1], self.joint_positon[2], self.joint_positon[3], self.joint_positon[4], self.joint_positon[5]],
+                                                        'joint_velocity': [self.joint_velocity[0], self.joint_velocity[1], self.joint_velocity[2], self.joint_velocity[3], self.joint_velocity[4], self.joint_velocity[5]],
+                                                        'joint_current': [self.joint_current[0], self.joint_current[1], self.joint_current[2], self.joint_current[3], self.joint_current[4], self.joint_current[5]],
+                                                        'available_buttons' : [0,0,0,1],
+                                                        'task_outcome' : False,
+                                                                    })
