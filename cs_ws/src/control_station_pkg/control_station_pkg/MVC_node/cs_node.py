@@ -112,16 +112,18 @@ class CS:
 
         # ---------------------------------------------------
         # ===== Subscribers =====
-        self.node.create_subscription(String,           'ROVER/RoverConfirm',              self.controller.rover_confirmation , 10)
-       # self.node.create_subscription(Int8,             'ROVER/TaskProgress',              self.controller.task_progress      , 10)
-        self.node.create_subscription(DiagnosticStatus, 'ROVER/CS_log',                    self.controller.log_clbk   , 10)
+        self.node.create_subscription(String,           'ROVER/RoverConfirm',               self.controller.rover_confirmation , 10)
+        # self.node.create_subscription(Int8,             'ROVER/TaskProgress',              self.controller.task_progress      , 10)
+        self.node.create_subscription(DiagnosticStatus, 'ROVER/CS_log',                     self.controller.log_clbk   , 10)
+        self.node.create_subscription(Int8,             'ROVER/rover_state',                self.controller.rover_state       , 10)
+        self.node.create_subscription(Int8,             'ROVER/subsystem_state',            self.controller.rover_subsystem_state, 10)
         
         # -- SC messages --
         self.node.create_subscription(Int8,               'SC/fsm_state_to_cs',      self.controller.science_state        , 10)
         self.node.create_subscription(Float32MultiArray,  'SC/motors_pos',           self.controller.science_motors_pos   , 10)
         self.node.create_subscription(Float32MultiArray,  'SC/motors_speed',         self.controller.science_motors_vels  , 10)
         self.node.create_subscription(Float32MultiArray,  'SC/motors_currents',      self.controller.science_motors_currents, 10)
-        self.node.create_subscription(Int8MultiArray,     'SC/limit_switches',    self.controller.science_limit_switches, 10)
+        self.node.create_subscription(Int8MultiArray,     'SC/limit_switches',       self.controller.science_limit_switches, 10)
         self.node.create_subscription(MassArray,         'EL/mass',           self.controller.science_mass         , 10)
         self.node.create_subscription(SpectroResponse,   'EL/spectrometer',   self.controller.science_spectrometer , 10)
         self.node.create_subscription(NPK,               'EL/npk',            self.controller.science_npk          , 10)
@@ -146,7 +148,7 @@ class CS:
 
         self.node.create_subscription(CompressedImage, 'HD/camera_flux', cameras_reciever.display_cam_gripper, 10)
         
-        
+
 
         thr = threading.Thread(target=rclpy.spin, args=(self.node,)).start()
         print("start spinning")

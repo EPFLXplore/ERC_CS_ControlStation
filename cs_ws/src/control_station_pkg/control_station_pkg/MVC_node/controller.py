@@ -38,6 +38,8 @@ from .models.rover   import Task
 from .models.science         import Science
 from .models.handling_device import HandlingDevice
 
+from .models.utils import session
+
 # ================================================================================
 # Webscokets for ASGI
 
@@ -112,6 +114,22 @@ class Controller():
     #         str = "Impossible progress state: %s" % (val)
     #         self.cs.exception_clbk(String(str))
 
+    def rover_subsystem_state(self, data):
+        session.subsystems_state = data.data
+        async_to_sync(channel_layer.group_send)("session", {"type": "broadcast",
+                                                    'nb_users'   : session.nb_users,
+                                                    'rover_state': session.rover_state,
+                                                    'subsystems_state': session.subsystems_state,
+                                                                })
+
+
+    def rover_state(self, data):
+        session.rover_state = data.data
+        async_to_sync(channel_layer.group_send)("session", {"type": "broadcast",
+                                                    'nb_users'   : session.nb_users,
+                                                    'rover_state': session.rover_state,
+                                                    'subsystems_state': session.subsystems_state,
+                                                                })
 
     # ========= SCIENCE CALLBACKS ========= 
 

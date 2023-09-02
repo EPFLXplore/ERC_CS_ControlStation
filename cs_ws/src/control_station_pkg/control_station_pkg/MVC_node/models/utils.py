@@ -5,6 +5,8 @@ class Session:
     def __init__(self):
         self.sessions_list = {}
         self.nb_users = 0
+        self.rover_state = 0
+        self.subsystems_state = 0
         #comment representer les tab utilise par les users ?
 
 class Cameras:
