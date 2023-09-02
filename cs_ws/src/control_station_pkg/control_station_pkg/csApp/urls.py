@@ -54,7 +54,7 @@ urlpatterns = [
     # path('science/get_sc_state',    get_sc_state, name='get_sc_state'),
 
     # timer
-    path('logs/timer',          start_timer,    name='start_timer')
+    # path('logs/timer',          start_timer,    name='start_timer')
     
     
 ]
