@@ -14,16 +14,15 @@ from diagnostic_msgs.msg  import DiagnosticStatus
 from std_srvs.srv import SetBool
 import MVC_node.models.utils as utils
 
-import cameras_reciever
-
-
-# TODO
-# from ros_package.src.custom_msg_python.msg     import move_base_action_goal 
+import cameras_reciever 
 
 from geometry_msgs.msg     import Twist, PoseStamped
 from actionlib_msgs.msg    import GoalID
 from nav_msgs.msg          import Odometry
 from sensor_msgs.msg       import JointState, Image, Joy, CompressedImage
+
+
+from avionics_interfaces.msg import MassArray, SpectroResponse, NPK, FourInOne, Voltage
 
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
@@ -70,9 +69,6 @@ class CS:
         self.sendRequest()
 
 
-        # self.cameras    = Cameras()
-        # self.navID      = [0]
-
         # ---------------------------------------------------
         # ===== Publishers ===== 
         # CS --> ROVER 
@@ -98,7 +94,7 @@ class CS:
         self.HD_InvManual_Coord_pub = self.node.create_publisher(Int8MultiArray,    'CS/HD_InvManual_Coord',  1)
         self.HD_homeGo_pub          = self.node.create_publisher(Bool,              'CS/HD_reset_arm_pos',    1)
         self.HD_homeSet_pub         = self.node.create_publisher(Bool,              'CS/HD_set_zero_arm_pos', 1)
-        self.HD_voltmeter_pub       = self.node.create_publisher(Int8,              'CS/HD_voltmeter',        1)
+        # self.HD_voltmeter_pub       = self.node.create_publisher(Int8,              'CS/HD_voltmeter',        1)
 
         # CS --> ROVER (NAV)
 
@@ -118,37 +114,42 @@ class CS:
         self.node.create_subscription(DiagnosticStatus, 'ROVER/CS_log',                    self.controller.log_clbk   , 10)
         
         # -- SC messages --
-        self.node.create_subscription(Int8,               'ROVER/SC_fsm_state',      self.controller.science_state        , 10)
-        self.node.create_subscription(Float32MultiArray,  'ROVER/module_motors_pos', self.controller.science_motors_pos   , 10)
-        self.node.create_subscription(Float32MultiArray,  'ROVER/motors_velocities', self.controller.science_motors_vels  , 10)
-        self.node.create_subscription(Float32MultiArray,  'ROVER/motors_currents',   self.controller.science_motors_currents, 10)
-        self.node.create_subscription(Int8MultiArray,     'ROVER/limit_switches',    self.controller.science_limit_switches, 10)
+        self.node.create_subscription(Int8,               'SC/fsm_state_to_cs',      self.controller.science_state        , 10)
+        self.node.create_subscription(Float32MultiArray,  'SC/motors_pos',           self.controller.science_motors_pos   , 10)
+        self.node.create_subscription(Float32MultiArray,  'SC/motors_speed',         self.controller.science_motors_vels  , 10)
+        self.node.create_subscription(Float32MultiArray,  'SC/motors_currents',      self.controller.science_motors_currents, 10)
+        self.node.create_subscription(Int8MultiArray,     'SC/limit_switches',    self.controller.science_limit_switches, 10)
         
 
         # -- EL(SC) messages --
-        self.node.create_subscription(Float32MultiArray,               'EL/mass',                    self.controller.science_mass         , 10)
-        self.node.create_subscription(Float32MultiArray,               'EL/spectrometer',            self.controller.science_spectrometer , 10)
-        self.node.create_subscription(Float32MultiArray,               'EL/npk',                     self.controller.science_npk          , 10)
-        self.node.create_subscription(Float32MultiArray,               'EL/four_in_one',             self.controller.science_4in1         , 10)
+        self.node.create_subscription(MassArray,         'EL/mass',           self.controller.science_mass         , 10)
+        self.node.create_subscription(SpectroResponse,   'EL/spectrometer',   self.controller.science_spectrometer , 10)
+        self.node.create_subscription(NPK,               'EL/npk',            self.controller.science_npk          , 10)
+        self.node.create_subscription(FourInOne,         'EL/four_in_one',    self.controller.science_4in1         , 10)
 
         # -- HD messages --
-        self.node.create_subscription(JointState,       'HD/arm_control/joint_telemetry',  self.controller.hd_data       , 10)
+        self.node.create_subscription(JointState,       'ROVER/HD_telemetry', self.controller.hd_data       , 10)
+
+        # -- EL(HD) messages --
+        self.node.create_subscription(Voltage,          'EL/voltage',         self.controller.voltage_data, 10)
         
         # -- NAV messages --
-        #self.node.create_subscription(Twist,            '/cmd_vel',                        self.controller.test_joystick      , 10) 
-        #self.node.create_subscription(Odometry,         'ROVER_NAV_odometry',              self.controller.nav_data           , 10)
+        # self.node.create_subscription(Twist,            '/cmd_vel',                        self.controller.test_joystick      , 10) 
+        # self.node.create_subscription(Odometry,         'ROVER_NAV_odometry',              self.controller.nav_data           , 10)
         self.node.create_subscription(Odometry,         'NAV/odometry/filtered',            self.controller.nav_data           , 10)
 
         # -- Camera messages --
-        self.node.create_subscription(CompressedImage,            '/camera_0',                 cameras_reciever.display_cam_0   , 1)
-        self.node.create_subscription(CompressedImage,            '/camera_1',                 cameras_reciever.display_cam_1   , 1)
-        self.node.create_subscription(CompressedImage,            '/camera_2',                 cameras_reciever.display_cam_2   , 1)
-        self.node.create_subscription(CompressedImage,            '/camera_3',                 cameras_reciever.display_cam_3   , 1)
+        self.node.create_subscription(CompressedImage, '/camera_0', cameras_reciever.display_cam_0, 1)
+        self.node.create_subscription(CompressedImage, '/camera_1', cameras_reciever.display_cam_1, 1)
+        self.node.create_subscription(CompressedImage, '/camera_2', cameras_reciever.display_cam_2, 1)
+        self.node.create_subscription(CompressedImage, '/camera_3', cameras_reciever.display_cam_3, 1)
+        self.node.create_subscription(CompressedImage, '/camera_4', cameras_reciever.display_cam_3, 1)
+        self.node.create_subscription(CompressedImage, '/camera_5', cameras_reciever.display_cam_3, 1)
 
         self.node.create_subscription(CompressedImage, 'HD/camera_flux', cameras_reciever.display_cam_gripper, 10)
         
         # Elpased time
-        #self.node.create_subscription(Int32MultiArray,  'Time',                            self.controller.elapsed_time       , 10) #useless
+        #self.node.create_subscription(Int32MultiArray,  'Time',  self.controller.elapsed_time       , 10) #useless
 
         #rclpy.spin(self.node)
 
@@ -188,7 +189,7 @@ class CS:
         axes = [float(i) for i in axes]
 
         if(target == 'HD'):
-            print("HD DEBUG")
+            print("HD GAMEPAD DATA")
             #new_axes = utils.gamepad.permute(axes, utils.gamepad.selected_hd_profile.axes)
             #new_buttons = utils.gamepad.permute(buttons, utils.gamepad.selected_hd_profile.buttons)
 
@@ -205,7 +206,7 @@ class CS:
             speed = Float32MultiArray()
             speed.data = axes[:6]
 
-             # Gripper are buttons 1 and 2
+            # Gripper are buttons 1 and 2
             # transform them into speeds
             if (buttons[2] == 1):
                 speed.data.append(-1)
@@ -213,11 +214,11 @@ class CS:
                 speed.data.append(1)
             else:
                 speed.data.append(0)
-
+            print(speed.data)
             self.HD_Gamepad_pub.publish(speed)
 
         elif(target == 'NAV'):
-
+            print("NAV GAMEPAD DATA")
             # if(buttons[8] == 1):
             #     print("switching modes")
             #     if self.nav_mode_control == 1 :
@@ -245,6 +246,5 @@ class CS:
 
             joy_msg.axes = axes
             joy_msg.buttons = buttons
+            print(joy_msg)
             self.NAV_Gamepad_pub.publish(joy_msg)
-
-            

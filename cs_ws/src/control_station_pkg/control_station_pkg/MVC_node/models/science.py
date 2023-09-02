@@ -15,9 +15,10 @@ class Science:
         self.channel_layer = get_channel_layer()
         
         #SCIENCE DATA
-        self.mass = [0,0]
+        self.mass = [0, 0, 0, 0]
         self.candidates = []
-        self.spectrometer = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        
+        self.spectrometer = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] for i in range(4)]
         self.spectrometer_closest_candidate = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
         self.npk_sensor = [0,0,0]
         self.four_in_one = [0,0,0,0]
@@ -90,22 +91,18 @@ class Science:
         database_directory = '/data/Spectroscopy_database/'
         identified_minerals = self.identify_mineral(measured_file, database_directory)
 
-        best_candidate = None
-        best_candidate_percentage = 0
-        for mineral, percentage in identified_minerals:
-            if percentage > best_candidate_percentage:
-                best_candidate = mineral
-                best_candidate_percentage = percentage
+        # Return the list of candidates sorted by their percentage similarity
+        return sorted(identified_minerals, key=lambda x: x[1], reverse=True)
+            
         
-        return best_candidate, best_candidate_percentage
 
     def UpdateScienceDataSocket(self):
         async_to_sync(self.channel_layer.group_send)("science_data", 
             {
                 "type": "science_data_message",
-                'mass' : [self.mass[0], self.mass[1]],
-                'spectrometer' : [self.spectrometer[0], self.spectrometer[1], self.spectrometer[2], self.spectrometer[3], self.spectrometer[4], self.spectrometer[5], self.spectrometer[6], self.spectrometer[7], self.spectrometer[8], self.spectrometer[9], self.spectrometer[10], self.spectrometer[11], self.spectrometer[12], self.spectrometer[13], self.spectrometer[14], self.spectrometer[15], self.spectrometer[16]],
-                'spectrometer_closest_candidate' : [self.spectrometer_closest_candidate[16], self.spectrometer_closest_candidate[15], self.spectrometer_closest_candidate[14], self.spectrometer_closest_candidate[13], self.spectrometer_closest_candidate[12], self.spectrometer_closest_candidate[11], self.spectrometer_closest_candidate[10], self.spectrometer_closest_candidate[9], self.spectrometer_closest_candidate[8], self.spectrometer_closest_candidate[7], self.spectrometer_closest_candidate[6], self.spectrometer_closest_candidate[5], self.spectrometer_closest_candidate[4], self.spectrometer_closest_candidate[3], self.spectrometer_closest_candidate[2], self.spectrometer_closest_candidate[1], self.spectrometer_closest_candidate[0]],
+                'mass' : [str(self.mass[0]), str(self.mass[1])],
+                'spectrometer' : [str(val) for val in self.spectrometer],
+                'spectrometer_closest_candidate' : [str(val) for val in self.spectrometer_closest_candidate],
                 'npk_sensor' : [self.npk_sensor[0], self.npk_sensor[1], self.npk_sensor[2]],
                 'candidates' : self.candidates,
                 'four_in_one' : [self.four_in_one[0], self.four_in_one[1], self.four_in_one[2], self.four_in_one[3]],
@@ -128,5 +125,11 @@ class Science:
         #TODO
         #update self.spectrometer and create the csv file
 
+
+        self.candidates = self.compare('data.csv')[5]
         self.spectrometer_closest_candidate = self.spectrometer
+
+        # JUST FOR TESTING
+        # self.spectrometer_closest_candidate = [str(val - 2) for val in self.spectrometer]
+
         pass
