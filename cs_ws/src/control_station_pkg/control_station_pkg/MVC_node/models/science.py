@@ -1,4 +1,6 @@
 import numpy as np
+import pandas as pd
+import os
 
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
@@ -40,6 +42,63 @@ class Science:
         # command we'd like the science bay to execute (in the case of a tube-specific operation: op + tube)
         self.__cmd = -1
 
+    def load_spectrum(self, filename):
+        return pd.read_csv(filename)
+
+    def calculate_rmsd(self, spectrum1, spectrum2):
+        """Calculate the RMSD between two spectra."""
+        return np.sqrt(((spectrum1 - spectrum2) ** 2).mean())
+
+    def identify_mineral(self, measured_spectrum_file, database_dir):
+        """Identify mineral by comparing measured spectrum with database."""
+        
+        # Load measured spectrum
+        measured_spectrum = self.load_spectrum(measured_spectrum_file)['reflectance']
+        
+        # A list of tuples, each containing filename and its RMSD. Initialized with high values.
+        top_matches = [(None, float('inf')), (None, float('inf')), (None, float('inf'))]
+        
+        # Go through each file in the database directory
+        for filename in os.listdir(database_dir):
+            if filename.endswith('.csv'):
+                filepath = os.path.join(database_dir, filename)
+                database_spectrum = self.load_spectrum(filepath)['reflectance']
+                
+                # Calculate RMSD between measured spectrum and this database spectrum
+                rmsd = self.calculate_rmsd(measured_spectrum, database_spectrum)
+                
+                # Check if this RMSD is among the top three
+                if rmsd < top_matches[2][1]:  # Compare with the highest RMSD in the current top 3
+                    top_matches[2] = (filename, rmsd)
+                    top_matches.sort(key=lambda x: x[1])  # Sort based on RMSD
+        
+        # Convert RMSD values to relative percentage difference
+        total_rmsd = sum([x[1] for x in top_matches])
+        percentages_diff = [(x[0], 100 * x[1] / total_rmsd) for x in top_matches]
+        
+        # Calculate similarity as 100% minus the percentage difference
+        percentages_similarity = [(x[0], 100 - x[1]) for x in percentages_diff]
+        
+        return percentages_similarity
+    
+    def compare(self, measured_file):
+        """ Compare measured spectrum with database and print results.
+
+        Args: 
+            measured_file (str): Path to the measured spectrum file.
+        """
+        database_directory = '/data/Spectroscopy_database/'
+        identified_minerals = self.identify_mineral(measured_file, database_directory)
+
+        best_candidate = None
+        best_candidate_percentage = 0
+        for mineral, percentage in identified_minerals:
+            if percentage > best_candidate_percentage:
+                best_candidate = mineral
+                best_candidate_percentage = percentage
+        
+        return best_candidate, best_candidate_percentage
+
     def UpdateScienceDataSocket(self):
         async_to_sync(self.channel_layer.group_send)("science_data", 
             {
@@ -67,8 +126,7 @@ class Science:
         
     def FindClosestCandidate(self):
         #TODO
-        #mettre le code de science ici
-        #update self.spectrometer_closest_candidate
-        #update self.candidates
+        #update self.spectrometer and create the csv file
+
         self.spectrometer_closest_candidate = self.spectrometer
         pass
