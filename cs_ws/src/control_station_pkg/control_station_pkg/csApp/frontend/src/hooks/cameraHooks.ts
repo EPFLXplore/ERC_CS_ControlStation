@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Cameras } from "../utils/cameras.type";
+import { getCookie } from "../utils/requests";
 
 /**
  * A custom hook that allows the user to select which cameras to display
@@ -50,27 +51,6 @@ function useCameraSelector(startCamera: Array<Cameras>) {
 			newSockets[index] = socket;
 			return newSockets;
 		});
-	};
-
-	/**
-	 * Gets the value of a cookie
-	 * @param name the name of the cookie
-	 * @returns the value of the cookie
-	 */
-	const getCookie = (name: string): string | null => {
-		let cookieValue = null;
-		if (document.cookie && document.cookie !== "") {
-			const cookies = document.cookie.split(";");
-			for (let i = 0; i < cookies.length; i++) {
-				const cookie = cookies[i].trim();
-				// Does this cookie string begin with the name we want?
-				if (cookie.substring(0, name.length + 1) === name + "=") {
-					cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-					break;
-				}
-			}
-		}
-		return cookieValue;
 	};
 
 	useEffect(() => {

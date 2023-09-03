@@ -1,28 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { drawGoal } from "../components/Map";
 import { Point } from "../utils/maths";
+import { getCookie } from "../utils/requests";
 
 export type Goal = Point & { id: number };
 
 export const useGoalTracker = () => {
 	const [goals, setGoals] = useState<Goal[]>([]);
 	const [tempGoal, setTempGoal] = useState<Goal>();
-
-	const getCookie = (name: string): string | null => {
-		let cookieValue = null;
-		if (document.cookie && document.cookie !== "") {
-			const cookies = document.cookie.split(";");
-			for (let i = 0; i < cookies.length; i++) {
-				const cookie = cookies[i].trim();
-				// Does this cookie string begin with the name we want?
-				if (cookie.substring(0, name.length + 1) === name + "=") {
-					cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-					break;
-				}
-			}
-		}
-		return cookieValue;
-	};
 
 	const addGoal = (x: number, y: number, o: number) => {
 		const id = Date.now(); //Generate a unique id for the goal

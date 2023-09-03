@@ -20,6 +20,8 @@ import ManualModeSelector from "../../components/ManualModeSelector";
 import { useLocation } from "react-router-dom";
 import useCameraSelector from "../../hooks/cameraHooks";
 import ToggleFeature from "../../components/ToggleFeature";
+import VoltmeterSlider from "../../components/VoltmeterSlider";
+import VoltmeterValue from "../../components/VoltmeterValue";
 
 function useQuery() {
 	const { search } = useLocation();
@@ -34,8 +36,15 @@ export default () => {
 		// Cameras.CAM3,
 		// Cameras.CAM4,
 	]);
-	const [jointPositions, jointVelocities, jointCurrents, detectedTags, taskSuccess] =
-		useHandlingDevice();
+	const [
+		jointPositions,
+		jointVelocities,
+		jointCurrents,
+		detectedTags,
+		taskSuccess,
+		voltmeter,
+		openVoltmeter,
+	] = useHandlingDevice();
 	const [currentPosition, currentOrientation, wheelsPosition, linearVelocity, angularVelocity] =
 		useNavigation();
 	const defaultMode = useQuery().get("defaultMode");
@@ -78,11 +87,13 @@ export default () => {
 					<JointPositions positions={jointPositions} />
 					<JointSpeed speeds={jointVelocities} />
 					<JointCurrents currents={jointCurrents} />
+					<VoltmeterValue value={voltmeter} />
 				</div>
 			)}
 
 			{mode === Task.HANDLING_DEVICE && (
 				<div className={styles.globalContainer}>
+					<VoltmeterSlider initValue={0} onValueChange={openVoltmeter} />
 					<ToggleFeature
 						title="Laser"
 						onChange={(m) => {
