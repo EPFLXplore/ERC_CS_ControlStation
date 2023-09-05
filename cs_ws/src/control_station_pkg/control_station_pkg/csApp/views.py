@@ -353,8 +353,7 @@ def sc_mesure_spectro(request):
         cs.SC_spectro_req.publish(SpectroRequest(measure=True))
         spectro_call = True
         threading.Thread(target=wait_for_spectro).start()
-    
-    return JsonResponse({})
+    return JsonResponse(cs.rover.SC.nb_measures)
 
 def wait_for_spectro():
     global spectro_call

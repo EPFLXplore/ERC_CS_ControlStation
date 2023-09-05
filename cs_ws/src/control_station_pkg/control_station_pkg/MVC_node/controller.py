@@ -37,29 +37,9 @@ from .models.rover   import Task
 
 from .models.science         import Science
 from .models.handling_device import HandlingDevice
+from .models.navigation      import Navigation
 
 from .models.utils import session
-
-# ================================================================================
-# Webscokets for ASGI
-
-# NAV_WS_URL = "ws://127.0.0.1:8000/ws/csApp/navigation/"
-# HD_WS_URL = "ws://localhost:8000/ws/csApp/handlingdevice/"
-# SC_WS_URL = "ws://localhost:8000/ws/csApp/science/"
-# AV_WS_URL = "ws://localhost:8000/ws/csApp/logs/"
-# MAN_WS_URL = "ws://localhost:8000/ws/csApp/manual/"
-# HP_WS_URL = "ws://localhost:8000/ws/csApp/homepage/"
-# TIME_WS_URL = "ws://localhost:8000/ws/csApp/time/"
-
-# WEB SOCKETS used to publish info to front-end depending on the tab
-# ws_nav = websocket.WebSocket()
-# ws_hd = websocket.WebSocket()
-# ws_sc = websocket.WebSocket()
-# ws_av = websocket.WebSocket()
-# ws_man = websocket.WebSocket()
-# ws_hp = websocket.WebSocket()
-# ws_time = websocket.WebSocket()
-
 
 
 from channels.layers import get_channel_layer
@@ -80,6 +60,7 @@ class Controller():
         self.cs = cs
         self.science = Science()
         self.handling_device = HandlingDevice()
+        self.navigation = Navigation()
 
     # ===============================
     #            CALLBACKS
@@ -223,22 +204,21 @@ class Controller():
     # ========= NAVIGATION CALLBACKS =========
 
     # receives an Odometry message from NAVIGATION
-    def nav_data(self, odometry):
+    def nav_odometry(self, odometry):
 
-        position = odometry.pose.pose.position
-        orientation = odometry.pose.pose.orientation
-        linVel = odometry.twist.twist.linear
-        angVel = odometry.twist.twist.angular
+        self.navigation.position = [odometry.pose.pose.position.x, odometry.pose.pose.position.y, odometry.pose.pose.position.z]
+        self.navigation.orientation = [odometry.pose.pose.orientation.x, odometry.pose.pose.orientation.y, odometry.pose.pose.orientation.z, odometry.pose.pose.orientation.w]
+        self.navigation.linVel = [odometry.twist.twist.linear.x, odometry.twist.twist.linear.y, odometry.twist.twist.linear.z]
+        self.navigation.angVel = [odometry.twist.twist.angular.x, odometry.twist.twist.angular.y, odometry.twist.twist.angular.z]
+
+        self.navigation.UpdateNavSocket()
+
+    def nav_wheel_ang(self, wheel_ang):
+        print("nav_wheel_ang", wheel_ang.angles)
+        self.navigation.wheels_ang = [wheel_ang.angles[0], wheel_ang.angles[1], wheel_ang.angles[2], wheel_ang.angles[3]]
+        self.navigation.UpdateNavSocket()
 
 
-        async_to_sync(channel_layer.group_send)("nav", {"type": "nav_message",
-                                                            'position'   : [position.x, position.y, position.z],
-                                                            'orientation': [orientation.w, orientation.x, orientation.y, orientation.z],
-                                                            'linVel'     : [linVel.x, linVel.y, linVel.z],
-                                                            'angVel'     : [angVel.x, angVel.y, angVel.z],
-                                                            'current_goal' : "",
-                                                            'wheel_ang' : [1,2,3,4]
-                                                                        })
 
     # TODO important to display exceptions in log screen
     def log_clbk(self, data):

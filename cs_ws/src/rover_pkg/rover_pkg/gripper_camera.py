@@ -46,7 +46,7 @@ if __name__ == '__main__':
 class CameraFluxPublisher:
     def __init__(self, node):
         self.parent_node = node
-        self.publisher_ = node.create_publisher(CompressedImage, 'HD/camera_flux', 10)
+        self.publisher_ = node.create_publisher(CompressedImage, 'HD/camera_flux', 1)
         self.bridge_ = CvBridge()
         self.enabled_ = False  # Flag to indicate if the publisher is enabled
 

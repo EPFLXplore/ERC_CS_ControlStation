@@ -34,12 +34,16 @@ urlpatterns = [
     path('handlingdevice/retry',    retry_hd,       name='retry_hd'),
     path('handlingdevice/set_id',   set_id,         name='set_id'),
     path('handlingdevice/set_hd_mode',   set_hd_mode,         name='set_hd_mode'),
+    path('handlingdevice/deploy_hd_voltmeter',   deploy_hd_voltmeter,         name='deploy_hd_voltmeter'),
+    path('handlingdevice/toggle_hd_laser',   toggle_hd_laser,         name='toggle_hd_laser'),
     
     #Science
     path('science/launch',         launch_science, name='launch_science'),
     path('science/wait',            wait_science,   name='wait_science'),
     path('science/abort',           abort_science, name='abort_science'),
     path('science/resume',          resume_science,   name='resume_science'),
+    path('science/mesure_spectro', sc_mesure_spectro, name='sc_mesure_spectro'),
+    path('science/reset_spectro',   sc_reset_spectro, name='sc_reset_spectro'),
 
     #Cameras
     path('cameras/enable_cameras', enable_cameras, name='enable_cameras'),
