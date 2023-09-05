@@ -54,11 +54,11 @@ class CamerasPublisher(Node):
 
 
         self.camera_0 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=0))
-        self.camera_1 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=1))
+        self.camera_1 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=1))
         self.camera_2 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=2))
-        self.camera_3 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=3))
-        self.camera_4 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=4))
-        self.camera_5 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=5))
+        self.camera_3 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=3))
+        self.camera_4 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=4))
+        self.camera_5 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=5))
         self.cam_hd = CameraFluxPublisher(self)
 
 
@@ -158,21 +158,6 @@ def gstreamer_pipeline(
         )
     )
 
-    # return (
-    #         "gst-launch-1.0 v4l2src !"  
-    #         "video/x-raw(memory:NVMM), width=(int)%d, height=(int)%d, format=(string)NV12, framerate=(fraction)%d/1 ! "
-    #         "videoconvert ! "
-    #         "x264enc pass=qual quantizer=20 tune=zerolatency ! "
-    #         "appsink"
-    #         % (
-    #             capture_width,
-    #             capture_height,
-    #             framerate,
-    #         )
-    # )
-    #return ('sudo gst-launch-1.0 v4l2src ! videoconvert ! x264enc pass=qual quantizer=20 tune=zerolatency ! rtph264pay ! udpsink host=127.0.0.1 port=8080')
-    #return ('sudo gst-launch-1.0 v4l2src ! videoconvert ! video/x-raw, format=(string)BGR ! appsink')
-
 def run_gripper(self, camera: CameraFluxPublisher):
     # rate = self.create_rate(30)  # 1hz
     # While the gripper is enabled
@@ -199,23 +184,19 @@ def run_camera(cameras_publisher, camera, pub, i):
 
 def main(args=None):
 
-    print("Start cameras_publisher node .sdfsdf<ASGASGDAFGDASGFHAS")
+    print("Start cameras_publisher node...")
     
     rclpy.init(args=args)
 
     cameras_publisher = CamerasPublisher()
-
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
+    
+    print("Cameras ready")
 
     rclpy.spin(cameras_publisher)
 
-
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-
-    # when the garbage collector destroys the node object)
     cameras_publisher.stop_camera()
     cameras_publisher.destroy_node()
+
     rclpy.shutdown()
 
 

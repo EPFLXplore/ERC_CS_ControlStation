@@ -207,7 +207,6 @@ class HandlingDevice:
     def setHDMode(self, mode_ros):
 
         self.rover.RoverConfirm_pub.publish(String(data="HD mode set"))
-        self.rover.node.get_logger().info("HD mode callback entered")
 
         mode = mode_ros.data
         if(mode < 0 or mode > 3):
@@ -216,7 +215,7 @@ class HandlingDevice:
         else:
             self.__hd_mode = mode
             self.rover.HD_mode_pub.publish(mode_ros)
-            self.rover.node.get_logger().info("mode HD sent")
+            self.rover.node.get_logger().info("mode HD :" + str(mode))
 
 
     def send_element_id_hd(self, id):

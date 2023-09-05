@@ -1,5 +1,8 @@
 import numpy as np
 
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
 NBR_BUTTONS = 14
 ELEMENT_DATA_SIZE = 6
 
@@ -8,6 +11,9 @@ class HandlingDevice:
         Monitoring Handling Device Data
     '''
     def __init__(self):
+
+        self.channel_layer = get_channel_layer()
+
         # HD mode: Inverse, Direct, Debug TODO
         self.__hd_mode = -1
 
@@ -17,12 +23,19 @@ class HandlingDevice:
         self.__distToElem = 0
 
         # the 6 joints + gripper
-        self.__joint_positions = [0,0,0,0,0,0,0]
-        self.__joint_velocities = [0,0,0,0,0,0,0]
+        self.joint_positions = [0,0,0,0,0,0,0]
+        self.joint_velocities = [0,0,0,0,0,0,0]
+        self.joint_current = [0,0,0,0,0,0,0]
+
+        self.available_buttons = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+
+        self.task_outcome = [-1]
 
         # matrix containing info on the movements each joint must do in order to reach an element
         # [x,y,z,a,b,c] (3 translations and 3 rotations)
         self.__elements = np.zeros((NBR_BUTTONS, ELEMENT_DATA_SIZE)) # 14x6 matrix
+
+        self.voltage = 0.0
 
     #--------HD mode--------
 
@@ -101,10 +114,22 @@ class HandlingDevice:
 #       - Wait   = 3 
 #       - Resume = 4 
 #       - Retry  = 5 (HD and SC specific)
-def checkArgs(task, instr):
 
-    if (task < 1 or task > 4): raise ValueError("inexistent task")
-    if (instr < 1 or instr > 6): raise ValueError("inexistent instruction")
+    def checkArgs(task, instr):
 
-    if(instr == 5):
-        if(task != 3 and task != 4): raise ValueError("This task can't run Retry")
+        if (task < 1 or task > 4): raise ValueError("inexistent task")
+        if (instr < 1 or instr > 6): raise ValueError("inexistent instruction")
+
+        if(instr == 5):
+            if(task != 3 and task != 4): raise ValueError("This task can't run Retry")
+
+
+    def UpdateHandlingDeviceSocket(self):
+            async_to_sync(self.channel_layer.group_send)("hd", {"type": "hd_message",
+                                                        'joint_position': [str(val) for val in self.joint_positions],
+                                                        'joint_velocity': [str(val) for val in self.joint_velocities],
+                                                        'joint_current': [str(val) for val in self.joint_current],
+                                                        'available_buttons' : [str(val) for val in self.available_buttons],
+                                                        'task_outcome' : str(False),
+                                                        'voltage' : str(self.voltage),
+                                                        })

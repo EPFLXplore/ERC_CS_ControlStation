@@ -14,6 +14,8 @@
 # =============================================================
 # Libraries
 
+import threading
+from time import sleep
 from tracemalloc import start
 from django.http            import HttpResponse, JsonResponse
 from django.shortcuts       import render
@@ -25,6 +27,8 @@ from manage          import setup
 
 from MVC_node.models import gamepad
 
+from std_msgs.msg import Int8MultiArray, Int8, Bool
+from avionics_interfaces.msg import LaserRequest, ServoRequest, SpectroRequest
 
 # ===============================================================
 # Control Station setup
@@ -257,9 +261,19 @@ def set_hd_mode(request):
     cs.node.get_logger().info("Maintenance: Set HD mode to " +  str(mode))
     return JsonResponse({})
 
-def toggle_hd_camera(request):
-    #TODO AFTER UGO SET IT
-    
+
+def toggle_hd_laser(request):
+    toggle = bool(request.POST.get("toggle"))
+    cs.HD_toggle_laser_pub.publish(LaserRequest(enable=toggle))
+    return JsonResponse({})
+
+def deploy_hd_voltmeter(request):
+    deployment = int(request.POST.get("deployment"))
+    #on doit peut etre ajouter "channels" mais je ne sais pas ce que c'est
+    servoRequest = ServoRequest()
+    servoRequest.channel = 1
+    servoRequest.angle = deployment
+    cs.HD_deploy_voltmeter_pub.publish(servoRequest)
     return JsonResponse({})
 
 # -----------------------------------
@@ -292,8 +306,8 @@ def resume_science(request):
 #     cs.controller.pub_Task(4,1)
 #     return JsonResponse({})
 
-def start_timer(request):
-    print("Starting timer")
+# def start_timer(request):
+#     print("Starting timer")
 
 #     # startThread()
 #     return JsonResponse({})
@@ -331,9 +345,23 @@ def sc_send_cmd(val):
     cs.controller.pub_Task(Task.SCIENCE.value, int(cs.rover.SC.getCmd()))
     return JsonResponse({})
 
+spectro_call = False
 
-def capture_image(request):
+def sc_mesure_spectro(request):
+    global spectro_call
+    if not spectro_call:
+        cs.SC_spectro_req.publish(SpectroRequest(measure=True))
+        spectro_call = True
+        threading.Thread(target=wait_for_spectro).start()
+    return JsonResponse(cs.rover.SC.nb_measures)
 
+def wait_for_spectro():
+    global spectro_call
+    sleep(2)
+    spectro_call = False
+
+def sc_reset_spectro(request):
+    #Yasmin call ta function
     return JsonResponse({})
 
 

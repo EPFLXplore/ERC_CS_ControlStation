@@ -13,7 +13,9 @@ import MVC_node.models.utils as utils
 Data format :
 
 {
-    'nb_users': int,
+    nb_users : int,
+    rover_state : int,
+    subsystems_state : int,
 }
 
 """
@@ -44,7 +46,12 @@ class SessionConsumer(WebsocketConsumer):
         )
 
         async_to_sync(self.channel_layer.group_send)(
-            self.tab_group_name, {"type": "broadcast", "nb_users": utils.session.nb_users}
+            self.tab_group_name, {
+                "type": "broadcast", 
+                "nb_users": utils.session.nb_users,
+                "rover_state": utils.session.rover_state,
+                "subsystems_state": utils.session.subsystems_state,
+                }
         )
 
         self.accept()
@@ -61,7 +68,11 @@ class SessionConsumer(WebsocketConsumer):
 
         #update other users
         async_to_sync(self.channel_layer.group_send)(
-            self.tab_group_name, {"type": "broadcast", "nb_users": utils.session.nb_users}
+            self.tab_group_name, {
+                "type": "broadcast", 
+                "nb_users": utils.session.nb_users,
+                "rover_state": utils.session.rover_state,
+                "subsystems_state": utils.session.subsystems_state,}
         )
         # Leave room group
         async_to_sync(self.channel_layer.group_discard)(
@@ -72,10 +83,18 @@ class SessionConsumer(WebsocketConsumer):
     def receive(self, data):
         data_json = json.loads(data)
         async_to_sync(self.channel_layer.group_send)(
-            self.tab_group_name, {"type": "broadcast", "nb_users": data_json["current_tab"]}
-        )
+            self.tab_group_name, {
+                "type": "broadcast", 
+                "nb_users": data_json["current_tab"],
+                "rover_state": data_json["rover_state"],
+                "subsystems_state": data_json["subsystems_state"],
+        })
 
     # Receive message from room group
     def broadcast(self, data_json):
 
-        self.send(text_data=json.dumps({"nb_users": data_json["nb_users"]}))
+        self.send(text_data=json.dumps({
+            "nb_users": data_json["nb_users"],
+            "rover_state": data_json["rover_state"],
+            "subsystems_state": data_json["subsystems_state"],
+        }))

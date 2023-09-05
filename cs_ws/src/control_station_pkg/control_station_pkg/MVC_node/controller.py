@@ -35,28 +35,11 @@ from transforms3d.euler import euler2quat, quat2euler
 
 from .models.rover   import Task
 
-from .models.science import Science
+from .models.science         import Science
+from .models.handling_device import HandlingDevice
+from .models.navigation      import Navigation
 
-# ================================================================================
-# Webscokets for ASGI
-
-# NAV_WS_URL = "ws://127.0.0.1:8000/ws/csApp/navigation/"
-# HD_WS_URL = "ws://localhost:8000/ws/csApp/handlingdevice/"
-# SC_WS_URL = "ws://localhost:8000/ws/csApp/science/"
-# AV_WS_URL = "ws://localhost:8000/ws/csApp/logs/"
-# MAN_WS_URL = "ws://localhost:8000/ws/csApp/manual/"
-# HP_WS_URL = "ws://localhost:8000/ws/csApp/homepage/"
-# TIME_WS_URL = "ws://localhost:8000/ws/csApp/time/"
-
-# WEB SOCKETS used to publish info to front-end depending on the tab
-# ws_nav = websocket.WebSocket()
-# ws_hd = websocket.WebSocket()
-# ws_sc = websocket.WebSocket()
-# ws_av = websocket.WebSocket()
-# ws_man = websocket.WebSocket()
-# ws_hp = websocket.WebSocket()
-# ws_time = websocket.WebSocket()
-
+from .models.utils import session
 
 
 from channels.layers import get_channel_layer
@@ -76,6 +59,8 @@ class Controller():
     def __init__(self, cs):
         self.cs = cs
         self.science = Science()
+        self.handling_device = HandlingDevice()
+        self.navigation = Navigation()
 
     # ===============================
     #            CALLBACKS
@@ -110,6 +95,22 @@ class Controller():
     #         str = "Impossible progress state: %s" % (val)
     #         self.cs.exception_clbk(String(str))
 
+    def rover_subsystem_state(self, data):
+        session.subsystems_state = data.data
+        async_to_sync(channel_layer.group_send)("session", {"type": "broadcast",
+                                                    'nb_users'   : session.nb_users,
+                                                    'rover_state': session.rover_state,
+                                                    'subsystems_state': session.subsystems_state,
+                                                                })
+
+
+    def rover_state(self, data):
+        session.rover_state = data.data
+        async_to_sync(channel_layer.group_send)("session", {"type": "broadcast",
+                                                    'nb_users'   : session.nb_users,
+                                                    'rover_state': session.rover_state,
+                                                    'subsystems_state': session.subsystems_state,
+                                                                })
 
     # ========= SCIENCE CALLBACKS ========= 
 
@@ -134,21 +135,32 @@ class Controller():
         self.science.limit_switches = data.data
         self.science.UpdateScienceDrillSocket()
 
+
+    # TODO problems with displaying mass, websocket can't serialize numpy.float32 error
     def science_mass(self, data):
-        self.science.mass = data.data
+        # elec uses channel 2 for the mass (MAY CHANGE IN THE FUTURE)
+        self.science.mass = [data.mass[0], data.mass[1], data.mass[2], data.mass[3]]
         self.science.UpdateScienceDataSocket()
 
+    # TODO Chaimaa c'est pour toi, fais la moyenne wallah
     def science_spectrometer(self, data):
         self.science.spectrometer = data.data
         self.science.FindClosestCandidate()
         self.science.UpdateScienceDataSocket()
 
     def science_npk(self, data):
-        self.science.npk_sensor = data.data
+        self.science.npk_sensor = [data.nitrogen,
+                                   data.phosphorus,
+                                   data.potassium]
+        
         self.science.UpdateScienceDataSocket()
 
     def science_4in1(self, data):
-        self.science.four_in_one = data.data
+        self.science.four_in_one = [data.temperature, 
+                                    data.moisture, 
+                                    data.conductivity, 
+                                    data.ph]
+        
         self.science.UpdateScienceDataSocket()
 
 
@@ -167,40 +179,46 @@ class Controller():
 
     # receive: joint telemetry (info on angles and velocity of joints)
     # Jointstate is a ros message
-    def hd_data(self, JointState):
+    def hd_joint_state(self, JointState):
 
-        joint_positon = JointState.position
-        joint_velocity = JointState.velocity
-        joint_current = JointState.effort
+        self.handling_device.joint_positions = JointState.position
+        self.handling_device.joint_velocities = JointState.velocity
+        self.handling_device.joint_current = JointState.effort
 
-        async_to_sync(channel_layer.group_send)("info_hd", {"type": "hd_message",
-                                                            'joint_position': [joint_positon[0], joint_positon[1], joint_positon[2], joint_positon[3], joint_positon[4], joint_positon[5]],
-                                                            'joint_velocity': [joint_velocity[0], joint_velocity[1], joint_velocity[2], joint_velocity[3], joint_velocity[4], joint_velocity[5]],
-                                                            'joint_current': [joint_current[0], joint_current[1], joint_current[2], joint_current[3], joint_current[4], joint_current[5]],
-                                                            'detected_tags' : [0,0,0,1],
-                                                            'task_outcome' : False,
-                                                                        })
-    
+        self.handling_device.UpdateHandlingDeviceSocket()
+
+    # receive: voltage data from the handling device's voltmeter
+    def hd_voltage(self, Voltage):
+        self.handling_device.voltage = Voltage.voltage
+        self.handling_device.UpdateHandlingDeviceSocket()
+
+    def hd_ARtags(self, ARtags):
+        self.handling_device.available_buttons = ARtags.data
+        #TODO convertir la liste d'ARtags en list de bouton disponible
+        self.handling_device.UpdateHandlingDeviceSocket()
+
+    def hd_task_outcome(self, outcome):
+        self.handling_device.task_outcome = outcome.data
+        self.handling_device.UpdateHandlingDeviceSocket()
 
     # ========= NAVIGATION CALLBACKS =========
 
     # receives an Odometry message from NAVIGATION
-    def nav_data(self, odometry):
+    def nav_odometry(self, odometry):
 
-        position = odometry.pose.pose.position
-        orientation = odometry.pose.pose.orientation
-        linVel = odometry.twist.twist.linear
-        angVel = odometry.twist.twist.angular
+        self.navigation.position = [odometry.pose.pose.position.x, odometry.pose.pose.position.y, odometry.pose.pose.position.z]
+        self.navigation.orientation = [odometry.pose.pose.orientation.x, odometry.pose.pose.orientation.y, odometry.pose.pose.orientation.z, odometry.pose.pose.orientation.w]
+        self.navigation.linVel = [odometry.twist.twist.linear.x, odometry.twist.twist.linear.y, odometry.twist.twist.linear.z]
+        self.navigation.angVel = [odometry.twist.twist.angular.x, odometry.twist.twist.angular.y, odometry.twist.twist.angular.z]
+
+        self.navigation.UpdateNavSocket()
+
+    def nav_wheel_ang(self, wheel_ang):
+        print("nav_wheel_ang", wheel_ang.angles)
+        self.navigation.wheels_ang = [wheel_ang.angles[0], wheel_ang.angles[1], wheel_ang.angles[2], wheel_ang.angles[3]]
+        self.navigation.UpdateNavSocket()
 
 
-        async_to_sync(channel_layer.group_send)("nav", {"type": "nav_message",
-                                                            'position'   : [position.x, position.y, position.z],
-                                                            'orientation': [orientation.w, orientation.x, orientation.y, orientation.z],
-                                                            'linVel'     : [linVel.x, linVel.y, linVel.z],
-                                                            'angVel'     : [angVel.x, angVel.y, angVel.z],
-                                                            'current_goal' : "",
-                                                            'wheel_ang' : [1,2,3,4]
-                                                                        })
 
     # TODO important to display exceptions in log screen
     def log_clbk(self, data):
