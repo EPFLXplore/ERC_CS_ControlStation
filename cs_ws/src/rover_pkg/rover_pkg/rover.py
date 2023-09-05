@@ -98,7 +98,8 @@ class Rover():
         self.node.create_subscription(Bool,           'CS/HD_toggle_camera', self.model.HD.send_toggle_info     , 10)
 
         # messages from CS (NAV)
-        self.node.create_subscription(PoseStamped, 'CS/NAV_goal',    self.model.Nav.setGoal, 10)
+        # self.node.create_subscription(PoseStamped, 'CS/NAV_goal',    self.model.Nav.setGoal, 10)
+        self.node.create_subscription(PoseStamped, 'CS/NAV_goal',    self.model.Nav.sendGoal, 10)
         
         #self.node.create_subscription(Joy,    'Gamepad',   self.handle_gamepad,          1)
         #TODO: add cancel goal and other messages from CS to NAV
