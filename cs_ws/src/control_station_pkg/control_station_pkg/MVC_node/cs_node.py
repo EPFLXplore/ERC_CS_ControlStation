@@ -136,7 +136,7 @@ class CS:
         self.node.create_subscription(Voltage,          'EL/voltage',         self.controller.hd_voltage, 10)  
         
         # -- NAV messages --
-        self.node.create_subscription(Odometry,         'NAV/odometry/filtered',            self.controller.nav_odometry      , 10)
+        self.node.create_subscription(Odometry,         'ROVER/NAV_odometry',            self.controller.nav_odometry      , 10)
         self.node.create_subscription(AngleArray,         'EL/potentiometer',               self.controller.nav_wheel_ang     , 10)
 
         # -- Camera messages --
