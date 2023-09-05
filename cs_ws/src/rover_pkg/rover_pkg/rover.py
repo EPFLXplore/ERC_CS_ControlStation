@@ -142,7 +142,7 @@ class Rover():
         # NAV --> Rover
         # self.node.create_subscription(Odometry,        '/odometry/filtered'          , self.NAV_odometry_pub.publish , 10) # CS DIRECTLY SUBSCRIBED
         # HD --> Rover
-        self.node.create_subscription(JointState,      'HD/arm_control/joint_telemetry', self.HD_telemetry_pub.publish , 10)
+        self.node.create_subscription(JointState,      'HD/motor_control/joint_telemetry', self.HD_telemetry_pub.publish , 10)
 
 
         # ==========================================================GAMEPAD FROM CS
