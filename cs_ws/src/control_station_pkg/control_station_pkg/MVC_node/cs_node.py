@@ -22,8 +22,7 @@ from nav_msgs.msg          import Odometry
 from sensor_msgs.msg       import JointState, Image, Joy, CompressedImage
 
 
-from avionics_interfaces.msg import MassArray, SpectroResponse, NPK, FourInOne, Voltage
-
+from avionics_interfaces.msg import MassArray, SpectroResponse, NPK, FourInOne, Voltage, LaserRequest, ServoRequest, SpectroRequest, AngleArray
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
 django.setup()
@@ -91,10 +90,11 @@ class CS:
 
         #TODO necessary?
         #self.HD_ManualVelocity_pub  = self.node.create_publisher('HD_ManualVelocity',  Float32,        1)
-        self.HD_InvManual_Coord_pub = self.node.create_publisher(Int8MultiArray,    'CS/HD_InvManual_Coord',  1)
-        self.HD_homeGo_pub          = self.node.create_publisher(Bool,              'CS/HD_reset_arm_pos',    1)
-        self.HD_homeSet_pub         = self.node.create_publisher(Bool,              'CS/HD_set_zero_arm_pos', 1)
-        # self.HD_voltmeter_pub       = self.node.create_publisher(Int8,              'CS/HD_voltmeter',        1)
+        self.HD_InvManual_Coord_pub     = self.node.create_publisher(Int8MultiArray,    'CS/HD_InvManual_Coord',  1)
+        self.HD_homeGo_pub              = self.node.create_publisher(Bool,              'CS/HD_reset_arm_pos',    1)
+        self.HD_homeSet_pub             = self.node.create_publisher(Bool,              'CS/HD_set_zero_arm_pos', 1)
+        self.HD_toggle_laser_pub        = self.node.create_publisher(LaserRequest,              'EL/laser_req',        1)
+        self.HD_deploy_voltmeter_pub    = self.node.create_publisher(ServoRequest,              'EL/servo_req',        1)
 
         # CS --> ROVER (NAV)
 
@@ -103,57 +103,52 @@ class CS:
         self.Nav_Joystick_pub       = self.node.create_publisher(Twist,             '/cmd_vel',            1)
         #self.Nav_DebugWheels_pub    = self.node.create_publisher(Int16MultiArray,   '/debug/wheel_cmds',   1)
 
+        # CS --> ROVER (SC)
+        self.SC_spectro_req          = self.node.create_publisher(SpectroRequest,    'El/spectro_req',    1)
+
         # Cam
         self.Cam_index_pub = self.node.create_publisher(Int8MultiArray, 'CS/CAM_index', 1)
         self.gripper_cam_pub = self.node.create_publisher(Int8, 'ROVER/HD_toggle_cameras', 1)
 
         # ---------------------------------------------------
         # ===== Subscribers =====
-        self.node.create_subscription(String,           'ROVER/RoverConfirm',              self.controller.rover_confirmation , 10)
-       # self.node.create_subscription(Int8,             'ROVER/TaskProgress',              self.controller.task_progress      , 10)
-        self.node.create_subscription(DiagnosticStatus, 'ROVER/CS_log',                    self.controller.log_clbk   , 10)
+        self.node.create_subscription(String,           'ROVER/RoverConfirm',               self.controller.rover_confirmation , 10)
+        # self.node.create_subscription(Int8,             'ROVER/TaskProgress',              self.controller.task_progress      , 10)
+        self.node.create_subscription(DiagnosticStatus, 'ROVER/CS_log',                     self.controller.log_clbk   , 10)
+        self.node.create_subscription(Int8,             'ROVER/rover_state',                self.controller.rover_state       , 10)
+        self.node.create_subscription(Int8,             'ROVER/subsystem_state',            self.controller.rover_subsystem_state, 10)
         
         # -- SC messages --
         self.node.create_subscription(Int8,               'SC/fsm_state_to_cs',      self.controller.science_state        , 10)
         self.node.create_subscription(Float32MultiArray,  'SC/motors_pos',           self.controller.science_motors_pos   , 10)
         self.node.create_subscription(Float32MultiArray,  'SC/motors_speed',         self.controller.science_motors_vels  , 10)
         self.node.create_subscription(Float32MultiArray,  'SC/motors_currents',      self.controller.science_motors_currents, 10)
-        self.node.create_subscription(Int8MultiArray,     'SC/limit_switches',    self.controller.science_limit_switches, 10)
-        
-
-        # -- EL(SC) messages --
+        self.node.create_subscription(Int8MultiArray,     'SC/limit_switches',       self.controller.science_limit_switches, 10)
         self.node.create_subscription(MassArray,         'EL/mass',           self.controller.science_mass         , 10)
         self.node.create_subscription(SpectroResponse,   'EL/spectrometer',   self.controller.science_spectrometer , 10)
         self.node.create_subscription(NPK,               'EL/npk',            self.controller.science_npk          , 10)
         self.node.create_subscription(FourInOne,         'EL/four_in_one',    self.controller.science_4in1         , 10)
 
         # -- HD messages --
-        self.node.create_subscription(JointState,       'ROVER/HD_telemetry', self.controller.hd_data       , 10)
-
-        # -- EL(HD) messages --
-        self.node.create_subscription(Voltage,          'EL/voltage',         self.controller.voltage_data, 10)
+        self.node.create_subscription(JointState,       'ROVER/HD_telemetry',   self.controller.hd_joint_state       , 10)
+        self.node.create_subscription(Int8MultiArray,   'HD/ar_tags',           self.controller.hd_ARtags            , 10)
+        self.node.create_subscription(Int8,             'HD/task_outcome',      self.controller.hd_task_outcome      , 10)
+        self.node.create_subscription(Voltage,          'EL/voltage',         self.controller.hd_voltage, 10)  
         
         # -- NAV messages --
-        # self.node.create_subscription(Twist,            '/cmd_vel',                        self.controller.test_joystick      , 10) 
-        # self.node.create_subscription(Odometry,         'ROVER_NAV_odometry',              self.controller.nav_data           , 10)
-        self.node.create_subscription(Odometry,         'NAV/odometry/filtered',            self.controller.nav_data           , 10)
+        self.node.create_subscription(Odometry,         'NAV/odometry/filtered',            self.controller.nav_odometry      , 10)
+        self.node.create_subscription(AngleArray,         'EL/potentiometer',               self.controller.nav_wheel_ang     , 10)
 
         # -- Camera messages --
         self.node.create_subscription(CompressedImage, '/camera_0', cameras_reciever.display_cam_0, 1)
-        self.node.create_subscription(CompressedImage, '/camera_1', cameras_reciever.display_cam_1, 1)
+        self.node.create_subscription(CompressedImage, '/camera_1', cameras_reciever.display_cam_1, 1)  #doesnt work
         self.node.create_subscription(CompressedImage, '/camera_2', cameras_reciever.display_cam_2, 1)
         self.node.create_subscription(CompressedImage, '/camera_3', cameras_reciever.display_cam_3, 1)
-        self.node.create_subscription(CompressedImage, '/camera_4', cameras_reciever.display_cam_3, 1)
-        self.node.create_subscription(CompressedImage, '/camera_5', cameras_reciever.display_cam_3, 1)
+        self.node.create_subscription(CompressedImage, '/camera_4', cameras_reciever.display_cam_4, 1)
+        self.node.create_subscription(CompressedImage, '/camera_5', cameras_reciever.display_cam_5, 1)
 
         self.node.create_subscription(CompressedImage, 'HD/camera_flux', cameras_reciever.display_cam_gripper, 10)
         
-        # Elpased time
-        #self.node.create_subscription(Int32MultiArray,  'Time',  self.controller.elapsed_time       , 10) #useless
-
-        #rclpy.spin(self.node)
-
-        #views.launch_nav(None)
 
 
         thr = threading.Thread(target=rclpy.spin, args=(self.node,)).start()

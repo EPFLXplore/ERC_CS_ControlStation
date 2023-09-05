@@ -11,20 +11,17 @@ Data format :
     'joint_position' : [float] * 6
     'joint_velocity' : [float] * 6
     'joint_current' : [float] * 6
-    'detected_tags' : [bool] * 4
+    'available_buttons' : [bool] * 16 (?)
     'task_outcome' : bool
 }
 
 """
 
 
-class InfoHDConsumer(WebsocketConsumer):
+class HDConsumer(WebsocketConsumer):
     
     def connect(self):
-
-        print("connect to info_hd consumer")
-
-        self.tab_group_name = 'info_hd'
+        self.tab_group_name = 'hd'
 
         # Join tab group
         async_to_sync(self.channel_layer.group_add)(
@@ -35,8 +32,6 @@ class InfoHDConsumer(WebsocketConsumer):
         self.accept()
 
     def disconnect(self, close_code):
-
-        print("disconnect to info_hd consumer")
         # Leave tab group
         async_to_sync(self.channel_layer.group_discard)(
             self.tab_group_name,
@@ -48,7 +43,6 @@ class InfoHDConsumer(WebsocketConsumer):
     def receive(self, text_data):
 
         data_json = json.loads(text_data)
-        print("received in hd")
 
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
@@ -58,8 +52,9 @@ class InfoHDConsumer(WebsocketConsumer):
                 'joint_position'   : data_json['joint_position'],
                 'joint_velocity': data_json['joint_velocity'],
                 'joint_current': data_json['joint_current'],
-                'detected_tags': data_json['detected_tags'],
+                'available_buttons': data_json['available_buttons'],
                 'task_outcome': data_json['task_outcome'],
+                'voltage': data_json['voltage'],
             }
         )
 
@@ -67,13 +62,12 @@ class InfoHDConsumer(WebsocketConsumer):
     # Receive message from room group
     def hd_message(self, event):
 
-        print("broadcast_info_hd")
-
         # Send message to WebSocket
         self.send(text_data=json.dumps({
                 'joint_position'   : event['joint_position'],
                 'joint_velocity': event['joint_velocity'],
                 'joint_current': event['joint_current'],
-                'detected_tags': event['detected_tags'],
+                'available_buttons': event['available_buttons'],
                 'task_outcome': event['task_outcome'],
+                'voltage': event['voltage'],
             }))

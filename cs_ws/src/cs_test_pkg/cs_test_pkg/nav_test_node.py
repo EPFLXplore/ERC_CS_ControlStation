@@ -9,6 +9,7 @@ from geometry_msgs.msg import PoseStamped
 from diagnostic_msgs.msg import DiagnosticStatus
 
 from std_msgs.msg import Int8MultiArray, Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16, Float32MultiArray
+from avionics_interfaces.msg import AngleArray
 
 from diagnostic_msgs.msg  import DiagnosticStatus
 
@@ -19,8 +20,8 @@ class NavTestNode(Node):
         
         # Log publisher
         self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
-
         self.publisher_odometry = self.create_publisher(Odometry, 'NAV/odometry/filtered', 10)
+        self.publisher_wheel_ang = self.create_publisher(AngleArray, 'EL/potentiometer', 10)
         
         #TODO
         #self.subscription_move_base = self.create_subscription(String,'ROVER/move_base/cancel',self.listener_callback,10)
@@ -60,6 +61,10 @@ class NavTestNode(Node):
         msg.twist.twist.angular.x = float(self.i/10 + 90)
         msg.twist.twist.angular.y = float(self.i/10 + 100)
         msg.twist.twist.angular.z = float(self.i/10 + 110)
+
+        ang = AngleArray()
+        ang.angles = [random.uniform(0, 360), random.uniform(0, 360), random.uniform(0, 360), random.uniform(0, 360)]
+        self.publisher_wheel_ang.publish(ang)
 
         self.publisher_odometry.publish(msg)
         self.i += 1
