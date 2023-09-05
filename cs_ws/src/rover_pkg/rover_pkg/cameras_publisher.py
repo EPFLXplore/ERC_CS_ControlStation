@@ -53,12 +53,12 @@ class CamerasPublisher(Node):
         # self.cam_publisher.append(self.cam_4_pub)
 
 
-        self.camera_0 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=0))
+        self.camera_0 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=0))
         self.camera_1 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=1))
-        self.camera_2 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=2))
-        self.camera_3 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=3))
-        self.camera_4 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=4))
-        self.camera_5 = None #cv2.VideoCapture(gstreamer_pipeline(sensor_id=5))
+        self.camera_2 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=2))
+        self.camera_3 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=3))
+        self.camera_4 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=4))
+        self.camera_5 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=5))
         self.cam_hd = CameraFluxPublisher(self)
 
 
@@ -158,21 +158,6 @@ def gstreamer_pipeline(
         )
     )
 
-    # return (
-    #         "gst-launch-1.0 v4l2src !"  
-    #         "video/x-raw(memory:NVMM), width=(int)%d, height=(int)%d, format=(string)NV12, framerate=(fraction)%d/1 ! "
-    #         "videoconvert ! "
-    #         "x264enc pass=qual quantizer=20 tune=zerolatency ! "
-    #         "appsink"
-    #         % (
-    #             capture_width,
-    #             capture_height,
-    #             framerate,
-    #         )
-    # )
-    #return ('sudo gst-launch-1.0 v4l2src ! videoconvert ! x264enc pass=qual quantizer=20 tune=zerolatency ! rtph264pay ! udpsink host=127.0.0.1 port=8080')
-    #return ('sudo gst-launch-1.0 v4l2src ! videoconvert ! video/x-raw, format=(string)BGR ! appsink')
-
 def run_gripper(self, camera: CameraFluxPublisher):
     rate = self.create_rate(1)  # 1hz
     # While the gripper is enabled
@@ -199,44 +184,19 @@ def run_camera(cameras_publisher, camera, pub, i):
 
 def main(args=None):
 
-    print("Start cameras_publisher node .sdfsdf<ASGASGDAFGDASGFHAS")
+    print("Start cameras_publisher node...")
     
     rclpy.init(args=args)
 
     cameras_publisher = CamerasPublisher()
     
-
-    
-    #threading.Thread(target=rclpy.spin, args=(cameras_publisher,)).start()
-
-    #threading.Thread(target=run_camera, args=(cameras_publisher, cameras_publisher.camera_0, cameras_publisher.cam_1_pub, )).start()
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
-    # threading.Thread(target=run_camera, args=(cameras_publisher, cameras_publisher.camera_0, cameras_publisher.cam_0_pub, 0)).start()
-    # threading.Thread(target=run_camera, args=(cameras_publisher, cameras_publisher.camera_1, cameras_publisher.cam_1_pub, 1)).start()
-    # threading.Thread(target=run_camera, args=(cameras_publisher, cameras_publisher.camera_2, cameras_publisher.cam_2_pub, 2)).start()
-    # threading.Thread(target=run_camera, args=(cameras_publisher, cameras_publisher.camera_3, cameras_publisher.cam_3_pub, 3)).start()
-
-    #threading.Thread(target=rclpy.spin, args=(cameras_publisher,)).start()
+    print("Cameras ready")
 
     rclpy.spin(cameras_publisher)
 
-    # while True:
-        
-    #     ret, frame = cameras_publisher.camera_0.read()
-    #     frame = cameras_publisher.bridge.cv2_to_compressed_imgmsg(frame)
-    #     cameras_publisher.cam_1_pub.publish(frame)
-    #     #cv2.imshow('Input', frame)
-        
-    #     c = cv2.waitKey(1)
-    #     if c == 27:
-    #         break
-
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-
-    # when the garbage collector destroys the node object)
     cameras_publisher.stop_camera()
     cameras_publisher.destroy_node()
+
     rclpy.shutdown()
 
 
