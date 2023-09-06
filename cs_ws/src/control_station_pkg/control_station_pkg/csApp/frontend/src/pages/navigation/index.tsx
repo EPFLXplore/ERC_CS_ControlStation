@@ -13,9 +13,11 @@ import { Size } from "../../utils/size.type";
 import Timer from "../../components/Timer";
 import { Goal, useGoalTracker } from "../../hooks/navigationHooks";
 import { useNavigation } from "../../hooks/navigationHooks";
+import { angle, getDistance, roundToTwoDecimals } from "../../utils/maths";
+import WheelsIndicator from "../../components/WheelsIndicator";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
-	const { goals, addGoal, removeGoal, cancelGoals, tempGoal, setTempGoal } = useGoalTracker();
+	const { goals, addGoal, removeGoal, resetGoals, tempGoal, setTempGoal } = useGoalTracker();
 
 	const [
 		currentPosition,
@@ -46,7 +48,6 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 	};
 
 	// TODO Replace all these constants by the call to functions
-	const distance = 15;
 	const routeLeft = 20;
 	const EstimatedTime = "07:00";
 
@@ -70,9 +71,34 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 							x.toString();
 						(document.getElementById("input-y") as HTMLInputElement).value =
 							y.toString();
-						(document.getElementById("input-o") as HTMLInputElement).value = "0";
-						const goal: Goal = { id: -1, x: x, y: y, o: 0 };
+						(document.getElementById("input-o") as HTMLInputElement).value =
+							(document.getElementById("input-o") as HTMLInputElement).value.length >
+							0
+								? (document.getElementById("input-o") as HTMLInputElement).value
+								: "0";
+						const goal: Goal = {
+							id: -1,
+							x: x,
+							y: y,
+							o: parseFloat(
+								(document.getElementById("input-o") as HTMLInputElement).value
+							),
+						};
 						setTempGoal(goal);
+					}}
+					onMapDrag={(x, y) => {
+						setTempGoal((prev) => {
+							if (!prev) return undefined;
+							const o = roundToTwoDecimals(
+								(angle(x, y, prev?.x, prev?.y) + 180) % 360
+							);
+							(document.getElementById("input-o") as HTMLInputElement).value =
+								o.toString();
+							return {
+								...prev,
+								o: o,
+							};
+						});
 					}}
 				/>
 				<div className={styles.Info}>
@@ -89,57 +115,73 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 						<div className={styles.inputContainer}>
 							<div className={styles.finalContainer}>
 								X
-								<input type="number" id="input-x" name="input-x" onInput={(e) => {
+								<input
+									type="number"
+									id="input-x"
+									name="input-x"
+									onInput={(e) => {
 										setTempGoal((prev) => {
-											if(!prev) {
+											if (!prev) {
 												return {
 													id: -1,
 													x: parseFloat(
-														(e.target as HTMLInputElement).value.length > 0
+														(e.target as HTMLInputElement).value
+															.length > 0
 															? (e.target as HTMLInputElement).value
 															: "0"
 													),
 													y: 0,
-													o: 0
-												}
+													o: 0,
+												};
 											} else {
 												return {
 													...prev,
 													x: parseFloat(
-														(e.target as HTMLInputElement).value.length > 0
+														(e.target as HTMLInputElement).value
+															.length > 0
 															? (e.target as HTMLInputElement).value
 															: "0"
 													),
-												}
-											}});
-									}} />
+												};
+											}
+										});
+									}}
+								/>
 							</div>
 							<div className={styles.finalContainer}>
 								Y
-								<input type="number" id="input-y" name="input-y" onInput={(e) => {
+								<input
+									type="number"
+									id="input-y"
+									name="input-y"
+									onInput={(e) => {
 										setTempGoal((prev) => {
-											if(!prev) {
+											if (!prev) {
 												return {
 													id: -1,
 													x: 0,
 													y: parseFloat(
-														(e.target as HTMLInputElement).value.length > 0
+														(e.target as HTMLInputElement).value
+															.length > 0
 															? (e.target as HTMLInputElement).value
 															: "0"
 													),
-													o: 0
-												}
+													o: 0,
+												};
 											} else {
 												return {
 													...prev,
 													y: parseFloat(
-														(e.target as HTMLInputElement).value.length > 0
+														(e.target as HTMLInputElement).value
+															.length > 0
 															? (e.target as HTMLInputElement).value
 															: "0"
 													),
-												}
-											}});
-									}} />
+												};
+											}
+										});
+									}}
+								/>
 							</div>
 							<div className={styles.finalContainer}>
 								O
@@ -149,62 +191,72 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 									name="input-o"
 									onInput={(e) => {
 										setTempGoal((prev) => {
-											if(!prev) {
+											if (!prev) {
 												return {
 													id: -1,
 													x: 0,
 													y: 0,
 													o: parseFloat(
-														(e.target as HTMLInputElement).value.length > 0
+														(e.target as HTMLInputElement).value
+															.length > 0
 															? (e.target as HTMLInputElement).value
 															: "0"
 													),
-												}
+												};
 											} else {
 												return {
 													...prev,
 													o: parseFloat(
-														(e.target as HTMLInputElement).value.length > 0
+														(e.target as HTMLInputElement).value
+															.length > 0
 															? (e.target as HTMLInputElement).value
 															: "0"
 													),
-												}
-											}});
+												};
+											}
+										});
 									}}
 								/>
 							</div>
 						</div>
-						<Button
-							text="Go"
-							size={Size.SMALL}
-							theme={Themes.BROWN}
-							onClick={handleAddGoal}
-							radius={10}
-						/>
-						<Button
-							text="Cancel"
-							size={Size.SMALL}
-							theme={Themes.BROWN}
-							onClick={() => {
-								cancelGoals();
-								setTempGoal(undefined);
-								// Clear the input fields
-								(document.getElementById("input-x") as HTMLInputElement).value = "";
-								(document.getElementById("input-y") as HTMLInputElement).value = "";
-								(document.getElementById("input-o") as HTMLInputElement).value = "";
-							}}
-							radius={10}
-						/>
-						{goals.length > 0 && <h3>Next Goals</h3>}
-						{goals.map((goal, index) => (
-							<SuppressableCard
-								key={goal.id}
-								x={goal.x}
-								y={goal.y}
-								o={goal.o}
-								removeGoal={() => removeGoal(goal.id)}
+						<div className={styles.buttonGoalContainer}>
+							<Button
+								text="Go"
+								size={Size.SMALL}
+								theme={Themes.BROWN}
+								onClick={handleAddGoal}
+								radius={10}
 							/>
-						))}
+							<Button
+								text="Cancel"
+								size={Size.SMALL}
+								theme={Themes.BROWN}
+								onClick={() => {
+									resetGoals();
+									setTempGoal(undefined);
+									// Clear the input fields
+									(document.getElementById("input-x") as HTMLInputElement).value =
+										"";
+									(document.getElementById("input-y") as HTMLInputElement).value =
+										"";
+									(document.getElementById("input-o") as HTMLInputElement).value =
+										"";
+								}}
+								radius={10}
+							/>
+						</div>
+						{goals.length > 0 && <h3 style={{ marginTop: "20px" }}>Next Goals</h3>}
+						<div className={styles.buttonGoalsContainer}>
+							{goals.map((goal, index) => (
+								<SuppressableCard
+									key={goal.id}
+									x={goal.x}
+									y={goal.y}
+									o={goal.o}
+									removeGoal={() => removeGoal(goal.id)}
+								/>
+							))}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -214,15 +266,58 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 					<div>
 						<h3>Target</h3>
 						<div className={styles.InfoArrangement}>
-							<div style={{ marginRight: "20px" }}>
+							<div className={styles.Infos} style={{ marginRight: "20px" }}>
 								<p>Distance to goal: </p>
 								<p>Route left: </p>
 								<p>Estimated time: </p>
 							</div>
-							<div>
-								<p>{distance} m</p>
-								<p>{routeLeft} m</p>
-								<p>{EstimatedTime}</p>
+							<div className={styles.Infos}>
+								<p>
+									{goals.length > 0
+										? roundToTwoDecimals(
+												getDistance(
+													{
+														x: currentPosition[0],
+														y: currentPosition[1],
+														o: currentPosition[2],
+													},
+													goals[0]
+												)
+										  )
+										: "--"}{" "}
+									m
+								</p>
+								<p>{"--"} m</p>
+								<p>
+									{goals.length > 0
+										? roundToTwoDecimals(
+												getDistance(
+													{
+														x: currentPosition[0],
+														y: currentPosition[1],
+														o: currentPosition[2],
+													},
+													goals[0]
+												) /
+													(getSpeedOrDefault(linearVelocity, true) * 60),
+												0
+										  )
+										: "--"}
+									{":"}
+									{goals.length > 0
+										? roundToTwoDecimals(
+												getDistance(
+													{
+														x: currentPosition[0],
+														y: currentPosition[1],
+														o: currentPosition[2],
+													},
+													goals[0]
+												) / getSpeedOrDefault(linearVelocity, true),
+												0
+										  ) % 60
+										: "--"}
+								</p>
 							</div>
 						</div>
 					</div>
@@ -230,17 +325,12 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 					<div>
 						<h3>Speed</h3>
 						<div className={styles.InfoArrangement}>
-							<div style={{ marginRight: "20px" }}>
+							<div className={styles.Infos} style={{ marginRight: "20px" }}>
 								<p>Linear: </p>
 								<p>Angular: </p>
 							</div>
-							<div>
-								<p>
-									{Math.sqrt(
-										linearVelocity.reduce((prev, curr) => prev + curr * curr)
-									).toFixed(2)}{" "}
-									m/s
-								</p>
+							<div className={styles.Infos}>
+								<p>{getSpeedOrDefault(linearVelocity).toFixed(2)} m/s</p>
 								<p>{angularVelocity[2]} rad/s</p>
 							</div>
 						</div>
@@ -248,22 +338,24 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 
 					<div>
 						<h3>Wheels</h3>
-						<div className={styles.InfoArrangement}>
+						<div style={{ display: "flex", flexDirection: "row" }}>
 							<div className={styles.InfoArrangement}>
-								<div style={{ marginRight: "10px" }}>
+								<div className={styles.Infos} style={{ marginRight: "10px" }}>
 									<p>Wheel FL: </p>
 									<p>Wheel FR: </p>
 									<p>Wheel RL: </p>
 									<p>Wheel RR: </p>
 								</div>
-								<div style={{ marginRight: "30px" }}>
+								<div className={styles.Infos} style={{ marginRight: "30px" }}>
 									<p>{wheelsPosition[0]}°</p>
 									<p>{wheelsPosition[1]}°</p>
 									<p>{wheelsPosition[2]}°</p>
 									<p>{wheelsPosition[3]}°</p>
 								</div>
 							</div>
-							<div className="Image of rover"> </div>
+							<div className="Image of rover" style={{ marginTop: "20px" }}>
+								<WheelsIndicator wheelsOrientation={wheelsPosition} />
+							</div>
 						</div>
 					</div>
 				</div>
@@ -272,4 +364,13 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 			</div>
 		</div>
 	);
+};
+
+const getSpeedOrDefault = (linearVelocity: number[], isNonNull = false) => {
+	const defaultSpeed = 0.3;
+
+	if (linearVelocity.length !== 3) return isNonNull ? defaultSpeed : 0;
+	if (linearVelocity.some((value) => isNaN(value))) return isNonNull ? defaultSpeed : 0;
+	if (linearVelocity.every((value) => value === 0)) return isNonNull ? defaultSpeed : 0;
+	return Math.sqrt(linearVelocity.reduce((prev, curr) => prev + curr * curr));
 };

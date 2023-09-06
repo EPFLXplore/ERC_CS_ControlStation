@@ -20,7 +20,7 @@ import TaskControl from "../../components/TaskControl";
 import useCameraSelector from "../../hooks/cameraHooks";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
-	const [images, cameras, selectCamera] = useCameraSelector([Cameras.CAM1]);
+	const [images, cameras, selectCamera, flushCameras] = useCameraSelector([Cameras.CAM1]);
 	const [jointPositions, jointVelocities, jointCurrents, detectedTags, taskSuccess] =
 		useHandlingDevice();
 
@@ -28,7 +28,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 		return (
 			<div className="page">
 				<Background />
-				<BackButton />
+				<BackButton onGoBack={() => flushCameras()} />
 				<PageHeader
 					title="Maintenance"
 					settings

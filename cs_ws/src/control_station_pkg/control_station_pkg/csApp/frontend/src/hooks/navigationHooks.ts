@@ -1,28 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { drawGoal } from "../components/Map";
+import { Point } from "../utils/maths";
+import { getCookie } from "../utils/requests";
 
-export type Goal = { id: number; x: number; y: number; o: number };
-type Point = { x: number; y: number; o: number };
+export type Goal = Point & { id: number };
 
 export const useGoalTracker = () => {
 	const [goals, setGoals] = useState<Goal[]>([]);
 	const [tempGoal, setTempGoal] = useState<Goal>();
-
-	const getCookie = (name: string): string | null => {
-		let cookieValue = null;
-		if (document.cookie && document.cookie !== "") {
-			const cookies = document.cookie.split(";");
-			for (let i = 0; i < cookies.length; i++) {
-				const cookie = cookies[i].trim();
-				// Does this cookie string begin with the name we want?
-				if (cookie.substring(0, name.length + 1) === name + "=") {
-					cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-					break;
-				}
-			}
-		}
-		return cookieValue;
-	};
 
 	const addGoal = (x: number, y: number, o: number) => {
 		const id = Date.now(); //Generate a unique id for the goal
@@ -60,8 +45,8 @@ export const useGoalTracker = () => {
 		// 									.then(result => {})
 	};
 
-	const cancelGoals = () => {
-		//setGoals([]);
+	const resetGoals = () => {
+		setGoals([]);
 
 		const csrftoken = getCookie("csrftoken");
 
@@ -76,8 +61,6 @@ export const useGoalTracker = () => {
 			.then((res) => res.json())
 			.then((data) => console.log(data))
 			.catch((err) => console.log(err));
-
-
 	};
 
 	const removeGoal = (id: number) => {
@@ -85,23 +68,20 @@ export const useGoalTracker = () => {
 		setGoals(newGoals);
 	};
 
-	useEffect(() => {
-		goals.forEach((goal) => {
-			drawGoal({ x: goal.x, y: goal.y, o: goal.o }, "red");
-		});
-	}, [goals]);
-
-	return { goals, addGoal, removeGoal, cancelGoals, tempGoal, setTempGoal };
+	return { goals, addGoal, removeGoal, resetGoals, tempGoal, setTempGoal };
 };
 
 export function useNavigation() {
 	const [socket, setSocket] = useState<WebSocket | null>(null);
-	const [currentPosition, setCurrentPosition] = useState([0, 0, 0]);
+	const [currentPosition, setCurrentPosition] = useState([-12.5, 20.5, 45]);
 	const [currentOrientation, setCurrentOrientation] = useState([0, 0, 0]);
 	const [wheelsPosition, setWheelsPosition] = useState([0, 0, 0, 0]);
 	const [linearVelocity, setLinearVelocity] = useState([0, 0, 0]);
 	const [angularVelocity, setAngularVelocity] = useState([0, 0, 0]);
-	const [trajectoryPoints, setTrajectoryPoints] = useState<Point[]>([]);
+	const [trajectoryPoints, setTrajectoryPoints] = useState<Point[]>([
+		{ x: 0, y: 0, o: 0 },
+		{ x: -12.5, y: 20.5, o: 45 },
+	]);
 
 	useEffect(() => {
 		let navigationSocket = new WebSocket("ws://127.0.0.1:8000/ws/csApp/info_nav/");

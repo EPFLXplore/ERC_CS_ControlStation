@@ -6,7 +6,6 @@ interface Props {
 }
 
 export default function MyComponent({ currentPoint }: Props) {
-
 	return (
 		<div className={styles.container}>
 			<div className={styles.containerValues}>
