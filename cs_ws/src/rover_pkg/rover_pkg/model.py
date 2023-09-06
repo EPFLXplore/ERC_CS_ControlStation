@@ -96,6 +96,13 @@ class Navigation:
     def setCancelled(self, bool):
         self.__cancelled = bool
 
+    def sendGoal(self, data):
+        print("asmdamsdpamspamd")
+        print(data.pose.position.x)
+        print(data.pose.position.y)
+        print(data.pose.position.z)
+        self.rover.Nav_Goal_pub.publish(data)
+
     # -------callback for received PoseStamped from the CS-------
     def sendGoal(self, goal):
 

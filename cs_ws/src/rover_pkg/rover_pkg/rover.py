@@ -98,8 +98,9 @@ class Rover():
         self.node.create_subscription(Bool,           'CS/HD_toggle_camera', self.model.HD.send_toggle_info     , 10)
 
         # messages from CS (NAV)
+        # self.node.create_subscription(PoseStamped, 'CS/NAV_goal',    self.model.Nav.sendGoal, 10)
+        self.node.create_subscription(Bool, 'CS/NAV_cancel',    self.model.Nav.cancelGoal, 10)
         self.node.create_subscription(PoseStamped, 'CS/NAV_goal',    self.model.Nav.sendGoal, 10)
-        self.node.create_subscription(String, 'CS/NAV_cancel',    self.model.Nav.cancelGoal, 10)
         
         #self.node.create_subscription(Joy,    'Gamepad',   self.handle_gamepad,          1)
         #TODO: add cancel goal and other messages from CS to NAV
@@ -141,9 +142,9 @@ class Rover():
         # self.node.create_subscription(Int16MultiArray, 'sc_params'                   , self.model.SC.params          , 10)
         # self.node.create_subscription(Int8,            'TaskProgress'                , self.model.setProgress        , 10)
         # NAV --> Rover
-        # self.node.create_subscription(Odometry,        '/odometry/filtered'          , self.NAV_odometry_pub.publish , 10) # CS DIRECTLY SUBSCRIBED
+        self.node.create_subscription(Odometry,        '/lio_sam/current_pose'          , self.NAV_odometry_pub.publish , 10) # CS DIRECTLY SUBSCRIBED
         # HD --> Rover
-        self.node.create_subscription(JointState,      'HD/arm_control/joint_telemetry', self.HD_telemetry_pub.publish , 10)
+        self.node.create_subscription(JointState,      'HD/motor_control/joint_telemetry', self.HD_telemetry_pub.publish , 10)
 
 
         # ==========================================================GAMEPAD FROM CS
