@@ -98,7 +98,9 @@ class Rover():
         self.node.create_subscription(Bool,           'CS/HD_toggle_camera', self.model.HD.send_toggle_info     , 10)
 
         # messages from CS (NAV)
-        self.node.create_subscription(PoseStamped, 'CS/NAV_goal',    self.model.Nav.setGoal, 10)
+        # self.node.create_subscription(PoseStamped, 'CS/NAV_goal',    self.model.Nav.sendGoal, 10)
+        self.node.create_subscription(Bool, 'CS/NAV_cancel',    self.model.Nav.cancelGoal, 10)
+        self.node.create_subscription(PoseStamped, 'CS/NAV_goal',    self.model.Nav.sendGoal, 10)
         
         #self.node.create_subscription(Joy,    'Gamepad',   self.handle_gamepad,          1)
         #TODO: add cancel goal and other messages from CS to NAV
@@ -123,7 +125,7 @@ class Rover():
         
         # Rover --> NAV
         self.Nav_Goal_pub     = self.node.create_publisher(PoseStamped, 'ROVER/NAV_goal'    , 1)
-        self.Nav_Status       = self.node.create_publisher(String,      'ROVER/NAV_status'  , 1)
+        self.Nav_Cancel_pub   = self.node.create_publisher(Bool,      'ROVER/NAV_cancel'  , 1)
         #self.Nav_gamepad_pub  = self.node.create_publisher(Joy,         'ROVER/NAV_gamepad' , 1)
 
 
@@ -140,9 +142,9 @@ class Rover():
         # self.node.create_subscription(Int16MultiArray, 'sc_params'                   , self.model.SC.params          , 10)
         # self.node.create_subscription(Int8,            'TaskProgress'                , self.model.setProgress        , 10)
         # NAV --> Rover
-        # self.node.create_subscription(Odometry,        '/odometry/filtered'          , self.NAV_odometry_pub.publish , 10) # CS DIRECTLY SUBSCRIBED
+        self.node.create_subscription(Odometry,        '/lio_sam/current_pose'          , self.NAV_odometry_pub.publish , 10) # CS DIRECTLY SUBSCRIBED
         # HD --> Rover
-        self.node.create_subscription(JointState,      'HD/arm_control/joint_telemetry', self.HD_telemetry_pub.publish , 10)
+        self.node.create_subscription(JointState,      'HD/motor_control/joint_telemetry', self.HD_telemetry_pub.publish , 10)
 
 
         # ==========================================================GAMEPAD FROM CS
@@ -225,10 +227,10 @@ class Rover():
                 if (self.ROVER_STATE == Task.IDLE):
                     self.node.get_logger().info("LAUNCHING NAVIGATION ...")
                     self.ROVER_STATE = Task.NAVIGATION
-                else:
-                    self.node.get_logger().info("SEND GOAL :" + str(self.model.Nav.getGoal().pose.position.x) + " " + str(self.model.Nav.getGoal().pose.position.y) + " " + str(self.model.Nav.getGoal().pose.position.z))
-                    goal = self.model.Nav.getGoal()
-                    self.Nav_Goal_pub.publish(PoseStamped(header=goal.header, pose=goal.pose))
+                # else:
+                #     self.node.get_logger().info("SEND GOAL :" + str(self.model.Nav.getGoal().pose.position.x) + " " + str(self.model.Nav.getGoal().pose.position.y) + " " + str(self.model.Nav.getGoal().pose.position.z))
+                #     goal = self.model.Nav.getGoal()
+                #     self.Nav_Goal_pub.publish(PoseStamped(header=goal.header, pose=goal.pose))
                     #self.log_task_already_launched("Navigation")
 
             elif (self.ROVER_STATE == Task.NAVIGATION):

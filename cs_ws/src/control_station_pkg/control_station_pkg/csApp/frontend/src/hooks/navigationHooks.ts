@@ -19,7 +19,7 @@ export const useGoalTracker = () => {
 		formData.append("y", y.toString());
 		formData.append("yaw", o.toString());
 
-		let request = new Request("http://127.0.0.1:8000/csApp/navigation/add_goal_nav", {
+		let request = new Request("http://127.0.0.1:8000/csApp/navigation/nav_goal", {
 			method: "POST",
 			headers: {
 				"X-CSRFToken": csrftoken ?? "",
@@ -47,6 +47,20 @@ export const useGoalTracker = () => {
 
 	const resetGoals = () => {
 		setGoals([]);
+
+		const csrftoken = getCookie("csrftoken");
+
+		let request = new Request("http://127.0.0.1:8000/csApp/navigation/nav_cancel", {
+			method: "POST",
+			headers: {
+				"X-CSRFToken": csrftoken ?? "",
+			},
+		});
+
+		fetch(request)
+			.then((res) => res.json())
+			.then((data) => console.log(data))
+			.catch((err) => console.log(err));
 	};
 
 	const removeGoal = (id: number) => {
