@@ -15,7 +15,7 @@ import { Goal, useGoalTracker } from "../../hooks/navigationHooks";
 import { useNavigation } from "../../hooks/navigationHooks";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
-	const { goals, addGoal, removeGoal, resetGoals, tempGoal, setTempGoal } = useGoalTracker();
+	const { goals, addGoal, removeGoal, cancelGoals, tempGoal, setTempGoal } = useGoalTracker();
 
 	const [
 		currentPosition,
@@ -186,7 +186,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 							size={Size.SMALL}
 							theme={Themes.BROWN}
 							onClick={() => {
-								resetGoals();
+								cancelGoals();
 								setTempGoal(undefined);
 								// Clear the input fields
 								(document.getElementById("input-x") as HTMLInputElement).value = "";

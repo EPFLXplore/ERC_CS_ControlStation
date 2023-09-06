@@ -24,7 +24,8 @@ urlpatterns = [
     path('navigation/wait',         wait_nav,       name='wait_nav'),
     path('navigation/abort',        abort_nav,      name='abort_nav'),
     path('navigation/resume',       resume_nav,     name='resume_nav'),
-    path('navigation/add_goal_nav', add_goal_nav,   name="add_goal_nav"),
+    path('navigation/nav_goal',     nav_goal,       name="nav_goal"),
+    path('navigation/nav_cancel',   nav_cancel,     name="nav_cancel"),
 
     #Handlingdevice
     path('handlingdevice/launch',   launch_hd,      name='launch_hd'),

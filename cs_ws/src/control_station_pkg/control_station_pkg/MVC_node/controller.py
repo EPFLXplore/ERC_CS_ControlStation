@@ -28,7 +28,7 @@ import time
 
 import numpy as np
 
-from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray, Header
+from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, Int16MultiArray, Header
 from geometry_msgs.msg import Pose, Point, Twist, PoseStamped, Quaternion
 from actionlib_msgs.msg import GoalID
 from transforms3d.euler import euler2quat, quat2euler
@@ -327,20 +327,12 @@ class Controller():
 
     # send the coordinates the rover must reach and the orientation it must reach them in
     def pub_nav_goal(self, x, y, yaw):
-        #self.cs.node.get_logger().info("NAV: set goal (%.2f, %.2f) + %.2f (orientation)", x, y, yaw)
 
-        self.cs.rover.Nav.addGoal([x, y, yaw])
-
-        # PoseStamped message construction: Header + Pose
-        # ----- Header -----
-        nav = self.cs.rover.Nav
+        print("pub_nav_goal")
+        
         h = Header()
-        #h.frame_id = str(nav.getId())  # goal has an id by which it is recognized
-
-        # ----- Pose: Point + Quaternion -----
         pose = Pose()
 
-        # z = 0.0 (the rover can't fly yet)
         point = Point(x=x, y=y, z=0.0)
         pose.position = point
 
@@ -351,18 +343,23 @@ class Controller():
         pose.orientation.y = q[2]
         pose.orientation.z = q[3]
 
-        #TODO: should be replaced by a service
-        #pour avoir le goal, call self.cs.rover.Nav.getGoal()
-        #apres avoir recu confirmation du rover, appeler self.cs.rover.Nav.popGoal()
         self.cs.Nav_Goal_pub.publish(PoseStamped(header=h, pose=pose))
+
+    def pub_cancel_nav_goal(self):
+        print("pub_cancel_nav_goal")
+        #self.cs.node.get_logger().info("NAV: cancel goal")
+        # msg = String()
+        # msg.data = "cancel"
+        self.cs.Nav_Cancel_pub.publish(Bool(data=True))
+        
+        #self.cs.rover.Nav.cancelGoal()
 
 
     # cancel a specific Navigation goal by giving the goal's id
-    def pub_cancel_nav_goal(self, given_id):
-        self.cs.node.get_logger().info("NAV: cancel goal %d", given_id)
-        self.cs.Nav_CancelGoal_pub.publish(GoalID(stamp=self.cs.node.get_clock().now().to_msg(), id=given_id))
-        self.cs.rover.Nav.cancelGoal(given_id)
-
+    # def pub_cancel_nav_goal(self, given_id):
+    #     self.cs.node.get_logger().info("NAV: cancel goal %d", given_id)
+    #     self.cs.Nav_CancelGoal_pub.publish(GoalID(stamp=self.cs.node.get_clock().now().to_msg(), id=given_id))
+    #     self.cs.rover.Nav.cancelGoal(given_id)
 
     # Debugging commands to individual wheels. Only use in "emergencies".
 

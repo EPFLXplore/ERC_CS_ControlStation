@@ -194,22 +194,19 @@ def resume_nav(request):
 #    goal = cs.rover.Nav.getGoal()
 #
 #    return JsonResponse({})
-def add_goal_nav(request):
 
-    print(request.POST)
+def nav_goal(request):
 
     x = float(request.POST.get("x"))
     y = float(request.POST.get("y"))
     yaw = float(request.POST.get("yaw"))
 
-    #print("the goal is (x = %.2f, y = %.2f, yaw = %.2f):", x, y, yaw)
-
     cs.controller.pub_nav_goal(x, y, yaw)
     return JsonResponse({})
 
-def remove_goal_nav(request):
+def nav_cancel(request):
 
-
+    cs.controller.pub_cancel_nav_goal()
     return JsonResponse({})
 
 # -----------------------------------
@@ -243,10 +240,9 @@ def retry_hd(request):
     return JsonResponse({})
 
 def set_id(request):
-    print(request.POST.get("id"))
     cs.rover.HD.set_joint_positions([10,0,0,0,0,0])
     #cs.controller.sendJson(Task.MAINTENANCE)
-    id = int(request.POST.get("id"))
+    id = int(request.POST.get("id")) + 20
     cs.rover.HD.setElemId(id)
     cs.HD_id.publish(Int8(data=id))
     cs.node.get_logger().info("Maintenance: Set HD id to " + str(id))
