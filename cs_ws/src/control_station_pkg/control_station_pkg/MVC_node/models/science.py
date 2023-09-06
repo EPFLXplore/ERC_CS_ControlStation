@@ -19,6 +19,7 @@ class Science:
         self.spectrometer_closest_candidate = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
         self.npk_sensor = [0,0,0]
         self.four_in_one = [0,0,0,0]
+        self.nb_measures = 0
 
         #SCIENCE DRILL
         self.state = 0

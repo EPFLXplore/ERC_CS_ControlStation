@@ -1,10 +1,22 @@
 import numpy as np
 
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
 class Navigation:
     '''
         Monitoring of the navigation Data
     '''
     def __init__(self):
+
+        self.channel_layer = get_channel_layer()
+
+        self.position = [0,0,0]
+        self.orientation = [0,0,0,0]
+        self.linVel = [0,0,0]
+        self.angVel = [0,0,0]
+
+        self.wheels_ang = [0,0,0,0]
 
         #pas besoin de les save, on les envoye directement au frontend
         #self.__nextId = 0
@@ -39,10 +51,21 @@ class Navigation:
         if (id < 0 or id > len): raise ValueError("Invalid navigation goal id")
         np.delete(self.__goals, id, 0)
     
-
-    #----------Distance to Goal----------
-    # def distToGoal(self):
-    #     pos = self.getPos()
-    #     diff = np.array([self.getGoal()[0], self.getGoal()[1]]) - np.array([pos[0], pos[1]])
-    #     return np.linalg.norm(diff)
-
+    def UpdateNavSocket(self):
+        # async_to_sync(self.channel_layer.group_send)("nav", {"type": "nav_message",
+        #                                                     'position'   : [self.position[0], self.position[1], self.position[2]],
+        #                                                     'orientation': [self.orientation[0], self.orientation[1], self.orientation[2], self.orientation[3]],
+        #                                                     'linVel'     : [self.linVel[0], self.linVel[1], self.linVel[2]],
+        #                                                     'angVel'     : [self.angVel[0], self.angVel[1], self.angVel[2]],
+        #                                                     'current_goal' : "",
+        #                                                     'wheel_ang' : [self.wheels_ang[0], self.wheels_ang[1], self.wheels_ang[2], self.wheels_ang[3]],
+        #                                                                 })
+        
+        async_to_sync(self.channel_layer.group_send)("nav", {"type": "nav_message",
+                                                    'position'   : [self.position[0], self.position[1], self.position[2]],
+                                                    'orientation': [self.orientation[0], self.orientation[1], self.orientation[2], self.orientation[3]],
+                                                    'linVel'     : [self.linVel[0], self.linVel[1], self.linVel[2]],
+                                                    'angVel'     : [self.angVel[0], self.angVel[1], self.angVel[2]],
+                                                    'current_goal' : "",
+                                                    'wheel_ang' : [str(val) for val in self.wheels_ang],
+                                                                })
