@@ -121,7 +121,7 @@ class Navigation:
         #     self.setCancelled(True)
         #     self.__currGoal = np.zeros(0)
         #     self.rover.Nav_Status.publish(String(data="cancel"))
-        self.rover.Nav_cancel_pub.publish(msg)
+        self.rover.Nav_Cancel_pub.publish(msg)
 
     #-------------------------------------
     def gamepad(self, joy):

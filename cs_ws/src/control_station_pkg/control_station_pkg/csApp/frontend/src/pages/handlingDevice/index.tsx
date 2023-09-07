@@ -18,9 +18,10 @@ import buttonSelect from "../../utils/buttonSelect";
 import { Task } from "../../utils/tasks.type";
 import TaskControl from "../../components/TaskControl";
 import useCameraSelector from "../../hooks/cameraHooks";
+import hdModeSelect from "../../utils/hdModeSelect";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
-	const [images, cameras, selectCamera] = useCameraSelector([Cameras.CAM1]);
+	const [images, cameras, selectCamera, flushCameras] = useCameraSelector([Cameras.CAM1]);
 	const [jointPositions, jointVelocities, jointCurrents, detectedTags, taskSuccess] =
 		useHandlingDevice();
 
@@ -28,7 +29,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 		return (
 			<div className="page">
 				<Background />
-				<BackButton />
+				<BackButton onGoBack={() => flushCameras()} />
 				<PageHeader
 					title="Maintenance"
 					settings
@@ -47,6 +48,11 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 						camera < 6 ? "Camera " + (camera + 1) : "Camera Gripper"
 					)}
 				/>
+				<div className={styles.jointContainer}>
+					<JointPositions positions={jointPositions} />
+					<JointSpeed speeds={jointVelocities} />
+					<JointCurrents currents={jointCurrents} />
+				</div>
 				<div className={styles.globalContainer}>
 					<div className={styles.container}>
 						<button className={styles.button} onClick={() => buttonSelect(0)}>
@@ -134,7 +140,10 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 			</div>
 
 			<div className={styles.globalContainer}>
-				<ModeSlider />
+			<ModeSlider 
+				name={"Arm Mode"}
+				mode={["IK", "FK"]} 
+				functionTrigger={() => hdModeSelect(0)} />
 				<GamepadHint mode={"HD"} />
 				<TaskControl task={Task.HANDLING_DEVICE} />
 			</div>

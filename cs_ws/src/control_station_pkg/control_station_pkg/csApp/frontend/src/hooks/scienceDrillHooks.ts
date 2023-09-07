@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { roundToTwoDecimals } from "../utils/maths";
+import { getCookie } from "../utils/requests";
 
 function useScienceDrillInfos() {
 	const [socket, setSocket] = useState<WebSocket | null>(null);
@@ -10,19 +11,19 @@ function useScienceDrillInfos() {
 		{ label: "3rd LS", value: 0 },
 		{ label: "4th LS", value: 0 },
 	]);
-	const [module1, setModule1] = useState({id: "Module1",
-	velocity: 10,
-	distance: 3,
-	current: 12,});
-	const [module2, setModule2] = useState({id: "Module2",
-	velocity: 10,
-	distance: 3,
-	current: 12,});
-	const [drill, setDrill] = useState({id: "Drill",
-		velocity: 5,
-		distance: null,
-		current: 9,
+	const [module1, setModule1] = useState({
+		id: "Module1",
+		velocity: 10,
+		distance: 3,
+		current: 12,
 	});
+	const [module2, setModule2] = useState({
+		id: "Module2",
+		velocity: 10,
+		distance: 3,
+		current: 12,
+	});
+	const [drill, setDrill] = useState({ id: "Drill", velocity: 5, distance: null, current: 9 });
 
 	useEffect(() => {
 		let scienceDrillSocket = new WebSocket("ws://127.0.0.1:8000/ws/csApp/science_drill/");
@@ -52,15 +53,15 @@ function useScienceDrillInfos() {
 					distance: roundToTwoDecimals(data.motors_pos[1]),
 					current: roundToTwoDecimals(data.motors_currents[1]),
 				};
-			}
-			);
+			});
 			setDrill((values) => {
 				return {
 					id: values.id,
 					velocity: roundToTwoDecimals(data.motors_speed[2]),
 					distance: null,
 					current: roundToTwoDecimals(data.motors_currents[2]),
-				}})
+				};
+			});
 		};
 
 		scienceDrillSocket.onerror = (e) => {
@@ -71,7 +72,39 @@ function useScienceDrillInfos() {
 		setSocket(scienceDrillSocket);
 	}, []);
 
-	return [state, limitSwitches, module1, module2, drill] as const;
+	const measureSpectro = () => {
+		const csrftoken = getCookie("csrftoken");
+
+		let request = new Request("http://127.0.0.1:8000/csApp/science/mesure_spectro", {
+			method: "GET",
+			headers: {
+				"X-CSRFToken": csrftoken ?? "",
+			},
+		});
+
+		fetch(request)
+			.then((res) => res.json())
+			.then((data) => console.log(data))
+			.catch((err) => console.log(err));
+	};
+
+	const resetSpectro = () => {
+		const csrftoken = getCookie("csrftoken");
+
+		let request = new Request("http://127.0.0.1:8000/csApp/cameras/science/reset_spectro", {
+			method: "GET",
+			headers: {
+				"X-CSRFToken": csrftoken ?? "",
+			},
+		});
+
+		fetch(request)
+			.then((res) => res.json())
+			.then((data) => console.log(data))
+			.catch((err) => console.log(err));
+	};
+
+	return [state, limitSwitches, module1, module2, drill, measureSpectro, resetSpectro] as const;
 }
 
 const geStateString = (state: number) => {

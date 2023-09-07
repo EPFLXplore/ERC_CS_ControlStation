@@ -115,8 +115,9 @@ class CS:
         self.node.create_subscription(String,           'ROVER/RoverConfirm',               self.controller.rover_confirmation , 10)
         # self.node.create_subscription(Int8,             'ROVER/TaskProgress',              self.controller.task_progress      , 10)
         self.node.create_subscription(DiagnosticStatus, 'ROVER/CS_log',                     self.controller.log_clbk   , 10)
-        self.node.create_subscription(Int8,             'ROVER/rover_state',                self.controller.rover_state       , 10)
+        self.node.create_subscription(String,           'ROVER/State',                      self.controller.rover_state       , 10)
         self.node.create_subscription(Int8,             'ROVER/subsystem_state',            self.controller.rover_subsystem_state, 10)
+        
         
         # -- SC messages --
         self.node.create_subscription(Int8,               'SC/fsm_state_to_cs',      self.controller.science_state        , 10)
@@ -156,9 +157,9 @@ class CS:
         
 
     def sendRequest(self):
-            self.node._logger.info("Sending request")
-            while not self.onlineConfirmClient.wait_for_service(timeout_sec=1.0):
-                    self.node.get_logger().info('service not available, waiting again...')
+            self.node.get_logger().info('Sending request, waiting for Rover...')
+            while not self.onlineConfirmClient.wait_for_service(timeout_sec=1.0): 
+                continue
 
             self.node.get_logger().info('service is available')
             self.roverConnected = True

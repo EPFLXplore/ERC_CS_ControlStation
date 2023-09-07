@@ -8,6 +8,9 @@ import { Cameras } from "../../utils/cameras.type";
 import CameraView from "../../components/CameraView";
 import useCameraSelector from "../../hooks/cameraHooks";
 import useScienceDrillInfos from "../../hooks/scienceDrillHooks";
+import Button from "../../components/Button";
+import { Themes } from "../../utils/themes";
+import { Size } from "../../utils/size.type";
 
 type DataRow = {
 	id: string;
@@ -16,8 +19,9 @@ type DataRow = {
 	current: number;
 };
 export default () => {
-	const [images, cameras, selectCamera] = useCameraSelector([Cameras.CAM1]);
-	const [state, limitSwitches, module1, module2, drill] = useScienceDrillInfos();
+	const [images, cameras, selectCamera, flushCameras] = useCameraSelector([Cameras.CAM1]);
+	const [state, limitSwitches, module1, module2, drill, measureSpectro, resetSpectro] =
+		useScienceDrillInfos();
 	const sensorType = "Sensor Data";
 	const rows = ["Velocity", "Distance", "Current"]; // Rows titles
 	const columns = ["Module1", "Module2", "Drill"]; // Columns titles
@@ -25,10 +29,35 @@ export default () => {
 	return (
 		<div>
 			<Background />
-			<BackButton />
+			<BackButton onGoBack={() => flushCameras()} />
 			<div className={styles.InfoControllerContainer}>
-				<div className={styles.title}>Drill State</div>
-				<div className={styles.stateDisplay}>{state}</div>
+				<div className={styles.InfoDiv}>
+					<div className={styles.title}>Drill State</div>
+					<div className={styles.stateDisplay}>{state}</div>
+				</div>
+				<div className={styles.InfoDiv}>
+					<div className={styles.title}>Spectrometer</div>
+					<div className={styles.Buttons}>
+						<Button
+							text="Measure"
+							size={Size.SMALL}
+							theme={Themes.BROWN}
+							onClick={() => {
+								measureSpectro();
+							}}
+							radius={10}
+						/>
+						<Button
+							text="Reset"
+							size={Size.SMALL}
+							theme={Themes.BROWN}
+							onClick={() => {
+								resetSpectro();
+							}}
+							radius={10}
+						/>
+					</div>
+				</div>
 			</div>
 			<div className={styles.taskControlContainer}>
 				<TaskControl task={Task.SCIENCE} />

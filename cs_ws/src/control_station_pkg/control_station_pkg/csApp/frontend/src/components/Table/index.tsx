@@ -9,7 +9,7 @@ interface TableProps {
 
 const NPKComponents = ["Phosphate", "Azote", "Potassium"];
 const ALLComponents = ["Temp", "Humidity", "Elec", "PH"];
-const MASSComponents = ["Mass 1", "Mass 2"];
+const MASSComponents = ["Drill", "Container"];
 
 export const Table = ({ values, sensorType }: TableProps) => {
 	let lines: { id: string; content: number }[];
