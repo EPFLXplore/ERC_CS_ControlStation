@@ -8,12 +8,12 @@ import { Cameras } from "../../utils/cameras.type";
 import useCameraSelector from "../../hooks/cameraHooks";
 
 export default () => {
-	const [images, cameras, selectCamera] = useCameraSelector([Cameras.CAM1]);
+	const [images, cameras, selectCamera, flushCameras] = useCameraSelector([Cameras.CAM1]);
 
 	return (
 		<div className="page center">
 			<Background />
-			<BackButton />
+			<BackButton onGoBack={() => flushCameras()} />
 			<PageHeader
 				title="Camera"
 				settings

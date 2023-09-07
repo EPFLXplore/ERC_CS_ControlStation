@@ -25,19 +25,40 @@ export const WaveGraph: React.FC<GraphProps> = ({ measure, pointsSecondWave, can
 				chartInstanceRef.current = new Chart(ctx, {
 					type: "line",
 					data: {
-						labels: measure.map((_, index) => index.toString()),
+						labels: [
+							"410",
+							"435",
+							"460",
+							"485",
+							"510",
+							"535",
+							"560",
+							"585",
+							"610",
+							"645",
+							"680",
+							"705",
+							"730",
+							"760",
+							"810",
+							"860",
+							"900",
+							"940",
+						],
 						datasets: [
 							{
 								label: "Current measure",
 								data: measure.map((point) => ({ x: point.x, y: point.y })),
 								fill: false,
 								borderColor: "red",
+								stepped: false,
 							},
 							{
 								label: "Closest candidate",
 								data: pointsSecondWave.map((point) => ({ x: point.x, y: point.y })),
 								fill: false,
 								borderColor: "#6F8FAF",
+								stepped: false,
 							},
 						],
 					},
@@ -46,11 +67,27 @@ export const WaveGraph: React.FC<GraphProps> = ({ measure, pointsSecondWave, can
 						scales: {
 							x: {
 								display: true,
+								title: {
+									display: true,
+									text: "Wavelength (nm)",
+									color: "white",
+									font: {
+										size: 20,
+									},
+								},
 							},
 							y: {
 								display: true,
 								max: 10,
 								min: 0,
+								title: {
+									display: true,
+									text: "Reflectance (%)",
+									color: "white",
+									font: {
+										size: 20,
+									},
+								},
 							},
 						},
 						animation: {

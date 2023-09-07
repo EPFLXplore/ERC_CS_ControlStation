@@ -50,7 +50,7 @@ class Rover():
         self.tries = 0
 
         # state of the rover (FSM)
-        self.ROVER_STATE = Task.IDLE
+        self.ROVER_STATE: Task = Task.IDLE
         self.csConnected = False
 
         # The communication between the Rover and the CS is done in such a way that
@@ -72,6 +72,7 @@ class Rover():
         self.RoverConfirm_pub  = self.node.create_publisher(String,            'ROVER/RoverConfirm'            , 1)
         self.Exception_pub     = self.node.create_publisher(String,            'ROVER/Exception'               , 1)
         self.TaskProgress_pub  = self.node.create_publisher(Int8,              'ROVER/TaskProgress'            , 1)
+        self.state_pub         = self.node.create_publisher(String,            'ROVER/State'                   , 1)
 
         # Rover(SC) --> CS
         self.SC_fsm_state_pub  = self.node.create_publisher(Int8,                'ROVER/SC_fsm_state'            , 1)
@@ -91,6 +92,7 @@ class Rover():
         # messages from CS
         self.node.create_subscription(Int8MultiArray, 'CS/Task'          , self.task_instr             , 10)
         self.node.create_subscription(Bool,           'CS/Confirm'       , self.cs_confirm             , 10)
+
         # messages form CS (HD)
         self.node.create_subscription(Int8,           'CS/HD_mode'       , self.model.HD.setHDMode     , 10)
         self.node.create_subscription(Int8,           'CS/HD_SemiAuto_Id', self.model.HD.set_semiAutoID, 10)
@@ -343,6 +345,9 @@ class Rover():
                 msg = "Unhandled situation, task = " + str(task) + ", instr = " + str(instr) + ", rover state = " + str(self.ROVER_STATE.value)
                 self.node.get_logger().info(msg)
                 self.notify_cs(DiagnosticStatus.WARN, msg)
+
+        self.state_pub.publish(String(data=str(self.ROVER_STATE.name)))
+
 
 
     # run ros

@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import BackButton from "../../components/BackButton";
 import Background from "../../components/Background";
 import JointPositions from "../../components/JointPositions";
-import { Mode } from "../../utils/mode.type";
 import styles from "./style.module.sass";
 import GamepadHint from "../../components/GamepadHint";
 import PageHeader from "../../components/PageHeader";
-import DistanceHint from "../../components/DistanceHint";
 import CameraView from "../../components/CameraView";
 import { Cameras } from "../../utils/cameras.type";
 import Timer from "../../components/Timer";
@@ -15,7 +13,6 @@ import ModeSlider from "../../components/ModeSlider";
 import JointSpeed from "../../components/JointSpeed";
 import useHandlingDevice from "../../hooks/handlingDeviceHooks";
 import JointCurrents from "../../components/JointCurrents";
-import buttonSelect from "../../utils/buttonSelect";
 import { Task } from "../../utils/tasks.type";
 import TaskControl from "../../components/TaskControl";
 import { useNavigation } from "../../hooks/navigationHooks";
@@ -23,6 +20,9 @@ import ManualModeSelector from "../../components/ManualModeSelector";
 import { useLocation } from "react-router-dom";
 import useCameraSelector from "../../hooks/cameraHooks";
 import hdModeSelect from "../../utils/hdModeSelect";
+import ToggleFeature from "../../components/ToggleFeature";
+import VoltmeterSlider from "../../components/VoltmeterSlider";
+import VoltmeterValue from "../../components/VoltmeterValue";
 
 function useQuery() {
 	const { search } = useLocation();
@@ -31,14 +31,21 @@ function useQuery() {
 }
 
 export default () => {
-	const [images, cameras, selectCamera] = useCameraSelector([
+	const [images, cameras, selectCamera, flushCameras] = useCameraSelector([
 		Cameras.CAM1,
 		// Cameras.CAM2,
 		// Cameras.CAM3,
 		// Cameras.CAM4,
 	]);
-	const [jointPositions, jointVelocities, jointCurrents, detectedTags, taskSuccess] =
-		useHandlingDevice();
+	const [
+		jointPositions,
+		jointVelocities,
+		jointCurrents,
+		detectedTags,
+		taskSuccess,
+		voltmeter,
+		openVoltmeter,
+	] = useHandlingDevice();
 	const [currentPosition, currentOrientation, wheelsPosition, linearVelocity, angularVelocity] =
 		useNavigation();
 	const defaultMode = useQuery().get("defaultMode");
@@ -52,7 +59,7 @@ export default () => {
 	return (
 		<div className="page">
 			<Background />
-			<BackButton />
+			<BackButton onGoBack={() => flushCameras()} />
 			<PageHeader
 				title="Manual Control"
 				settings
@@ -81,6 +88,7 @@ export default () => {
 					<JointPositions positions={jointPositions} />
 					<JointSpeed speeds={jointVelocities} />
 					<JointCurrents currents={jointCurrents} />
+					<VoltmeterValue value={voltmeter} />
 				</div>
 			)}
 
@@ -90,6 +98,13 @@ export default () => {
 						name= "Arm Mode" 
 						mode={["IK", "FK"]} 
 						functionTrigger={() => hdModeSelect(0)} />	
+					<VoltmeterSlider initValue={0} onValueChange={openVoltmeter} />
+					<ToggleFeature
+						title="Laser"
+						onChange={(m) => {
+							console.log(m);
+						}}
+					/>
 					<TaskControl task={Task.MANUAL_CONTROL} />
 				</div>
 			)}

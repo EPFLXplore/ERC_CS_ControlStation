@@ -1,8 +1,9 @@
 import styles from "./style.module.sass";
 import map from "../../assets/images/mars_yard_2023.png";
-import roverIconImage from "../../assets/images//icons/rover_icon.svg";
-import React, { useState, useEffect, useRef } from "react";
-import { get } from "http";
+import roverIconImage from "../../assets/images/icons/rover_icon.svg";
+import roverGoalIconImage from "../../assets/images/icons/rover_goal.svg";
+import roverTempGoalIconImage from "../../assets/images/icons/rover_goal_temp.svg";
+import { useState, useEffect, useRef } from "react";
 import { roundToTwoDecimals } from "../../utils/maths";
 
 type Point = {
@@ -29,18 +30,23 @@ const Map = ({
 	goals,
 	tempGoal,
 	onMapClick,
+	onMapDrag,
 }: {
 	origin: Point;
 	trajectory: Point[];
 	goals: Point[];
 	tempGoal: Point | undefined;
 	onMapClick?: (x: number, y: number) => void;
+	onMapDrag?: (x: number, y: number) => void;
 }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [image, setImage] = useState<HTMLImageElement>();
 	const [roverIcon, setRoverIcon] = useState<HTMLImageElement>(new Image());
+	const [roverGoalIcon, setRoverGoalIcon] = useState<HTMLImageElement>(new Image());
+	const [roverTempGoalIcon, setRoverTempGoalIcon] = useState<HTMLImageElement>(new Image());
 	const [imageWidth, setImageWidth] = useState<number>(0);
 	const [imageHeight, setImageHeight] = useState<number>(0);
+	const [mouseDown, setMouseDown] = useState<boolean>(false);
 
 	useEffect(() => {
 		// Load the image and set its width and height
@@ -58,6 +64,20 @@ const Map = ({
 			setRoverIcon(rover);
 		};
 		rover.src = roverIconImage;
+
+		// Load the rover goal icon
+		const roverGoal = new Image();
+		roverGoal.onload = () => {
+			setRoverGoalIcon(roverGoal);
+		};
+		roverGoal.src = roverGoalIconImage;
+
+		// Load the rover temp goal icon
+		const roverTempGoal = new Image();
+		roverTempGoal.onload = () => {
+			setRoverTempGoalIcon(roverTempGoal);
+		};
+		roverTempGoal.src = roverTempGoalIconImage;
 	}, [map]);
 
 	useEffect(() => {
@@ -71,8 +91,8 @@ const Map = ({
 			if (ctx) {
 				drawMap(canvas, ctx, image, origin);
 				drawTrajectory(trajectory, roverIcon);
-				goals.forEach((goal: Point) => drawGoal(goal, "#e324a0"));
-				if(tempGoal) drawGoal(tempGoal, "#3b3b45");
+				goals.forEach((goal: Point) => drawGoal(goal, "#0E6655", roverGoalIcon));
+				if (tempGoal) drawGoal(tempGoal, "#1F618D", roverTempGoalIcon);
 			}
 		}
 	}, [image, imageWidth, imageHeight, trajectory, goals, tempGoal]);
@@ -85,11 +105,25 @@ const Map = ({
 					width={imageWidth}
 					height={imageHeight}
 					style={{ maxWidth: "100%" }}
-					onClick={(e) => {
+					onMouseDown={(e) => {
+						setMouseDown(true);
 						if (canvasRef.current) {
 							const { x, y } = getMousePos(canvasRef.current, e);
 							if (onMapClick)
 								onMapClick(
+									roundToTwoDecimals(x / pointSpacing),
+									roundToTwoDecimals(-y / pointSpacing)
+								);
+						}
+					}}
+					onMouseUp={(e) => {
+						setMouseDown(false);
+					}}
+					onMouseMove={(e) => {
+						if (canvasRef.current && mouseDown) {
+							const { x, y } = getMousePos(canvasRef.current, e);
+							if (onMapDrag)
+								onMapDrag(
 									roundToTwoDecimals(x / pointSpacing),
 									roundToTwoDecimals(-y / pointSpacing)
 								);
@@ -236,7 +270,8 @@ export const drawGoal = (goal: Point, color: string, image?: CanvasImageSource) 
 			// Draw the rover
 			mapCTX.translate(x_px, y_px);
 			mapCTX.rotate(angle);
-			mapCTX.drawImage(image, -36 / 2, -25 / 2, 72, 50);
+			mapCTX.drawImage(image, -818 / 32, -818 / 32, 818 / 16, 818 / 16);
+			// mapCTX.drawImage(image, -1589 / 40, -1485 / 40, 1589 / 20, 1485 / 20);
 			mapCTX.rotate(-angle);
 			mapCTX.translate(-x_px, -y_px);
 		} else {
@@ -264,14 +299,17 @@ export const drawGoal = (goal: Point, color: string, image?: CanvasImageSource) 
 			// Fill the triangle with the given color
 			mapCTX.fillStyle = color;
 			mapCTX.fill();
+			mapCTX.strokeStyle = "#EAEDED";
+			mapCTX.lineWidth = 2;
+			mapCTX.stroke();
 		}
 	}
 };
 
 export const drawTrajectory = (points: Point[], icon: CanvasImageSource) => {
 	if (mapCTX && points.length > 1) {
-		mapCTX.strokeStyle = "#8f351a";
-		mapCTX.lineWidth = 3;
+		mapCTX.strokeStyle = "red";
+		mapCTX.lineWidth = 4;
 		mapCTX.beginPath();
 
 		// Calculate the pixel coordinates of the first point
