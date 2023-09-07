@@ -105,7 +105,6 @@ class Controller():
 
 
     def rover_state(self, data):
-        print("AHHHHHHHHHHHHHHHHHHHHHHH")
         session.rover_state = data.data
         async_to_sync(channel_layer.group_send)("session", {"type": "broadcast",
                                                     'nb_users'   : session.nb_users,
