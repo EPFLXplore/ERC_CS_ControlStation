@@ -48,6 +48,12 @@ export default () => {
 						>
 							Console
 						</div>
+						<div
+							className={`${styles.TabButton} ${styles.Inactive}`}
+							onClick={() => setMode("settings")}
+						>
+							Settings
+						</div>
 					</div>
 					<div className={styles.TabContent}>
 						<div className={styles.LogFilters}>
@@ -108,7 +114,7 @@ export default () => {
 				</div>
 			</div>
 		);
-	} else {
+	} else if (mode === "console") {
 		return (
 			<div className="page center">
 				<Background />
@@ -127,10 +133,46 @@ export default () => {
 						>
 							Console
 						</div>
+						<div
+							className={`${styles.TabButton} ${styles.Inactive}`}
+							onClick={() => setMode("settings")}
+						>
+							Settings
+						</div>
 					</div>
 					<div className={styles.TabContent}></div>
 				</div>
 			</div>
 		);
-	}
+	} else {
+		return (
+			<div className="page center">
+			<Background />
+			<BackButton />
+			<div className={styles.TabContainer}>
+				<div className={styles.TabHeader}>
+					<div
+						className={`${styles.TabButton} ${styles.Inactive}`}
+						onClick={() => setMode("logs")}
+					>
+						Logs
+					</div>
+					<div
+						className={`${styles.TabButton} ${styles.Inactive}`}
+						onClick={() => setMode("console")}
+					>
+						Console
+					</div>
+					<div
+						className={`${styles.TabButton} ${styles.Active}`}
+						onClick={() => setMode("settings")}
+					>
+						Settings
+					</div>
+				</div>
+				<div className={styles.TabContent}></div>
+			</div>
+		</div>
+	);
+		}		
 };

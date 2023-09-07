@@ -155,13 +155,13 @@ class Rover():
         # ======Services server=====
         self.onlineConfirm = self.node.create_service(SetBool, "ROVER_ONLINE", self.onlineConfirm)
 
-    ''' Callback used for the rover to confirm it is online to the CS'''
-    def onlineConfirm(self,request,response):
-        self.node.get_logger().info('ROVER: Online confirmation received from CS')
-        self.csConnected = request.data
-        #res = SetBool.Response()
-        response.success = True
-        return response
+        ''' Callback used for the rover to confirm it is online to the CS'''
+        def onlineConfirm(self,request,response):
+            self.node.get_logger().info('ROVER: Online confirmation received from CS')
+            self.csConnected = request.data
+            #res = SetBool.Response()
+            response.success = True
+            return response
 
     
 

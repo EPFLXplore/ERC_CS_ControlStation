@@ -22,6 +22,7 @@ import { useNavigation } from "../../hooks/navigationHooks";
 import ManualModeSelector from "../../components/ManualModeSelector";
 import { useLocation } from "react-router-dom";
 import useCameraSelector from "../../hooks/cameraHooks";
+import hdModeSelect from "../../utils/hdModeSelect";
 
 function useQuery() {
 	const { search } = useLocation();
@@ -85,7 +86,10 @@ export default () => {
 
 			{mode === Task.HANDLING_DEVICE && (
 				<div className={styles.globalContainer}>
-					<ModeSlider />
+					<ModeSlider 
+						name= "Arm Mode" 
+						mode={["IK", "FK"]} 
+						functionTrigger={() => hdModeSelect(0)} />	
 					<TaskControl task={Task.MANUAL_CONTROL} />
 				</div>
 			)}
@@ -152,7 +156,13 @@ export default () => {
 							</div>
 							<div className="Image of rover"> </div>
 						</div>
-						<TaskControl task={Task.MANUAL_CONTROL} />
+						<div className={styles.globalContainer}>
+							<ModeSlider 
+								name = "Nav Mode" 
+								mode={["NORMAL", "BASIC"]} 
+								functionTrigger={() => hdModeSelect(0)} />	
+							<TaskControl task={Task.MANUAL_CONTROL} />
+						</div>
 					</div>
 				</div>
 			)}
