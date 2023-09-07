@@ -29,7 +29,7 @@ class CamerasPublisher(Node):
 
         # publishers for the 6 IMX290 cameras
         self.cam_0_pub = self.create_publisher(CompressedImage, 'camera_0', 1)
-        self.cam_1_pub = self.create_publisher(CompressedImage, 'camera_1', 1)
+        # self.cam_1_pub = self.create_publisher(CompressedImage, 'camera_1', 1)
         self.cam_2_pub = self.create_publisher(CompressedImage, 'camera_2', 1)
         self.cam_3_pub = self.create_publisher(CompressedImage, 'camera_3', 1)
         self.cam_4_pub = self.create_publisher(CompressedImage, 'camera_4', 1)
@@ -37,14 +37,14 @@ class CamerasPublisher(Node):
 
 
         self.camera_publishers = [self.cam_0_pub, 
-                              self.cam_1_pub, 
+                              # self.cam_1_pub, 
                               self.cam_2_pub, 
                               self.cam_3_pub, 
                               self.cam_4_pub, 
                               self.cam_5_pub]
 
         global enabled
-        enabled = [False] * 6 #7
+        enabled = [False] * 5 #7
 
         
         # self.cam_publisher.append(self.cam_1_pub)
@@ -54,16 +54,16 @@ class CamerasPublisher(Node):
 
 
         self.camera_0 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=0))
-        self.camera_1 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=1))
+        # self.camera_1 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=1))
         self.camera_2 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=2))
         self.camera_3 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=3))
         self.camera_4 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=4))
         self.camera_5 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=5))
-        self.cam_hd = CameraFluxPublisher(self)
+        #self.cam_hd = CameraFluxPublisher(self)
 
 
         self.camera_list = [self.camera_0, 
-                            self.camera_1,
+                            # self.camera_1,
                             self.camera_2,
                             self.camera_3,
                             self.camera_4, 
@@ -93,7 +93,6 @@ class CamerasPublisher(Node):
                     # Handle the gripper camera differently (index = 6)
                     if (i == 6) :
                         self.camera_list[i].enabled_ = True
-                        print("FRERE")
                         #threading.Thread(target=run_gripper, args= (self,self.camera_list[i])).start()
                         #Process(target=run_gripper, args= (self,self.camera_list[i])).run()
                     else:
@@ -184,6 +183,8 @@ def run_camera(cameras_publisher, camera, pub, i):
         
         c = cv2.waitKey(1)
         if c == 27:
+            enabled[i] = False
+            camera.release()
             break
 
     print("off ", i)
