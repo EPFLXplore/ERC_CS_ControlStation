@@ -59,18 +59,24 @@ class CamerasPublisher(Node):
         self.active_cameras = []
         
     def enable_camera(self, msg):
+        en = []
+        dis = []
+
         camera_indices = msg.data
         for i in range(len(enabled)):
             if i in camera_indices and i < 6:
-                print("Enable camera: " + str(i))
+                en.append(i)
                 # if the camera wasn't enabled then enable it, otherwise it is already turned on => thread already launched
                 if enabled[i] == False:
                     enabled[i] = True
                     threading.Thread(target=run_camera, args=(self, self.camera_list[i], self.camera_publishers[i], i)).start()
-
             else:
-                print("Disable camera: " + str(i))
+                dis.append(i)
                 enabled[i] = False
+
+        print("enabled: ", en)
+        print("disabled: ", dis)
+
 
     def publish_feeds(self):
         
