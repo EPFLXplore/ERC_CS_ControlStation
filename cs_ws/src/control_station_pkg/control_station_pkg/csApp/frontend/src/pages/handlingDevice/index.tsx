@@ -19,13 +19,14 @@ import { Task } from "../../utils/tasks.type";
 import TaskControl from "../../components/TaskControl";
 import useCameraSelector from "../../hooks/cameraHooks";
 import hdModeSelect from "../../utils/hdModeSelect";
-import { useEffect } from "react";
+import { useState } from "react";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 	const [images, cameras, selectCamera, flushCameras, rotateCams, setRotateCams] =
 		useCameraSelector([Cameras.CAM1]);
 	const [jointPositions, jointVelocities, jointCurrents, availableButtons, taskSuccess] =
 		useHandlingDevice();
+	const [hdSettings, setHdSettings] = useState(false);
 
 	if (mode == Mode.AUTONOMOUS)
 		return (
