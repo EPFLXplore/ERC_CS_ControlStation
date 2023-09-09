@@ -52,15 +52,7 @@ class CamerasPublisher(Node):
                             self.camera_2,
                             self.camera_3,
                             self.camera_4, 
-                            self.camera_5]
-        
-        for cam in self.camera_list:
-            if cam == None:
-                continue
-            
-            cam.set(3, 600)
-            cam.set(4, 600)
-        
+                            self.camera_5]    
 
         self.bridge = CvBridge()
 
