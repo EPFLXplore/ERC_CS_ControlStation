@@ -3,11 +3,11 @@ import { FaTimes } from "react-icons/fa";
 import styles from "./style.module.sass";
 
 interface Props {
-	key: number;
+	key: string;
 	x: number;
 	y: number;
 	o: number;
-	removeGoal: (index: number) => void;
+	removeGoal: (index: string) => void;
 }
 
 function Card({ key, x, y, o, removeGoal }: Props) {

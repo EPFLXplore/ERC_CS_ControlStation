@@ -95,7 +95,7 @@ const Map = ({
 				drawMap(canvas, ctx, image, origin);
 				drawTrajectory(trajectory, roverIcon);
 				savedGoals.forEach((goal: Goal) =>
-					drawGoal(goal, "#0D99FF", undefined, "W" + goal.id)
+					drawGoal(goal, "#0D99FF", undefined, goal.id)
 				);
 				if (tempGoal) drawGoal(tempGoal, "#1F618D", roverTempGoalIcon);
 				goals.forEach((goal: Point) => drawGoal(goal, "#0E6655", roverGoalIcon));
