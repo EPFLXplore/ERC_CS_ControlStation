@@ -66,26 +66,17 @@ class CamerasPublisher(Node):
 
         camera_indices = msg.data
         print(camera_indices)
-        '''for i in range(len(enabled)):
+        for i in range(len(enabled)):
             if i in camera_indices:
                 en.append(i)
                 # if the camera wasn't enabled then enable it, otherwise it is already turned on => thread already launched
-                if enabled[i] == False:
+                if not enabled[i]:
                     enabled[i] = True
                     threading.Thread(target=run_camera, args=(self, self.camera_list[i], self.camera_publishers[i], i)).start()
             else:
                 dis.append(i)
-                enabled[i] = False'''
-        
-        for i in camera_indices:
-            if(not enabled[i]):
-                en.append(i)
-                enabled[i] = True
-                threading.Thread(target=run_camera, args=(self, self.camera_list[i], self.camera_publishers[i], i)).start()
-            else:
-                dis.append(i)
                 enabled[i] = False
-
+    
         print("enabled: ", en)
         print("disabled: ", dis, "\n")
 
