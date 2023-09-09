@@ -37,7 +37,7 @@ class CamerasPublisher(Node):
                               self.cam_5_pub]
 
         global enabled
-        enabled = [False] * 5
+        enabled = [False] * 6
 
 
         self.camera_0 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=0))
