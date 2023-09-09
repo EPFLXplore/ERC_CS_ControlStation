@@ -21,7 +21,6 @@ class ElecTestNode(Node):
         self.publisher_npk              = self.create_publisher(NPK, 'EL/npk', 10)
         # self.publisher_four_in_one      = self.create_publisher(Float32MultiArray, 'EL/four_in_one', 10)
         self.publisher_four_in_one      = self.create_publisher(FourInOne, 'EL/four_in_one', 10)
-        self.publisher_voltage          = self.create_publisher(Voltage, 'EL/voltage', 10)
 
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)

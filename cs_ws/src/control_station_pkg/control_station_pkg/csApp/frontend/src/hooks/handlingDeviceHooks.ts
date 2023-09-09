@@ -16,6 +16,8 @@ function useHandlingDevice() {
 		handlingDeviceSocket.onmessage = (e) => {
 			const data = JSON.parse(e.data);
 
+			console.log(availableButtons);
+
 			setJointPositions(data.joint_position);
 			setJointVelocities(data.joint_velocity);
 			setJointCurrents(data.joint_current);

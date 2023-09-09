@@ -264,12 +264,14 @@ def toggle_hd_laser(request):
     return JsonResponse({})
 
 def deploy_hd_voltmeter(request):
-    deployment = int(request.POST.get("deployment"))
-    #on doit peut etre ajouter "channels" mais je ne sais pas ce que c'est
     servoRequest = ServoRequest()
     servoRequest.channel = 1
-    servoRequest.angle = deployment
+    if (request.POST.get("deployment")):
+        servoRequest.angle = 110
+    else :
+        servoRequest.angle = 0
     cs.HD_deploy_voltmeter_pub.publish(servoRequest)
+
     return JsonResponse({})
 
 # -----------------------------------

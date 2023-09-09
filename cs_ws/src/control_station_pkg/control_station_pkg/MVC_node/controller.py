@@ -190,16 +190,23 @@ class Controller():
     # receive: voltage data from the handling device's voltmeter
     def hd_voltage(self, Voltage):
         self.handling_device.voltage = Voltage.voltage
-        self.handling_device.UpdateHandlingDeviceSocket()
+        #self.handling_device.UpdateHandlingDeviceSocket()
 
     def hd_ARtags(self, ARtags):
-        self.handling_device.available_buttons = ARtags.data
-        #TODO convertir la liste d'ARtags en list de bouton disponible
-        self.handling_device.UpdateHandlingDeviceSocket()
+        
+        available_buttons = [False] * 16
+        if(ARtags.data[0] == 1):
+            available_buttons[0:6] = [True] * 7
+
+        if(ARtags.data[1] == 1):
+            available_buttons[6:12] = [True] * 6
+
+        self.handling_device.available_buttons = available_buttons
+        #self.handling_device.UpdateHandlingDeviceSocket()
 
     def hd_task_outcome(self, outcome):
         self.handling_device.task_outcome = outcome.data
-        self.handling_device.UpdateHandlingDeviceSocket()
+        #self.handling_device.UpdateHandlingDeviceSocket()
 
     # ========= NAVIGATION CALLBACKS =========
 
