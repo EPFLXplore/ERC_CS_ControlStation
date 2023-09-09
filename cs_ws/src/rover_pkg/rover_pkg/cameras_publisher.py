@@ -75,7 +75,7 @@ class CamerasPublisher(Node):
                 enabled[i] = False
 
         print("enabled: ", en)
-        print("disabled: ", dis)
+        print("disabled: ", dis, "\n")
 
 
     def publish_feeds(self):
