@@ -21,13 +21,15 @@ import useCameraSelector from "../../hooks/cameraHooks";
 import hdModeSelect from "../../utils/hdModeSelect";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
-	const [images, cameras, selectCamera, flushCameras] = useCameraSelector([Cameras.CAM1]);
+	const [images, cameras, selectCamera, flushCameras, rotateCams, setRotateCams] =
+		useCameraSelector([Cameras.CAM1]);
 	const [jointPositions, jointVelocities, jointCurrents, availableButtons, taskSuccess] =
 		useHandlingDevice();
 
 	if (mode === Mode.AUTONOMOUS)
 		return (
 			<div className="page">
+				<CameraView images={images} rotate={rotateCams} setRotateCams={setRotateCams} />
 				<Background />
 				<BackButton onGoBack={() => flushCameras()} />
 				<PageHeader
@@ -155,7 +157,6 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 					<TaskControl task={Task.HANDLING_DEVICE} />
 				</div>
 				<Timer end={Date.now() + 10000} size={Size.SMALL} />
-				<CameraView images={images} />
 			</div>
 		);
 

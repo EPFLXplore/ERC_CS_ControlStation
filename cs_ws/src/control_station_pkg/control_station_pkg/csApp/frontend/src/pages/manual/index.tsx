@@ -31,12 +31,13 @@ function useQuery() {
 }
 
 export default () => {
-	const [images, cameras, selectCamera, flushCameras] = useCameraSelector([
-		Cameras.CAM1,
-		// Cameras.CAM2,
-		// Cameras.CAM3,
-		// Cameras.CAM4,
-	]);
+	const [images, cameras, selectCamera, flushCameras, rotateCams, setRotateCams] =
+		useCameraSelector([
+			Cameras.CAM1,
+			// Cameras.CAM2,
+			// Cameras.CAM3,
+			// Cameras.CAM4,
+		]);
 	const [
 		jointPositions,
 		jointVelocities,
@@ -58,7 +59,7 @@ export default () => {
 
 	return (
 		<div className="page">
-			<Background />
+			<CameraView images={images} rotate={rotateCams} setRotateCams={setRotateCams} />
 			<BackButton onGoBack={() => flushCameras()} />
 			<PageHeader
 				title="Manual Control"
@@ -194,7 +195,7 @@ export default () => {
 				}
 				visible
 			/>
-			<CameraView images={images} />
+			<Background />
 		</div>
 	);
 };
