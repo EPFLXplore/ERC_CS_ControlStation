@@ -145,7 +145,8 @@ class Controller():
 
     # TODO Chaimaa c'est pour toi, fais la moyenne wallah
     def science_spectrometer(self, data):
-        self.science.spectrometer.append(data.data)
+        self.science.spectrometer_list.append(data.data)
+        self.science.mean_spectrometer()
         self.science.store_spectrum()
         self.science.FindClosestCandidate()
         self.science.UpdateScienceDataSocket()

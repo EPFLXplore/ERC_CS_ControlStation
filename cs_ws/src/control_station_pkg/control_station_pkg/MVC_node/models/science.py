@@ -18,12 +18,11 @@ class Science:
         self.mass = [0, 0, 0, 0]
         self.candidates = []
 
-        self.spectrometer = []
+        self.spectrometer_list = [] #list of spectrometers
         self.spectrometer_mean = []
-        self.spectrometer_closest_candidate = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] for i in range(3)]
         self.npk_sensor = [0,0,0]
         self.four_in_one = [0,0,0,0]
-        self.name_closest_candidate = ["None" for i in range(3)]
+        self.spectrometer_closest_candidate = [0 for i in range(18)]
 
         self.wavelengths = [410,435,460,485,510,535,560,585,610,645,680,705,730,760,810,860,900,940]
 
@@ -117,8 +116,24 @@ class Science:
         df = pd.DataFrame({'wavelength': self.wavelength, 'reflectance': self.spectrometer_mean})
         # Save the dataframe to a csv file
         df.to_csv('/data/spectrum.csv', index=False)
-        
 
+            
+    def FindClosestCandidate(self):
+
+        similarities = self.compare('/data/spectrum.csv') # list of names and similarities
+        # format the similarites as "similarit %, name"
+        self.candidates = [str(similarities[i][1]) + "%, " + similarities[i][0] for i in range(3)]
+
+        # We now load the spectrum of the closest candidate from the database
+        db_spectro = pd.read_csv('/data/database3/' + similarities[0][0] + '.csv')['reflectance']
+        # We need to read db_spectro as a list and add leading zeros to match the length of the measured spectrum
+        leading_zeros = [0] * (len(self.spectrometer_mean) - len(db_spectro))
+        
+        db_spectro = leading_zeros + db_spectro.tolist()
+        self.spectrometer_closest_candidate = db_spectro
+
+        pass
+    
         
 
     def UpdateScienceDataSocket(self):
@@ -145,12 +160,3 @@ class Science:
                 'limit_switches' : [self.limit_switches[0], self.limit_switches[1], self.limit_switches[2], self.limit_switches[3]],
 
             })
-        
-    def FindClosestCandidate(self):
-        #TODO
-        #update self.spectrometer and create the csv file
-
-        self.candidates = self.compare('/data/spectrum.csv')
-        self.spectrometer_closest_candidate = self.candidates[0][0]
-
-        pass
