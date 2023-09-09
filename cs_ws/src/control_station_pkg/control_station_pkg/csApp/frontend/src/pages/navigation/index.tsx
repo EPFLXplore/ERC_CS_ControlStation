@@ -94,7 +94,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 								? (document.getElementById("input-o") as HTMLInputElement).value
 								: "0";
 						const goal: Goal = {
-							id: -1,
+							id: "-1",
 							x: x,
 							y: y,
 							o: parseFloat(
@@ -140,7 +140,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 										setTempGoal((prev) => {
 											if (!prev) {
 												return {
-													id: -1,
+													id: "-1",
 													x: parseFloat(
 														(e.target as HTMLInputElement).value
 															.length > 0
@@ -175,7 +175,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 										setTempGoal((prev) => {
 											if (!prev) {
 												return {
-													id: -1,
+													id: "-1",
 													x: 0,
 													y: parseFloat(
 														(e.target as HTMLInputElement).value
@@ -210,7 +210,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 										setTempGoal((prev) => {
 											if (!prev) {
 												return {
-													id: -1,
+													id: "-1",
 													x: 0,
 													y: 0,
 													o: parseFloat(
