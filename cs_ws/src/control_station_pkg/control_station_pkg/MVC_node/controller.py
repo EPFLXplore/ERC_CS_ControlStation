@@ -79,7 +79,7 @@ class Controller():
     # receiving a confirmation from rover after sending an instruction
     def rover_confirmation(self, txt):
         if (self.cs.rover.getInWait()):
-            self.cs.node.get_logger().info("Rover Confirmation: %s\n", txt.data)
+            #self.cs.node.get_logger().info("Rover Confirmation: %s\n", txt.data)
             self.cs.rover.setReceived(True)
         else:
             self.cs.node.get_logger().info("Received after timeout: %s\n", txt.data)
@@ -116,7 +116,9 @@ class Controller():
 
 
     def science_state(self, data):
+        print("wallah")
         self.science.state = data.data
+        print("science drill state :" + str(self.science.state))
         self.science.UpdateScienceDrillSocket()
         
     def science_motors_pos(self, data):
