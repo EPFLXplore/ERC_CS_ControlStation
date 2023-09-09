@@ -55,6 +55,9 @@ class CamerasPublisher(Node):
                             self.camera_5]
         
         for cam in self.camera_list:
+            if cam == None:
+                continue
+            
             cam.set(3, 600)
             cam.set(4, 600)
         
