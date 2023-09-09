@@ -18,10 +18,10 @@ const menuLinks = {
 			name: "Data",
 			url: "/science/data",
 		},
-		{
-			name: "Drill",
-			url: "/science/drill",
-		},
+		// {
+		// 	name: "Drill",
+		// 	url: "/science/drill",
+		// },
 	],
 	"Handling Device": [
 		{

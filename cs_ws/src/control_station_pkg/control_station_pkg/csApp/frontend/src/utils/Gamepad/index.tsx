@@ -9,84 +9,52 @@ export interface GamepadControllerState {
 	//profile: DeviceProfile;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-export interface DeviceProfile {			//il faudrais donner le gamepad au device profile pour qu'il puisse le lire
+export interface DeviceProfile {
+	//il faudrais donner le gamepad au device profile pour qu'il puisse le lire
 	//gamepad : Gamepad;
-	name : String;
-	OS : String;
-	webBrowser : String;
-	buttons : number;
-	axes : number;
-	minAxisRange : number[];
-	maxAxisRange : number[];
-	zeroAxisRange : number[];
-	remapingButtons : number[];
-	remapingAxes : number[];
-	
+	name: String;
+	OS: String;
+	webBrowser: String;
+	buttons: number;
+	axes: number;
+	minAxisRange: number[];
+	maxAxisRange: number[];
+	zeroAxisRange: number[];
+	remapingButtons: number[];
+	remapingAxes: number[];
 }
 
-const defaultProfile : DeviceProfile = {
-	name : "default",
-	OS : "default",
-	webBrowser : "default",
-	buttons : 17,
-	axes : 7,
-	minAxisRange : [-1,-1,-1,-1,-1,-1,-1],
-	maxAxisRange : [1,1,1,1,1,1,1],
-	zeroAxisRange : [0,0,0,0,0,0,0],
-	remapingButtons : [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
-	remapingAxes : [0,1,2,3,4,5,6],
-}
+const defaultProfile: DeviceProfile = {
+	name: "default",
+	OS: "default",
+	webBrowser: "default",
+	buttons: 17,
+	axes: 7,
+	minAxisRange: [-1, -1, -1, -1, -1, -1, -1],
+	maxAxisRange: [1, 1, 1, 1, 1, 1, 1],
+	zeroAxisRange: [0, 0, 0, 0, 0, 0, 0],
+	remapingButtons: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+	remapingAxes: [0, 1, 2, 3, 4, 5, 6],
+};
 
-const xboxProfile : DeviceProfile = {
-	name : "045e-0b12-Microsoft Xbox One X pad",
-	OS : "linux",
-	webBrowser : "firefox",
-	buttons : 11,
-	axes : 8,
-	minAxisRange : [-1,-1,-1,-1,-1,-1,-1,-1],
-	maxAxisRange : [1,1,1,1,1,1,1,1],
-	zeroAxisRange : [0,0,-1,0,0,-1,0,0],
-	remapingButtons : [0,1,2,3,4,5,6,7,8,9,10],
-	remapingAxes : [0,1,2,3,4,5,6,7],
-}
+const xboxProfile: DeviceProfile = {
+	name: "045e-0b12-Microsoft Xbox One X pad",
+	OS: "linux",
+	webBrowser: "firefox",
+	buttons: 11,
+	axes: 8,
+	minAxisRange: [-1, -1, -1, -1, -1, -1, -1, -1],
+	maxAxisRange: [1, 1, 1, 1, 1, 1, 1, 1],
+	zeroAxisRange: [0, 0, -1, 0, 0, -1, 0, 0],
+	remapingButtons: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+	remapingAxes: [0, 1, 2, 3, 4, 5, 6, 7],
+};
 
-
-
-
-
-
-
-
-
-
-
-export interface Binding {						// a besoin du gamepad pour l'update
+export interface Binding {
+	// a besoin du gamepad pour l'update
 	prev_value: number;
 	current_value: number;
-	update(gamepad : Gamepad): void;			// la fonction update est identique pour chaque binding, elle doit pouvoir etre def ici
+	update(gamepad: Gamepad): void; // la fonction update est identique pour chaque binding, elle doit pouvoir etre def ici
 	isPositiveTrigger(): boolean;
 	isNegativeTrigger(): boolean;
 	getValue(): number;
@@ -108,20 +76,18 @@ export class BindingButton implements Binding {
 	}
 
 	public isNegativeTrigger() {
-		return false;					//can't be negative trigger
+		return false; //can't be negative trigger
 	}
 
 	public getValue() {
 		return this.current_value;
 	}
 
-
-	public update(gamepad : Gamepad) {
+	public update(gamepad: Gamepad) {
 		this.prev_value = this.current_value;
 		//TODO
 	}
 }
-
 
 export class BindingAxis implements Binding {
 	axis_index: number;
@@ -148,7 +114,7 @@ export class BindingAxis implements Binding {
 		return this.current_value;
 	}
 
-	public update(gamepad : Gamepad) {
+	public update(gamepad: Gamepad) {
 		this.prev_value = this.current_value;
 		//TODO
 	}
@@ -168,18 +134,18 @@ export class BindingComposite implements Binding {
 	}
 
 	public isPositiveTrigger() {
-		return this.current_value > 0 && this.prev_value == 0;
+		return this.current_value > 0 && this.prev_value === 0;
 	}
 
 	public isNegativeTrigger() {
-		return this.current_value > 0 && this.prev_value == 0;
+		return this.current_value > 0 && this.prev_value === 0;
 	}
 
 	public getValue() {
 		return this.current_value;
 	}
 
-	public update(gamepad : Gamepad) {
+	public update(gamepad: Gamepad) {
 		this.prev_value = this.current_value;
 		//TODO
 	}
@@ -251,14 +217,9 @@ export class Action {
 	public getValue() {
 		return this.bindings.reduce((acc, binding) => acc + binding.getValue(), 0);
 	}
-
 }
 
-
-
-
 export interface actionManager {
-
 	//UI
 	UI_move_up_down: Array<Binding>;
 	UI_move_right_left: Array<Binding>;
@@ -291,9 +252,6 @@ export interface actionManager {
 
 }*/
 
-
-
-
 // export interface DeviceRemaping {
 // 	os: string;
 // 	navigator: string;
@@ -309,11 +267,6 @@ export interface actionManager {
 // 	RemapingButtons(): number[];
 // 	RemapingAxes(): number[];
 // }
-
-
-
-
-
 
 class GamepadController {
 	private isConnected: boolean;
@@ -380,7 +333,6 @@ class GamepadController {
 				? this.gamepad.buttons.map((button) => button.pressed).slice(0, 17)
 				: [],
 			axes: this.gamepad ? this.gamepad.axes : [],
-
 		};
 
 		return state;
@@ -388,8 +340,6 @@ class GamepadController {
 }
 
 export default GamepadController;
-
-
 
 /*
 
