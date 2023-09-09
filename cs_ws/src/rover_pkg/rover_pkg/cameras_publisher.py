@@ -146,7 +146,7 @@ def main(args=None):
 
     rclpy.spin(cameras_publisher)
 
-    cameras_publisher.stop_camera()
+    # cameras_publisher.stop_camera()
     cameras_publisher.destroy_node()
 
     rclpy.shutdown()
