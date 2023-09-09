@@ -23,35 +23,36 @@ class CamerasPublisher(Node):
         # ===== PUBLISHERS =====
 
         # publishers for the 6 IMX290 cameras
-        # self.cam_0_pub = self.create_publisher(CompressedImage, 'camera_0', 1)
+        self.cam_0_pub = self.create_publisher(CompressedImage, 'camera_0', 1)
         self.cam_2_pub = self.create_publisher(CompressedImage, 'camera_2', 1)
         self.cam_3_pub = self.create_publisher(CompressedImage, 'camera_3', 1)
         self.cam_4_pub = self.create_publisher(CompressedImage, 'camera_4', 1)
         self.cam_5_pub = self.create_publisher(CompressedImage, 'camera_5', 1)
 
 
-        self.camera_publishers = [# self.cam_0_pub, 
+        self.camera_publishers = [self.cam_0_pub, 
+                              None,
                               self.cam_2_pub, 
                               self.cam_3_pub, 
                               self.cam_4_pub, 
                               self.cam_5_pub]
 
         global enabled
-        enabled = [False] * 5
+        enabled = [False] * 6
 
 
-        # self.camera_0 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=0))
+        self.camera_0 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=0))
         self.camera_2 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=2))
         self.camera_3 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=3))
         self.camera_4 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=4))
         self.camera_5 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=5))
 
-        self.camera_list = [# self.camera_0, 
+        self.camera_list = [self.camera_0, 
+                            None,
                             self.camera_2,
                             self.camera_3,
                             self.camera_4, 
-                            self.camera_5]
-        
+                            self.camera_5]    
 
         self.bridge = CvBridge()
 
@@ -59,18 +60,25 @@ class CamerasPublisher(Node):
         self.active_cameras = []
         
     def enable_camera(self, msg):
+        en = []
+        dis = []
+
         camera_indices = msg.data
+        print(camera_indices)
         for i in range(len(enabled)):
-            if i in camera_indices and i < 6:
-                print("Enable camera: " + str(i))
+            if i in camera_indices:
+                en.append(i)
                 # if the camera wasn't enabled then enable it, otherwise it is already turned on => thread already launched
-                if enabled[i] == False:
+                if not enabled[i]:
                     enabled[i] = True
                     threading.Thread(target=run_camera, args=(self, self.camera_list[i], self.camera_publishers[i], i)).start()
-
             else:
-                print("Disable camera: " + str(i))
+                dis.append(i)
                 enabled[i] = False
+    
+        print("enabled: ", en)
+        print("disabled: ", dis, "\n")
+
 
     def publish_feeds(self):
         
@@ -140,7 +148,7 @@ def main(args=None):
 
     rclpy.spin(cameras_publisher)
 
-    cameras_publisher.stop_camera()
+    # cameras_publisher.stop_camera()
     cameras_publisher.destroy_node()
 
     rclpy.shutdown()
