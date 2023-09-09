@@ -52,11 +52,11 @@ class Science:
     def load_spectrum_from_file(self, filename):
         """Load the top line from a file and return it as a list of numbers."""
 
-        text = np.loadtxt(filename, skiprows=1)
+        text = np.loadtxt(filename, skiprows=1, usecols=1, delimiter=',')
         print(text)
         logging.info("text: " + str(text))
 
-        return [float(value.split(',')) for value in text]
+        return [float(value) for value in text]
 
         
 
