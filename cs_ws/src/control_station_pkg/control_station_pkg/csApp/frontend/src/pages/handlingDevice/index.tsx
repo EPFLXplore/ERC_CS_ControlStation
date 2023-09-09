@@ -22,7 +22,7 @@ import hdModeSelect from "../../utils/hdModeSelect";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 	const [images, cameras, selectCamera, flushCameras] = useCameraSelector([Cameras.CAM1]);
-	const [jointPositions, jointVelocities, jointCurrents, detectedTags, taskSuccess] =
+	const [jointPositions, jointVelocities, jointCurrents, availableButtons, taskSuccess] =
 		useHandlingDevice();
 
 	if (mode === Mode.AUTONOMOUS)
@@ -55,52 +55,100 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 				</div>
 				<div className={styles.globalContainer}>
 					<div className={styles.container}>
-						<button className={styles.button} onClick={() => buttonSelect(0)}>
+						<button
+							className={availableButtons[0] ? styles.button : styles.disabledButton}
+							onClick={() => buttonSelect(0)}
+						>
 							Switch A 1
 						</button>
-						<button className={styles.button} onClick={() => buttonSelect(1)}>
+						<button
+							className={availableButtons[1] ? styles.button : styles.disabledButton}
+							onClick={() => buttonSelect(1)}
+						>
 							Switch A 2
 						</button>
-						<button className={styles.button} onClick={() => buttonSelect(2)}>
+						<button
+							className={availableButtons[2] ? styles.button : styles.disabledButton}
+							onClick={() => buttonSelect(2)}
+						>
 							Switch A 3
 						</button>
-						<button className={styles.button} onClick={() => buttonSelect(3)}>
+						<button
+							className={availableButtons[3] ? styles.button : styles.disabledButton}
+							onClick={() => buttonSelect(3)}
+						>
 							Switch A 4
 						</button>
-						<button className={styles.button} onClick={() => buttonSelect(4)}>
+						<button
+							className={availableButtons[4] ? styles.button : styles.disabledButton}
+							onClick={() => buttonSelect(4)}
+						>
 							Switch A 5
 						</button>
-						<button className={styles.button} onClick={() => buttonSelect(5)}>
+						<button
+							className={availableButtons[5] ? styles.button : styles.disabledButton}
+							onClick={() => buttonSelect(5)}
+						>
 							Switch A 6
 						</button>
-						<button className={styles.button} onClick={() => buttonSelect(6)}>
+						<button
+							className={availableButtons[6] ? styles.button : styles.disabledButton}
+							onClick={() => buttonSelect(6)}
+						>
 							Switch A 7
 						</button>
-						<button className={styles.button} onClick={() => buttonSelect(7)}>
+						<button
+							className={availableButtons[7] ? styles.button : styles.disabledButton}
+							onClick={() => buttonSelect(7)}
+						>
 							Switch A 8
 						</button>
-						<button className={styles.button} onClick={() => buttonSelect(8)}>
+						<button
+							className={availableButtons[8] ? styles.button : styles.disabledButton}
+							onClick={() => buttonSelect(8)}
+						>
 							Switch A 9
 						</button>
-						<button className={styles.button} onClick={() => buttonSelect(9)}>
+						<button
+							className={availableButtons[9] ? styles.button : styles.disabledButton}
+							onClick={() => buttonSelect(9)}
+						>
 							Switch A 10
 						</button>
-						<button className={styles.button} onClick={() => buttonSelect(10)}>
+						<button
+							className={availableButtons[10] ? styles.button : styles.disabledButton}
+							onClick={() => buttonSelect(10)}
+						>
 							Button Switch
 						</button>
-						<button className={styles.button} onClick={() => buttonSelect(11)}>
+						<button
+							className={availableButtons[11] ? styles.button : styles.disabledButton}
+							onClick={() => buttonSelect(11)}
+						>
 							Socket
 						</button>
-						<button className={styles.button} onClick={() => buttonSelect(12)}>
+						<button
+							className={availableButtons[12] ? styles.button : styles.disabledButton}
+							onClick={() => buttonSelect(12)}
+						>
 							Magnet
 						</button>
-						<button className={styles.button} onClick={() => buttonSelect(13)}>
+						<button
+							className={availableButtons[13] ? styles.button : styles.disabledButton}
+							onClick={() => buttonSelect(13)}
+						>
 							Mettalic Plate
 						</button>
-						<button className={styles.button} onClick={() => buttonSelect(20)}>
+						<button
+							className={availableButtons[14] ? styles.button : styles.disabledButton}
+							onClick={() => buttonSelect(20)}
+						>
 							Ethernet Socket
 						</button>
-						<button className={styles.button} onClick={() => buttonSelect(21)}>
+						<button
+							className={availableButtons[15] ? styles.button : styles.disabledButton}
+							onClick={() => buttonSelect(21)}
+						>
 							Ethernet Cable
 						</button>
 					</div>
@@ -140,10 +188,11 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 			</div>
 
 			<div className={styles.globalContainer}>
-			<ModeSlider 
-				name={"Arm Mode"}
-				mode={["IK", "FK"]} 
-				functionTrigger={() => hdModeSelect(0)} />
+				<ModeSlider
+					name={"Arm Mode"}
+					mode={["IK", "FK"]}
+					functionTrigger={() => hdModeSelect(0)}
+				/>
 				<GamepadHint mode={"HD"} />
 				<TaskControl task={Task.HANDLING_DEVICE} />
 			</div>

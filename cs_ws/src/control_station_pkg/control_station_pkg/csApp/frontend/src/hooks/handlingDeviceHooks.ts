@@ -6,7 +6,7 @@ function useHandlingDevice() {
 	const [jointPositions, setJointPositions] = useState([0, 0, 0, 0, 0, 0]);
 	const [jointVelocities, setJointVelocities] = useState([0, 0, 0, 0, 0, 0]);
 	const [jointCurrents, setJointCurrents] = useState([0, 0, 0, 0, 0, 0]);
-	const [detectedTags, setDetectedTags] = useState([false, false, false, false]);
+	const [availableButtons, setAvailableButtons] = useState(new Array(16).fill(false));
 	const [taskSuccess, setTaskSuccess] = useState(false);
 	const [voltmeter, setVoltmeter] = useState(0);
 
@@ -19,7 +19,7 @@ function useHandlingDevice() {
 			setJointPositions(data.joint_position);
 			setJointVelocities(data.joint_velocity);
 			setJointCurrents(data.joint_current);
-			setDetectedTags(data.detected_tags);
+			setAvailableButtons(data.available_buttons);
 			setTaskSuccess(data.task_outcome);
 			setVoltmeter(data.voltage);
 		};
@@ -58,7 +58,7 @@ function useHandlingDevice() {
 		jointPositions,
 		jointVelocities,
 		jointCurrents,
-		detectedTags,
+		availableButtons,
 		taskSuccess,
 		voltmeter,
 		openVoltmeter,
