@@ -54,6 +54,10 @@ class CamerasPublisher(Node):
                             self.camera_4, 
                             self.camera_5]
         
+        for cam in self.camera_list:
+            cam.set(3, 600)
+            cam.set(4, 600)
+        
 
         self.bridge = CvBridge()
 
