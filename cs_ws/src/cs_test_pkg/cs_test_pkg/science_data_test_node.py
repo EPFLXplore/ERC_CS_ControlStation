@@ -17,7 +17,7 @@ class ElecTestNode(Node):
         self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
 
         self.publisher_mass             = self.create_publisher(MassArray, 'EL/mass', 10)
-        self.publisher_spectrometer     = self.create_publisher(SpectroResponse, 'EL/spectrometer', 10)
+        self.publisher_spectrometer     = self.create_publisher(SpectroResponse, 'EL/spectro_response', 10)
         self.publisher_npk              = self.create_publisher(NPK, 'EL/npk', 10)
         # self.publisher_four_in_one      = self.create_publisher(Float32MultiArray, 'EL/four_in_one', 10)
         self.publisher_four_in_one      = self.create_publisher(FourInOne, 'EL/four_in_one', 10)
@@ -44,7 +44,7 @@ class ElecTestNode(Node):
         self.publisher_mass.publish(mass)
 
         spectro = SpectroResponse()
-        spectro.data = [float(v) for v in numpy.random.randint(10, size=(18))]
+        spectro.data = [float(v) for v in numpy.random.rand(18)]
         
         self.publisher_spectrometer.publish(spectro)
 

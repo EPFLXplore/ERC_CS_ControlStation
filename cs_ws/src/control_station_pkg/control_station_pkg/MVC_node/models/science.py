@@ -1,6 +1,9 @@
 import numpy as np
 import pandas as pd
+from pathlib import Path
+
 import os
+import logging
 
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
@@ -48,9 +51,16 @@ class Science:
 
     def load_spectrum_from_file(self, filename):
         """Load the top line from a file and return it as a list of numbers."""
-        with open(filename, 'r') as f:
-            line = f.readline().strip()  # read the top line and remove any trailing whitespace or newline
-            return [float(value) for value in line.split(',')]
+
+        text = np.loadtxt(filename, skiprows=1)
+        print(text)
+        logging.info("text: " + str(text))
+
+        return [float(value.split(',')) for value in text]
+
+        
+
+        
 
     def calculate_rmsd(self, spectrum1, spectrum2):
         """Calculate the RMSD between the measured spectra and the databse ."""
@@ -96,7 +106,7 @@ class Science:
         Args: 
             measured_file (str): Path to the measured spectrum file.
         """
-        database_directory = '/data/database3/'
+        database_directory = str(Path(__file__).parent.absolute()) + '/data/database3/'
         identified_minerals = self.identify_mineral(measured_file, database_directory)
 
         # Return the list of candidates sorted by their percentage similarity
@@ -104,28 +114,31 @@ class Science:
 
     def reset_spectrometer(self):
         """Reset the spectrometer list"""
-        self.spectrometer = []
+        self.spectrometer_list = []
 
     def mean_spectrometer(self):
         """Calculate the mean of the spectrum from the list of spectrometers"""
-        self.spectrometer_mean = np.mean(self.spectrometer, axis=0)
+        self.spectrometer_mean = np.mean(self.spectrometer_list, axis=0)
 
     def store_spectrum(self):
         """Store the spectrum in a file."""
         # Create a pandas dataframe combing self.wavelength and self.spectrometer_mean with titles 'wavelength' and 'reflectance'
-        df = pd.DataFrame({'wavelength': self.wavelength, 'reflectance': self.spectrometer_mean})
+        df = pd.DataFrame({'wavelength': self.wavelengths, 'reflectance': self.spectrometer_mean})
         # Save the dataframe to a csv file
-        df.to_csv('/data/spectrum.csv', index=False)
+        path = str(Path(__file__).parent.absolute()) + '/data/spectrum.csv'
+        df.to_csv(path, index=False)
 
             
     def FindClosestCandidate(self):
-
-        similarities = self.compare('/data/spectrum.csv') # list of names and similarities
+        path = str(Path(__file__).parent.absolute()) + '/data/spectrum.csv'
+        similarities = self.compare(path) # list of names and similarities
         # format the similarites as "similarit %, name"
         self.candidates = [str(similarities[i][1]) + "%, " + similarities[i][0] for i in range(3)]
 
         # We now load the spectrum of the closest candidate from the database
-        db_spectro = pd.read_csv('/data/database3/' + similarities[0][0] + '.csv')['reflectance']
+        path = str(Path(__file__).parent.absolute()) + '/data/database3/'
+
+        db_spectro = pd.read_csv(path + similarities[0][0] + '.csv')['reflectance']
         # We need to read db_spectro as a list and add leading zeros to match the length of the measured spectrum
         leading_zeros = [0] * (len(self.spectrometer_mean) - len(db_spectro))
         
@@ -141,7 +154,7 @@ class Science:
             {
                 "type": "science_data_message",
                 'mass' : [str(self.mass[0]), str(self.mass[1])],
-                'spectrometer' : [str(val) for val in self.spectrometer],
+                'spectrometer' : [str(val) for val in self.spectrometer_mean],
                 'spectrometer_closest_candidate' : [str(val) for val in self.spectrometer_closest_candidate],
                 'npk_sensor' : [self.npk_sensor[0], self.npk_sensor[1], self.npk_sensor[2]],
                 'candidates' : self.candidates,
