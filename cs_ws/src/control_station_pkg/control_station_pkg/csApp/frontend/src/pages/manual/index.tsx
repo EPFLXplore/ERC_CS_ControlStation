@@ -23,6 +23,7 @@ import hdModeSelect from "../../utils/hdModeSelect";
 import ToggleFeature from "../../components/ToggleFeature";
 import VoltmeterSlider from "../../components/VoltmeterSlider";
 import VoltmeterValue from "../../components/VoltmeterValue";
+import SettingsModal from "../../components/SettingsModal";
 
 function useQuery() {
 	const { search } = useLocation();
@@ -51,11 +52,11 @@ export default () => {
 		useNavigation();
 	const defaultMode = useQuery().get("defaultMode");
 
-	console.log("Render manual");
-
 	const [mode, setMode] = useState(
 		defaultMode === "nav" ? Task.NAVIGATION : Task.HANDLING_DEVICE
 	);
+
+	const [manualSettings, setManualSettings] = useState(false);
 
 	return (
 		<div className="page">
@@ -64,6 +65,9 @@ export default () => {
 			<PageHeader
 				title="Manual Control"
 				settings
+				settingsCallback={() => {
+					setManualSettings(true);
+				}}
 				optionTitle="Cameras"
 				options={[
 					"Camera 1",
@@ -203,6 +207,9 @@ export default () => {
 				visible
 			/>
 			<Background />
+			<SettingsModal open={manualSettings} onClose={() => setManualSettings(false)}>
+				{}
+			</SettingsModal>
 		</div>
 	);
 };
