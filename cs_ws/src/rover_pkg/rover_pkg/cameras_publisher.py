@@ -63,8 +63,9 @@ class CamerasPublisher(Node):
         dis = []
 
         camera_indices = msg.data
+        print(camera_indices)
         for i in range(len(enabled)):
-            if i in camera_indices and i < 6:
+            if i in camera_indices:
                 en.append(i)
                 # if the camera wasn't enabled then enable it, otherwise it is already turned on => thread already launched
                 if enabled[i] == False:
