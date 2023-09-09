@@ -28,6 +28,7 @@ class Science:
         self.spectrometer_closest_candidate = [0 for i in range(18)]
 
         self.wavelengths = [410,435,460,485,510,535,560,585,610,645,680,705,730,760,810,860,900,940]
+        self.nb_measures = 0
 
         #SCIENCE DRILL
         self.state = 0

@@ -1,31 +1,42 @@
 import React, { useEffect, useState } from "react";
 import { drawGoal } from "../components/Map";
+import { Point } from "../utils/maths";
+import { getCookie } from "../utils/requests";
 
-export type Goal = { id: number; x: number; y: number; o: number };
-type Point = { x: number; y: number; o: number };
+export type Goal = Point & { id: string };
 
 export const useGoalTracker = () => {
 	const [goals, setGoals] = useState<Goal[]>([]);
+	const [savedGoals, setSavedGoals] = useState<Goal[]>([
+		// { x: -9.77, y: 5.59, o: 0, id: 1 },
+		// { x: -11.67, y: 17.43, o: 0, id: 2 },
+		// { x: -14.55, y: 11.66, o: 0, id: 3 },
+		// { x: -15.24, y: 5.31, o: 0, id: 4 },
+		// { x: -3.43, y: 9.67, o: 0, id: 5 },
+		// { x: -0.66, y: 6.1, o: 0, id: 6 },
+		// { x: 4.96, y: 11.7, o: 0, id: 7 },
+		// { x: 5.29, y: 19.04, o: 0, id: 8 },
+		// { x: 13.22, y: 18.18, o: 0, id: 9 },
+		// { x: 17.54, y: 9.39, o: 0, id: 10 },
+		// { x: 4.14, y: 27.16, o: 0, id: 11 },
+		// { x: 11.43, y: 28.91, o: 0, id: 12 },
+		// { x: -0.84, y: 22.44, o: 0, id: 13 },
+		// { x: -9.6, y: 27.71, o: 0, id: 14 },
+		// { x: 10.65, y: 7.25, o: 0, id: 15 },
+		{ x: 3.83, y: 9.10, o: 0, id: "W1" },
+		{ x: -9.90, y: 13.49, o: 0, id: "W2" },
+		{ x: -0.20, y: 19.57, o: 0, id: "W3" },
+		{ x: -6.99, y: 25.22, o: 0, id: "W4" },
+		{ x: 5.44, y: 25.42, o: 0, id: "W5" },
+		{ x: 10.46, y: 16.29, o: 0, id: "W6" },
+		{ x: 13.85, y: 10.86, o: 0, id: "W7" },
+		{ x: 12.45, y: 21.27, o: 0, id: "W8" },
+		{ x: -6.87, y: 26.60, o: 0, id: "X1" },
+	]);
 	const [tempGoal, setTempGoal] = useState<Goal>();
 
-	const getCookie = (name: string): string | null => {
-		let cookieValue = null;
-		if (document.cookie && document.cookie !== "") {
-			const cookies = document.cookie.split(";");
-			for (let i = 0; i < cookies.length; i++) {
-				const cookie = cookies[i].trim();
-				// Does this cookie string begin with the name we want?
-				if (cookie.substring(0, name.length + 1) === name + "=") {
-					cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-					break;
-				}
-			}
-		}
-		return cookieValue;
-	};
-
 	const addGoal = (x: number, y: number, o: number) => {
-		const id = Date.now(); //Generate a unique id for the goal
+		const id = Date.now().toString(); //Generate a unique id for the goal
 		setGoals([...goals, { id, x, y, o }]);
 		const csrftoken = getCookie("csrftoken");
 
@@ -34,7 +45,7 @@ export const useGoalTracker = () => {
 		formData.append("y", y.toString());
 		formData.append("yaw", o.toString());
 
-		let request = new Request("http://127.0.0.1:8000/csApp/navigation/add_goal_nav", {
+		let request = new Request("http://127.0.0.1:8000/csApp/navigation/nav_goal", {
 			method: "POST",
 			headers: {
 				"X-CSRFToken": csrftoken ?? "",
@@ -62,30 +73,50 @@ export const useGoalTracker = () => {
 
 	const resetGoals = () => {
 		setGoals([]);
+
+		const csrftoken = getCookie("csrftoken");
+
+		let request = new Request("http://127.0.0.1:8000/csApp/navigation/nav_cancel", {
+			method: "POST",
+			headers: {
+				"X-CSRFToken": csrftoken ?? "",
+			},
+		});
+
+		fetch(request)
+			.then((res) => res.json())
+			.then((data) => console.log(data))
+			.catch((err) => console.log(err));
 	};
 
-	const removeGoal = (id: number) => {
+	const removeGoal = (id: string) => {
 		const newGoals = goals.filter((goal) => goal.id !== id);
 		setGoals(newGoals);
 	};
 
-	useEffect(() => {
-		goals.forEach((goal) => {
-			drawGoal({ x: goal.x, y: goal.y, o: goal.o }, "red");
-		});
-	}, [goals]);
-
-	return { goals, addGoal, removeGoal, resetGoals, tempGoal, setTempGoal };
+	return {
+		goals,
+		addGoal,
+		removeGoal,
+		resetGoals,
+		tempGoal,
+		setTempGoal,
+		savedGoals,
+		setSavedGoals,
+	};
 };
 
 export function useNavigation() {
 	const [socket, setSocket] = useState<WebSocket | null>(null);
-	const [currentPosition, setCurrentPosition] = useState([0, 0, 0]);
+	const [currentPosition, setCurrentPosition] = useState([-12.5, 20.5, 45]);
 	const [currentOrientation, setCurrentOrientation] = useState([0, 0, 0]);
 	const [wheelsPosition, setWheelsPosition] = useState([0, 0, 0, 0]);
 	const [linearVelocity, setLinearVelocity] = useState([0, 0, 0]);
 	const [angularVelocity, setAngularVelocity] = useState([0, 0, 0]);
-	const [trajectoryPoints, setTrajectoryPoints] = useState<Point[]>([]);
+	const [trajectoryPoints, setTrajectoryPoints] = useState<Point[]>([
+		{ x: 0, y: 0, o: 0 },
+		{ x: -12.5, y: 20.5, o: 45 },
+	]);
 
 	useEffect(() => {
 		let navigationSocket = new WebSocket("ws://127.0.0.1:8000/ws/csApp/info_nav/");

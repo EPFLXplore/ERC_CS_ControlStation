@@ -1,9 +1,11 @@
 import styles from "./style.module.sass";
 import map from "../../assets/images/mars_yard_2023.png";
-import roverIconImage from "../../assets/images//icons/rover_icon.svg";
-import React, { useState, useEffect, useRef } from "react";
-import { get } from "http";
+import roverIconImage from "../../assets/images/icons/rover_icon.svg";
+import roverGoalIconImage from "../../assets/images/icons/rover_goal.svg";
+import roverTempGoalIconImage from "../../assets/images/icons/rover_goal_temp.svg";
+import { useState, useEffect, useRef } from "react";
 import { roundToTwoDecimals } from "../../utils/maths";
+import { Goal } from "../../hooks/navigationHooks";
 
 type Point = {
 	x: number;
@@ -28,19 +30,26 @@ const Map = ({
 	trajectory,
 	goals,
 	tempGoal,
+	savedGoals,
 	onMapClick,
+	onMapDrag,
 }: {
 	origin: Point;
 	trajectory: Point[];
 	goals: Point[];
 	tempGoal: Point | undefined;
+	savedGoals: Goal[];
 	onMapClick?: (x: number, y: number) => void;
+	onMapDrag?: (x: number, y: number) => void;
 }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [image, setImage] = useState<HTMLImageElement>();
 	const [roverIcon, setRoverIcon] = useState<HTMLImageElement>(new Image());
+	const [roverGoalIcon, setRoverGoalIcon] = useState<HTMLImageElement>(new Image());
+	const [roverTempGoalIcon, setRoverTempGoalIcon] = useState<HTMLImageElement>(new Image());
 	const [imageWidth, setImageWidth] = useState<number>(0);
 	const [imageHeight, setImageHeight] = useState<number>(0);
+	const [mouseDown, setMouseDown] = useState<boolean>(false);
 
 	useEffect(() => {
 		// Load the image and set its width and height
@@ -58,6 +67,20 @@ const Map = ({
 			setRoverIcon(rover);
 		};
 		rover.src = roverIconImage;
+
+		// Load the rover goal icon
+		const roverGoal = new Image();
+		roverGoal.onload = () => {
+			setRoverGoalIcon(roverGoal);
+		};
+		roverGoal.src = roverGoalIconImage;
+
+		// Load the rover temp goal icon
+		const roverTempGoal = new Image();
+		roverTempGoal.onload = () => {
+			setRoverTempGoalIcon(roverTempGoal);
+		};
+		roverTempGoal.src = roverTempGoalIconImage;
 	}, [map]);
 
 	useEffect(() => {
@@ -71,11 +94,14 @@ const Map = ({
 			if (ctx) {
 				drawMap(canvas, ctx, image, origin);
 				drawTrajectory(trajectory, roverIcon);
-				goals.forEach((goal: Point) => drawGoal(goal, "#e324a0"));
-				if(tempGoal) drawGoal(tempGoal, "#3b3b45");
+				savedGoals.forEach((goal: Goal) =>
+					drawGoal(goal, "#0D99FF", undefined, goal.id)
+				);
+				if (tempGoal) drawGoal(tempGoal, "#1F618D", roverTempGoalIcon);
+				goals.forEach((goal: Point) => drawGoal(goal, "#0E6655", roverGoalIcon));
 			}
 		}
-	}, [image, imageWidth, imageHeight, trajectory, goals, tempGoal]);
+	}, [image, imageWidth, imageHeight, trajectory, goals, tempGoal, savedGoals]);
 
 	return (
 		<div className={styles.Map}>
@@ -85,11 +111,25 @@ const Map = ({
 					width={imageWidth}
 					height={imageHeight}
 					style={{ maxWidth: "100%" }}
-					onClick={(e) => {
+					onMouseDown={(e) => {
+						setMouseDown(true);
 						if (canvasRef.current) {
 							const { x, y } = getMousePos(canvasRef.current, e);
 							if (onMapClick)
 								onMapClick(
+									roundToTwoDecimals(x / pointSpacing),
+									roundToTwoDecimals(-y / pointSpacing)
+								);
+						}
+					}}
+					onMouseUp={(e) => {
+						setMouseDown(false);
+					}}
+					onMouseMove={(e) => {
+						if (canvasRef.current && mouseDown) {
+							const { x, y } = getMousePos(canvasRef.current, e);
+							if (onMapDrag)
+								onMapDrag(
 									roundToTwoDecimals(x / pointSpacing),
 									roundToTwoDecimals(-y / pointSpacing)
 								);
@@ -223,7 +263,7 @@ const drawMap = (
 	}
 };
 
-export const drawGoal = (goal: Point, color: string, image?: CanvasImageSource) => {
+export const drawGoal = (goal: Point, color: string, image?: CanvasImageSource, name?: string) => {
 	if (mapCTX) {
 		let yaw: number = goal.o;
 		let x_px: number = goal.x * pointSpacing + mapOrigin.x;
@@ -236,42 +276,37 @@ export const drawGoal = (goal: Point, color: string, image?: CanvasImageSource) 
 			// Draw the rover
 			mapCTX.translate(x_px, y_px);
 			mapCTX.rotate(angle);
-			mapCTX.drawImage(image, -36 / 2, -25 / 2, 72, 50);
+			mapCTX.drawImage(image, -818 / 32, -818 / 32, 818 / 16, 818 / 16);
+			// mapCTX.drawImage(image, -1589 / 40, -1485 / 40, 1589 / 20, 1485 / 20);
 			mapCTX.rotate(-angle);
 			mapCTX.translate(-x_px, -y_px);
 		} else {
-			//set the three points of the triangle to be drawn before rotation
-			let p1 = [x_px - 20, y_px + 14];
-			let p2 = [x_px - 20, y_px - 14];
-			let p3 = [x_px + 20, y_px];
+			mapCTX.translate(x_px, y_px);
 
-			//======= rotation of p1, p2 and p2 around {x_px, y_px} by yaw ========//
-
-			// Define the rotated points of the triangle
-			p1 = rotatePoint(angle, p1, x_px, y_px);
-			p2 = rotatePoint(angle, p2, x_px, y_px);
-			p3 = rotatePoint(angle, p3, x_px, y_px);
-
-			// Begin the path and set the starting point to p1
 			mapCTX.beginPath();
-			mapCTX.moveTo(p1[0], p1[1]);
-
-			// Draw lines from p1 to p2, p2 to p3, and from p3 back to p1
-			mapCTX.lineTo(p2[0], p2[1]);
-			mapCTX.lineTo(p3[0], p3[1]);
-			mapCTX.lineTo(p1[0], p1[1]);
+			mapCTX.arc(0, 0, 818 / 32, 0, 2 * Math.PI);
 
 			// Fill the triangle with the given color
 			mapCTX.fillStyle = color;
 			mapCTX.fill();
+
+			if (name) {
+				mapCTX.font = "bold 20px Arial";
+				mapCTX.textAlign = "center";
+				mapCTX.textBaseline = "middle";
+				mapCTX.fillStyle = "white";
+				mapCTX.fillText(name, 0, 0);
+			}
+
+			mapCTX.translate(-x_px, -y_px);
 		}
 	}
 };
 
 export const drawTrajectory = (points: Point[], icon: CanvasImageSource) => {
 	if (mapCTX && points.length > 1) {
-		mapCTX.strokeStyle = "#8f351a";
-		mapCTX.lineWidth = 3;
+		mapCTX.strokeStyle = "red";
+		mapCTX.lineWidth = 4;
 		mapCTX.beginPath();
 
 		// Calculate the pixel coordinates of the first point

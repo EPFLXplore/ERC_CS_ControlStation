@@ -24,7 +24,9 @@ urlpatterns = [
     path('navigation/wait',         wait_nav,       name='wait_nav'),
     path('navigation/abort',        abort_nav,      name='abort_nav'),
     path('navigation/resume',       resume_nav,     name='resume_nav'),
-    path('navigation/add_goal_nav', add_goal_nav,   name="add_goal_nav"),
+    path('navigation/nav_goal',     nav_goal,       name="nav_goal"),
+    path('navigation/nav_cancel',   nav_cancel,     name="nav_cancel"),
+    path('navigation/nav_starting_point',    nav_starting_point,      name="nav_starting_point"),
 
     #Handlingdevice
     path('handlingdevice/launch',   launch_hd,      name='launch_hd'),
@@ -34,12 +36,16 @@ urlpatterns = [
     path('handlingdevice/retry',    retry_hd,       name='retry_hd'),
     path('handlingdevice/set_id',   set_id,         name='set_id'),
     path('handlingdevice/set_hd_mode',   set_hd_mode,         name='set_hd_mode'),
+    path('handlingdevice/deploy_hd_voltmeter',   deploy_hd_voltmeter,         name='deploy_hd_voltmeter'),
+    path('handlingdevice/toggle_hd_laser',   toggle_hd_laser,         name='toggle_hd_laser'),
     
     #Science
     path('science/launch',         launch_science, name='launch_science'),
     path('science/wait',            wait_science,   name='wait_science'),
     path('science/abort',           abort_science, name='abort_science'),
     path('science/resume',          resume_science,   name='resume_science'),
+    path('science/mesure_spectro', sc_mesure_spectro, name='sc_mesure_spectro'),
+    path('science/reset_spectro',   sc_reset_spectro, name='sc_reset_spectro'),
 
     #Cameras
     path('cameras/enable_cameras', enable_cameras, name='enable_cameras'),

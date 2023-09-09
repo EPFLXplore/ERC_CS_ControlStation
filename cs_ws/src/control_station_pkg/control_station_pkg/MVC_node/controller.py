@@ -28,7 +28,7 @@ import time
 
 import numpy as np
 
-from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, String, Int16MultiArray, Header
+from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, Int16MultiArray, Header
 from geometry_msgs.msg import Pose, Point, Twist, PoseStamped, Quaternion
 from actionlib_msgs.msg import GoalID
 from transforms3d.euler import euler2quat, quat2euler
@@ -37,27 +37,9 @@ from .models.rover   import Task
 
 from .models.science         import Science
 from .models.handling_device import HandlingDevice
+from .models.navigation      import Navigation
 
-# ================================================================================
-# Webscokets for ASGI
-
-# NAV_WS_URL = "ws://127.0.0.1:8000/ws/csApp/navigation/"
-# HD_WS_URL = "ws://localhost:8000/ws/csApp/handlingdevice/"
-# SC_WS_URL = "ws://localhost:8000/ws/csApp/science/"
-# AV_WS_URL = "ws://localhost:8000/ws/csApp/logs/"
-# MAN_WS_URL = "ws://localhost:8000/ws/csApp/manual/"
-# HP_WS_URL = "ws://localhost:8000/ws/csApp/homepage/"
-# TIME_WS_URL = "ws://localhost:8000/ws/csApp/time/"
-
-# WEB SOCKETS used to publish info to front-end depending on the tab
-# ws_nav = websocket.WebSocket()
-# ws_hd = websocket.WebSocket()
-# ws_sc = websocket.WebSocket()
-# ws_av = websocket.WebSocket()
-# ws_man = websocket.WebSocket()
-# ws_hp = websocket.WebSocket()
-# ws_time = websocket.WebSocket()
-
+from .models.utils import session
 
 
 from channels.layers import get_channel_layer
@@ -78,6 +60,7 @@ class Controller():
         self.cs = cs
         self.science = Science()
         self.handling_device = HandlingDevice()
+        self.navigation = Navigation()
 
     # ===============================
     #            CALLBACKS
@@ -96,7 +79,7 @@ class Controller():
     # receiving a confirmation from rover after sending an instruction
     def rover_confirmation(self, txt):
         if (self.cs.rover.getInWait()):
-            self.cs.node.get_logger().info("Rover Confirmation: %s\n", txt.data)
+            #self.cs.node.get_logger().info("Rover Confirmation: %s\n", txt.data)
             self.cs.rover.setReceived(True)
         else:
             self.cs.node.get_logger().info("Received after timeout: %s\n", txt.data)
@@ -112,12 +95,30 @@ class Controller():
     #         str = "Impossible progress state: %s" % (val)
     #         self.cs.exception_clbk(String(str))
 
+    def rover_subsystem_state(self, data):
+        session.subsystems_state = data.data
+        async_to_sync(channel_layer.group_send)("session", {"type": "broadcast",
+                                                    'nb_users'   : session.nb_users,
+                                                    'rover_state': session.rover_state,
+                                                    'subsystems_state': session.subsystems_state,
+                                                                })
+
+
+    def rover_state(self, data):
+        session.rover_state = data.data
+        async_to_sync(channel_layer.group_send)("session", {"type": "broadcast",
+                                                    'nb_users'   : session.nb_users,
+                                                    'rover_state': session.rover_state,
+                                                    'subsystems_state': session.subsystems_state,
+                                                                })
 
     # ========= SCIENCE CALLBACKS ========= 
 
 
     def science_state(self, data):
+        print("wallah")
         self.science.state = data.data
+        print("science drill state :" + str(self.science.state))
         self.science.UpdateScienceDrillSocket()
         
     def science_motors_pos(self, data):
@@ -193,36 +194,42 @@ class Controller():
     # receive: voltage data from the handling device's voltmeter
     def hd_voltage(self, Voltage):
         self.handling_device.voltage = Voltage.voltage
-        self.handling_device.UpdateHandlingDeviceSocket()
+        #self.handling_device.UpdateHandlingDeviceSocket()
 
     def hd_ARtags(self, ARtags):
-        self.handling_device.available_buttons = ARtags.data
-        #TODO convertir la liste d'ARtags en list de bouton disponible
-        self.handling_device.UpdateHandlingDeviceSocket()
+        
+        available_buttons = [0] * 16
+        if(ARtags.data[0] == 1):
+            available_buttons[0:6] = [1] * 7
+
+        if(ARtags.data[1] == 1):
+            available_buttons[6:12] = [1] * 6
+
+        self.handling_device.available_buttons = available_buttons
+        #self.handling_device.UpdateHandlingDeviceSocket()
 
     def hd_task_outcome(self, outcome):
         self.handling_device.task_outcome = outcome.data
-        self.handling_device.UpdateHandlingDeviceSocket()
+        #self.handling_device.UpdateHandlingDeviceSocket()
 
     # ========= NAVIGATION CALLBACKS =========
 
     # receives an Odometry message from NAVIGATION
-    def nav_data(self, odometry):
+    def nav_odometry(self, odometry):
 
-        position = odometry.pose.pose.position
-        orientation = odometry.pose.pose.orientation
-        linVel = odometry.twist.twist.linear
-        angVel = odometry.twist.twist.angular
+        self.navigation.position = [odometry.pose.pose.position.x, odometry.pose.pose.position.y, odometry.pose.pose.position.z]
+        self.navigation.orientation = [odometry.pose.pose.orientation.x, odometry.pose.pose.orientation.y, odometry.pose.pose.orientation.z, odometry.pose.pose.orientation.w]
+        self.navigation.linVel = [odometry.twist.twist.linear.x, odometry.twist.twist.linear.y, odometry.twist.twist.linear.z]
+        self.navigation.angVel = [odometry.twist.twist.angular.x, odometry.twist.twist.angular.y, odometry.twist.twist.angular.z]
+
+        self.navigation.UpdateNavSocket()
+
+    def nav_wheel_ang(self, wheel_ang):
+        print("nav_wheel_ang", wheel_ang.angles)
+        self.navigation.wheels_ang = [wheel_ang.angles[0], wheel_ang.angles[1], wheel_ang.angles[2], wheel_ang.angles[3]]
+        self.navigation.UpdateNavSocket()
 
 
-        async_to_sync(channel_layer.group_send)("nav", {"type": "nav_message",
-                                                            'position'   : [position.x, position.y, position.z],
-                                                            'orientation': [orientation.w, orientation.x, orientation.y, orientation.z],
-                                                            'linVel'     : [linVel.x, linVel.y, linVel.z],
-                                                            'angVel'     : [angVel.x, angVel.y, angVel.z],
-                                                            'current_goal' : "",
-                                                            'wheel_ang' : [1,2,3,4]
-                                                                        })
 
     # TODO important to display exceptions in log screen
     def log_clbk(self, data):
@@ -331,20 +338,12 @@ class Controller():
 
     # send the coordinates the rover must reach and the orientation it must reach them in
     def pub_nav_goal(self, x, y, yaw):
-        #self.cs.node.get_logger().info("NAV: set goal (%.2f, %.2f) + %.2f (orientation)", x, y, yaw)
 
-        self.cs.rover.Nav.addGoal([x, y, yaw])
-
-        # PoseStamped message construction: Header + Pose
-        # ----- Header -----
-        nav = self.cs.rover.Nav
+        print("pub_nav_goal")
+        
         h = Header()
-        #h.frame_id = str(nav.getId())  # goal has an id by which it is recognized
-
-        # ----- Pose: Point + Quaternion -----
         pose = Pose()
 
-        # z = 0.0 (the rover can't fly yet)
         point = Point(x=x, y=y, z=0.0)
         pose.position = point
 
@@ -355,18 +354,36 @@ class Controller():
         pose.orientation.y = q[2]
         pose.orientation.z = q[3]
 
-        #TODO: should be replaced by a service
-        #pour avoir le goal, call self.cs.rover.Nav.getGoal()
-        #apres avoir recu confirmation du rover, appeler self.cs.rover.Nav.popGoal()
         self.cs.Nav_Goal_pub.publish(PoseStamped(header=h, pose=pose))
+
+    def pub_cancel_nav_goal(self):
+        self.cs.Nav_Cancel_pub.publish(Bool(data=True))
+        
+        #self.cs.rover.Nav.cancelGoal()
+
+    def pub_nav_starting_point(self, x, y, yaw):
+
+        h = Header()
+        pose = Pose()
+
+        point = Point(x=x, y=y, z=0.0)
+        pose.position = point
+
+        # rover orientation
+        q = euler2quat(0, 0, yaw)
+        pose.orientation.w = q[0]
+        pose.orientation.x = q[1]
+        pose.orientation.y = q[2]
+        pose.orientation.z = q[3]
+
+        self.cs.Nav_Starting_Point_pub(PoseStamped(header=h, pose=pose))
 
 
     # cancel a specific Navigation goal by giving the goal's id
-    def pub_cancel_nav_goal(self, given_id):
-        self.cs.node.get_logger().info("NAV: cancel goal %d", given_id)
-        self.cs.Nav_CancelGoal_pub.publish(GoalID(stamp=self.cs.node.get_clock().now().to_msg(), id=given_id))
-        self.cs.rover.Nav.cancelGoal(given_id)
-
+    # def pub_cancel_nav_goal(self, given_id):
+    #     self.cs.node.get_logger().info("NAV: cancel goal %d", given_id)
+    #     self.cs.Nav_CancelGoal_pub.publish(GoalID(stamp=self.cs.node.get_clock().now().to_msg(), id=given_id))
+    #     self.cs.rover.Nav.cancelGoal(given_id)
 
     # Debugging commands to individual wheels. Only use in "emergencies".
 

@@ -2,8 +2,17 @@ import { Task } from "../../utils/tasks.type";
 import styles from "./style.module.sass";
 import { useState } from "react";
 
-const ManualModeSelector = ({ mode, callback }: { mode: Task; callback: (mode: Task) => void }) => {
-	const texts = ["HD", "NAV"];
+const defaultTexts = ["HD", "NAV"];
+
+const ModeSelector = ({
+	mode,
+	callback,
+	texts = defaultTexts,
+}: {
+	mode: Task;
+	callback: (mode: Task) => void;
+	texts?: string[];
+}) => {
 	const modes = [Task.HANDLING_DEVICE, Task.NAVIGATION];
 
 	const _setActiveIndex = (mode: number) => {
@@ -32,4 +41,4 @@ const ManualModeSelector = ({ mode, callback }: { mode: Task; callback: (mode: T
 	);
 };
 
-export default ManualModeSelector;
+export default ModeSelector;

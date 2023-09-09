@@ -2,11 +2,10 @@
 import rclpy
 from rclpy.node import Node
 
-from std_msgs.msg import String, Int32, Int8
-from sensor_msgs.msg import JointState
-
+from std_msgs.msg import String, Int32, Int8, Int8MultiArray
 from sensor_msgs.msg import JointState, Joy
 
+from avionics_interfaces.msg import Voltage
 
 class HdTestNode(Node):
 
@@ -15,7 +14,10 @@ class HdTestNode(Node):
 
 
         #self.publisher_avionics = self.create_publisher(Int32, 'HD/avionics_ToF', 10)
-        self.publisher_joint_telemetry = self.create_publisher(JointState, 'HD/arm_control/joint_telemetry', 10)
+        self.publisher_joint_telemetry = self.create_publisher(JointState, 'ROVER/HD_telemetry', 10)
+        self.publiher_artags = self.create_publisher(Int8MultiArray, 'HD/ar_tags', 1)
+        self.publisher_voltage = self.create_publisher(Voltage, 'EL/voltage', 1)
+
 
         self.subscription_mode = self.create_subscription(Int8,'ROVER/HD_mode',self.mode_callback,10)
         self.subscription_element_id = self.create_subscription(Int8,'ROVER/element_id',self.element_callback,10)
@@ -23,6 +25,8 @@ class HdTestNode(Node):
        # self.subscription_semiauto_id = self.create_subscription(Int8,'ROVER/element_id',self.id_callback,10)
         self.subscription_maintenance = self.create_subscription(Int8,'ROVER/Maintenance',self.maintenance_callback,10)
         self.subscription_gamepad = self.create_subscription(Joy,'ROVER/HD_gamepad',self.gamepad_callback,10)
+
+        
 
         timer_period = 1.0  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
@@ -47,6 +51,14 @@ class HdTestNode(Node):
         msg_joint_telemetry.velocity = [self.i + 30., self.i + 40., self.i + 50., self.i + 60., self.i + 70., self.i + 80.]
         msg_joint_telemetry.effort = [self.i + 60., self.i + 70., self.i + 80., self.i + 90., self.i + 100., self.i + 110.]
         self.publisher_joint_telemetry.publish(msg_joint_telemetry)
+
+        msg_ar_tags = Int8MultiArray()
+        msg_ar_tags.data = [1,1,0,0]
+        self.publiher_artags.publish(msg_ar_tags)
+
+        msg_voltage = Voltage()
+        msg_voltage.voltage = float(self.i)
+        self.publisher_voltage.publish(msg_voltage)
 
         self.i += 1
 

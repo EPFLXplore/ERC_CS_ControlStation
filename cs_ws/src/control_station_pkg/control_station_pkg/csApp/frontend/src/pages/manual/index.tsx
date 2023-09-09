@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import BackButton from "../../components/BackButton";
 import Background from "../../components/Background";
 import JointPositions from "../../components/JointPositions";
-import { Mode } from "../../utils/mode.type";
 import styles from "./style.module.sass";
 import GamepadHint from "../../components/GamepadHint";
 import PageHeader from "../../components/PageHeader";
-import DistanceHint from "../../components/DistanceHint";
 import CameraView from "../../components/CameraView";
 import { Cameras } from "../../utils/cameras.type";
 import Timer from "../../components/Timer";
@@ -15,13 +13,17 @@ import ModeSlider from "../../components/ModeSlider";
 import JointSpeed from "../../components/JointSpeed";
 import useHandlingDevice from "../../hooks/handlingDeviceHooks";
 import JointCurrents from "../../components/JointCurrents";
-import buttonSelect from "../../utils/buttonSelect";
 import { Task } from "../../utils/tasks.type";
 import TaskControl from "../../components/TaskControl";
 import { useNavigation } from "../../hooks/navigationHooks";
-import ManualModeSelector from "../../components/ManualModeSelector";
+import ModeSelector from "../../components/ModeSelector";
 import { useLocation } from "react-router-dom";
 import useCameraSelector from "../../hooks/cameraHooks";
+import hdModeSelect from "../../utils/hdModeSelect";
+import ToggleFeature from "../../components/ToggleFeature";
+import VoltmeterSlider from "../../components/VoltmeterSlider";
+import VoltmeterValue from "../../components/VoltmeterValue";
+import SettingsModal from "../../components/SettingsModal";
 
 function useQuery() {
 	const { search } = useLocation();
@@ -30,37 +32,48 @@ function useQuery() {
 }
 
 export default () => {
-	const [images, cameras, selectCamera] = useCameraSelector([
-		Cameras.CAM1,
-		// Cameras.CAM2,
-		// Cameras.CAM3,
-		// Cameras.CAM4,
-	]);
-	const [jointPositions, jointVelocities, jointCurrents, detectedTags, taskSuccess] =
-		useHandlingDevice();
+	const [images, cameras, selectCamera, flushCameras, rotateCams, setRotateCams] =
+		useCameraSelector([
+			Cameras.CAM1,
+			// Cameras.CAM2,
+			// Cameras.CAM3,
+			// Cameras.CAM4,
+		]);
+	const [
+		jointPositions,
+		jointVelocities,
+		jointCurrents,
+		detectedTags,
+		taskSuccess,
+		voltmeter,
+		openVoltmeter,
+	] = useHandlingDevice();
 	const [currentPosition, currentOrientation, wheelsPosition, linearVelocity, angularVelocity] =
 		useNavigation();
 	const defaultMode = useQuery().get("defaultMode");
-
-	console.log("Render manual");
 
 	const [mode, setMode] = useState(
 		defaultMode === "nav" ? Task.NAVIGATION : Task.HANDLING_DEVICE
 	);
 
+	const [manualSettings, setManualSettings] = useState(false);
+
 	return (
 		<div className="page">
-			<Background />
-			<BackButton />
+			<CameraView images={images} rotate={rotateCams} setRotateCams={setRotateCams} />
+			<BackButton onGoBack={() => flushCameras()} />
 			<PageHeader
 				title="Manual Control"
 				settings
+				settingsCallback={() => {
+					setManualSettings(true);
+				}}
 				optionTitle="Cameras"
 				options={[
 					"Camera 1",
-					"Camera 2",
+					// "Camera 2",
 					"Camera 3",
-					// "Camera 4",
+					"Camera 4",
 					// "Camera 5",
 					// "Camera 6",
 					"Camera Gripper",
@@ -71,7 +84,7 @@ export default () => {
 				)}
 			/>
 			<div className={styles.Subheader}>
-				<ManualModeSelector mode={mode} callback={setMode} />
+				<ModeSelector mode={mode} callback={setMode} />
 			</div>
 			{/* <DistanceHint distance={10} /> */}
 
@@ -80,12 +93,31 @@ export default () => {
 					<JointPositions positions={jointPositions} />
 					<JointSpeed speeds={jointVelocities} />
 					<JointCurrents currents={jointCurrents} />
+					<VoltmeterValue value={voltmeter} />
 				</div>
 			)}
 
 			{mode === Task.HANDLING_DEVICE && (
 				<div className={styles.globalContainer}>
-					<ModeSlider />
+					<ModeSlider
+						name="Arm Mode"
+						mode={["IK", "FK"]}
+						functionTrigger={() => hdModeSelect(0)}
+					/>
+					{/* <VoltmeterSlider initValue={0} onValueChange={openVoltmeter} /> */}
+					<ToggleFeature
+						title="Voltmeter"
+						onChange={(m) => {
+							openVoltmeter(m);
+							//"bool -> deployment"
+						}}
+					/>
+					<ToggleFeature
+						title="LED Drone"
+						onChange={(m) => {
+							console.log(m);
+						}}
+					/>
 					<TaskControl task={Task.MANUAL_CONTROL} />
 				</div>
 			)}
@@ -152,7 +184,14 @@ export default () => {
 							</div>
 							<div className="Image of rover"> </div>
 						</div>
-						<TaskControl task={Task.MANUAL_CONTROL} />
+						<div className={styles.globalContainer}>
+							<ModeSlider
+								name="Nav Mode"
+								mode={["NORMAL", "BASIC"]}
+								functionTrigger={() => hdModeSelect(0)}
+							/>
+							<TaskControl task={Task.MANUAL_CONTROL} />
+						</div>
 					</div>
 				</div>
 			)}
@@ -167,7 +206,10 @@ export default () => {
 				}
 				visible
 			/>
-			<CameraView images={images} />
+			<Background />
+			<SettingsModal open={manualSettings} onClose={() => setManualSettings(false)}>
+				{}
+			</SettingsModal>
 		</div>
 	);
 };

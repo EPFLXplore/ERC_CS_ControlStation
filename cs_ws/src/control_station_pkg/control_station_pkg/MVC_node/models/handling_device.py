@@ -11,6 +11,9 @@ class HandlingDevice:
         Monitoring Handling Device Data
     '''
     def __init__(self):
+
+        self.channel_layer = get_channel_layer()
+
         # HD mode: Inverse, Direct, Debug TODO
         self.__hd_mode = -1
 
@@ -122,10 +125,12 @@ class HandlingDevice:
 
 
     def UpdateHandlingDeviceSocket(self):
-            async_to_sync(self.channel_layer.group_send)("info_hd", {"type": "hd_message",
-                                                        'joint_position': [self.joint_positon[0], self.joint_positon[1], self.joint_positon[2], self.joint_positon[3], self.joint_positon[4], self.joint_positon[5]],
-                                                        'joint_velocity': [self.joint_velocity[0], self.joint_velocity[1], self.joint_velocity[2], self.joint_velocity[3], self.joint_velocity[4], self.joint_velocity[5]],
-                                                        'joint_current': [self.joint_current[0], self.joint_current[1], self.joint_current[2], self.joint_current[3], self.joint_current[4], self.joint_current[5]],
-                                                        'available_buttons' : [0,0,0,1],
-                                                        'task_outcome' : False,
-                                                                    })
+            
+            async_to_sync(self.channel_layer.group_send)("hd", {"type": "hd_message",
+                                                        'joint_position': [str(val) for val in self.joint_positions],
+                                                        'joint_velocity': [str(val) for val in self.joint_velocities],
+                                                        'joint_current': [str(val) for val in self.joint_current],
+                                                        'available_buttons' : [str(val) for val in self.available_buttons],
+                                                        'task_outcome' : str(self.task_outcome),
+                                                        'voltage' : str(self.voltage),
+                                                        })

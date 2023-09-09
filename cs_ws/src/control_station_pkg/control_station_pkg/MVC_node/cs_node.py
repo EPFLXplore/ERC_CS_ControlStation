@@ -22,7 +22,7 @@ from nav_msgs.msg          import Odometry
 from sensor_msgs.msg       import JointState, Image, Joy, CompressedImage
 
 
-from avionics_interfaces.msg import MassArray, SpectroResponse, NPK, FourInOne, Voltage, LaserRequest, ServoRequest, SpectroRequest
+from avionics_interfaces.msg import MassArray, SpectroResponse, NPK, FourInOne, Voltage, LaserRequest, ServoRequest, SpectroRequest, AngleArray
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
 django.setup()
@@ -98,9 +98,10 @@ class CS:
 
         # CS --> ROVER (NAV)
 
-        self.Nav_Goal_pub           = self.node.create_publisher(PoseStamped,       'CS/NAV_goal',         1)
-        self.Nav_Status_pub         = self.node.create_publisher(GoalID,            'CS/NAV_STATUS',       1)
-        self.Nav_Joystick_pub       = self.node.create_publisher(Twist,             '/cmd_vel',            1)
+        self.Nav_Goal_pub               = self.node.create_publisher(PoseStamped,       'CS/NAV_goal',         1)
+        self.Nav_Cancel_pub             = self.node.create_publisher(Bool,              'CS/NAV_cancel',       1)
+        self.Nav_Joystick_pub           = self.node.create_publisher(Twist,             '/cmd_vel',            1)
+        self.Nav_Starting_Point_pub     = self.node.create_publisher(PoseStamped,       '/lio_sam/initial_pose', 1)
         #self.Nav_DebugWheels_pub    = self.node.create_publisher(Int16MultiArray,   '/debug/wheel_cmds',   1)
 
         # CS --> ROVER (SC)
@@ -112,16 +113,19 @@ class CS:
 
         # ---------------------------------------------------
         # ===== Subscribers =====
-        self.node.create_subscription(String,           'ROVER/RoverConfirm',              self.controller.rover_confirmation , 10)
-       # self.node.create_subscription(Int8,             'ROVER/TaskProgress',              self.controller.task_progress      , 10)
-        self.node.create_subscription(DiagnosticStatus, 'ROVER/CS_log',                    self.controller.log_clbk   , 10)
+        self.node.create_subscription(String,           'ROVER/RoverConfirm',               self.controller.rover_confirmation , 10)
+        # self.node.create_subscription(Int8,             'ROVER/TaskProgress',              self.controller.task_progress      , 10)
+        self.node.create_subscription(DiagnosticStatus, 'ROVER/CS_log',                     self.controller.log_clbk   , 10)
+        self.node.create_subscription(String,           'ROVER/State',                      self.controller.rover_state       , 10)
+        self.node.create_subscription(Int8,             'ROVER/subsystem_state',            self.controller.rover_subsystem_state, 10)
+        
         
         # -- SC messages --
         self.node.create_subscription(Int8,               'SC/fsm_state_to_cs',      self.controller.science_state        , 10)
         self.node.create_subscription(Float32MultiArray,  'SC/motors_pos',           self.controller.science_motors_pos   , 10)
         self.node.create_subscription(Float32MultiArray,  'SC/motors_speed',         self.controller.science_motors_vels  , 10)
         self.node.create_subscription(Float32MultiArray,  'SC/motors_currents',      self.controller.science_motors_currents, 10)
-        self.node.create_subscription(Int8MultiArray,     'SC/limit_switches',    self.controller.science_limit_switches, 10)
+        self.node.create_subscription(Int8MultiArray,     'SC/limit_switches',       self.controller.science_limit_switches, 10)
         self.node.create_subscription(MassArray,         'EL/mass',           self.controller.science_mass         , 10)
         self.node.create_subscription(SpectroResponse,   'EL/spectro_response',   self.controller.science_spectrometer , 10)
         self.node.create_subscription(NPK,               'EL/npk',            self.controller.science_npk          , 10)
@@ -134,28 +138,29 @@ class CS:
         self.node.create_subscription(Voltage,          'EL/voltage',         self.controller.hd_voltage, 10)  
         
         # -- NAV messages --
-        self.node.create_subscription(Odometry,         'NAV/odometry/filtered',            self.controller.nav_data           , 10)
+        self.node.create_subscription(Odometry,         'ROVER/NAV_odometry',            self.controller.nav_odometry      , 10)
+        self.node.create_subscription(AngleArray,         'EL/potentiometer',               self.controller.nav_wheel_ang     , 10)
 
         # -- Camera messages --
         self.node.create_subscription(CompressedImage, '/camera_0', cameras_reciever.display_cam_0, 1)
-        self.node.create_subscription(CompressedImage, '/camera_1', cameras_reciever.display_cam_1, 1)
+        self.node.create_subscription(CompressedImage, '/camera_1', cameras_reciever.display_cam_1, 1)  #doesnt work
         self.node.create_subscription(CompressedImage, '/camera_2', cameras_reciever.display_cam_2, 1)
         self.node.create_subscription(CompressedImage, '/camera_3', cameras_reciever.display_cam_3, 1)
-        self.node.create_subscription(CompressedImage, '/camera_4', cameras_reciever.display_cam_3, 1)
-        self.node.create_subscription(CompressedImage, '/camera_5', cameras_reciever.display_cam_3, 1)
+        self.node.create_subscription(CompressedImage, '/camera_4', cameras_reciever.display_cam_4, 1)
+        self.node.create_subscription(CompressedImage, '/camera_5', cameras_reciever.display_cam_5, 1)
 
         self.node.create_subscription(CompressedImage, 'HD/camera_flux', cameras_reciever.display_cam_gripper, 10)
         
-        
+
 
         thr = threading.Thread(target=rclpy.spin, args=(self.node,)).start()
         print("start spinning")
         
 
     def sendRequest(self):
-            self.node._logger.info("Sending request")
-            while not self.onlineConfirmClient.wait_for_service(timeout_sec=1.0):
-                    self.node.get_logger().info('service not available, waiting again...')
+            self.node.get_logger().info('Sending request, waiting for Rover...')
+            while not self.onlineConfirmClient.wait_for_service(timeout_sec=1.0): 
+                continue
 
             self.node.get_logger().info('service is available')
             self.roverConnected = True

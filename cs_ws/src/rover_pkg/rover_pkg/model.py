@@ -96,15 +96,13 @@ class Navigation:
     def setCancelled(self, bool):
         self.__cancelled = bool
 
+
     # -------callback for received PoseStamped from the CS-------
-    def setGoal(self, goal):
-
-        #self.__cancelled = False
-        self.setCancelled(False)
-
-        self.rover.RoverConfirm_pub.publish(String(data="received NAV goal"))
-        self.__currId = goal.header.frame_id
-        self.__currGoal = goal
+    def sendGoal(self, data):
+        print(data.pose.position.x)
+        print(data.pose.position.y)
+        print(data.pose.position.z)
+        self.rover.Nav_Goal_pub.publish(data)
         
     # -------get goal id-------
     def getId(self):
@@ -116,13 +114,14 @@ class Navigation:
 
     # -------called when CS sends an ABORT instruction to NAV task --> it cancels the goal and the rover stops-------
     # -------Also called when the CS sends a cancel instruction to the rover-------
-    def cancelGoal(self):
-        self.rover.RoverConfirm_pub.publish(String(data="received NAV goal cancellation"))
+    def cancelGoal(self, msg):
+        # self.rover.RoverConfirm_pub.publish(String(data="received NAV goal cancellation"))
 
-        if(not self.__cancelled): 
-            self.setCancelled(True)
-            self.__currGoal = np.zeros(0)
-            self.rover.Nav_Status.publish(String(data="cancel"))
+        # if(not self.__cancelled): 
+        #     self.setCancelled(True)
+        #     self.__currGoal = np.zeros(0)
+        #     self.rover.Nav_Status.publish(String(data="cancel"))
+        self.rover.Nav_Cancel_pub.publish(msg)
 
     #-------------------------------------
     def gamepad(self, joy):

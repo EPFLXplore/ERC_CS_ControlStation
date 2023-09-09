@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Cameras } from "../utils/cameras.type";
+import { getCookie } from "../utils/requests";
 
 /**
  * A custom hook that allows the user to select which cameras to display
@@ -11,6 +12,9 @@ function useCameraSelector(startCamera: Array<Cameras>) {
 	const [sockets, setSockets] = useState<Array<WebSocket | undefined>>([undefined]);
 	const [images, setImages] = React.useState<Array<string>>([""]);
 	const [cameras, setCameras] = useState<Array<Cameras>>(startCamera);
+	const [rotateCams, setRotateCams] = useState<boolean[]>(
+		new Array(startCamera.length).fill(false)
+	);
 
 	/**
 	 * Sets the cameras to be displayed on the screen
@@ -52,27 +56,6 @@ function useCameraSelector(startCamera: Array<Cameras>) {
 		});
 	};
 
-	/**
-	 * Gets the value of a cookie
-	 * @param name the name of the cookie
-	 * @returns the value of the cookie
-	 */
-	const getCookie = (name: string): string | null => {
-		let cookieValue = null;
-		if (document.cookie && document.cookie !== "") {
-			const cookies = document.cookie.split(";");
-			for (let i = 0; i < cookies.length; i++) {
-				const cookie = cookies[i].trim();
-				// Does this cookie string begin with the name we want?
-				if (cookie.substring(0, name.length + 1) === name + "=") {
-					cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-					break;
-				}
-			}
-		}
-		return cookieValue;
-	};
-
 	useEffect(() => {
 		for (const socket in sockets) {
 			if (Object.prototype.hasOwnProperty.call(sockets, socket)) {
@@ -83,6 +66,7 @@ function useCameraSelector(startCamera: Array<Cameras>) {
 
 		let newSockets: Array<WebSocket> = [];
 		setImages(new Array(cameras.length).fill(null));
+		setRotateCams(new Array(cameras.length).fill(false));
 
 		const csrftoken = getCookie("csrftoken");
 		let formData = new FormData();
@@ -178,7 +162,11 @@ function useCameraSelector(startCamera: Array<Cameras>) {
 		}
 	};
 
-	return [images, cameras, selectCamera] as const;
+	const flushCameras = () => {
+		setCameras([]);
+	};
+
+	return [images, cameras, selectCamera, flushCameras, rotateCams, setRotateCams] as const;
 }
 
 export default useCameraSelector;
