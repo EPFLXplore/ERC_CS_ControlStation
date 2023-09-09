@@ -5,6 +5,7 @@ import roverGoalIconImage from "../../assets/images/icons/rover_goal.svg";
 import roverTempGoalIconImage from "../../assets/images/icons/rover_goal_temp.svg";
 import { useState, useEffect, useRef } from "react";
 import { roundToTwoDecimals } from "../../utils/maths";
+import { Goal } from "../../hooks/navigationHooks";
 
 type Point = {
 	x: number;
@@ -29,6 +30,7 @@ const Map = ({
 	trajectory,
 	goals,
 	tempGoal,
+	savedGoals,
 	onMapClick,
 	onMapDrag,
 }: {
@@ -36,6 +38,7 @@ const Map = ({
 	trajectory: Point[];
 	goals: Point[];
 	tempGoal: Point | undefined;
+	savedGoals: Goal[];
 	onMapClick?: (x: number, y: number) => void;
 	onMapDrag?: (x: number, y: number) => void;
 }) => {
@@ -91,11 +94,14 @@ const Map = ({
 			if (ctx) {
 				drawMap(canvas, ctx, image, origin);
 				drawTrajectory(trajectory, roverIcon);
-				goals.forEach((goal: Point) => drawGoal(goal, "#0E6655", roverGoalIcon));
+				savedGoals.forEach((goal: Goal) =>
+					drawGoal(goal, "#0D99FF", undefined, "W" + goal.id)
+				);
 				if (tempGoal) drawGoal(tempGoal, "#1F618D", roverTempGoalIcon);
+				goals.forEach((goal: Point) => drawGoal(goal, "#0E6655", roverGoalIcon));
 			}
 		}
-	}, [image, imageWidth, imageHeight, trajectory, goals, tempGoal]);
+	}, [image, imageWidth, imageHeight, trajectory, goals, tempGoal, savedGoals]);
 
 	return (
 		<div className={styles.Map}>
@@ -257,7 +263,7 @@ const drawMap = (
 	}
 };
 
-export const drawGoal = (goal: Point, color: string, image?: CanvasImageSource) => {
+export const drawGoal = (goal: Point, color: string, image?: CanvasImageSource, name?: string) => {
 	if (mapCTX) {
 		let yaw: number = goal.o;
 		let x_px: number = goal.x * pointSpacing + mapOrigin.x;
@@ -275,33 +281,24 @@ export const drawGoal = (goal: Point, color: string, image?: CanvasImageSource) 
 			mapCTX.rotate(-angle);
 			mapCTX.translate(-x_px, -y_px);
 		} else {
-			//set the three points of the triangle to be drawn before rotation
-			let p1 = [x_px - 20, y_px + 14];
-			let p2 = [x_px - 20, y_px - 14];
-			let p3 = [x_px + 20, y_px];
+			mapCTX.translate(x_px, y_px);
 
-			//======= rotation of p1, p2 and p2 around {x_px, y_px} by yaw ========//
-
-			// Define the rotated points of the triangle
-			p1 = rotatePoint(angle, p1, x_px, y_px);
-			p2 = rotatePoint(angle, p2, x_px, y_px);
-			p3 = rotatePoint(angle, p3, x_px, y_px);
-
-			// Begin the path and set the starting point to p1
 			mapCTX.beginPath();
-			mapCTX.moveTo(p1[0], p1[1]);
-
-			// Draw lines from p1 to p2, p2 to p3, and from p3 back to p1
-			mapCTX.lineTo(p2[0], p2[1]);
-			mapCTX.lineTo(p3[0], p3[1]);
-			mapCTX.lineTo(p1[0], p1[1]);
+			mapCTX.arc(0, 0, 818 / 32, 0, 2 * Math.PI);
 
 			// Fill the triangle with the given color
 			mapCTX.fillStyle = color;
 			mapCTX.fill();
-			mapCTX.strokeStyle = "#EAEDED";
-			mapCTX.lineWidth = 2;
-			mapCTX.stroke();
+
+			if (name) {
+				mapCTX.font = "bold 20px Arial";
+				mapCTX.textAlign = "center";
+				mapCTX.textBaseline = "middle";
+				mapCTX.fillStyle = "white";
+				mapCTX.fillText(name, 0, 0);
+			}
+
+			mapCTX.translate(-x_px, -y_px);
 		}
 	}
 };

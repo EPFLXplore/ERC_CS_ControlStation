@@ -16,7 +16,7 @@ import JointCurrents from "../../components/JointCurrents";
 import { Task } from "../../utils/tasks.type";
 import TaskControl from "../../components/TaskControl";
 import { useNavigation } from "../../hooks/navigationHooks";
-import ManualModeSelector from "../../components/ManualModeSelector";
+import ModeSelector from "../../components/ModeSelector";
 import { useLocation } from "react-router-dom";
 import useCameraSelector from "../../hooks/cameraHooks";
 import hdModeSelect from "../../utils/hdModeSelect";
@@ -79,7 +79,7 @@ export default () => {
 				)}
 			/>
 			<div className={styles.Subheader}>
-				<ManualModeSelector mode={mode} callback={setMode} />
+				<ModeSelector mode={mode} callback={setMode} />
 			</div>
 			{/* <DistanceHint distance={10} /> */}
 
@@ -94,13 +94,14 @@ export default () => {
 
 			{mode === Task.HANDLING_DEVICE && (
 				<div className={styles.globalContainer}>
-					<ModeSlider 
-						name= "Arm Mode" 
-						mode={["IK", "FK"]} 
-						functionTrigger={() => hdModeSelect(0)} />	
+					<ModeSlider
+						name="Arm Mode"
+						mode={["IK", "FK"]}
+						functionTrigger={() => hdModeSelect(0)}
+					/>
 					<VoltmeterSlider initValue={0} onValueChange={openVoltmeter} />
 					<ToggleFeature
-						title="Laser"
+						title="LED Drone"
 						onChange={(m) => {
 							console.log(m);
 						}}
@@ -172,10 +173,11 @@ export default () => {
 							<div className="Image of rover"> </div>
 						</div>
 						<div className={styles.globalContainer}>
-							<ModeSlider 
-								name = "Nav Mode" 
-								mode={["NORMAL", "BASIC"]} 
-								functionTrigger={() => hdModeSelect(0)} />	
+							<ModeSlider
+								name="Nav Mode"
+								mode={["NORMAL", "BASIC"]}
+								functionTrigger={() => hdModeSelect(0)}
+							/>
 							<TaskControl task={Task.MANUAL_CONTROL} />
 						</div>
 					</div>

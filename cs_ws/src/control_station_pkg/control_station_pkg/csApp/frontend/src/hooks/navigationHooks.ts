@@ -7,6 +7,23 @@ export type Goal = Point & { id: number };
 
 export const useGoalTracker = () => {
 	const [goals, setGoals] = useState<Goal[]>([]);
+	const [savedGoals, setSavedGoals] = useState<Goal[]>([
+		{ x: -9.77, y: 5.59, o: 0, id: 1 },
+		{ x: -11.67, y: 17.43, o: 0, id: 2 },
+		{ x: -14.55, y: 11.66, o: 0, id: 3 },
+		{ x: -15.24, y: 5.31, o: 0, id: 4 },
+		{ x: -3.43, y: 9.67, o: 0, id: 5 },
+		{ x: -0.66, y: 6.1, o: 0, id: 6 },
+		{ x: 4.96, y: 11.7, o: 0, id: 7 },
+		{ x: 5.29, y: 19.04, o: 0, id: 8 },
+		{ x: 13.22, y: 18.18, o: 0, id: 9 },
+		{ x: 17.54, y: 9.39, o: 0, id: 10 },
+		{ x: 4.14, y: 27.16, o: 0, id: 11 },
+		{ x: 11.43, y: 28.91, o: 0, id: 12 },
+		{ x: -0.84, y: 22.44, o: 0, id: 13 },
+		{ x: -9.6, y: 27.71, o: 0, id: 14 },
+		{ x: 10.65, y: 7.25, o: 0, id: 15 },
+	]);
 	const [tempGoal, setTempGoal] = useState<Goal>();
 
 	const addGoal = (x: number, y: number, o: number) => {
@@ -68,7 +85,16 @@ export const useGoalTracker = () => {
 		setGoals(newGoals);
 	};
 
-	return { goals, addGoal, removeGoal, resetGoals, tempGoal, setTempGoal };
+	return {
+		goals,
+		addGoal,
+		removeGoal,
+		resetGoals,
+		tempGoal,
+		setTempGoal,
+		savedGoals,
+		setSavedGoals,
+	};
 };
 
 export function useNavigation() {

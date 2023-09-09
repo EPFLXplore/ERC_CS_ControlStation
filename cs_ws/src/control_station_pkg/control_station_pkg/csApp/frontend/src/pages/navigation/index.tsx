@@ -17,7 +17,16 @@ import { angle, getDistance, roundToTwoDecimals } from "../../utils/maths";
 import WheelsIndicator from "../../components/WheelsIndicator";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
-	const { goals, addGoal, removeGoal, resetGoals, tempGoal, setTempGoal } = useGoalTracker();
+	const {
+		goals,
+		addGoal,
+		removeGoal,
+		resetGoals,
+		tempGoal,
+		setTempGoal,
+		savedGoals,
+		setSavedGoals,
+	} = useGoalTracker();
 
 	const [
 		currentPosition,
@@ -66,7 +75,15 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 					trajectory={trajectoryPoints}
 					goals={goals}
 					tempGoal={tempGoal}
+					savedGoals={savedGoals}
 					onMapClick={(x, y) => {
+						for (var savedGoal of savedGoals) {
+							if (getDistance({ x: x, y: y, o: 0 }, savedGoal) < 0.6) {
+								x = savedGoal.x;
+								y = savedGoal.y;
+							}
+						}
+
 						(document.getElementById("input-x") as HTMLInputElement).value =
 							x.toString();
 						(document.getElementById("input-y") as HTMLInputElement).value =
