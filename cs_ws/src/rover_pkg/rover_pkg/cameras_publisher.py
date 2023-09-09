@@ -31,6 +31,7 @@ class CamerasPublisher(Node):
 
 
         self.camera_publishers = [self.cam_0_pub, 
+                              None,
                               self.cam_2_pub, 
                               self.cam_3_pub, 
                               self.cam_4_pub, 
@@ -47,6 +48,7 @@ class CamerasPublisher(Node):
         self.camera_5 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=5))
 
         self.camera_list = [self.camera_0, 
+                            None,
                             self.camera_2,
                             self.camera_3,
                             self.camera_4, 
