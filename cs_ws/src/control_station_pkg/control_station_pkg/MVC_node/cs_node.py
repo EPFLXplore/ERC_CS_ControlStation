@@ -123,7 +123,7 @@ class CS:
         self.node.create_subscription(Float32MultiArray,  'SC/motors_currents',      self.controller.science_motors_currents, 10)
         self.node.create_subscription(Int8MultiArray,     'SC/limit_switches',    self.controller.science_limit_switches, 10)
         self.node.create_subscription(MassArray,         'EL/mass',           self.controller.science_mass         , 10)
-        self.node.create_subscription(SpectroResponse,   'EL/spectrometer',   self.controller.science_spectrometer , 10)
+        self.node.create_subscription(SpectroResponse,   'EL/spectro_response',   self.controller.science_spectrometer , 10)
         self.node.create_subscription(NPK,               'EL/npk',            self.controller.science_npk          , 10)
         self.node.create_subscription(FourInOne,         'EL/four_in_one',    self.controller.science_4in1         , 10)
 
