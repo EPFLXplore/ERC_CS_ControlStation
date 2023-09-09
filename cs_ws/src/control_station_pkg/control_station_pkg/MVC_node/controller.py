@@ -194,12 +194,12 @@ class Controller():
 
     def hd_ARtags(self, ARtags):
         
-        available_buttons = [False] * 16
+        available_buttons = [0] * 16
         if(ARtags.data[0] == 1):
-            available_buttons[0:6] = [True] * 7
+            available_buttons[0:6] = [1] * 7
 
         if(ARtags.data[1] == 1):
-            available_buttons[6:12] = [True] * 6
+            available_buttons[6:12] = [1] * 6
 
         self.handling_device.available_buttons = available_buttons
         #self.handling_device.UpdateHandlingDeviceSocket()
@@ -353,13 +353,26 @@ class Controller():
         self.cs.Nav_Goal_pub.publish(PoseStamped(header=h, pose=pose))
 
     def pub_cancel_nav_goal(self):
-        print("pub_cancel_nav_goal")
-        #self.cs.node.get_logger().info("NAV: cancel goal")
-        # msg = String()
-        # msg.data = "cancel"
         self.cs.Nav_Cancel_pub.publish(Bool(data=True))
         
         #self.cs.rover.Nav.cancelGoal()
+
+    def pub_nav_starting_point(self, x, y, yaw):
+
+        h = Header()
+        pose = Pose()
+
+        point = Point(x=x, y=y, z=0.0)
+        pose.position = point
+
+        # rover orientation
+        q = euler2quat(0, 0, yaw)
+        pose.orientation.w = q[0]
+        pose.orientation.x = q[1]
+        pose.orientation.y = q[2]
+        pose.orientation.z = q[3]
+
+        self.cs.Nav_Starting_Point_pub(PoseStamped(header=h, pose=pose))
 
 
     # cancel a specific Navigation goal by giving the goal's id

@@ -16,8 +16,6 @@ function useHandlingDevice() {
 		handlingDeviceSocket.onmessage = (e) => {
 			const data = JSON.parse(e.data);
 
-			console.log(availableButtons);
-
 			setJointPositions(data.joint_position);
 			setJointVelocities(data.joint_velocity);
 			setJointCurrents(data.joint_current);
@@ -34,15 +32,15 @@ function useHandlingDevice() {
 		setSocket(handlingDeviceSocket);
 	}, []);
 
-	const openVoltmeter = (angle: number) => {
+	const openVoltmeter = (open: boolean) => {
 		const csrftoken = getCookie("csrftoken");
 		const data = new FormData();
-		data.append("id", angle.toString());
+		data.append("deployment", open ? "open" : "close");
 
 		let request = new Request(
 			"http://127.0.0.1:8000/csApp/handlingdevice/deploy_hd_voltmeter",
 			{
-				method: "GET",
+				method: "POST",
 				headers: {
 					"X-CSRFToken": csrftoken ?? "",
 				},

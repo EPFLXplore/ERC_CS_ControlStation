@@ -26,6 +26,7 @@ urlpatterns = [
     path('navigation/resume',       resume_nav,     name='resume_nav'),
     path('navigation/nav_goal',     nav_goal,       name="nav_goal"),
     path('navigation/nav_cancel',   nav_cancel,     name="nav_cancel"),
+    path('navigation/nav_starting_point',    nav_starting_point,      name="nav_starting_point"),
 
     #Handlingdevice
     path('handlingdevice/launch',   launch_hd,      name='launch_hd'),

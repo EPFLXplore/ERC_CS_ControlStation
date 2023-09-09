@@ -209,6 +209,17 @@ def nav_cancel(request):
     cs.controller.pub_cancel_nav_goal()
     return JsonResponse({})
 
+def nav_starting_point(request):
+
+    x = float(request.POST.get("x"))
+    y = float(request.POST.get("y"))
+    yaw = float(request.POST.get("yaw"))
+
+    cs.controller.pub_nav_starting_point(x, y, yaw)
+
+    return JsonResponse({})
+
+
 # -----------------------------------
 # Handling device views
 
@@ -264,9 +275,10 @@ def toggle_hd_laser(request):
     return JsonResponse({})
 
 def deploy_hd_voltmeter(request):
+    print("deploying voltmeter")
     servoRequest = ServoRequest()
     servoRequest.channel = 1
-    if (request.POST.get("deployment")):
+    if (request.POST.get("deployment") == "open"):
         servoRequest.angle = 110
     else :
         servoRequest.angle = 0

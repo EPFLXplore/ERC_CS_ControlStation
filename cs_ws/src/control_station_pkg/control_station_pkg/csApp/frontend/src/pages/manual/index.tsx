@@ -95,17 +95,17 @@ export default () => {
 
 			{mode === Task.HANDLING_DEVICE && (
 				<div className={styles.globalContainer}>
-					{/* <ModeSlider
+					<ModeSlider
 						name="Arm Mode"
 						mode={["IK", "FK"]}
 						functionTrigger={() => hdModeSelect(0)}
 					/>
-					<VoltmeterSlider initValue={0} onValueChange={openVoltmeter} /> */}
+					{/* <VoltmeterSlider initValue={0} onValueChange={openVoltmeter} /> */}
 					<ToggleFeature
 						title="Voltmeter"
 						onChange={(m) => {
-							console.log(m);
-							//"bool -> Voltmeter"
+							openVoltmeter(m);
+							//"bool -> deployment"
 						}}
 					/>
 					<ToggleFeature
