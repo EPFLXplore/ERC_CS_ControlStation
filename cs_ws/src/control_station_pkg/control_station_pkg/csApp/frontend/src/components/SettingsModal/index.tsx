@@ -16,7 +16,7 @@ function SettingsModal({
 
 	return (
 		<div className={styles.Background} onClick={onClose}>
-			<div className={styles.Modal}>
+			<div className={styles.Modal} onClick={(e) => e.stopPropagation()}>
 				<h1>{title}</h1>
 				<div className={styles.CloseButton} onClick={onClose}></div>
 				<div className={styles.Container}>{children}</div>
