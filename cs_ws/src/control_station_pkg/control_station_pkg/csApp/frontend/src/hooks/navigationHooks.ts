@@ -108,15 +108,12 @@ export const useGoalTracker = () => {
 
 export function useNavigation() {
 	const [socket, setSocket] = useState<WebSocket | null>(null);
-	const [currentPosition, setCurrentPosition] = useState([-12.5, 20.5, 45]);
+	const [currentPosition, setCurrentPosition] = useState([0,0,0]);
 	const [currentOrientation, setCurrentOrientation] = useState([0, 0, 0]);
 	const [wheelsPosition, setWheelsPosition] = useState([0, 0, 0, 0]);
 	const [linearVelocity, setLinearVelocity] = useState([0, 0, 0]);
 	const [angularVelocity, setAngularVelocity] = useState([0, 0, 0]);
-	const [trajectoryPoints, setTrajectoryPoints] = useState<Point[]>([
-		{ x: 0, y: 0, o: 0 },
-		{ x: -12.5, y: 20.5, o: 45 },
-	]);
+	const [trajectoryPoints, setTrajectoryPoints] = useState<Point[]>([]);
 
 	useEffect(() => {
 		let navigationSocket = new WebSocket("ws://127.0.0.1:8000/ws/csApp/info_nav/");

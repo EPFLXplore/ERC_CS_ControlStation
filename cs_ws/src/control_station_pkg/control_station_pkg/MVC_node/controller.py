@@ -28,7 +28,7 @@ import time
 
 import numpy as np
 
-from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, Int16MultiArray, Header
+from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, Int16MultiArray, Header, String
 from geometry_msgs.msg import Pose, Point, Twist, PoseStamped, Quaternion
 from actionlib_msgs.msg import GoalID
 from transforms3d.euler import euler2quat, quat2euler
@@ -205,6 +205,7 @@ class Controller():
 
     # receives an Odometry message from NAVIGATION
     def nav_odometry(self, odometry):
+        print("RECEIVED POSESTAMPED")
 
         self.navigation.position = [odometry.pose.pose.position.x, odometry.pose.pose.position.y, odometry.pose.pose.position.z]
         self.navigation.orientation = [odometry.pose.pose.orientation.x, odometry.pose.pose.orientation.y, odometry.pose.pose.orientation.z, odometry.pose.pose.orientation.w]
@@ -350,7 +351,7 @@ class Controller():
         #self.cs.node.get_logger().info("NAV: cancel goal")
         # msg = String()
         # msg.data = "cancel"
-        self.cs.Nav_Cancel_pub.publish(Bool(data=True))
+        self.cs.Nav_Cancel_pub.publish(String(data="cancel")) #Bool(data=True))
         
         #self.cs.rover.Nav.cancelGoal()
 

@@ -99,7 +99,7 @@ class CS:
         # CS --> ROVER (NAV)
 
         self.Nav_Goal_pub           = self.node.create_publisher(PoseStamped,       'CS/NAV_goal',         1)
-        self.Nav_Cancel_pub         = self.node.create_publisher(Bool,            'CS/NAV_cancel',       1)
+        self.Nav_Cancel_pub         = self.node.create_publisher(String,            'CS/NAV_cancel',       1)
         self.Nav_Joystick_pub       = self.node.create_publisher(Twist,             '/cmd_vel',            1)
         #self.Nav_DebugWheels_pub    = self.node.create_publisher(Int16MultiArray,   '/debug/wheel_cmds',   1)
 
@@ -137,7 +137,7 @@ class CS:
         self.node.create_subscription(Voltage,          'EL/voltage',         self.controller.hd_voltage, 10)  
         
         # -- NAV messages --
-        self.node.create_subscription(Odometry,         'ROVER/NAV_odometry',            self.controller.nav_odometry      , 10)
+        self.node.create_subscription(PoseStamped,        'ROVER/NAV_odometry',            self.controller.nav_odometry      , 10)
         self.node.create_subscription(AngleArray,         'EL/potentiometer',               self.controller.nav_wheel_ang     , 10)
 
         # -- Camera messages --
