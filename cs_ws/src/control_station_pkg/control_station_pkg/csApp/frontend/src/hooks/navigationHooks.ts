@@ -23,17 +23,21 @@ export const useGoalTracker = () => {
 		// { x: -0.84, y: 22.44, o: 0, id: 13 },
 		// { x: -9.6, y: 27.71, o: 0, id: 14 },
 		// { x: 10.65, y: 7.25, o: 0, id: 15 },
-		{ x: 3.83, y: 9.10, o: 0, id: "W1" },
-		{ x: -9.90, y: 13.49, o: 0, id: "W2" },
-		{ x: -0.20, y: 19.57, o: 0, id: "W3" },
+		{ x: 3.83, y: 9.1, o: 0, id: "W1" },
+		{ x: -9.9, y: 13.49, o: 0, id: "W2" },
+		{ x: -0.2, y: 19.57, o: 0, id: "W3" },
 		{ x: -6.99, y: 25.22, o: 0, id: "W4" },
 		{ x: 5.44, y: 25.42, o: 0, id: "W5" },
 		{ x: 10.46, y: 16.29, o: 0, id: "W6" },
 		{ x: 13.85, y: 10.86, o: 0, id: "W7" },
 		{ x: 12.45, y: 21.27, o: 0, id: "W8" },
-		{ x: -6.87, y: 26.60, o: 0, id: "X1" },
+		{ x: -6.87, y: 26.6, o: 0, id: "X1" },
 	]);
 	const [tempGoal, setTempGoal] = useState<Goal>();
+
+	const addSavedGoal = (x: number, y: number, o: number, id: string) => {
+		setSavedGoals([...savedGoals, { x, y, o, id }]);
+	};
 
 	const addGoal = (x: number, y: number, o: number) => {
 		const id = Date.now().toString(); //Generate a unique id for the goal
@@ -94,15 +98,24 @@ export const useGoalTracker = () => {
 		setGoals(newGoals);
 	};
 
+	const removeSavedGoal = (id: string) => {
+		const newGoals = savedGoals.filter((goal) => goal.id !== id);
+		setSavedGoals(newGoals);
+	};
+
 	return {
 		goals,
 		addGoal,
 		removeGoal,
 		resetGoals,
+
 		tempGoal,
 		setTempGoal,
+
 		savedGoals,
+		addSavedGoal,
 		setSavedGoals,
+		removeSavedGoal,
 	};
 };
 
