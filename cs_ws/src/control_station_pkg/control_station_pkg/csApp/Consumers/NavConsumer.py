@@ -13,8 +13,13 @@ Data format :
     'orientation' : [float] * 3
     'linVel' : [float] * 3
     'angVel' : [float] * 3
-    'current_goal' : [float] * 3
-    'wheel_ang': [float] * 4
+    'steering_wheel_ang': [float] * 4
+    'steering_wheel_state': [float] * 4
+    'driving_wheel_ang': [float] * 4
+    'driving_wheel_state': [float] * 4
+    'path' : [[float, float]]       array of 2 points
+    '' : string
+    '' : string
 }
 
 """
@@ -56,10 +61,11 @@ class NavConsumer(WebsocketConsumer):
                 'type': 'nav_message',
                 'position'   : data_json['position'],
                 'orientation': data_json['orientation'],
-                'linVel'     : data_json['linVel'],
-                'angVel'     : data_json['angVel'],
+                # 'linVel'     : data_json['linVel'],
+                # 'angVel'     : data_json['angVel'],
                 'current_goal' : data_json['current_goal'],
                 'wheel_ang' : data_json['wheel_ang'],
+                'path' : data_json['path'],
             }
         )
 
@@ -70,8 +76,9 @@ class NavConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps({
                 'position'   : event['position'],
                 'orientation': event['orientation'],
-                'linVel'     : event['linVel'],
-                'angVel'     : event['angVel'],
+                # 'linVel'     : event['linVel'],
+                # 'angVel'     : event['angVel'],
                 'current_goal' : event['current_goal'],
                 'wheel_ang' : event['wheel_ang'],
+                'path' : event['path'],
         }))

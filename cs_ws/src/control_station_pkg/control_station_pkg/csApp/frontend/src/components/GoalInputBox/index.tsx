@@ -10,10 +10,12 @@ function GoalInputBox({
 	setGoal,
 	isSavedGoal,
 	children,
+	name,
 }: {
 	setGoal: DispatchType;
 	isSavedGoal: boolean;
 	children: React.ReactNode[];
+	name?: string;
 }) {
 	return (
 		<div className={styles.container}>
@@ -22,19 +24,19 @@ function GoalInputBox({
 					<>
 						<div className={styles.finalContainer}>
 							ID
-							<input type="text" id="input-id" name="input-id" />
+							<input type="text" id={"input-id" + name} name="input-id" />
 						</div>
 						<div className={styles.finalContainer}>
 							X
-							<input type="number" id="input-sx" name="input-sx" />
+							<input type="number" id={"input-sx" + name} name="input-sx" />
 						</div>
 						<div className={styles.finalContainer}>
 							Y
-							<input type="number" id="input-sy" name="input-sy" />
+							<input type="number" id={"input-sy" + name} name="input-sy" />
 						</div>
 						<div className={styles.finalContainer}>
 							O
-							<input type="number" id="input-so" name="input-so" />
+							<input type="number" id={"input-so" + name} name="input-so" />
 						</div>
 					</>
 				)}
@@ -44,7 +46,7 @@ function GoalInputBox({
 							X
 							<input
 								type="number"
-								id="input-x"
+								id={"input-x" + name}
 								name="input-x"
 								onInput={(e) => {
 									setGoal((prev: any) => {
@@ -77,7 +79,7 @@ function GoalInputBox({
 							Y
 							<input
 								type="number"
-								id="input-y"
+								id={"input-y" + name}
 								name="input-y"
 								onInput={(e) => {
 									setGoal((prev: any) => {
@@ -110,7 +112,7 @@ function GoalInputBox({
 							O
 							<input
 								type="number"
-								id="input-o"
+								id={"input-o" + name}
 								name="input-o"
 								onInput={(e) => {
 									setGoal((prev: any) => {
@@ -142,7 +144,9 @@ function GoalInputBox({
 					</>
 				)}
 			</div>
-			<div className={styles.buttonGoalContainer}>{children}</div>
+			<div className={styles.buttonGoalContainer}>
+				{children}
+				</div>
 		</div>
 	);
 }

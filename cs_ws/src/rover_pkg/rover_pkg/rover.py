@@ -129,8 +129,7 @@ class Rover():
         
         # Rover --> NAV
         self.Nav_Goal_pub     = self.node.create_publisher(PoseStamped, 'ROVER/NAV_goal'    , 1)
-        # self.Nav_Cancel_pub   = self.node.create_publisher(Bool,      'ROVER/NAV_cancel'  , 1)
-        self.Nav_Cancel_pub   = self.node.create_publisher(String,      'ROVER/NAV_status'  , 1)
+        self.Nav_Status_pub   = self.node.create_publisher(String,      'ROVER/NAV_status'  , 1)
         #self.Nav_gamepad_pub  = self.node.create_publisher(Joy,         'ROVER/NAV_gamepad' , 1)
 
 
@@ -242,21 +241,27 @@ class Rover():
                 # ABORT
                 if instr == Instruction.ABORT.value:
                     self.node.get_logger().info("ABORTING NAVIGATION")
-                    self.model.Nav.cancelGoal()
-                    self.Nav_Status.publish(String(data="stop"))
+                    #self.model.Nav.cancelGoal()
+                    self.Nav_Status.publish(String(data="abort"))
+                    self.ROVER_STATE = Task.IDLE
+                # CANCEL
+                if instr == Instruction.CANCEL.value:
+                    self.node.get_logger().info("CANCEL NAVIGATION GOAL")
+                    #self.model.Nav.cancelGoal()
+                    self.Nav_Status.publish(String(data="cancel"))
                     self.ROVER_STATE = Task.IDLE
                 # WAIT
-                if instr == Instruction.WAIT.value:
-                    self.node.get_logger().info("PAUSING NAVIGATION")
-                    self.Nav_Status.publish(String(data="pause"))
-                    self.ROVER_STATE == Task.WAITING
+                # if instr == Instruction.WAIT.value:
+                #     self.node.get_logger().info("PAUSING NAVIGATION")
+                #     self.Nav_Status.publish(String(data="pause"))
+                #     self.ROVER_STATE == Task.WAITING
 
-            elif (self.ROVER_STATE == Task.WAITING):
-                # RESUME
-                if(instr == Instruction.RESUME.value):
-                    self.node.get_logger().info("RESUMING NAVIGATION")
-                    self.Nav_Status.publish(String(data="resume"))
-                    self.ROVER_STATE = Task.NAVIGATION
+            # elif (self.ROVER_STATE == Task.WAITING):
+            #     # RESUME
+            #     if(instr == Instruction.RESUME.value):
+            #         self.node.get_logger().info("RESUMING NAVIGATION")
+            #         self.Nav_Status.publish(String(data="resume"))
+            #         self.ROVER_STATE = Task.NAVIGATION
                 
         #-------------------------------MAINTENANCE----------------------------------
         if task == Task.MAINTENANCE.value:

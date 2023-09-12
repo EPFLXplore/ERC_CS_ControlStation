@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BackButton from "../../components/BackButton";
 import Background from "../../components/Background";
 import JointPositions from "../../components/JointPositions";
@@ -24,6 +24,9 @@ import ToggleFeature from "../../components/ToggleFeature";
 import VoltmeterSlider from "../../components/VoltmeterSlider";
 import VoltmeterValue from "../../components/VoltmeterValue";
 import SettingsModal from "../../components/SettingsModal";
+import navModeSelect from "../../utils/navModeSelect";
+import { HD_Mode } from "../../utils/HDMode";
+import { NavMode } from "../../utils/navMode";
 
 function useQuery() {
 	const { search } = useLocation();
@@ -57,6 +60,11 @@ export default () => {
 	);
 
 	const [manualSettings, setManualSettings] = useState(false);
+
+	useEffect(() => {
+		navModeSelect(NavMode.Manual_Basic);
+		hdModeSelect(HD_Mode.FK);
+	}, []);
 
 	return (
 		<div className="page">
@@ -102,7 +110,7 @@ export default () => {
 					<ModeSlider
 						name="Arm Mode"
 						mode={["IK", "FK"]}
-						functionTrigger={() => hdModeSelect(0)}
+						functionTrigger={() => hdModeSelect(HD_Mode.FK)}
 					/>
 					{/* <VoltmeterSlider initValue={0} onValueChange={openVoltmeter} /> */}
 					<ToggleFeature
@@ -110,12 +118,6 @@ export default () => {
 						onChange={(m) => {
 							openVoltmeter(m);
 							//"bool -> deployment"
-						}}
-					/>
-					<ToggleFeature
-						title="LED Drone"
-						onChange={(m) => {
-							console.log(m);
 						}}
 					/>
 					<TaskControl task={Task.MANUAL_CONTROL} />
@@ -188,7 +190,7 @@ export default () => {
 							<ModeSlider
 								name="Nav Mode"
 								mode={["NORMAL", "BASIC"]}
-								functionTrigger={() => hdModeSelect(0)}
+								functionTrigger={() => navModeSelect(NavMode.Manual_Normal)}
 							/>
 							<TaskControl task={Task.MANUAL_CONTROL} />
 						</div>

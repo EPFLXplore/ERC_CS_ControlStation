@@ -12,9 +12,11 @@ class Navigation:
         self.channel_layer = get_channel_layer()
 
         self.position = [0,0,0]
-        self.orientation = [0,0,0,0]
+        self.orientation = [0,0,0]
         self.linVel = [0,0,0]
         self.angVel = [0,0,0]
+
+        self.path = [[]]
 
         self.wheels_ang = [0,0,0,0]
 
@@ -64,8 +66,8 @@ class Navigation:
         async_to_sync(self.channel_layer.group_send)("nav", {"type": "nav_message",
                                                     'position'   : [self.position[0], self.position[1], self.position[2]],
                                                     'orientation': [self.orientation[0], self.orientation[1], self.orientation[2], self.orientation[3]],
-                                                    'linVel'     : [self.linVel[0], self.linVel[1], self.linVel[2]],
-                                                    'angVel'     : [self.angVel[0], self.angVel[1], self.angVel[2]],
-                                                    'current_goal' : "",
+                                                    # 'linVel'     : [self.linVel[0], self.linVel[1], self.linVel[2]],
+                                                    # 'angVel'     : [self.angVel[0], self.angVel[1], self.angVel[2]],
+                                                    'path' : [str(val) for val in self.path],
                                                     'wheel_ang' : [str(val) for val in self.wheels_ang],
-                                                                })
+                                                    })

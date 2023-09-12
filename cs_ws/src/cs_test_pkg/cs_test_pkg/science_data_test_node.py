@@ -62,9 +62,9 @@ class ElecTestNode(Node):
 
         self.publisher_four_in_one.publish(fio)
 
-        v = Voltage()
-        v.voltage = random.uniform(0, 10)
-        self.publisher_voltage.publish(v)
+        # v = Voltage()
+        # v.voltage = random.uniform(0, 10)
+        # self.publisher_voltage.publish(v)
 
         # self.publisher_potentiometers.publish(msg_float_32_multi)
         # self.publisher_LED_confirm.publish(msg_float_32_multi)

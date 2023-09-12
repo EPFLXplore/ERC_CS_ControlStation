@@ -13,12 +13,14 @@ import { Size } from "../../utils/size.type";
 import Timer from "../../components/Timer";
 import { Goal, useGoalTracker } from "../../hooks/navigationHooks";
 import { useNavigation } from "../../hooks/navigationHooks";
-import { angle, getDistance, roundToTwoDecimals } from "../../utils/maths";
+import { Point, angle, getDistance, roundToTwoDecimals } from "../../utils/maths";
 import WheelsIndicator from "../../components/WheelsIndicator";
 import PageHeader from "../../components/PageHeader";
 import SettingsModal from "../../components/SettingsModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GoalInputBox from "../../components/GoalInputBox";
+import navModeSelect from "../../utils/navModeSelect";
+import { NavMode } from "../../utils/navMode";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 	const {
@@ -41,6 +43,10 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 		linearVelocity,
 		angularVelocity,
 		trajectoryPoints,
+		pathPoints,
+		showPath,
+		setShowPath,
+		initPos
 	] = useNavigation();
 
 	const [navSettings, setNavlSettings] = useState(false);
@@ -86,6 +92,30 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 		}
 	};
 
+	const handleInitGoal = () => {
+		// Get the values from the input fields
+		const x = parseFloat((document.getElementById("input-x-init") as HTMLInputElement).value);
+		const y = parseFloat((document.getElementById("input-y-init") as HTMLInputElement).value);
+		const o = parseFloat((document.getElementById("input-o-init") as HTMLInputElement).value);
+
+		if (
+			x.toString() !== "NaN" &&
+			y.toString() !== "NaN" &&
+			o.toString() !== "NaN"
+		) {
+			initPos({x: x, y: y, o: o});
+
+			(document.getElementById("input-x-init") as HTMLInputElement).value = "";
+			(document.getElementById("input-y-init") as HTMLInputElement).value = "";
+			(document.getElementById("input-o-init") as HTMLInputElement).value = "";
+		}
+	};
+
+	useEffect(() => {
+		// Set mode to auto when entering the tab
+		navModeSelect(NavMode.Autonomous)
+	}, []);
+
 	return (
 		<div className="page center">
 			<Background />
@@ -99,6 +129,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 						o: 0,
 					}}
 					trajectory={trajectoryPoints}
+					path={showPath? pathPoints : []}
 					goals={goals}
 					tempGoal={tempGoal}
 					savedGoals={savedGoals}
@@ -306,10 +337,10 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 									<p>Wheel RR: </p>
 								</div>
 								<div className={styles.Infos} style={{ marginRight: "30px" }}>
-									<p>{wheelsPosition[0]}°</p>
-									<p>{wheelsPosition[1]}°</p>
-									<p>{wheelsPosition[2]}°</p>
-									<p>{wheelsPosition[3]}°</p>
+									<p>{roundToTwoDecimals(wheelsPosition[0])}°</p>
+									<p>{roundToTwoDecimals(wheelsPosition[1])}°</p>
+									<p>{roundToTwoDecimals(wheelsPosition[2])}°</p>
+									<p>{roundToTwoDecimals(wheelsPosition[3])}°</p>
 								</div>
 							</div>
 							<div className="Image of rover" style={{ marginTop: "20px" }}>
@@ -323,6 +354,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 			</div>
 			<div>
 				<SettingsModal open={navSettings} onClose={() => setNavlSettings(false)}>
+					<h3>Manage Waypoints</h3>
 					<GoalInputBox setGoal={setSavedGoals} isSavedGoal={true}>
 						{
 							<>
@@ -350,6 +382,21 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 							/>
 						))}
 					</>
+					<h3 style={{marginTop: "30px"}}>Reset Init Position</h3>
+					<GoalInputBox setGoal={() => {}} isSavedGoal={false} name={"-init"}>
+						{
+							<>
+								<Button
+									text="Save"
+									size={Size.SMALL}
+									theme={Themes.BROWN}
+									onClick={handleInitGoal}
+									radius={10}
+								/>
+							</>
+						}
+						{<></>}
+					</GoalInputBox>
 				</SettingsModal>
 			</div>
 		</div>
