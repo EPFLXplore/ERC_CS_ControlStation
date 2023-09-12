@@ -21,11 +21,17 @@ import useCameraSelector from "../../hooks/cameraHooks";
 import hdModeSelect from "../../utils/hdModeSelect";
 import { useEffect, useState } from "react";
 import { HD_Mode } from "../../utils/HDMode";
+import Button from "../../components/Button";
+import { Themes } from "../../utils/themes";
+import VoltmeterValue from "../../components/VoltmeterValue";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 	const [images, cameras, selectCamera, flushCameras, rotateCams, setRotateCams] =
 		useCameraSelector([Cameras.CAM1]);
-	const [jointPositions, jointVelocities, jointCurrents, availableButtons, taskSuccess] =
+	const [jointPositions, jointVelocities, jointCurrents, availableButtons,
+		taskSuccess,
+		voltmeter,
+		openVoltmeter] =
 		useHandlingDevice();
 	const [hdSettings, setHdSettings] = useState(false);
 
@@ -34,7 +40,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 	}, []);
 
 	return (
-		<div className="page">
+		<div className="page center">
 			<CameraView images={images} rotate={rotateCams} setRotateCams={setRotateCams} />
 			<Background />
 			<BackButton onGoBack={() => flushCameras()} />
@@ -60,6 +66,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 				<JointPositions positions={jointPositions} />
 				<JointSpeed speeds={jointVelocities} />
 				<JointCurrents currents={jointCurrents} />
+				<VoltmeterValue value={voltmeter} />
 			</div>
 			<div className={styles.globalContainer}>
 				<div className={styles.container}>
@@ -160,6 +167,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 						Ethernet Cable
 					</button>
 				</div>
+				<Button size={Size.SMALL} theme={Themes.BROWN} text="Cancel" onClick={() => buttonSelect(-1)} />
 				<TaskControl task={Task.HANDLING_DEVICE} />
 			</div>
 			<Timer end={Date.now() + 10000} size={Size.SMALL} />
