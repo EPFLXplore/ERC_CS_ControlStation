@@ -245,10 +245,9 @@ def resume_hd(request):
     cs.controller.pub_Task(3,4)
     return JsonResponse({})
 
-def retry_hd(request):
-    cs.node.get_logger().info("Maintenance: Retry")
-    cs.controller.pub_Task(3,5)
-    return JsonResponse({})
+def cancel_hd(request):
+    cs.node.get_logger().info("Maintenance: Cancel Goal")
+    cs.controller.pub_Task()
 
 def set_id(request):
     cs.rover.HD.set_joint_positions([10,0,0,0,0,0])
@@ -285,6 +284,8 @@ def deploy_hd_voltmeter(request):
     cs.HD_deploy_voltmeter_pub.publish(servoRequest)
 
     return JsonResponse({})
+
+
 
 # -----------------------------------
 # Science views

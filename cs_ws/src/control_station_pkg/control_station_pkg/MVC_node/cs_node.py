@@ -93,8 +93,9 @@ class CS:
         self.HD_InvManual_Coord_pub     = self.node.create_publisher(Int8MultiArray,    'CS/HD_InvManual_Coord',  1)
         self.HD_homeGo_pub              = self.node.create_publisher(Bool,              'CS/HD_reset_arm_pos',    1)
         self.HD_homeSet_pub             = self.node.create_publisher(Bool,              'CS/HD_set_zero_arm_pos', 1)
-        self.HD_toggle_laser_pub        = self.node.create_publisher(LaserRequest,              'EL/laser_req',        1)
-        self.HD_deploy_voltmeter_pub    = self.node.create_publisher(ServoRequest,              'EL/servo_req',        1)
+        self.HD_toggle_laser_pub        = self.node.create_publisher(LaserRequest,              'EL/laser_req',   1)
+        self.HD_deploy_voltmeter_pub    = self.node.create_publisher(ServoRequest,              'EL/servo_req',   1)
+        self.HD_cancel_goal_pub         = self.node.create_publisher(Bool,              'CS/HD_cancel',           1)
 
         # CS --> ROVER (NAV)
 
