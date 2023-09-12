@@ -1,20 +1,7 @@
-function getCookie(name: string): string | null {
-	let cookieValue = null;
-	if (document.cookie && document.cookie !== "") {
-		const cookies = document.cookie.split(";");
-		for (let i = 0; i < cookies.length; i++) {
-			const cookie = cookies[i].trim();
-			// Does this cookie string begin with the name we want?
-			if (cookie.substring(0, name.length + 1) === name + "=") {
-				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-				break;
-			}
-		}
-	}
-	return cookieValue;
-}
+import { HD_Mode } from "./HDMode";
+import { getCookie } from "./requests";
 
-function createRequest(id: number) {
+function createRequest(id: HD_Mode) {
 	const csrftoken = getCookie("csrftoken");
 
 	const data = new FormData();
@@ -27,7 +14,7 @@ function createRequest(id: number) {
 	});
 }
 
-export default (mode: number) => {
+export default (mode: HD_Mode) => {
 	const req = createRequest(mode);
 	fetch(req)
 		.then((response) => response.json())
