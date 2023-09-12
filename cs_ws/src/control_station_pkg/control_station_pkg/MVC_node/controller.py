@@ -416,17 +416,19 @@ class Controller():
     #            SCIENCE         #
     ##############################
 
+    # need to publish before placing an element in container to measure mass
     def pub_container_tare(self):
         calib_offset = MassCalibOffset()
-        calib_offset.destination_id = 1000 # TODO DEFINE WITH ELEC
+        calib_offset.destination_id = 0
         calib_offset.channel = 0
 
         self.cs.ELEC_container_pub.publish(calib_offset)
 
 
+    # need to publish before drilling and collecting soil
     def pub_drill_tare(self):
         calib_offset = MassCalibOffset()
-        calib_offset.destination_id = 1000 # TODO DEFINE WITH ELEC
+        calib_offset.destination_id = 0
         calib_offset.channel = 0
 
         self.cs.ELEC_drill_calib_pub.publish(calib_offset)
