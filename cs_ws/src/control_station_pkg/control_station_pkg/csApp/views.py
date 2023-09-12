@@ -21,6 +21,8 @@ from django.http            import HttpResponse, JsonResponse
 from django.shortcuts       import render
 from django.shortcuts       import redirect
 
+import math
+
 from MVC_node.controller import *
 from MVC_node.models.rover  import Task
 from manage          import setup
@@ -199,7 +201,8 @@ def nav_goal(request):
 
     x = float(request.POST.get("x"))
     y = float(request.POST.get("y"))
-    yaw = float(request.POST.get("yaw"))
+    # convert from degrees to radians
+    yaw = float(request.POST.get("yaw")) * math.pi / 180 
 
     cs.controller.pub_nav_goal(x, y, yaw)
     return JsonResponse({})
@@ -245,10 +248,9 @@ def resume_hd(request):
     cs.controller.pub_Task(3,4)
     return JsonResponse({})
 
-def retry_hd(request):
-    cs.node.get_logger().info("Maintenance: Retry")
-    cs.controller.pub_Task(3,5)
-    return JsonResponse({})
+def cancel_hd(request):
+    cs.node.get_logger().info("Maintenance: Cancel Goal")
+    cs.controller.pub_Task()
 
 def set_id(request):
     cs.rover.HD.set_joint_positions([10,0,0,0,0,0])
@@ -285,6 +287,8 @@ def deploy_hd_voltmeter(request):
     cs.HD_deploy_voltmeter_pub.publish(servoRequest)
 
     return JsonResponse({})
+
+
 
 # -----------------------------------
 # Science views

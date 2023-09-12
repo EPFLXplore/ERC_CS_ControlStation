@@ -122,7 +122,7 @@ export const useGoalTracker = () => {
 
 export function useNavigation() {
 	const [socket, setSocket] = useState<WebSocket | null>(null);
-	const [currentPosition, setCurrentPosition] = useState([-12.5, 20.5, 45]);
+	const [currentPosition, setCurrentPosition] = useState([0,0,0]);
 	const [currentOrientation, setCurrentOrientation] = useState([0, 0, 0]);
 	const [wheelsPosition, setWheelsPosition] = useState([0, 0, 0, 0]);
 	const [linearVelocity, setLinearVelocity] = useState([0, 0, 0]);
