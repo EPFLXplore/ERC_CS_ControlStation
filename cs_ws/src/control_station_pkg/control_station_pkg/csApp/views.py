@@ -21,6 +21,8 @@ from django.http            import HttpResponse, JsonResponse
 from django.shortcuts       import render
 from django.shortcuts       import redirect
 
+import math
+
 from MVC_node.controller import *
 from MVC_node.models.rover  import Task
 from manage          import setup
@@ -199,7 +201,8 @@ def nav_goal(request):
 
     x = float(request.POST.get("x"))
     y = float(request.POST.get("y"))
-    yaw = float(request.POST.get("yaw"))
+    # convert from degrees to radians
+    yaw = float(request.POST.get("yaw")) * math.pi / 180 
 
     cs.controller.pub_nav_goal(x, y, yaw)
     return JsonResponse({})
