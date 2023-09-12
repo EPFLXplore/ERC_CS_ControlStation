@@ -167,6 +167,30 @@ export function useNavigation() {
 		setSocket(navigationSocket);
 	}, []);
 
+	const initPos = (point: Point) => {
+		const csrftoken = getCookie("csrftoken");
+		let formData = new FormData();
+		formData.append("x", point.x.toString());
+		formData.append("y", point.y.toString());
+		formData.append("yaw", point.o.toString());
+
+		let request = new Request(
+			"http://127.0.0.1:8000/csApp/navigation/nav_starting_point",
+			{
+				method: "POST",
+				headers: {
+					"X-CSRFToken": csrftoken ?? "",
+				},
+				body: formData,
+			}
+		);
+
+		fetch(request)
+			.then((res) => res.json())
+			.then((data) => console.log(data))
+			.catch((err) => console.log(err));
+	};
+
 	return [
 		currentPosition,
 		currentOrientation,
@@ -176,6 +200,7 @@ export function useNavigation() {
 		trajectoryPoints,
 		pathPoints,
 		showPath,
-		setShowPath
+		setShowPath,
+		initPos,
 	] as const;
 }

@@ -44,6 +44,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 		pathPoints,
 		showPath,
 		setShowPath,
+		initPos
 	] = useNavigation();
 
 	const [navSettings, setNavlSettings] = useState(false);
@@ -86,6 +87,25 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 			(document.getElementById("input-sy") as HTMLInputElement).value = "";
 			(document.getElementById("input-so") as HTMLInputElement).value = "";
 			(document.getElementById("input-id") as HTMLInputElement).value = "";
+		}
+	};
+
+	const handleInitGoal = () => {
+		// Get the values from the input fields
+		const x = parseFloat((document.getElementById("input-x-init") as HTMLInputElement).value);
+		const y = parseFloat((document.getElementById("input-y-init") as HTMLInputElement).value);
+		const o = parseFloat((document.getElementById("input-o-init") as HTMLInputElement).value);
+
+		if (
+			x.toString() !== "NaN" &&
+			y.toString() !== "NaN" &&
+			o.toString() !== "NaN"
+		) {
+			initPos({x: x, y: y, o: o});
+
+			(document.getElementById("input-x-init") as HTMLInputElement).value = "";
+			(document.getElementById("input-y-init") as HTMLInputElement).value = "";
+			(document.getElementById("input-o-init") as HTMLInputElement).value = "";
 		}
 	};
 
@@ -327,6 +347,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 			</div>
 			<div>
 				<SettingsModal open={navSettings} onClose={() => setNavlSettings(false)}>
+					<h3>Manage Waypoints</h3>
 					<GoalInputBox setGoal={setSavedGoals} isSavedGoal={true}>
 						{
 							<>
@@ -354,6 +375,21 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 							/>
 						))}
 					</>
+					<h3 style={{marginTop: "30px"}}>Reset Init Position</h3>
+					<GoalInputBox setGoal={() => {}} isSavedGoal={false} name={"-init"}>
+						{
+							<>
+								<Button
+									text="Save"
+									size={Size.SMALL}
+									theme={Themes.BROWN}
+									onClick={handleInitGoal}
+									radius={10}
+								/>
+							</>
+						}
+						{<></>}
+					</GoalInputBox>
 				</SettingsModal>
 			</div>
 		</div>
