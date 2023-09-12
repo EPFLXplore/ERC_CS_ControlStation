@@ -4,8 +4,8 @@ import rclpy
 from rclpy.node import Node
 
 from std_msgs.msg import String
-from nav_msgs.msg import Odometry
-from geometry_msgs.msg import PoseStamped
+from nav_msgs.msg import Odometry, Path
+from geometry_msgs.msg import PoseStamped, Point, Pose
 from diagnostic_msgs.msg import DiagnosticStatus
 
 from std_msgs.msg import Int8MultiArray, Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16, Float32MultiArray
@@ -22,12 +22,15 @@ class NavTestNode(Node):
         self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
         self.publisher_odometry = self.create_publisher(Odometry, '/lio_sam/current_pose', 10)
         self.publisher_wheel_ang = self.create_publisher(AngleArray, 'EL/potentiometer', 10)
+        self.publisher_path = self.create_publisher(Path, '/path', 1)
         
         #TODO
         #self.subscription_move_base = self.create_subscription(String,'ROVER/move_base/cancel',self.listener_callback,10)
         self.subscription_goal =        self.create_subscription(PoseStamped,'ROVER/NAV_goal',self.goal_callback,10)
         self.subscription_navigation =  self.create_subscription(String,'ROVER/NAV_status',self.navigation_callback,10)
-
+        self.subscription_mode =       self.create_subscription(String,'ROVER/NAV_mode',self.mode_callback,10)
+        self.subscription_kinematic = self.create_subscription(String,'ROVER/NAV_kinematic',self.kinematic_callback,10)
+        self.subscription_starting_point = self.create_subscription(PoseStamped,'/lio_sam/initial_pose',self.starting_point_callback,10)
 
         timer_period = 1  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
@@ -66,6 +69,10 @@ class NavTestNode(Node):
         ang.angles = [random.uniform(0, 360), random.uniform(0, 360), random.uniform(0, 360), random.uniform(0, 360)]
         self.publisher_wheel_ang.publish(ang)
 
+        path = Path()
+        #path.poses = [PoseStamped(pose = Pose(point= Point(1.,3. ,2. )))]
+        self.publisher_path.publish(path)
+
         self.publisher_odometry.publish(msg)
         self.i += 1
 
@@ -76,6 +83,14 @@ class NavTestNode(Node):
     def navigation_callback(self, msg):
         self.get_logger().info('Navigation callback: "%s"' % msg.data)
 
+    def mode_callback(self, msg):
+        self.get_logger().info('Mode callback: "%s"' % msg.data)
+
+    def kinematic_callback(self, msg):
+        self.get_logger().info('Kinematic callback: "%s"' % msg.data)
+
+    def starting_point_callback(self, msg):
+        self.get_logger().info('Starting point callback :' + str(msg.pose.position.x) + " " + str(msg.pose.position.y) + " " + str(msg.pose.position.z))
 
 
 def main(args=None):

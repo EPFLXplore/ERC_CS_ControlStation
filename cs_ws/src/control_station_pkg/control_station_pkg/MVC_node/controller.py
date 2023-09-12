@@ -28,7 +28,7 @@ import time
 
 import numpy as np
 
-from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, Int16MultiArray, Header
+from std_msgs.msg import Int8MultiArray, Int8, Float32, Bool, Int16MultiArray, Header, String
 from geometry_msgs.msg import Pose, Point, Twist, PoseStamped, Quaternion
 from actionlib_msgs.msg import GoalID
 from transforms3d.euler import euler2quat, quat2euler
@@ -371,7 +371,16 @@ class Controller():
         self.cs.Nav_Goal_pub.publish(PoseStamped(header=h, pose=pose))
 
     def pub_cancel_nav_goal(self):
-        self.cs.Nav_Cancel_pub.publish(Bool(data=True))
+        self.cs.Nav_Status_pub.publish(String("cancel"))
+
+    def pub_abort_nav_goal(self):
+        self.cs.Nav_Status_pub.publish(String("abort"))
+
+    def pub_nav_mode(self, mode):
+        self.cs.Nav_Mode_pub.publish(mode)
+    
+    def pub_nav_kinematic(self, kinematic):
+        self.cs.Nav_Kinematic_pub.publish(kinematic)
         
         #self.cs.rover.Nav.cancelGoal()
 

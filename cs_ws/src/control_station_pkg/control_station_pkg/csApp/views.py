@@ -209,6 +209,11 @@ def nav_cancel(request):
     cs.controller.pub_cancel_nav_goal()
     return JsonResponse({})
 
+def nav_abort(request):
+
+    cs.controller.pub_abort_nav_goal()
+    return JsonResponse({})
+
 def nav_starting_point(request):
 
     x = float(request.POST.get("x"))
@@ -219,6 +224,11 @@ def nav_starting_point(request):
 
     return JsonResponse({})
 
+def nav_mode(request):
+    cs.controller.pub_nav_mode(String(request.POST.get("mode")))
+
+def nav_kinematic(request):
+    cs.controller.pub_nav_kinematic(String(request.POST.get("kinematic")))
 
 # -----------------------------------
 # Handling device views
@@ -268,7 +278,6 @@ def set_hd_mode(request):
     cs.node.get_logger().info("Maintenance: Set HD mode to " +  str(mode))
     return JsonResponse({})
 
-
 def toggle_hd_laser(request):
     toggle = bool(request.POST.get("toggle"))
     cs.HD_toggle_laser_pub.publish(LaserRequest(enable=toggle))
@@ -283,8 +292,12 @@ def deploy_hd_voltmeter(request):
     else :
         servoRequest.angle = 0
     cs.HD_deploy_voltmeter_pub.publish(servoRequest)
-
     return JsonResponse({})
+
+def set_hd_inverse_frame(request):
+    cs.HD_inverse_frame.publish(String(request.POST.get("inverse_frame")))
+    return JsonResponse({})
+
 
 # -----------------------------------
 # Science views

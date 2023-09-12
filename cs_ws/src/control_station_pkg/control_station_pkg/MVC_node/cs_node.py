@@ -84,6 +84,7 @@ class CS:
         self.HD_Angles_pub          = self.node.create_publisher(Int8MultiArray,    'CS/HD_Angles',        1)
         self.HD_id                  = self.node.create_publisher(Int8,              'CS/HD_element_id',    1)
         self.HD_toggle_camera_pub   = self.node.create_publisher(Bool,              'CS/HD_toggle_camera', 1)
+        self.HD_inverse_frame       = self.node.create_publisher(String,            'ROVER/HD_inverse_frame', 1)
 
         # CS --> ROVER (GAMEPAD)
         self.HD_Gamepad_pub         = self.node.create_publisher(Float32MultiArray,  'CS/HD_gamepad',       1)
@@ -103,6 +104,8 @@ class CS:
         self.Nav_Cancel_pub             = self.node.create_publisher(Bool,              'CS/NAV_cancel',       1)
         self.Nav_Joystick_pub           = self.node.create_publisher(Twist,             '/cmd_vel',            1)
         self.Nav_Starting_Point_pub     = self.node.create_publisher(PoseStamped,       '/lio_sam/initial_pose', 1)
+        self.Nav_Mode_pub               = self.node.create_publisher(String,            'ROVER/NAV_mode', 1)
+        self.Nav_Kinematic_pub          = self.node.create_publisher(String,            'ROVER/NAV_kinematic', 1)
         #self.Nav_DebugWheels_pub    = self.node.create_publisher(Int16MultiArray,   '/debug/wheel_cmds',   1)
 
         # CS --> ROVER (SC)
