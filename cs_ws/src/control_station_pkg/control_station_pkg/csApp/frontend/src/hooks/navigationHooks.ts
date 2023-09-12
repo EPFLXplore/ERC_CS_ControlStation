@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { drawGoal } from "../components/Map";
 import { Point } from "../utils/maths";
 import { getCookie } from "../utils/requests";
+import path from "path";
 
 export type Goal = Point & { id: string };
 
@@ -127,6 +128,8 @@ export function useNavigation() {
 	const [linearVelocity, setLinearVelocity] = useState([0, 0, 0]);
 	const [angularVelocity, setAngularVelocity] = useState([0, 0, 0]);
 	const [trajectoryPoints, setTrajectoryPoints] = useState<Point[]>([]);
+	const [pathPoints, setPathPoints] = useState<Point[]>([]);
+	const [showPath, setShowPath] = useState<boolean>(true);
 
 	useEffect(() => {
 		let navigationSocket = new WebSocket("ws://127.0.0.1:8000/ws/csApp/info_nav/");
@@ -147,6 +150,13 @@ export function useNavigation() {
 					o: data.orientation[2],
 				},
 			]);
+			setPathPoints(data.path.map((element: number[]) => {
+				return {
+					x: element[0],
+					y: element[1],
+					o: 0,
+				}
+			}));
 		};
 
 		navigationSocket.onerror = (e) => {
@@ -157,6 +167,30 @@ export function useNavigation() {
 		setSocket(navigationSocket);
 	}, []);
 
+	const initPos = (point: Point) => {
+		const csrftoken = getCookie("csrftoken");
+		let formData = new FormData();
+		formData.append("x", point.x.toString());
+		formData.append("y", point.y.toString());
+		formData.append("yaw", point.o.toString());
+
+		let request = new Request(
+			"http://127.0.0.1:8000/csApp/navigation/nav_starting_point",
+			{
+				method: "POST",
+				headers: {
+					"X-CSRFToken": csrftoken ?? "",
+				},
+				body: formData,
+			}
+		);
+
+		fetch(request)
+			.then((res) => res.json())
+			.then((data) => console.log(data))
+			.catch((err) => console.log(err));
+	};
+
 	return [
 		currentPosition,
 		currentOrientation,
@@ -164,5 +198,9 @@ export function useNavigation() {
 		linearVelocity,
 		angularVelocity,
 		trajectoryPoints,
+		pathPoints,
+		showPath,
+		setShowPath,
+		initPos,
 	] as const;
 }
