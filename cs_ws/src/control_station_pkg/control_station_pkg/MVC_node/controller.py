@@ -33,6 +33,7 @@ from geometry_msgs.msg import Pose, Point, Twist, PoseStamped, Quaternion
 from actionlib_msgs.msg import GoalID
 from transforms3d.euler import euler2quat, quat2euler
 
+from avionics_interfaces.msg import MassCalibOffset
 from .models.rover   import Task
 
 from .models.science         import Science
@@ -409,12 +410,26 @@ class Controller():
 
     def pub_debug_wheels(self, wheel_id, rot_vel, range):
         self.cs.node.get_logger().info("Debug wheels")
-        self.cs.Nav_DebugWheels_pub(Int16MultiArray(data=[wheel_id, rot_vel, range]))
+        self.cs.Nav_DebugWheels_pub.publish(Int16MultiArray(data=[wheel_id, rot_vel, range]))
 
     ##############################
     #            SCIENCE         #
     ##############################
 
+    def pub_container_tare(self):
+        calib_offset = MassCalibOffset()
+        calib_offset.destination_id = 1000 # TODO DEFINE WITH ELEC
+        calib_offset.channel = 0
+
+        self.cs.ELEC_container_pub.publish(calib_offset)
+
+
+    def pub_drill_tare(self):
+        calib_offset = MassCalibOffset()
+        calib_offset.destination_id = 1000 # TODO DEFINE WITH ELEC
+        calib_offset.channel = 0
+
+        self.cs.ELEC_drill_calib_pub.publish(calib_offset)
     
 
     ##############################
