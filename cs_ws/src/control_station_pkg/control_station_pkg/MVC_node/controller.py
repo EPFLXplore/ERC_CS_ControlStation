@@ -213,18 +213,34 @@ class Controller():
     # ========= NAVIGATION CALLBACKS =========
 
     # receives an Odometry message from NAVIGATION
+    # def nav_position(self, poseStamped):
+
+    #     orientation = quat2euler(poseStamped.pose.orientation.w, poseStamped.pose.orientation.x, poseStamped.pose.orientation.y, poseStamped.pose.orientation.z)
+    #     self.navigation.position = [poseStamped.pose.position.x, poseStamped.pose.position.y, poseStamped.pose.position.z]
+    #     self.navigation.orientation = []
+    #     #self.navigation.linVel = [odometry.twist.twist.linear.x, odometry.twist.twist.linear.y, odometry.twist.twist.linear.z]
+    #     #self.navigation.angVel = [odometry.twist.twist.angular.x, odometry.twist.twist.angular.y, odometry.twist.twist.angular.z]
+
+    #     self.navigation.UpdateNavSocket()
+
     def nav_odometry(self, odometry):
 
         self.navigation.position = [odometry.pose.pose.position.x, odometry.pose.pose.position.y, odometry.pose.pose.position.z]
-        self.navigation.orientation = [odometry.pose.pose.orientation.x, odometry.pose.pose.orientation.y, odometry.pose.pose.orientation.z, odometry.pose.pose.orientation.w]
+
+        orientation = quat2euler(odometry.pose.pose.orientation.w, odometry.pose.pose.orientation.x, odometry.pose.pose.orientation.y, odometry.pose.pose.orientation.z)
+        self.navigation.orientation = [orientation[0], orientation[1], orientation[2]]
+
         self.navigation.linVel = [odometry.twist.twist.linear.x, odometry.twist.twist.linear.y, odometry.twist.twist.linear.z]
         self.navigation.angVel = [odometry.twist.twist.angular.x, odometry.twist.twist.angular.y, odometry.twist.twist.angular.z]
 
         self.navigation.UpdateNavSocket()
 
     def nav_wheel_ang(self, wheel_ang):
-        print("nav_wheel_ang", wheel_ang.angles)
         self.navigation.wheels_ang = [wheel_ang.angles[0], wheel_ang.angles[1], wheel_ang.angles[2], wheel_ang.angles[3]]
+        self.navigation.UpdateNavSocket()
+
+    def nav_path(self, path):
+        self.navigation.path = [[i.pose.position.x, i.pose.position.y, i.pose.position.z] for i in path.poses]
         self.navigation.UpdateNavSocket()
 
 

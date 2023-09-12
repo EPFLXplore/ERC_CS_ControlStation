@@ -11,6 +11,7 @@ from .models.rover import Rover
 from csApp.models         import *
 from std_msgs.msg         import Int8MultiArray    , Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16, Float32MultiArray
 from diagnostic_msgs.msg  import DiagnosticStatus
+from nav_msgs.msg         import Path
 from std_srvs.srv import SetBool
 import MVC_node.models.utils as utils
 
@@ -138,8 +139,10 @@ class CS:
         self.node.create_subscription(Voltage,          'EL/voltage',         self.controller.hd_voltage, 10)  
         
         # -- NAV messages --
-        self.node.create_subscription(Odometry,         'ROVER/NAV_odometry',            self.controller.nav_odometry      , 10)
-        self.node.create_subscription(AngleArray,         'EL/potentiometer',               self.controller.nav_wheel_ang     , 10)
+        #self.node.create_subscription(PoseStamped,         '/lio_sam/current_pose',       self.controller.nav_position  , 10)
+        self.node.create_subscription(Odometry,         '/lio_sam/odom',       self.controller.nav_odometry  , 10)
+        self.node.create_subscription(AngleArray,       'EL/potentiometer',    self.controller.nav_wheel_ang , 10)
+        self.node.create_subscription(Path,             '/plan',               self.controller.nav_path      , 10)
 
         # -- Camera messages --
         self.node.create_subscription(CompressedImage, '/camera_0', cameras_reciever.display_cam_0, 1)
