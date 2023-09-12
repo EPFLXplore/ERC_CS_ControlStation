@@ -98,9 +98,10 @@ class CS:
 
         # CS --> ROVER (NAV)
 
-        self.Nav_Goal_pub           = self.node.create_publisher(PoseStamped,       'CS/NAV_goal',         1)
-        self.Nav_Cancel_pub         = self.node.create_publisher(String,            'CS/NAV_cancel',       1)
-        self.Nav_Joystick_pub       = self.node.create_publisher(Twist,             '/cmd_vel',            1)
+        self.Nav_Goal_pub               = self.node.create_publisher(PoseStamped,       'CS/NAV_goal',         1)
+        self.Nav_Cancel_pub             = self.node.create_publisher(String,              'CS/NAV_cancel',       1)
+        self.Nav_Joystick_pub           = self.node.create_publisher(Twist,             '/cmd_vel',            1)
+        self.Nav_Starting_Point_pub     = self.node.create_publisher(PoseStamped,       '/lio_sam/initial_pose', 1)
         #self.Nav_DebugWheels_pub    = self.node.create_publisher(Int16MultiArray,   '/debug/wheel_cmds',   1)
 
         # CS --> ROVER (SC)

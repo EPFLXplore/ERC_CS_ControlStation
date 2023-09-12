@@ -4,7 +4,7 @@
     left: 0
     width: 100%
     height: 100%
-    z-index: -1
+    z-index: 0
     overflow: hidden
     display: flex
     flex-direction: row
@@ -15,6 +15,22 @@
     height: 100%
     object-fit: cover
     overflow: hidden
+    -moz-user-select: -moz-none
+    -khtml-user-select: none
+    -webkit-user-select: none
+    -o-user-select: none
+    user-select: none
+
+.RotatedImage
+    width: 100%
+    height: 100%
+    object-fit: cover
+    overflow: hidden
+    -webkit-transform:rotate(180deg)
+    -moz-transform: rotate(180deg)
+    -ms-transform: rotate(180deg)
+    -o-transform: rotate(180deg)
+    transform: rotate(180deg)
 
 .Half
     width: 50%
@@ -22,8 +38,30 @@
     object-fit: cover
     overflow: hidden
 
+.RotatedHalf
+    width: 50%
+    height: 100%
+    object-fit: cover
+    overflow: hidden
+    -webkit-transform:rotate(180deg)
+    -moz-transform: rotate(180deg)
+    -ms-transform: rotate(180deg)
+    -o-transform: rotate(180deg)
+    transform: rotate(180deg)
+
 .Quarter
     width: 50%
     height: 50%
     object-fit: cover
     overflow: hidden
+
+.RotatedQuarter
+    width: 50%
+    height: 50%
+    object-fit: cover
+    overflow: hidden
+    -webkit-transform:rotate(180deg)
+    -moz-transform: rotate(180deg)
+    -ms-transform: rotate(180deg)
+    -o-transform: rotate(180deg)
+    transform: rotate(180deg)

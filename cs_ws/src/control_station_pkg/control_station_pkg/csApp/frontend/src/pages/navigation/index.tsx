@@ -15,6 +15,9 @@ import { Goal, useGoalTracker } from "../../hooks/navigationHooks";
 import { useNavigation } from "../../hooks/navigationHooks";
 import { angle, getDistance, roundToTwoDecimals } from "../../utils/maths";
 import WheelsIndicator from "../../components/WheelsIndicator";
+import PageHeader from "../../components/PageHeader";
+import SettingsModal from "../../components/SettingsModal";
+import { useState } from "react";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 	const {
@@ -36,6 +39,8 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 		angularVelocity,
 		trajectoryPoints,
 	] = useNavigation();
+
+	const [navSettings, setNavlSettings] = useState(false);
 
 	const handleAddGoal = () => {
 		// Get the values from the input fields
@@ -119,7 +124,11 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 					}}
 				/>
 				<div className={styles.Info}>
-					<h2 className={styles.InfoTitle}>{mode} Navigation</h2>
+					<PageHeader
+						title="Camera"
+						settings
+						settingsCallback={() => setNavlSettings(true)}
+					/>
 					<div className={styles.ControlsContainer}>
 						<h3>Current Position</h3>
 						<CurrentPosition
@@ -379,6 +388,9 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 				<Timer end={Date.now() + 10000} size={Size.SMALL} />
 				<TaskControl task={Task.NAVIGATION} />
 			</div>
+			<SettingsModal open={navSettings} onClose={() => setNavlSettings(false)}>
+				{}
+			</SettingsModal>
 		</div>
 	);
 };

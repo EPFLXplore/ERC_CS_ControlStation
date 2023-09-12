@@ -75,7 +75,7 @@ class Rover():
         self.state_pub         = self.node.create_publisher(String,            'ROVER/State'                   , 1)
 
         # Rover(SC) --> CS
-        self.SC_fsm_state_pub  = self.node.create_publisher(Int8,                'ROVER/SC_fsm_state'            , 1)
+        self.SC_fsm_state_pub  = self.node.create_publisher(Int8,                'ROVER/SC_fsm'            , 1)
         # self.SC_cmd_pub        = self.node.create_publisher(String,            'ROVER/SC_cmd'                  , 1)
         # self.SC_infos_pub      = self.node.create_publisher(String,            'ROVER/SC_info'                 , 1)
         # self.SC_humidities_pub = self.node.create_publisher(Int16,             'ROVER/SC_measurements_humidity', 1)
@@ -134,7 +134,7 @@ class Rover():
 
 
         # Rover --> SC
-        self.SC_pub = self.node.create_publisher(Int8,        'ROVER/SC_cmd'           , 1)
+        self.SC_pub = self.node.create_publisher(Int8,        'ROVER/SC_fsm'           , 1)
 
         # ===== SUBSCRIBERS =====
 
@@ -316,10 +316,13 @@ class Rover():
             if (instr == Instruction.LAUNCH.value):
                 if(self.ROVER_STATE == Task.IDLE):
                     self.node.get_logger().info("LAUNCHING SCIENCE")
-                    self.launcher.start_science()
+                    #self.launcher.start_science()
                     self.ROVER_STATE = Task.SCIENCE
+                    print("sending launch instr to science : " + str(instr))
+                    self.SC_pub.publish(Int8(data=instr))
                 else:
-                    self.node.get_logger().info("Can't launch Science if another task is still running!")
+                    #self.node.get_logger().info("Can't launch Science if another task is still running!")
+                    self.SC_pub.publish(Int8(data=instr))
                     self.log_task_already_launched("Science")
 
             #OTHER SCIENCE INSTR TODO: ADD abort in science

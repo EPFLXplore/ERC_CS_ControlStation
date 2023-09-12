@@ -79,7 +79,7 @@ class Controller():
     # receiving a confirmation from rover after sending an instruction
     def rover_confirmation(self, txt):
         if (self.cs.rover.getInWait()):
-            self.cs.node.get_logger().info("Rover Confirmation: %s\n", txt.data)
+            #self.cs.node.get_logger().info("Rover Confirmation: %s\n", txt.data)
             self.cs.rover.setReceived(True)
         else:
             self.cs.node.get_logger().info("Received after timeout: %s\n", txt.data)
@@ -116,7 +116,9 @@ class Controller():
 
 
     def science_state(self, data):
+        print("wallah")
         self.science.state = data.data
+        print("science drill state :" + str(self.science.state))
         self.science.UpdateScienceDrillSocket()
         
     def science_motors_pos(self, data):
@@ -190,16 +192,23 @@ class Controller():
     # receive: voltage data from the handling device's voltmeter
     def hd_voltage(self, Voltage):
         self.handling_device.voltage = Voltage.voltage
-        self.handling_device.UpdateHandlingDeviceSocket()
+        #self.handling_device.UpdateHandlingDeviceSocket()
 
     def hd_ARtags(self, ARtags):
-        self.handling_device.available_buttons = ARtags.data
-        #TODO convertir la liste d'ARtags en list de bouton disponible
-        self.handling_device.UpdateHandlingDeviceSocket()
+        
+        available_buttons = [0] * 16
+        if(ARtags.data[0] == 1):
+            available_buttons[0:6] = [1] * 7
+
+        if(ARtags.data[1] == 1):
+            available_buttons[6:12] = [1] * 6
+
+        self.handling_device.available_buttons = available_buttons
+        #self.handling_device.UpdateHandlingDeviceSocket()
 
     def hd_task_outcome(self, outcome):
         self.handling_device.task_outcome = outcome.data
-        self.handling_device.UpdateHandlingDeviceSocket()
+        #self.handling_device.UpdateHandlingDeviceSocket()
 
     # ========= NAVIGATION CALLBACKS =========
 
@@ -354,6 +363,23 @@ class Controller():
         self.cs.Nav_Cancel_pub.publish(String(data="cancel")) #Bool(data=True))
         
         #self.cs.rover.Nav.cancelGoal()
+
+    def pub_nav_starting_point(self, x, y, yaw):
+
+        h = Header()
+        pose = Pose()
+
+        point = Point(x=x, y=y, z=0.0)
+        pose.position = point
+
+        # rover orientation
+        q = euler2quat(0, 0, yaw)
+        pose.orientation.w = q[0]
+        pose.orientation.x = q[1]
+        pose.orientation.y = q[2]
+        pose.orientation.z = q[3]
+
+        self.cs.Nav_Starting_Point_pub(PoseStamped(header=h, pose=pose))
 
 
     # cancel a specific Navigation goal by giving the goal's id

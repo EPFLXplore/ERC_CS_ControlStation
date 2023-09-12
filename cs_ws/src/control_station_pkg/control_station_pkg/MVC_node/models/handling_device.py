@@ -125,11 +125,12 @@ class HandlingDevice:
 
 
     def UpdateHandlingDeviceSocket(self):
+            
             async_to_sync(self.channel_layer.group_send)("hd", {"type": "hd_message",
                                                         'joint_position': [str(val) for val in self.joint_positions],
                                                         'joint_velocity': [str(val) for val in self.joint_velocities],
                                                         'joint_current': [str(val) for val in self.joint_current],
                                                         'available_buttons' : [str(val) for val in self.available_buttons],
-                                                        'task_outcome' : str(False),
+                                                        'task_outcome' : str(self.task_outcome),
                                                         'voltage' : str(self.voltage),
                                                         })

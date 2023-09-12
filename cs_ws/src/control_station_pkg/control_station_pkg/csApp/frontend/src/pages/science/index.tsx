@@ -36,7 +36,8 @@ type DataRow = {
 export default () => {
 	const [mode, setMode] = useState(0);
 
-	const [images, cameras, selectCamera, flushCameras] = useCameraSelector([Cameras.CAM1]);
+	const [images, cameras, selectCamera, flushCameras, rotateCams, setRotateCams] =
+		useCameraSelector([Cameras.CAM1]);
 	const [state, limitSwitches, module1, module2, drill, measureSpectro, resetSpectro] =
 		useScienceDrillInfos();
 	const sensorType = "Sensor Data";
@@ -49,6 +50,7 @@ export default () => {
 	if (mode === 0) {
 		return (
 			<div>
+				<CameraView images={images} rotate={rotateCams} setRotateCams={setRotateCams} />
 				<Background />
 				<BackButton onGoBack={() => flushCameras()} />
 				<div className={styles.InfoControllerContainer}>
@@ -188,8 +190,6 @@ export default () => {
 						</table>
 					</div>
 				</div>
-
-				<CameraView images={images} />
 			</div>
 		);
 	} else {

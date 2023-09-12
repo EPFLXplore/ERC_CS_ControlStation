@@ -23,6 +23,7 @@ import hdModeSelect from "../../utils/hdModeSelect";
 import ToggleFeature from "../../components/ToggleFeature";
 import VoltmeterSlider from "../../components/VoltmeterSlider";
 import VoltmeterValue from "../../components/VoltmeterValue";
+import SettingsModal from "../../components/SettingsModal";
 
 function useQuery() {
 	const { search } = useLocation();
@@ -31,12 +32,13 @@ function useQuery() {
 }
 
 export default () => {
-	const [images, cameras, selectCamera, flushCameras] = useCameraSelector([
-		Cameras.CAM1,
-		// Cameras.CAM2,
-		// Cameras.CAM3,
-		// Cameras.CAM4,
-	]);
+	const [images, cameras, selectCamera, flushCameras, rotateCams, setRotateCams] =
+		useCameraSelector([
+			Cameras.CAM1,
+			// Cameras.CAM2,
+			// Cameras.CAM3,
+			// Cameras.CAM4,
+		]);
 	const [
 		jointPositions,
 		jointVelocities,
@@ -50,19 +52,22 @@ export default () => {
 		useNavigation();
 	const defaultMode = useQuery().get("defaultMode");
 
-	console.log("Render manual");
-
 	const [mode, setMode] = useState(
 		defaultMode === "nav" ? Task.NAVIGATION : Task.HANDLING_DEVICE
 	);
 
+	const [manualSettings, setManualSettings] = useState(false);
+
 	return (
 		<div className="page">
-			<Background />
+			<CameraView images={images} rotate={rotateCams} setRotateCams={setRotateCams} />
 			<BackButton onGoBack={() => flushCameras()} />
 			<PageHeader
 				title="Manual Control"
 				settings
+				settingsCallback={() => {
+					setManualSettings(true);
+				}}
 				optionTitle="Cameras"
 				options={[
 					"Camera 1",
@@ -99,7 +104,14 @@ export default () => {
 						mode={["IK", "FK"]}
 						functionTrigger={() => hdModeSelect(0)}
 					/>
-					<VoltmeterSlider initValue={0} onValueChange={openVoltmeter} />
+					{/* <VoltmeterSlider initValue={0} onValueChange={openVoltmeter} /> */}
+					<ToggleFeature
+						title="Voltmeter"
+						onChange={(m) => {
+							openVoltmeter(m);
+							//"bool -> deployment"
+						}}
+					/>
 					<ToggleFeature
 						title="LED Drone"
 						onChange={(m) => {
@@ -194,7 +206,10 @@ export default () => {
 				}
 				visible
 			/>
-			<CameraView images={images} />
+			<Background />
+			<SettingsModal open={manualSettings} onClose={() => setManualSettings(false)}>
+				{}
+			</SettingsModal>
 		</div>
 	);
 };

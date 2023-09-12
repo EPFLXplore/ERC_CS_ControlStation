@@ -62,6 +62,8 @@ class HDConsumer(WebsocketConsumer):
     # Receive message from room group
     def hd_message(self, event):
 
+        print("HDConsumer: hd_message")
+
         # Send message to WebSocket
         self.send(text_data=json.dumps({
                 'joint_position'   : event['joint_position'],
