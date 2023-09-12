@@ -265,7 +265,7 @@ def cancel_hd(request):
 def set_id(request):
     cs.rover.HD.set_joint_positions([10,0,0,0,0,0])
     #cs.controller.sendJson(Task.MAINTENANCE)
-    id = int(request.POST.get("id")) + 20
+    id = int(request.POST.get("id"))
     cs.rover.HD.setElemId(id)
     cs.HD_id.publish(Int8(data=id))
     cs.node.get_logger().info("Maintenance: Set HD id to " + str(id))
