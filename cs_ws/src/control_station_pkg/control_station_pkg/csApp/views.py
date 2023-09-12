@@ -300,7 +300,7 @@ def launch_science(request):
     return JsonResponse({})
 
 def abort_science(request):
-    cs.controller.pub_Task(4,2)     #0 -> 2 ?
+    cs.controller.pub_Task(4,2)
     cs.rover.setState(Task.IDLE)
     return JsonResponse({})
 
@@ -312,45 +312,14 @@ def resume_science(request):
     cs.controller.pub_Task(4,4)
     return JsonResponse({})
 
-# def confirm_science(request):
-#     cs.controller.pub_Task(4,2)
-#     return JsonResponse({})
+def container_tare(request):
+    cs.controller.pub_container_tare()
+    return JsonResponse({})
 
-# def retry_science(request):
-#     cs.controller.pub_Task(4,1)
-#     return JsonResponse({})
+def drill_tare(request):
+    cs.controller.pub_drill_tare()
+    return JsonResponse({})
 
-# def start_timer(request):
-#     print("Starting timer")
-
-#     # startThread()
-#     return JsonResponse({})
-
-# def set_tube_cmd(request):
-#     tube = int(request.POST.get("tube"))
-#     operation = int(request.POST.get("operation"))
-    
-#     cs.controller.selectedTube(tube)
-#     cs.controller.selectedOp(operation)
-
-#     print("SC: (operation = ", operation, ", tube = ", tube, ")")
-#     cs.rover.setState(Task.SCIENCE)
-
-#     return sc_send_cmd(cs.rover.SC.getCmd())
-
-
-# def get_humidity(request):
-#     return sc_send_cmd(3)
-
-
-# def get_parameters(request):
-#     return sc_send_cmd(4)
-
-# def get_sc_info(request):
-#     return sc_send_cmd(5)
-
-# def get_sc_state(request):
-#     return sc_send_cmd(6)
 
 
 def sc_send_cmd(val):

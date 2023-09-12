@@ -46,7 +46,9 @@ urlpatterns = [
     path('science/abort',           abort_science, name='abort_science'),
     path('science/resume',          resume_science,   name='resume_science'),
     path('science/mesure_spectro', sc_mesure_spectro, name='sc_mesure_spectro'),
-    path('science/reset_spectro',   sc_reset_spectro, name='sc_reset_spectro'),
+    path('science/reset_spectro',  sc_reset_spectro, name='sc_reset_spectro'),
+    path('science/container_tare', container_tare, name='container_tare'),
+    path('science/drill_tare',     drill_tare, name='drill_tare'),
 
     #Cameras
     path('cameras/enable_cameras', enable_cameras, name='enable_cameras'),
