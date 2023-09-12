@@ -18,6 +18,7 @@ import WheelsIndicator from "../../components/WheelsIndicator";
 import PageHeader from "../../components/PageHeader";
 import SettingsModal from "../../components/SettingsModal";
 import { useState } from "react";
+import GoalInputBox from "../../components/GoalInputBox";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 	const {
@@ -29,6 +30,8 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 		setTempGoal,
 		savedGoals,
 		setSavedGoals,
+		addSavedGoal,
+		removeSavedGoal,
 	} = useGoalTracker();
 
 	const [
@@ -61,9 +64,27 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 		}
 	};
 
-	// TODO Replace all these constants by the call to functions
-	const routeLeft = 20;
-	const EstimatedTime = "07:00";
+	const handleAddSavedGoal = () => {
+		// Get the values from the input fields
+		const x = parseFloat((document.getElementById("input-sx") as HTMLInputElement).value);
+		const y = parseFloat((document.getElementById("input-sy") as HTMLInputElement).value);
+		const o = parseFloat((document.getElementById("input-so") as HTMLInputElement).value);
+		const id = (document.getElementById("input-id") as HTMLInputElement).value;
+
+		if (
+			x.toString() !== "NaN" &&
+			y.toString() !== "NaN" &&
+			o.toString() !== "NaN" &&
+			id !== ""
+		) {
+			addSavedGoal(x, y, o, id);
+
+			(document.getElementById("input-sx") as HTMLInputElement).value = "";
+			(document.getElementById("input-sy") as HTMLInputElement).value = "";
+			(document.getElementById("input-so") as HTMLInputElement).value = "";
+			(document.getElementById("input-id") as HTMLInputElement).value = "";
+		}
+	};
 
 	return (
 		<div className="page center">
@@ -138,144 +159,56 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 								currentOrientation[2],
 							]}
 						/>
-						<div className={styles.inputContainer}>
-							<div className={styles.finalContainer}>
-								X
-								<input
-									type="number"
-									id="input-x"
-									name="input-x"
-									onInput={(e) => {
-										setTempGoal((prev) => {
-											if (!prev) {
-												return {
-													id: "-1",
-													x: parseFloat(
-														(e.target as HTMLInputElement).value
-															.length > 0
-															? (e.target as HTMLInputElement).value
-															: "0"
-													),
-													y: 0,
-													o: 0,
-												};
-											} else {
-												return {
-													...prev,
-													x: parseFloat(
-														(e.target as HTMLInputElement).value
-															.length > 0
-															? (e.target as HTMLInputElement).value
-															: "0"
-													),
-												};
-											}
-										});
-									}}
-								/>
-							</div>
-							<div className={styles.finalContainer}>
-								Y
-								<input
-									type="number"
-									id="input-y"
-									name="input-y"
-									onInput={(e) => {
-										setTempGoal((prev) => {
-											if (!prev) {
-												return {
-													id: "-1",
-													x: 0,
-													y: parseFloat(
-														(e.target as HTMLInputElement).value
-															.length > 0
-															? (e.target as HTMLInputElement).value
-															: "0"
-													),
-													o: 0,
-												};
-											} else {
-												return {
-													...prev,
-													y: parseFloat(
-														(e.target as HTMLInputElement).value
-															.length > 0
-															? (e.target as HTMLInputElement).value
-															: "0"
-													),
-												};
-											}
-										});
-									}}
-								/>
-							</div>
-							<div className={styles.finalContainer}>
-								O
-								<input
-									type="number"
-									id="input-o"
-									name="input-o"
-									onInput={(e) => {
-										setTempGoal((prev) => {
-											if (!prev) {
-												return {
-													id: "-1",
-													x: 0,
-													y: 0,
-													o: parseFloat(
-														(e.target as HTMLInputElement).value
-															.length > 0
-															? (e.target as HTMLInputElement).value
-															: "0"
-													),
-												};
-											} else {
-												return {
-													...prev,
-													o: parseFloat(
-														(e.target as HTMLInputElement).value
-															.length > 0
-															? (e.target as HTMLInputElement).value
-															: "0"
-													),
-												};
-											}
-										});
-									}}
-								/>
-							</div>
-						</div>
-						<div className={styles.buttonGoalContainer}>
-							<Button
-								text="Go"
-								size={Size.SMALL}
-								theme={Themes.BROWN}
-								onClick={handleAddGoal}
-								radius={10}
-							/>
-							<Button
-								text="Cancel"
-								size={Size.SMALL}
-								theme={Themes.BROWN}
-								onClick={() => {
-									resetGoals();
-									setTempGoal(undefined);
-									// Clear the input fields
-									(document.getElementById("input-x") as HTMLInputElement).value =
-										"";
-									(document.getElementById("input-y") as HTMLInputElement).value =
-										"";
-									(document.getElementById("input-o") as HTMLInputElement).value =
-										"";
-								}}
-								radius={10}
-							/>
-						</div>
+						<GoalInputBox setGoal={setTempGoal} isSavedGoal={false}>
+							{
+								<>
+									<Button
+										text="Go"
+										size={Size.SMALL}
+										theme={Themes.BROWN}
+										onClick={handleAddGoal}
+										radius={10}
+									/>
+								</>
+							}
+							{
+								<>
+									<Button
+										text="Cancel"
+										size={Size.SMALL}
+										theme={Themes.BROWN}
+										onClick={() => {
+											resetGoals();
+											setTempGoal(undefined);
+											// Clear the input fields
+											(
+												document.getElementById(
+													"input-x"
+												) as HTMLInputElement
+											).value = "";
+											(
+												document.getElementById(
+													"input-y"
+												) as HTMLInputElement
+											).value = "";
+											(
+												document.getElementById(
+													"input-o"
+												) as HTMLInputElement
+											).value = "";
+										}}
+										radius={10}
+									/>
+								</>
+							}
+						</GoalInputBox>
 						{goals.length > 0 && <h3 style={{ marginTop: "20px" }}>Next Goals</h3>}
 						<div className={styles.buttonGoalsContainer}>
 							{goals.map((goal, index) => (
 								<SuppressableCard
+									isSavedGoal={false}
 									key={goal.id}
+									id={goal.id}
 									x={goal.x}
 									y={goal.y}
 									o={goal.o}
@@ -388,9 +321,37 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 				<Timer end={Date.now() + 10000} size={Size.SMALL} />
 				<TaskControl task={Task.NAVIGATION} />
 			</div>
-			<SettingsModal open={navSettings} onClose={() => setNavlSettings(false)}>
-				{}
-			</SettingsModal>
+			<div>
+				<SettingsModal open={navSettings} onClose={() => setNavlSettings(false)}>
+					<GoalInputBox setGoal={setSavedGoals} isSavedGoal={true}>
+						{
+							<>
+								<Button
+									text="Save"
+									size={Size.SMALL}
+									theme={Themes.BROWN}
+									onClick={handleAddSavedGoal}
+									radius={10}
+								/>
+							</>
+						}
+						{<></>}
+					</GoalInputBox>
+					<>
+						{savedGoals.map((goal, index) => (
+							<SuppressableCard
+								isSavedGoal={true}
+								key={goal.id}
+								id={goal.id}
+								x={goal.x}
+								y={goal.y}
+								o={goal.o}
+								removeGoal={() => removeSavedGoal(goal.id)}
+							/>
+						))}
+					</>
+				</SettingsModal>
+			</div>
 		</div>
 	);
 };
