@@ -224,6 +224,7 @@ class Controller():
     #     self.navigation.UpdateNavSocket()
 
     def nav_odometry(self, odometry):
+        print("RECEIVED POSESTAMPED")
 
         self.navigation.position = [odometry.pose.pose.position.x, odometry.pose.pose.position.y, odometry.pose.pose.position.z]
 
@@ -344,6 +345,11 @@ class Controller():
         print(type(id))
         self.cs.rover.HD.setElemId(id)
         self.cs.HD_SemiAuto_Id_pub.publish(Int8(data=id))
+
+    # Tells HD to cancel goal and cease movement
+    def pub_cancel_hd_goal(self):
+        self.cs.node.get_logger().info("HD: cancelling goal")
+        self.cs.HD_cancel_goal_pub.publish(Bool(data=True))
 
 
     ###############################

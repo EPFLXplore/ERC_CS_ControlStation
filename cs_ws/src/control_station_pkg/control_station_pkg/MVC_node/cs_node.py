@@ -95,13 +95,14 @@ class CS:
         self.HD_InvManual_Coord_pub     = self.node.create_publisher(Int8MultiArray,    'CS/HD_InvManual_Coord',  1)
         self.HD_homeGo_pub              = self.node.create_publisher(Bool,              'CS/HD_reset_arm_pos',    1)
         self.HD_homeSet_pub             = self.node.create_publisher(Bool,              'CS/HD_set_zero_arm_pos', 1)
-        self.HD_toggle_laser_pub        = self.node.create_publisher(LaserRequest,              'EL/laser_req',        1)
-        self.HD_deploy_voltmeter_pub    = self.node.create_publisher(ServoRequest,              'EL/servo_req',        1)
+        self.HD_toggle_laser_pub        = self.node.create_publisher(LaserRequest,              'EL/laser_req',   1)
+        self.HD_deploy_voltmeter_pub    = self.node.create_publisher(ServoRequest,              'EL/servo_req',   1)
+        self.HD_cancel_goal_pub         = self.node.create_publisher(Bool,              'CS/HD_cancel',           1)
 
         # CS --> ROVER (NAV)
 
         self.Nav_Goal_pub               = self.node.create_publisher(PoseStamped,       'CS/NAV_goal',         1)
-        self.Nav_Cancel_pub             = self.node.create_publisher(Bool,              'CS/NAV_cancel',       1)
+        self.Nav_Cancel_pub             = self.node.create_publisher(String,              'CS/NAV_cancel',       1)
         self.Nav_Joystick_pub           = self.node.create_publisher(Twist,             '/cmd_vel',            1)
         self.Nav_Starting_Point_pub     = self.node.create_publisher(PoseStamped,       '/lio_sam/initial_pose', 1)
         self.Nav_Mode_pub               = self.node.create_publisher(String,            'ROVER/NAV_mode', 1)
