@@ -13,7 +13,7 @@ import { Size } from "../../utils/size.type";
 import Timer from "../../components/Timer";
 import { Goal, useGoalTracker } from "../../hooks/navigationHooks";
 import { useNavigation } from "../../hooks/navigationHooks";
-import { angle, getDistance, roundToTwoDecimals } from "../../utils/maths";
+import { Point, angle, getDistance, roundToTwoDecimals } from "../../utils/maths";
 import WheelsIndicator from "../../components/WheelsIndicator";
 import PageHeader from "../../components/PageHeader";
 import SettingsModal from "../../components/SettingsModal";
@@ -41,6 +41,9 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 		linearVelocity,
 		angularVelocity,
 		trajectoryPoints,
+		pathPoints,
+		showPath,
+		setShowPath,
 	] = useNavigation();
 
 	const [navSettings, setNavlSettings] = useState(false);
@@ -99,6 +102,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 						o: 0,
 					}}
 					trajectory={trajectoryPoints}
+					path={showPath? pathPoints : []}
 					goals={goals}
 					tempGoal={tempGoal}
 					savedGoals={savedGoals}

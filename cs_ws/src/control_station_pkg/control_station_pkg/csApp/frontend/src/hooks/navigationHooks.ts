@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { drawGoal } from "../components/Map";
 import { Point } from "../utils/maths";
 import { getCookie } from "../utils/requests";
+import path from "path";
 
 export type Goal = Point & { id: string };
 
@@ -126,10 +127,9 @@ export function useNavigation() {
 	const [wheelsPosition, setWheelsPosition] = useState([0, 0, 0, 0]);
 	const [linearVelocity, setLinearVelocity] = useState([0, 0, 0]);
 	const [angularVelocity, setAngularVelocity] = useState([0, 0, 0]);
-	const [trajectoryPoints, setTrajectoryPoints] = useState<Point[]>([
-		{ x: 0, y: 0, o: 0 },
-		{ x: -12.5, y: 20.5, o: 45 },
-	]);
+	const [trajectoryPoints, setTrajectoryPoints] = useState<Point[]>([]);
+	const [pathPoints, setPathPoints] = useState<Point[]>([]);
+	const [showPath, setShowPath] = useState<boolean>(true);
 
 	useEffect(() => {
 		let navigationSocket = new WebSocket("ws://127.0.0.1:8000/ws/csApp/info_nav/");
@@ -150,6 +150,13 @@ export function useNavigation() {
 					o: data.orientation[2],
 				},
 			]);
+			setPathPoints(data.path.map((element: number[]) => {
+				return {
+					x: element[0],
+					y: element[1],
+					o: 0,
+				}
+			}));
 		};
 
 		navigationSocket.onerror = (e) => {
@@ -167,5 +174,8 @@ export function useNavigation() {
 		linearVelocity,
 		angularVelocity,
 		trajectoryPoints,
+		pathPoints,
+		showPath,
+		setShowPath
 	] as const;
 }
