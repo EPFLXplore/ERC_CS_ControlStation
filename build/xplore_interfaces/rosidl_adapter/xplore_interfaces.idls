@@ -1,0 +1,3 @@
+/home/yasmin/CS_workspace/build/xplore_interfaces/rosidl_adapter/xplore_interfaces:msg/CameraError.idl
+/home/yasmin/CS_workspace/build/xplore_interfaces/rosidl_adapter/xplore_interfaces:srv/DisableCamera.idl
+/home/yasmin/CS_workspace/build/xplore_interfaces/rosidl_adapter/xplore_interfaces:srv/EnableCamera.idl

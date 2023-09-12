@@ -6,7 +6,7 @@ Chart.register(...registerables);
 interface GraphProps {
 	measure: { x: number; y: number }[];
 	pointsSecondWave: { x: number; y: number }[];
-	candidates: { percentage: number; element: string }[];
+	candidates: string[];
 }
 
 export const WaveGraph: React.FC<GraphProps> = ({ measure, pointsSecondWave, candidates }) => {
@@ -78,7 +78,7 @@ export const WaveGraph: React.FC<GraphProps> = ({ measure, pointsSecondWave, can
 							},
 							y: {
 								display: true,
-								max: 10,
+								max: 1,
 								min: 0,
 								title: {
 									display: true,
@@ -109,7 +109,7 @@ export const WaveGraph: React.FC<GraphProps> = ({ measure, pointsSecondWave, can
 		<div className={styles.GraphContainer}>
 			<div className={styles.text}>
 				<h3>
-					{candidates[0].percentage}%, {candidates[0].element}
+					{candidates[0]}
 				</h3>
 			</div>
 			<canvas ref={chartRef} />

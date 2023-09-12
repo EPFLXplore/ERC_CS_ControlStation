@@ -1,0 +1,52 @@
+running egg_info
+creating ../../../build/cs_test_pkg/cs_test_pkg.egg-info
+writing ../../../build/cs_test_pkg/cs_test_pkg.egg-info/PKG-INFO
+writing dependency_links to ../../../build/cs_test_pkg/cs_test_pkg.egg-info/dependency_links.txt
+writing entry points to ../../../build/cs_test_pkg/cs_test_pkg.egg-info/entry_points.txt
+writing requirements to ../../../build/cs_test_pkg/cs_test_pkg.egg-info/requires.txt
+writing top-level names to ../../../build/cs_test_pkg/cs_test_pkg.egg-info/top_level.txt
+writing manifest file '../../../build/cs_test_pkg/cs_test_pkg.egg-info/SOURCES.txt'
+reading manifest file '../../../build/cs_test_pkg/cs_test_pkg.egg-info/SOURCES.txt'
+writing manifest file '../../../build/cs_test_pkg/cs_test_pkg.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/yasmin/CS_workspace/build/cs_test_pkg/build
+creating /home/yasmin/CS_workspace/build/cs_test_pkg/build/lib
+creating /home/yasmin/CS_workspace/build/cs_test_pkg/build/lib/cs_test_pkg
+copying cs_test_pkg/science_drill_test_node.py -> /home/yasmin/CS_workspace/build/cs_test_pkg/build/lib/cs_test_pkg
+copying cs_test_pkg/nav_test_node.py -> /home/yasmin/CS_workspace/build/cs_test_pkg/build/lib/cs_test_pkg
+copying cs_test_pkg/gamepad_test_node.py -> /home/yasmin/CS_workspace/build/cs_test_pkg/build/lib/cs_test_pkg
+copying cs_test_pkg/science_data_test_node.py -> /home/yasmin/CS_workspace/build/cs_test_pkg/build/lib/cs_test_pkg
+copying cs_test_pkg/hd_test_node.py -> /home/yasmin/CS_workspace/build/cs_test_pkg/build/lib/cs_test_pkg
+copying cs_test_pkg/__init__.py -> /home/yasmin/CS_workspace/build/cs_test_pkg/build/lib/cs_test_pkg
+running install
+running install_lib
+creating /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg
+copying /home/yasmin/CS_workspace/build/cs_test_pkg/build/lib/cs_test_pkg/science_drill_test_node.py -> /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg
+copying /home/yasmin/CS_workspace/build/cs_test_pkg/build/lib/cs_test_pkg/nav_test_node.py -> /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg
+copying /home/yasmin/CS_workspace/build/cs_test_pkg/build/lib/cs_test_pkg/gamepad_test_node.py -> /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg
+copying /home/yasmin/CS_workspace/build/cs_test_pkg/build/lib/cs_test_pkg/science_data_test_node.py -> /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg
+copying /home/yasmin/CS_workspace/build/cs_test_pkg/build/lib/cs_test_pkg/hd_test_node.py -> /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg
+copying /home/yasmin/CS_workspace/build/cs_test_pkg/build/lib/cs_test_pkg/__init__.py -> /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg
+byte-compiling /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg/science_drill_test_node.py to science_drill_test_node.cpython-38.pyc
+byte-compiling /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg/nav_test_node.py to nav_test_node.cpython-38.pyc
+byte-compiling /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg/gamepad_test_node.py to gamepad_test_node.cpython-38.pyc
+byte-compiling /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg/science_data_test_node.py to science_data_test_node.cpython-38.pyc
+byte-compiling /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg/hd_test_node.py to hd_test_node.cpython-38.pyc
+byte-compiling /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg/__init__.py to __init__.cpython-38.pyc
+running install_data
+creating /home/yasmin/CS_workspace/install/cs_test_pkg/share/ament_index
+creating /home/yasmin/CS_workspace/install/cs_test_pkg/share/ament_index/resource_index
+creating /home/yasmin/CS_workspace/install/cs_test_pkg/share/ament_index/resource_index/packages
+copying resource/cs_test_pkg -> /home/yasmin/CS_workspace/install/cs_test_pkg/share/ament_index/resource_index/packages
+copying package.xml -> /home/yasmin/CS_workspace/install/cs_test_pkg/share/cs_test_pkg
+running install_egg_info
+Copying ../../../build/cs_test_pkg/cs_test_pkg.egg-info to /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg-0.0.0-py3.8.egg-info
+running install_scripts
+Installing elec_test_node script to /home/yasmin/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg
+Installing gamepad_test_node script to /home/yasmin/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg
+Installing hd_test_node script to /home/yasmin/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg
+Installing nav_test_node script to /home/yasmin/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg
+Installing science_data_test_node script to /home/yasmin/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg
+Installing science_drill_test_node script to /home/yasmin/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg
+writing list of installed files to '/home/yasmin/CS_workspace/build/cs_test_pkg/install.log'

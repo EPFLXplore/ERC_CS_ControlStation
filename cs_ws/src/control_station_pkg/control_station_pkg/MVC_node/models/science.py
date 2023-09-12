@@ -27,7 +27,8 @@ class Science:
         self.four_in_one = [0,0,0,0]
         self.spectrometer_closest_candidate = [0 for i in range(18)]
 
-        self.wavelengths = [410,435,460,485,510,535,560,585,610,645,680,705,730,760,810,860,900,940]
+        # self.wavelengths = [410,435,460,485,510,535,560,585,610,645,680,705,730,760,810,860,900,940]
+
         self.nb_measures = 0
 
         #SCIENCE DRILL
@@ -53,15 +54,11 @@ class Science:
     def load_spectrum_from_file(self, filename):
         """Load the top line from a file and return it as a list of numbers."""
 
-        text = np.loadtxt(filename, skiprows=1, usecols=1, delimiter=',')
+        text = np.loadtxt(filename, skiprows=1, delimiter=',')
         print(text)
         logging.info("text: " + str(text))
 
         return [float(value) for value in text]
-
-        
-
-        
 
     def calculate_rmsd(self, spectrum1, spectrum2):
         """Calculate the RMSD between the measured spectra and the databse ."""
@@ -124,7 +121,7 @@ class Science:
     def store_spectrum(self):
         """Store the spectrum in a file."""
         # Create a pandas dataframe combing self.wavelength and self.spectrometer_mean with titles 'wavelength' and 'reflectance'
-        df = pd.DataFrame({'wavelength': self.wavelengths, 'reflectance': self.spectrometer_mean})
+        df = pd.DataFrame({'reflectance': self.spectrometer_mean})
         # Save the dataframe to a csv file
         path = str(Path(__file__).parent.absolute()) + '/data/spectrum.csv'
         df.to_csv(path, index=False)
@@ -133,18 +130,20 @@ class Science:
     def FindClosestCandidate(self):
         path = str(Path(__file__).parent.absolute()) + '/data/spectrum.csv'
         similarities = self.compare(path) # list of names and similarities
-        # format the similarites as "similarit %, name"
-        self.candidates = [str(similarities[i][1]) + "%, " + similarities[i][0] for i in range(3)]
-
+        # format the similarites as "similarity %, name" with similarity a 2 decimal float
+        self.candidates = [str(round(similarity[1], 2)) + '%, ' + similarity[0] for similarity in similarities]
+        
         # We now load the spectrum of the closest candidate from the database
         path = str(Path(__file__).parent.absolute()) + '/data/database3/'
 
-        db_spectro = pd.read_csv(path + similarities[0][0] + '.csv')['reflectance']
+        db_spectro = pd.read_csv(path + similarities[0][0] + '.csv') \
+                .groupby('wavenumber_cm1').mean() \
+                .sort_values(by='wavenumber_cm1')['reflectance'].tolist()
         # We need to read db_spectro as a list and add leading zeros to match the length of the measured spectrum
         leading_zeros = [0] * (len(self.spectrometer_mean) - len(db_spectro))
-        
-        db_spectro = leading_zeros + db_spectro.tolist()
-        self.spectrometer_closest_candidate = db_spectro
+        final = leading_zeros + db_spectro
+        logging.info("db_spectro: " + str(final))
+        self.spectrometer_closest_candidate = final
 
         pass
     

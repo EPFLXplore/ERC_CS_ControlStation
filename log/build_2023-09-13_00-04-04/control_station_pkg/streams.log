@@ -1,0 +1,22 @@
+[0.351s] Invoking command in '/home/yasmin/CS_workspace/cs_ws/src/control_station_pkg': CMAKE_PREFIX_PATH=/home/yasmin/CS_workspace/install/avionics_interfaces:/home/yasmin/CS_workspace/install/xplore_interfaces LD_LIBRARY_PATH=/home/yasmin/CS_workspace/install/avionics_interfaces/lib:/home/yasmin/CS_workspace/install/xplore_interfaces/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib PYTHONPATH=/home/yasmin/CS_workspace/install/control_station_pkg/lib/python3.8/site-packages:/home/yasmin/CS_workspace/install/avionics_interfaces/lib/python3.8/site-packages:/home/yasmin/CS_workspace/install/xplore_interfaces/lib/python3.8/site-packages:/home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages:/home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages:/home/yasmin/CS_workspace/install/control_station_pkg/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages /usr/bin/python3 setup.py egg_info --egg-base ../../../build/control_station_pkg build --build-base /home/yasmin/CS_workspace/build/control_station_pkg/build install --prefix /home/yasmin/CS_workspace/install/control_station_pkg --record /home/yasmin/CS_workspace/build/control_station_pkg/install.log --single-version-externally-managed
+[0.453s] running egg_info
+[0.454s] writing ../../../build/control_station_pkg/control_station_pkg.egg-info/PKG-INFO
+[0.454s] writing dependency_links to ../../../build/control_station_pkg/control_station_pkg.egg-info/dependency_links.txt
+[0.454s] writing entry points to ../../../build/control_station_pkg/control_station_pkg.egg-info/entry_points.txt
+[0.454s] writing requirements to ../../../build/control_station_pkg/control_station_pkg.egg-info/requires.txt
+[0.454s] writing top-level names to ../../../build/control_station_pkg/control_station_pkg.egg-info/top_level.txt
+[0.471s] reading manifest file '../../../build/control_station_pkg/control_station_pkg.egg-info/SOURCES.txt'
+[0.471s] writing manifest file '../../../build/control_station_pkg/control_station_pkg.egg-info/SOURCES.txt'
+[0.471s] running build
+[0.471s] running build_py
+[0.471s] running install
+[0.472s] running install_lib
+[0.472s] running install_data
+[0.473s] running install_egg_info
+[0.474s] removing '/home/yasmin/CS_workspace/install/control_station_pkg/lib/python3.8/site-packages/control_station_pkg-0.0.0-py3.8.egg-info' (and everything under it)
+[0.474s] Copying ../../../build/control_station_pkg/control_station_pkg.egg-info to /home/yasmin/CS_workspace/install/control_station_pkg/lib/python3.8/site-packages/control_station_pkg-0.0.0-py3.8.egg-info
+[0.474s] running install_scripts
+[0.484s] Installing cameras_reciever script to /home/yasmin/CS_workspace/install/control_station_pkg/lib/control_station_pkg
+[0.484s] Installing control_station script to /home/yasmin/CS_workspace/install/control_station_pkg/lib/control_station_pkg
+[0.484s] writing list of installed files to '/home/yasmin/CS_workspace/build/control_station_pkg/install.log'
+[0.505s] Invoked command in '/home/yasmin/CS_workspace/cs_ws/src/control_station_pkg' returned '0': CMAKE_PREFIX_PATH=/home/yasmin/CS_workspace/install/avionics_interfaces:/home/yasmin/CS_workspace/install/xplore_interfaces LD_LIBRARY_PATH=/home/yasmin/CS_workspace/install/avionics_interfaces/lib:/home/yasmin/CS_workspace/install/xplore_interfaces/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib PYTHONPATH=/home/yasmin/CS_workspace/install/control_station_pkg/lib/python3.8/site-packages:/home/yasmin/CS_workspace/install/avionics_interfaces/lib/python3.8/site-packages:/home/yasmin/CS_workspace/install/xplore_interfaces/lib/python3.8/site-packages:/home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages:/home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages:/home/yasmin/CS_workspace/install/control_station_pkg/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages /usr/bin/python3 setup.py egg_info --egg-base ../../../build/control_station_pkg build --build-base /home/yasmin/CS_workspace/build/control_station_pkg/build install --prefix /home/yasmin/CS_workspace/install/control_station_pkg --record /home/yasmin/CS_workspace/build/control_station_pkg/install.log --single-version-externally-managed

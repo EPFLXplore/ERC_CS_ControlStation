@@ -1,0 +1,23 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from avionics_interfaces/msg/GyroConfigResponse.msg
+// generated code does not contain a copyright notice
+
+
+module avionics_interfaces {
+  module msg {
+    typedef float float__3[3];
+    @verbatim (language="comment", text=
+      " GyroConfigResponse.msg")
+    struct GyroConfigResponse {
+      uint16 id;
+
+      float__3 bias;
+
+      boolean remote_command;
+
+      boolean set_bias;
+
+      boolean success;
+    };
+  };
+};

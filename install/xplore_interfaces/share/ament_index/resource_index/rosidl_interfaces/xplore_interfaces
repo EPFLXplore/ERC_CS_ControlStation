@@ -1,0 +1,10 @@
+msg/CameraError.idl
+msg/CameraError.msg
+srv/DisableCamera.idl
+srv/DisableCamera.srv
+srv/DisableCamera_Request.msg
+srv/DisableCamera_Response.msg
+srv/EnableCamera.idl
+srv/EnableCamera.srv
+srv/EnableCamera_Request.msg
+srv/EnableCamera_Response.msg

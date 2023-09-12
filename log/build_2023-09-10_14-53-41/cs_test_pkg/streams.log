@@ -1,0 +1,26 @@
+[0.483s] Invoking command in '/home/yasmin/CS_workspace/cs_ws/src/cs_test_pkg': PYTHONPATH=/home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../../build/cs_test_pkg build --build-base /home/yasmin/CS_workspace/build/cs_test_pkg/build install --prefix /home/yasmin/CS_workspace/install/cs_test_pkg --record /home/yasmin/CS_workspace/build/cs_test_pkg/install.log --single-version-externally-managed
+[0.585s] running egg_info
+[0.586s] writing ../../../build/cs_test_pkg/cs_test_pkg.egg-info/PKG-INFO
+[0.586s] writing dependency_links to ../../../build/cs_test_pkg/cs_test_pkg.egg-info/dependency_links.txt
+[0.586s] writing entry points to ../../../build/cs_test_pkg/cs_test_pkg.egg-info/entry_points.txt
+[0.586s] writing requirements to ../../../build/cs_test_pkg/cs_test_pkg.egg-info/requires.txt
+[0.586s] writing top-level names to ../../../build/cs_test_pkg/cs_test_pkg.egg-info/top_level.txt
+[0.604s] reading manifest file '../../../build/cs_test_pkg/cs_test_pkg.egg-info/SOURCES.txt'
+[0.617s] writing manifest file '../../../build/cs_test_pkg/cs_test_pkg.egg-info/SOURCES.txt'
+[0.617s] running build
+[0.617s] running build_py
+[0.618s] running install
+[0.618s] running install_lib
+[0.618s] running install_data
+[0.618s] running install_egg_info
+[0.618s] removing '/home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg-0.0.0-py3.8.egg-info' (and everything under it)
+[0.618s] Copying ../../../build/cs_test_pkg/cs_test_pkg.egg-info to /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg-0.0.0-py3.8.egg-info
+[0.623s] running install_scripts
+[0.633s] Installing elec_test_node script to /home/yasmin/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg
+[0.635s] Installing gamepad_test_node script to /home/yasmin/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg
+[0.635s] Installing hd_test_node script to /home/yasmin/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg
+[0.635s] Installing nav_test_node script to /home/yasmin/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg
+[0.635s] Installing science_data_test_node script to /home/yasmin/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg
+[0.635s] Installing science_drill_test_node script to /home/yasmin/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg
+[0.635s] writing list of installed files to '/home/yasmin/CS_workspace/build/cs_test_pkg/install.log'
+[0.662s] Invoked command in '/home/yasmin/CS_workspace/cs_ws/src/cs_test_pkg' returned '0': PYTHONPATH=/home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../../build/cs_test_pkg build --build-base /home/yasmin/CS_workspace/build/cs_test_pkg/build install --prefix /home/yasmin/CS_workspace/install/cs_test_pkg --record /home/yasmin/CS_workspace/build/cs_test_pkg/install.log --single-version-externally-managed

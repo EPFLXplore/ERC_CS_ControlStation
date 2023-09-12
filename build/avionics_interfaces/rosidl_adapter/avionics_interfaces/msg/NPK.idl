@@ -1,0 +1,23 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from avionics_interfaces/msg/NPK.msg
+// generated code does not contain a copyright notice
+
+
+module avionics_interfaces {
+  module msg {
+    @verbatim (language="comment", text=
+      " NPK.msg")
+    struct NPK {
+      uint16 id;
+
+      @unit (value="mg/kg")
+      uint16 nitrogen;
+
+      @unit (value="mg/kg")
+      uint16 phosphorus;
+
+      @unit (value="mg/kg")
+      uint16 potassium;
+    };
+  };
+};

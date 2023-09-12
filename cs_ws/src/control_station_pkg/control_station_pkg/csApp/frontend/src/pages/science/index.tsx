@@ -44,7 +44,7 @@ export default () => {
 	const rows = ["Velocity", "Distance", "Current"]; // Rows titles
 	const columns = ["Module1", "Module2", "Drill"]; // Columns titles
 
-	const [mass, npkSensor, fourInOneSensor, spectrometer, spectrometerCandidate] =
+	const [mass, npkSensor, fourInOneSensor, spectrometer, spectrometerCandidate, candidates] =
 		useScienceDataInfos();
 
 	if (mode === 0) {
@@ -224,15 +224,13 @@ export default () => {
 								<th>Candidate 1</th>
 								<th>Candidate 2</th>
 								<th>Candidate 3</th>
-								<th>Candidate 4</th>
-								<th>Candidate 5</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
 								{candidates.map((candidate, index) => (
 									<td>
-										{candidate.percentage}%, {candidate.element}
+										{candidate}
 									</td>
 								))}
 							</tr>
