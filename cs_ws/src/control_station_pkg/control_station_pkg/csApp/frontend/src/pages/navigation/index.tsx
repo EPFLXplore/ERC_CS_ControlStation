@@ -17,8 +17,10 @@ import { Point, angle, getDistance, roundToTwoDecimals } from "../../utils/maths
 import WheelsIndicator from "../../components/WheelsIndicator";
 import PageHeader from "../../components/PageHeader";
 import SettingsModal from "../../components/SettingsModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GoalInputBox from "../../components/GoalInputBox";
+import navModeSelect from "../../utils/navModeSelect";
+import { NavMode } from "../../utils/navMode";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 	const {
@@ -108,6 +110,11 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 			(document.getElementById("input-o-init") as HTMLInputElement).value = "";
 		}
 	};
+
+	useEffect(() => {
+		// Set mode to auto when entering the tab
+		navModeSelect(NavMode.Autonomous)
+	}, []);
 
 	return (
 		<div className="page center">
