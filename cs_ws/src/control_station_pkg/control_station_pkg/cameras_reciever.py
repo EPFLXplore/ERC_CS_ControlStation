@@ -112,7 +112,7 @@ def display_cam_5(msg):
 
 def display_cam_gripper(msg):
     global im6
-    im6 = bridge.compressed_imgmsg_to_cv2(msg)
+    im6 = bridge.imgmsg_to_cv2(msg)
 
     img = encode_stream(im6)
     async_to_sync(channel_layer.group_send)("video6", {"type": "video_message",

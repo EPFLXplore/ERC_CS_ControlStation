@@ -185,8 +185,9 @@ class CS:
         self.node.create_subscription(
             CompressedImage, '/camera_5', cameras_reciever.display_cam_5, 1)
 
-        self.node.create_subscription(
-            CompressedImage, 'HD/camera_flux', cameras_reciever.display_cam_gripper, 10)
+        # self.node.create_subscription(CompressedImage, 'HD/camera_flux', cameras_reciever.display_cam_gripper, 10)
+        self.node.create_subscription(Image, 'HD/vision/video_frames', cameras_reciever.display_cam_gripper, 10)
+        
 
         # -- Elec messages --
         self.node.create_subscription(
@@ -218,7 +219,7 @@ class CS:
     #            GAMEPAD
     # ===============================
 
-    def send_gamepad_data(self, axes, buttons, id, target, speed=0.5):
+    def send_gamepad_data(self, axes, buttons, id, target, speed=1):
         '''
             send gamepad data to rover
         '''
@@ -238,16 +239,22 @@ class CS:
             else:
                 axes[5] = 0
 
-            new_axes = axes[:3]
+            new_axes = [float(i) for i in range(9)]
 
-            # ax 0 gives direction on x axis => -1 if circle is clicked, 1 if square is clicked
-            new_axes[0] = buttons[1] - buttons[2] # button 1 is circle and button 2 is square
+            new_axes[0] = speed
 
-            # ax 1 gives direction on y axis => -1 if x clickes, 1 if triangle
-            new_axes[1] = buttons[3] - buttons[0]
+            # ax 1 gives direction on x axis => -1 if circle is clicked, 1 if square is clicked
+            new_axes[1] = buttons[1] - buttons[2] # button 1 is circle and button 2 is square
 
-            # ax 2 gives direction on z axis => -1 if L2 clicked, 1 if R2 clicked
-            new_axes[2] = axes[2] - axes[5]
+            # ax 2 gives direction on y axis => -1 if x clickes, 1 if triangle
+            new_axes[2] = buttons[3] - buttons[0]
+
+            # ax 3 gives direction on z axis => -1 if L2 clicked, 1 if R2 clicked
+            new_axes[3] = axes[2] - axes[5]
+
+            directions = Float32MultiArray()
+            directions.data = new_axes
+            self.HD_Gamepad_pub.publish(directions)
 
 
         if(target == 'FK'):
@@ -263,19 +270,19 @@ class CS:
             if (buttons[5] == 1):
                 axes[5] = -axes[5]
 
-            speed = Float32MultiArray()
-            speed.data = axes[:6]
+            directions = Float32MultiArray()
+            directions.data = axes[:6]
 
             # Gripper are buttons 1 and 2
             # transform them into speeds
             if (buttons[2] == 1):
-                speed.data.append(-1)
+                directions.data.append(-1)
             elif (buttons[1] == 1):
-                speed.data.append(1)
+                directions.data.append(1)
             else:
-                speed.data.append(0)
-            print(speed.data)
-            self.HD_Gamepad_pub.publish(speed)
+                directions.data.append(0)
+            print(directions.data)
+            self.HD_Gamepad_pub.publish(directions)
 
         elif (target == 'NAV'):
             print("NAV GAMEPAD DATA")
