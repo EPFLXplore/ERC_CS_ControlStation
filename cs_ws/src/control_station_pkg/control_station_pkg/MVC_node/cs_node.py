@@ -255,7 +255,7 @@ class CS:
             new_axes[3] = axes[2] - axes[5]
 
             directions = Float32MultiArray()
-            directions.data = new_axes
+            directions.data = [float(i) for i in new_axes]
             self.HD_Gamepad_pub.publish(directions)
 
 
