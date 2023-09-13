@@ -1,4 +1,5 @@
 
+import math
 import random
 import rclpy
 from rclpy.node import Node
@@ -11,6 +12,7 @@ from diagnostic_msgs.msg import DiagnosticStatus
 from std_msgs.msg import Int8MultiArray, Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16, Float32MultiArray
 from avionics_interfaces.msg import AngleArray
 
+from transforms3d.euler import euler2quat
 from diagnostic_msgs.msg  import DiagnosticStatus
 
 class NavTestNode(Node):
@@ -52,9 +54,12 @@ class NavTestNode(Node):
         msg.pose.pose.position.x = random.uniform(-10, 10)
         msg.pose.pose.position.y = random.uniform(0, 25)
         msg.pose.pose.position.z = msg.pose.pose.position.z + random.uniform(-3, 3)
-        msg.pose.pose.orientation.x = msg.pose.pose.orientation.x + random.uniform(-10, 10)
-        msg.pose.pose.orientation.y = msg.pose.pose.orientation.y + random.uniform(-10, 10)
-        msg.pose.pose.orientation.z = msg.pose.pose.orientation.z + random.uniform(-10, 10)
+        angle = euler2quat(random.uniform(0, 360) * math.pi / 180, random.uniform(0, 360) * math.pi / 180, random.uniform(0, 360) * math.pi / 180)
+        msg.pose.pose.orientation.w = angle[0]
+        msg.pose.pose.orientation.x = angle[1]
+        msg.pose.pose.orientation.y = angle[2]
+        msg.pose.pose.orientation.z = angle[3]
+
         msg.child_frame_id = "nav test child frame id"
         msg.header.frame_id = "nav test header"
         msg.header.stamp = self.get_clock().now().to_msg()
