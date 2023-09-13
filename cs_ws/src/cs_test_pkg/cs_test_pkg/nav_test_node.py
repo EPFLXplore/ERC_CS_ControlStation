@@ -59,7 +59,6 @@ class NavTestNode(Node):
         msg.pose.pose.position.z = msg.pose.pose.position.z + random.uniform(-3, 3)
 
         euler = [random.uniform(0, 360) * math.pi / 180, random.uniform(0, 360) * math.pi / 180, random.uniform(0, 360) * math.pi / 180]
-        print(euler[0], euler[1], euler[2])
         angle = euler2quat(euler[0], euler[1], euler[2])
         msg.pose.pose.orientation.w = angle[0]
         msg.pose.pose.orientation.x = angle[1]
@@ -93,7 +92,6 @@ class NavTestNode(Node):
 
         self.publisher_odometry.publish(msg)
         self.i += 1
-
 
     def goal_callback(self, msg):
         self.get_logger().info('Goal callback :' + str(msg.pose.position.x) + " " + str(msg.pose.position.y) + " " + str(msg.pose.position.z))

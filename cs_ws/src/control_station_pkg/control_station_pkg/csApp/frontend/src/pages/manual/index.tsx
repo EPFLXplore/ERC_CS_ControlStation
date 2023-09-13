@@ -187,8 +187,8 @@ export default () => {
 										<div style={{ marginRight: "30px" }}>
 											<p>{wheelsPosition[0]}°</p>
 											<p>{wheelsPosition[1]}°</p>
-											<p>{wheelsPosition[2]}°</p>
 											<p>{wheelsPosition[3]}°</p>
+											<p>{wheelsPosition[2]}°</p>
 										</div>
 									</div>
 								</div>
