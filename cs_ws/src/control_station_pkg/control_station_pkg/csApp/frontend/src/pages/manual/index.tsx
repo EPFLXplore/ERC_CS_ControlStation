@@ -66,7 +66,7 @@ export default () => {
 	const [manualSettings, setManualSettings] = useState(false);
 
 	useEffect(() => {
-		navModeSelect(NavMode.Manual_Basic);
+		navModeSelect(NavMode.Manual_Normal);
 		hdModeSelect(HD_Mode.FK);
 	}, []);
 
@@ -199,7 +199,7 @@ export default () => {
 							<ModeSlider
 								name="Nav Mode"
 								mode={["NORMAL", "BASIC"]}
-								functionTrigger={() => navModeSelect(NavMode.Manual_Basic)}
+								functionTrigger={(mode) => navModeSelect(mode as unknown as NavMode)}
 							/>
 							<TaskControl task={Task.MANUAL_CONTROL} />
 						</div>
