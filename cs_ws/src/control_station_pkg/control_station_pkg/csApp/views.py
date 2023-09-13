@@ -273,6 +273,7 @@ def set_id(request):
     cs.rover.HD.setElemId(id)
     cs.HD_id.publish(Int8(data=id))
     cs.node.get_logger().info("Maintenance: Set HD id to " + str(id))
+    print("id:", cs.rover.HD.getElemId())
     #print(cs.rover.HD.getElemId())
     #cs.controller.pub_hd_elemId(id)
     return JsonResponse({})

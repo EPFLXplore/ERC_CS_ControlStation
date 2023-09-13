@@ -180,13 +180,13 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 					</button>
 					<button
 						className={styles.button}
-						onClick={() => buttonSelect(30)}
+						onClick={() => buttonSelect(40)}
 					>
 						Pick Rock
 					</button>
 					<button
 						className={styles.button}
-						onClick={() => buttonSelect(31)}
+						onClick={() => buttonSelect(41)}
 					>
 						Rassor Sample
 					</button>

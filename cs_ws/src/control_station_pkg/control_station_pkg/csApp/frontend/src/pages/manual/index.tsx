@@ -119,6 +119,7 @@ export default () => {
 					<ModeSlider
 						name="Arm Mode"
 						mode={["FK", "IK"]}
+						startMode={HD_Mode.FK}
 						functionTrigger={(mode) => hdModeSelect(mode, setHdMode)}
 					/>
 					{/* <VoltmeterSlider initValue={0} onValueChange={openVoltmeter} /> */}
