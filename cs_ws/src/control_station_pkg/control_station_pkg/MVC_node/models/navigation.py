@@ -72,8 +72,8 @@ class Navigation:
         #                                                                 })
         
         async_to_sync(self.channel_layer.group_send)("nav", {"type": "nav_message",
-                                                    'position'   : [self.position[0], self.position[1], self.position[2]],
-                                                    'orientation': [str(val) for val in self.position],
+                                                    'position'   : [str(val) for val in self.position],
+                                                    'orientation': [str(val) for val in self.orientation],
                                                     'linVel'     : [self.linVel[0], self.linVel[1], self.linVel[2]],
                                                     'angVel'     : [self.angVel[0], self.angVel[1], self.angVel[2]],
                                                     'path' : [str(val) for val in self.path],

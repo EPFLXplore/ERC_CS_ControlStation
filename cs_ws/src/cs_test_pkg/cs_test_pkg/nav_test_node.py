@@ -57,7 +57,10 @@ class NavTestNode(Node):
         msg.pose.pose.position.x = random.uniform(-10, 10)
         msg.pose.pose.position.y = random.uniform(0, 25)
         msg.pose.pose.position.z = msg.pose.pose.position.z + random.uniform(-3, 3)
-        angle = euler2quat(random.uniform(0, 360) * math.pi / 180, random.uniform(0, 360) * math.pi / 180, random.uniform(0, 360) * math.pi / 180)
+
+        euler = [random.uniform(0, 360) * math.pi / 180, random.uniform(0, 360) * math.pi / 180, random.uniform(0, 360) * math.pi / 180]
+        print(euler[0], euler[1], euler[2])
+        angle = euler2quat(euler[0], euler[1], euler[2])
         msg.pose.pose.orientation.w = angle[0]
         msg.pose.pose.orientation.x = angle[1]
         msg.pose.pose.orientation.y = angle[2]
