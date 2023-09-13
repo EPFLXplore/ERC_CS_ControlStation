@@ -139,7 +139,7 @@ export function useNavigation() {
 
 			setCurrentPosition(data.position);
 			setCurrentOrientation(data.orientation);
-			setWheelsPosition(data.wheel_ang);
+			setWheelsPosition(data.steering_wheel_ang);
 			setLinearVelocity(data.linVel);
 			setAngularVelocity(data.angVel);
 			setTrajectoryPoints((prevPoints) => [
