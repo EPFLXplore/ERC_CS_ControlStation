@@ -272,7 +272,9 @@ class CS:
                 axes[5] = -axes[5]
 
             directions = Float32MultiArray()
-            directions.data = axes[:6]
+            directions.data = []
+            directions.data.append(speed)
+            directions.data.extend(axes[:6])
 
             # Gripper are buttons 1 and 2
             # transform them into speeds

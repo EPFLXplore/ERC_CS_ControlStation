@@ -295,9 +295,9 @@ def deploy_hd_voltmeter(request):
     servoRequest = ServoRequest()
     servoRequest.channel = 1
     if (request.POST.get("deployment") == "open"):
-        servoRequest.angle = 110
+        servoRequest.angle = float(20)
     else :
-        servoRequest.angle = 0
+        servoRequest.angle = float(180)
     cs.HD_deploy_voltmeter_pub.publish(servoRequest)
     return JsonResponse({})
 
