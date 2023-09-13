@@ -473,7 +473,7 @@ class Controller():
         calib_offset.destination_id = 0
         calib_offset.channel = 0
 
-        self.cs.ELEC_container_pub.publish(calib_offset)
+        self.cs.ELEC_container_calib_pub.publish(calib_offset)
 
 
     # need to publish before drilling and collecting soil

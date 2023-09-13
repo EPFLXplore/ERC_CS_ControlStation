@@ -45,14 +45,14 @@ class CamerasPublisher(Node):
         self.camera_2 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=2))
         self.camera_3 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=3))
         self.camera_4 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=4))
-        self.camera_5 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=5))
+        #self.camera_5 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=5))
 
         self.camera_list = [self.camera_0, 
                             None,
                             self.camera_2,
                             self.camera_3,
                             self.camera_4, 
-                            self.camera_5]    
+                            None]
 
         self.bridge = CvBridge()
 

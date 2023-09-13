@@ -6,7 +6,7 @@ from rclpy.node import Node
 from std_msgs.msg         import Int8MultiArray, Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16, Float32MultiArray
 from diagnostic_msgs.msg  import DiagnosticStatus
 
-from avionics_interfaces.msg import FourInOne, Voltage, NPK, MassArray, SpectroResponse
+from avionics_interfaces.msg import FourInOne, Voltage, NPK, MassArray, SpectroResponse, MassCalibOffset
 
 class ElecTestNode(Node):
 
@@ -21,6 +21,9 @@ class ElecTestNode(Node):
         self.publisher_npk              = self.create_publisher(NPK, 'EL/npk', 10)
         # self.publisher_four_in_one      = self.create_publisher(Float32MultiArray, 'EL/four_in_one', 10)
         self.publisher_four_in_one      = self.create_publisher(FourInOne, 'EL/four_in_one', 10)
+
+        self.subscription_mass_calib_container =        self.create_subscription(MassCalibOffset,'EL/container/mass_calib_offset', self.mass_calib_container,1)
+        self.subscription_mass_calib_drill     =        self.create_subscription(MassCalibOffset,'EL/drill/mass_calib_offset', self.mass_calib_drill,1)
 
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
@@ -72,6 +75,15 @@ class ElecTestNode(Node):
         # self.publisher_HD_laser.publish(msg_bool)
         
         self.i += 1
+
+    def mass_calib_container(self, msg):
+        print("mass_calib_container: " + str(msg))
+        return
+    
+    def mass_calib_drill(self, msg):
+        print("mass_calib_drill: " + str(msg))
+        return
+    
 
 
 def main(args=None):
