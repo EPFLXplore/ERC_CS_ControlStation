@@ -25,7 +25,6 @@ from nav_msgs.msg import Odometry
 from sensor_msgs.msg import JointState, Image, Joy, CompressedImage
 
 
-
 from avionics_interfaces.msg import MassArray, SpectroResponse, NPK, FourInOne, Voltage, LaserRequest, ServoRequest, SpectroRequest, AngleArray, MassCalibOffset, NodeStateArray
 from custom_msg.msg import Wheelstatus, Motorcmds
 
@@ -187,8 +186,9 @@ class CS:
         self.node.create_subscription(
             CompressedImage, '/camera_5', cameras_reciever.display_cam_5, 1)
 
-        self.node.create_subscription(
-            CompressedImage, 'HD/camera_flux', cameras_reciever.display_cam_gripper, 10)
+        # self.node.create_subscription(CompressedImage, 'HD/camera_flux', cameras_reciever.display_cam_gripper, 10)
+        self.node.create_subscription(Image, 'HD/vision/video_frames', cameras_reciever.display_cam_gripper, 10)
+        
 
         # -- Elec messages --
         self.node.create_subscription(

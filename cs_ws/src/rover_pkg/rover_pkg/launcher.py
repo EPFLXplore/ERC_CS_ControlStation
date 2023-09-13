@@ -7,10 +7,13 @@ class Launcher:
         #self.process = Popen()
     
     bashrc = ". ~/.bashrc"
-    sourcei = "sourcei"
+    sourcei = "source install/setup.sh"
 
-    nav_ws = "cd /home/xplore/Desktop/NAV_workspace_2023_master/nav_ws"
-    setup_nav_ws = "{bashrc} & {nav_ws} & {sourcei}"
+    #nav_ws = "cd /home/xplore/Desktop/NAV_workspace_2023_master/nav_ws"
+    nav_ws = "cd ~/Desktop/NAV_workspace_2023/nav_ws"
+    global setup_nav_ws
+    #setup_nav_ws = "{bashrc} & {nav_ws} & {sourcei}"
+    setup_nav_ws = bashrc + " & " + nav_ws + " & " + sourcei
 
     hd_ws = "cd /home/xplore/Desktop/main_HD_workspace/hd_ws"
     setup_hd_ws = "{bashrc} & {hd_ws} & {sourcei}"
@@ -26,10 +29,12 @@ class Launcher:
         self.__start_manual_hd()
 
     def start_auto_nav(self):
-        Popen(["gnome-terminal", "-x", "sh", "-c", "{setup_nav_ws} & ros2 launch ros2_ouster ouster.launch.py; bash"], stdout=PIPE, stderr=PIPE)
+        ouster = setup_nav_ws + " & ros2 launch ros2_ouster ouster.launch.py; bash"
+        #Popen(["gnome-terminal", "-x", "sh", "-c", "{setup_nav_ws} & ros2 launch ros2_ouster ouster.launch.py; bash"], stdout=PIPE, stderr=PIPE)
+        Popen([". /home/rocknd79/Desktop/CS_workspace/cs_ws/src/rover_pkg/rover_pkg/auto_nav.sh"], stdin=PIPE, shell=True)
         time.sleep(20)
-        Popen(["gnome-terminal", "-x", "sh", "-c", "{setup_nav_ws} & ros2 launch nav.launch.xml; bash"], stdout=PIPE, stderr=PIPE)
-        Popen(["gnome-terminal", "-x", "sh", "-c", "{setup_nav_ws} & ros2 launch nav2_bringup navigation_launch.py; bash"], stdout=PIPE, stderr=PIPE)
+        #Popen(["gnome-terminal", "-x", "sh", "-c", "{setup_nav_ws} & ros2 launch nav.launch.xml; bash"], stdout=PIPE, stderr=PIPE)
+        #Popen(["gnome-terminal", "-x", "sh", "-c", "{setup_nav_ws} & ros2 launch nav2_bringup navigation_launch.py; bash"], stdout=PIPE, stderr=PIPE)
 
     def __start_cameras(self):
         Popen(["gnome-terminal", "-x", "sh", "-c", ". ~/.bashrc & cd ~ros2 run rover_pkg cameras_publisher; bash"], stdout=PIPE, stderr=PIPE)
