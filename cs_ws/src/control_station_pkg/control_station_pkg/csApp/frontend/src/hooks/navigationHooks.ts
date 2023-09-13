@@ -217,5 +217,6 @@ export function useNavigation() {
 		steering_state,
 		info,
 		displacement,
+		routeLeft
 	] as const;
 }

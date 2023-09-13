@@ -50,7 +50,8 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 		driving_state,
 		steering_state,
 		info,
-		displacement_mode
+		displacement_mode,
+		routeLeft
 	] = useNavigation();
 
 	const [navSettings, setNavlSettings] = useState(false);
@@ -284,7 +285,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 										: "--"}{" "}
 									m
 								</p>
-								<p>{"--"} m</p>
+								<p>{goals.length > 0 ? roundToTwoDecimals(routeLeft) : "--"} m</p>
 								<p>
 									{goals.length > 0
 										? roundToTwoDecimals(
