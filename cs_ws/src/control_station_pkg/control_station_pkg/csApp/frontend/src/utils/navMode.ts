@@ -1,5 +1,5 @@
 export enum NavMode {
-    Manual_Normal = "manual",
-    Manual_Basic = "manuel",
-    Autonomous = "auto",
+    Manual_Normal,
+    Manual_Basic,
+    Autonomous,
 }
