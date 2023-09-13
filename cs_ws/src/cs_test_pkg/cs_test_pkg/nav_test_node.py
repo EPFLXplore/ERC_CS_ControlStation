@@ -37,7 +37,7 @@ class NavTestNode(Node):
         self.subscription_kinematic = self.create_subscription(String,'ROVER/NAV_kinematic',self.kinematic_callback,10)
         self.subscription_starting_point = self.create_subscription(PoseStamped,'/lio_sam/initial_pose',self.starting_point_callback,10)
 
-        timer_period = 1  # seconds
+        timer_period = 5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.i = 0
 
@@ -56,9 +56,14 @@ class NavTestNode(Node):
         msg = Odometry()
         msg.pose.pose.position.x = random.uniform(-10, 10)
         msg.pose.pose.position.y = random.uniform(0, 25)
+        print(f"positon: x : {msg.pose.pose.position.x} y: {msg.pose.pose.position.y}")
         msg.pose.pose.position.z = msg.pose.pose.position.z + random.uniform(-3, 3)
 
-        euler = [random.uniform(0, 360) * math.pi / 180, random.uniform(0, 360) * math.pi / 180, random.uniform(0, 360) * math.pi / 180]
+        euler = [0, 0, random.uniform(0, 360)]
+        print("orientation in degrees: " + str(euler[2]))
+
+        euler[2] = euler[2] * math.pi / 180
+        print("orientation in rad: " + str(euler[2]))
         angle = euler2quat(euler[0], euler[1], euler[2])
         msg.pose.pose.orientation.w = angle[0]
         msg.pose.pose.orientation.x = angle[1]
