@@ -191,6 +191,42 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 						Rassor Sample
 					</button>
 					<button
+						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(50)}
+					>
+						Position 1
+					</button>
+					<button
+						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(51)}
+					>
+						Position 2
+					</button>
+					<button
+						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(52)}
+					>
+						Position 3
+					</button>
+					<button
+						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(53)}
+					>
+						Position 4
+					</button>
+					<button
+						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(54)}
+					>
+						Position 5
+					</button>
+					<button
+						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(55)}
+					>
+						Position 6
+					</button>
+					<button
 						className={availableButtons[0] == 1 ? styles.button : styles.disabledButton}
 						onClick={() => buttonSelect(110)}
 					>
