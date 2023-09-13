@@ -20,7 +20,7 @@ class NavTestNode(Node):
         
         # Log publisher
         self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
-        self.publisher_odometry = self.create_publisher(Odometry, '/lio_sam/current_pose', 10)
+        self.publisher_odometry = self.create_publisher(Odometry, '/lio_sam/odom', 10)
         self.publisher_wheel_ang = self.create_publisher(AngleArray, 'EL/potentiometer', 10)
         self.publisher_path = self.create_publisher(Path, '/path', 1)
         

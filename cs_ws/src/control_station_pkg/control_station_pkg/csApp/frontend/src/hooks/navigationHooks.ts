@@ -136,7 +136,7 @@ export function useNavigation() {
 
 		navigationSocket.onmessage = (e) => {
 			const data = JSON.parse(e.data);
-
+			
 			setCurrentPosition(data.position);
 			setCurrentOrientation(data.orientation);
 			setWheelsPosition(data.steering_wheel_ang);
