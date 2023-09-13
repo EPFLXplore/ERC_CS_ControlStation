@@ -66,7 +66,7 @@ export default () => {
 	const [manualSettings, setManualSettings] = useState(false);
 
 	useEffect(() => {
-		navModeSelect(NavMode.Manual_Basic);
+		navModeSelect(NavMode.Manual_Normal);
 		hdModeSelect(HD_Mode.FK);
 	}, []);
 
