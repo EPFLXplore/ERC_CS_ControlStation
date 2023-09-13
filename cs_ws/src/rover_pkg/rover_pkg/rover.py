@@ -229,6 +229,7 @@ class Rover():
                 if (self.ROVER_STATE == Task.IDLE):
                     self.node.get_logger().info("LAUNCHING NAVIGATION ...")
                     self.ROVER_STATE = Task.NAVIGATION
+                    self.launcher.start_auto_nav()
                 # else:
                 #     self.node.get_logger().info("SEND GOAL :" + str(self.model.Nav.getGoal().pose.position.x) + " " + str(self.model.Nav.getGoal().pose.position.y) + " " + str(self.model.Nav.getGoal().pose.position.z))
                 #     goal = self.model.Nav.getGoal()
