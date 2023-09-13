@@ -195,10 +195,34 @@ class CS:
         '''
         axes = [float(i) for i in axes]
 
-        if(target == 'HD'):
+        # BEHAVIOR WHEN HD IS IN INVERSE_KINEMATICS
+        if(target == 'IK'):
+
+            # Need to interpolate axes 2 and 5 to go from range [-1,1] to binary values 0 or 1
+            if (axes[2] >= 0):
+                axes[2] = 1    
+            else:
+                axes[2] = 0
+
+            if (axes[5] >= 0):
+                axes[5] = 1    
+            else:
+                axes[5] = 0
+
+            new_axes = axes[:3]
+
+            # ax 0 gives direction on x axis => -1 if circle is clicked, 1 if square is clicked
+            new_axes[0] = buttons[1] - buttons[2] # button 1 is circle and button 2 is square
+
+            # ax 1 gives direction on y axis => -1 if x clickes, 1 if triangle
+            new_axes[1] = buttons[3] - buttons[0]
+
+            # ax 2 gives direction on z axis => -1 if L2 clicked, 1 if R2 clicked
+            new_axes[2] = axes[2] - axes[5]
+
+
+        if(target == 'FK'):
             print("HD GAMEPAD DATA")
-            #new_axes = utils.gamepad.permute(axes, utils.gamepad.selected_hd_profile.axes)
-            #new_buttons = utils.gamepad.permute(buttons, utils.gamepad.selected_hd_profile.buttons)
 
             # Need to interpolate axes 2 and 5 to go from range [-1,1] to [0,1]
             axes[2] = (axes[2] + 1) / 2
