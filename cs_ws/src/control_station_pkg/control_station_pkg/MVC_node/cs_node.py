@@ -25,7 +25,7 @@ from nav_msgs.msg import Odometry
 from sensor_msgs.msg import JointState, Image, Joy, CompressedImage
 
 
-from avionics_interfaces.msg import MassArray, SpectroResponse, NPK, FourInOne, Voltage, LaserRequest, ServoRequest, SpectroRequest, AngleArray, MassCalibOffset
+from avionics_interfaces.msg import MassArray, SpectroResponse, NPK, FourInOne, Voltage, LaserRequest, ServoRequest, SpectroRequest, AngleArray, MassCalibOffset, NodeStateArray
 from custom_msg.msg import Wheelstatus, Motorcmds
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
@@ -93,12 +93,13 @@ class CS:
 
         #TODO necessary?
         #self.HD_ManualVelocity_pub  = self.node.create_publisher('HD_ManualVelocity',  Float32,        1)
-        self.HD_InvManual_Coord_pub     = self.node.create_publisher(Int8MultiArray,    'CS/HD_InvManual_Coord',  1)
-        self.HD_homeGo_pub              = self.node.create_publisher(Bool,              'CS/HD_reset_arm_pos',    1)
-        self.HD_homeSet_pub             = self.node.create_publisher(Bool,              'CS/HD_set_zero_arm_pos', 1)
-        self.HD_toggle_laser_pub        = self.node.create_publisher(LaserRequest,              'EL/laser_req',   1)
+        #self.HD_InvManual_Coord_pub     = self.node.create_publisher(Int8MultiArray,    'CS/HD_InvManual_Coord',  1)
+        #self.HD_homeGo_pub              = self.node.create_publisher(Bool,              'CS/HD_reset_arm_pos',    1)
+        #self.HD_homeSet_pub             = self.node.create_publisher(Bool,              'CS/HD_set_zero_arm_pos', 1)
+        #self.HD_toggle_laser_pub        = self.node.create_publisher(LaserRequest,              'EL/laser_req',   1)
         self.HD_deploy_voltmeter_pub    = self.node.create_publisher(ServoRequest,              'EL/servo_req',   1)
-        self.HD_cancel_goal_pub         = self.node.create_publisher(Bool,              'CS/HD_cancel',           1)
+        self.HD_cancel_goal_pub         = self.node.create_publisher(Bool,                      'CS/HD_cancel',   1)
+
 
         # CS --> ROVER (NAV)
 
@@ -118,10 +119,8 @@ class CS:
         self.ELEC_drill_calib_pub     = self.node.create_publisher(MassCalibOffset,  'EL/drill/mass_calib_offset',     1)
 
         # Cam
-        self.Cam_index_pub = self.node.create_publisher(
-            Int8MultiArray, 'CS/CAM_index', 1)
-        self.gripper_cam_pub = self.node.create_publisher(
-            Int8, 'ROVER/HD_toggle_cameras', 1)
+        self.Cam_index_pub      = self.node.create_publisher(Int8MultiArray,    'CS/CAM_index', 1)
+        self.gripper_cam_pub    = self.node.create_publisher(Int8,              'ROVER/HD_toggle_cameras', 1)
 
         # ---------------------------------------------------
         # ===== Subscribers =====

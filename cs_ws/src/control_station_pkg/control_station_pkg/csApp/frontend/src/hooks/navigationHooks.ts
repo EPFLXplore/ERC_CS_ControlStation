@@ -157,8 +157,8 @@ export function useNavigation(successCallback?: () => void) {
 			setTrajectoryPoints((prevPoints) => [
 				...prevPoints,
 				{
-					x: data.position[1],
-					y: data.position[0],
+					x: data.position[0],
+					y: data.position[1],
 					o: data.orientation[2],
 				},
 			]);

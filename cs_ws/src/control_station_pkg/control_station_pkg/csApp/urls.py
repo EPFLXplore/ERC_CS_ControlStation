@@ -41,7 +41,7 @@ urlpatterns = [
     path('handlingdevice/set_id',    set_id,         name='set_id'),
     path('handlingdevice/set_hd_mode',   set_hd_mode,         name='set_hd_mode'),
     path('handlingdevice/deploy_hd_voltmeter',   deploy_hd_voltmeter,         name='deploy_hd_voltmeter'),
-    path('handlingdevice/toggle_hd_laser',   toggle_hd_laser,         name='toggle_hd_laser'),
+    #path('handlingdevice/toggle_hd_laser',   toggle_hd_laser,         name='toggle_hd_laser'),
     path('handlingdevice/set_hd_inverse_frame',   set_hd_inverse_frame,         name='set_hd_inverse_frame'),
     
     #Science

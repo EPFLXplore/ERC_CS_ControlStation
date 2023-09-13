@@ -264,7 +264,7 @@ def resume_hd(request):
 
 def cancel_hd(request):
     cs.node.get_logger().info("Maintenance: Cancel Goal")
-    cs.controller.pub_Task()
+    cs.controller.pub_Task(3,8)
 
 def set_id(request):
     cs.rover.HD.set_joint_positions([10,0,0,0,0,0])
@@ -284,10 +284,10 @@ def set_hd_mode(request):
     cs.node.get_logger().info("Maintenance: Set HD mode to " +  str(mode))
     return JsonResponse({})
 
-def toggle_hd_laser(request):
-    toggle = bool(request.POST.get("toggle"))
-    cs.HD_toggle_laser_pub.publish(LaserRequest(enable=toggle))
-    return JsonResponse({})
+# def toggle_hd_laser(request):
+#     toggle = bool(request.POST.get("toggle"))
+#     cs.HD_toggle_laser_pub.publish(LaserRequest(enable=toggle))
+#     return JsonResponse({})
 
 def deploy_hd_voltmeter(request):
     print("deploying voltmeter")
