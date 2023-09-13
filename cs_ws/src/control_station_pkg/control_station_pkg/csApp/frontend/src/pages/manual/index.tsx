@@ -198,8 +198,8 @@ export default () => {
 						<div className={styles.globalContainer}>
 							<ModeSlider
 								name="Nav Mode"
-								mode={["BASIC", "NORMAL"]}
-								functionTrigger={() => navModeSelect(NavMode.Manual_Normal)}
+								mode={["NORMAL", "BASIC"]}
+								functionTrigger={() => navModeSelect(NavMode.Manual_Basic)}
 							/>
 							<TaskControl task={Task.MANUAL_CONTROL} />
 						</div>
