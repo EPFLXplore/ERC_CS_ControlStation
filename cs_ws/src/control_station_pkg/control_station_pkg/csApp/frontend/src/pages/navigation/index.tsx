@@ -337,14 +337,14 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 									<p>Wheel RR: </p>
 								</div>
 								<div className={styles.Infos} style={{ marginRight: "30px" }}>
-									<p>{wheelsPosition[0]}°</p>
-									<p>{wheelsPosition[1]}°</p>
-									<p>{wheelsPosition[2]}°</p>
-									<p>{wheelsPosition[3]}°</p>
+									<p>{roundToTwoDecimals(wheelsPosition[0])}°</p>
+									<p>{roundToTwoDecimals(wheelsPosition[1])}°</p>
+									<p>{roundToTwoDecimals(wheelsPosition[2])}°</p>
+									<p>{roundToTwoDecimals(wheelsPosition[3])}°</p>
 								</div>
 							</div>
 							<div className="Image of rover" style={{ marginTop: "20px" }}>
-								<WheelsIndicator wheelsOrientation={wheelsPosition} />
+								<WheelsIndicator wheelsOrientation={wheelsPosition} driving_state={[true, true, true, true]} steering_state={[true, true, true, true]} />
 							</div>
 						</div>
 					</div>

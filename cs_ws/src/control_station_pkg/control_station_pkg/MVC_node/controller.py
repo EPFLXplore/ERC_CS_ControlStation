@@ -33,6 +33,7 @@ from geometry_msgs.msg import Pose, Point, Twist, PoseStamped, Quaternion
 from actionlib_msgs.msg import GoalID
 from transforms3d.euler import euler2quat, quat2euler
 
+from avionics_interfaces.msg import MassCalibOffset
 from .models.rover   import Task
 
 from .models.science         import Science
@@ -213,19 +214,35 @@ class Controller():
     # ========= NAVIGATION CALLBACKS =========
 
     # receives an Odometry message from NAVIGATION
+    # def nav_position(self, poseStamped):
+
+    #     orientation = quat2euler(poseStamped.pose.orientation.w, poseStamped.pose.orientation.x, poseStamped.pose.orientation.y, poseStamped.pose.orientation.z)
+    #     self.navigation.position = [poseStamped.pose.position.x, poseStamped.pose.position.y, poseStamped.pose.position.z]
+    #     self.navigation.orientation = []
+    #     #self.navigation.linVel = [odometry.twist.twist.linear.x, odometry.twist.twist.linear.y, odometry.twist.twist.linear.z]
+    #     #self.navigation.angVel = [odometry.twist.twist.angular.x, odometry.twist.twist.angular.y, odometry.twist.twist.angular.z]
+
+    #     self.navigation.UpdateNavSocket()
+
     def nav_odometry(self, odometry):
         print("RECEIVED POSESTAMPED")
 
         self.navigation.position = [odometry.pose.pose.position.x, odometry.pose.pose.position.y, odometry.pose.pose.position.z]
-        self.navigation.orientation = [odometry.pose.pose.orientation.x, odometry.pose.pose.orientation.y, odometry.pose.pose.orientation.z, odometry.pose.pose.orientation.w]
+
+        orientation = quat2euler(odometry.pose.pose.orientation.w, odometry.pose.pose.orientation.x, odometry.pose.pose.orientation.y, odometry.pose.pose.orientation.z)
+        self.navigation.orientation = [orientation[0], orientation[1], orientation[2]]
+
         self.navigation.linVel = [odometry.twist.twist.linear.x, odometry.twist.twist.linear.y, odometry.twist.twist.linear.z]
         self.navigation.angVel = [odometry.twist.twist.angular.x, odometry.twist.twist.angular.y, odometry.twist.twist.angular.z]
 
         self.navigation.UpdateNavSocket()
 
     def nav_wheel_ang(self, wheel_ang):
-        print("nav_wheel_ang", wheel_ang.angles)
         self.navigation.wheels_ang = [wheel_ang.angles[0], wheel_ang.angles[1], wheel_ang.angles[2], wheel_ang.angles[3]]
+        self.navigation.UpdateNavSocket()
+
+    def nav_path(self, path):
+        self.navigation.path = [[i.pose.position.x, i.pose.position.y, i.pose.position.z] for i in path.poses]
         self.navigation.UpdateNavSocket()
 
 
@@ -361,11 +378,16 @@ class Controller():
         self.cs.Nav_Goal_pub.publish(PoseStamped(header=h, pose=pose))
 
     def pub_cancel_nav_goal(self):
-        print("pub_cancel_nav_goal")
-        #self.cs.node.get_logger().info("NAV: cancel goal")
-        # msg = String()
-        # msg.data = "cancel"
-        self.cs.Nav_Cancel_pub.publish(String(data="cancel")) #Bool(data=True))
+        self.cs.Nav_Status_pub.publish(String("cancel"))
+
+    def pub_abort_nav_goal(self):
+        self.cs.Nav_Status_pub.publish(String("abort"))
+
+    def pub_nav_mode(self, mode):
+        self.cs.Nav_Mode_pub.publish(mode)
+    
+    def pub_nav_kinematic(self, kinematic):
+        self.cs.Nav_Kinematic_pub.publish(kinematic)
         
         #self.cs.rover.Nav.cancelGoal()
 
@@ -409,12 +431,28 @@ class Controller():
 
     def pub_debug_wheels(self, wheel_id, rot_vel, range):
         self.cs.node.get_logger().info("Debug wheels")
-        self.cs.Nav_DebugWheels_pub(Int16MultiArray(data=[wheel_id, rot_vel, range]))
+        self.cs.Nav_DebugWheels_pub.publish(Int16MultiArray(data=[wheel_id, rot_vel, range]))
 
     ##############################
     #            SCIENCE         #
     ##############################
 
+    # need to publish before placing an element in container to measure mass
+    def pub_container_tare(self):
+        calib_offset = MassCalibOffset()
+        calib_offset.destination_id = 0
+        calib_offset.channel = 0
+
+        self.cs.ELEC_container_pub.publish(calib_offset)
+
+
+    # need to publish before drilling and collecting soil
+    def pub_drill_tare(self):
+        calib_offset = MassCalibOffset()
+        calib_offset.destination_id = 0
+        calib_offset.channel = 0
+
+        self.cs.ELEC_drill_calib_pub.publish(calib_offset)
     
 
     ##############################

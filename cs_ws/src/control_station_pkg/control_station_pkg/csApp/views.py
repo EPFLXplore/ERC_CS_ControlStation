@@ -212,6 +212,11 @@ def nav_cancel(request):
     cs.controller.pub_cancel_nav_goal()
     return JsonResponse({})
 
+def nav_abort(request):
+
+    cs.controller.pub_abort_nav_goal()
+    return JsonResponse({})
+
 def nav_starting_point(request):
 
     x = float(request.POST.get("x"))
@@ -222,6 +227,11 @@ def nav_starting_point(request):
 
     return JsonResponse({})
 
+def nav_mode(request):
+    cs.controller.pub_nav_mode(String(request.POST.get("mode")))
+
+def nav_kinematic(request):
+    cs.controller.pub_nav_kinematic(String(request.POST.get("kinematic")))
 
 # -----------------------------------
 # Handling device views
@@ -270,7 +280,6 @@ def set_hd_mode(request):
     cs.node.get_logger().info("Maintenance: Set HD mode to " +  str(mode))
     return JsonResponse({})
 
-
 def toggle_hd_laser(request):
     toggle = bool(request.POST.get("toggle"))
     cs.HD_toggle_laser_pub.publish(LaserRequest(enable=toggle))
@@ -285,9 +294,11 @@ def deploy_hd_voltmeter(request):
     else :
         servoRequest.angle = 0
     cs.HD_deploy_voltmeter_pub.publish(servoRequest)
-
     return JsonResponse({})
 
+def set_hd_inverse_frame(request):
+    cs.HD_inverse_frame.publish(String(request.POST.get("inverse_frame")))
+    return JsonResponse({})
 
 
 # -----------------------------------
@@ -300,7 +311,7 @@ def launch_science(request):
     return JsonResponse({})
 
 def abort_science(request):
-    cs.controller.pub_Task(4,2)     #0 -> 2 ?
+    cs.controller.pub_Task(4,2)
     cs.rover.setState(Task.IDLE)
     return JsonResponse({})
 
@@ -312,45 +323,14 @@ def resume_science(request):
     cs.controller.pub_Task(4,4)
     return JsonResponse({})
 
-# def confirm_science(request):
-#     cs.controller.pub_Task(4,2)
-#     return JsonResponse({})
+def container_tare(request):
+    cs.controller.pub_container_tare()
+    return JsonResponse({})
 
-# def retry_science(request):
-#     cs.controller.pub_Task(4,1)
-#     return JsonResponse({})
+def drill_tare(request):
+    cs.controller.pub_drill_tare()
+    return JsonResponse({})
 
-# def start_timer(request):
-#     print("Starting timer")
-
-#     # startThread()
-#     return JsonResponse({})
-
-# def set_tube_cmd(request):
-#     tube = int(request.POST.get("tube"))
-#     operation = int(request.POST.get("operation"))
-    
-#     cs.controller.selectedTube(tube)
-#     cs.controller.selectedOp(operation)
-
-#     print("SC: (operation = ", operation, ", tube = ", tube, ")")
-#     cs.rover.setState(Task.SCIENCE)
-
-#     return sc_send_cmd(cs.rover.SC.getCmd())
-
-
-# def get_humidity(request):
-#     return sc_send_cmd(3)
-
-
-# def get_parameters(request):
-#     return sc_send_cmd(4)
-
-# def get_sc_info(request):
-#     return sc_send_cmd(5)
-
-# def get_sc_state(request):
-#     return sc_send_cmd(6)
 
 
 def sc_send_cmd(val):
