@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BackButton from "../../components/BackButton";
 import Background from "../../components/Background";
 import JointPositions from "../../components/JointPositions";
@@ -24,6 +24,11 @@ import ToggleFeature from "../../components/ToggleFeature";
 import VoltmeterSlider from "../../components/VoltmeterSlider";
 import VoltmeterValue from "../../components/VoltmeterValue";
 import SettingsModal from "../../components/SettingsModal";
+import navModeSelect from "../../utils/navModeSelect";
+import { HD_Mode } from "../../utils/HDMode";
+import { NavMode } from "../../utils/navMode";
+import { HD_Frame_Mode } from "../../utils/HDModeFrame";
+import hdFrameModeSelect from "../../utils/hdFrameModeSelect";
 
 function useQuery() {
 	const { search } = useLocation();
@@ -56,7 +61,14 @@ export default () => {
 		defaultMode === "nav" ? Task.NAVIGATION : Task.HANDLING_DEVICE
 	);
 
+	const [hdMode, setHdMode] = useState(HD_Mode.FK);
+
 	const [manualSettings, setManualSettings] = useState(false);
+
+	useEffect(() => {
+		navModeSelect(NavMode.Manual_Basic);
+		hdModeSelect(HD_Mode.FK);
+	}, []);
 
 	return (
 		<div className="page">
@@ -99,16 +111,22 @@ export default () => {
 
 			{mode === Task.HANDLING_DEVICE && (
 				<div className={styles.globalContainer}>
+					{hdMode === HD_Mode.IK && (<ModeSlider
+						name="Frame Mode"
+						mode={["Gripper", "Rover"]}
+						functionTrigger={(mode) => hdFrameModeSelect(mode)}
+					/>)}
 					<ModeSlider
 						name="Arm Mode"
-						mode={["IK", "FK"]}
-						functionTrigger={() => hdModeSelect(0)}
+						mode={["FK", "IK"]}
+						functionTrigger={(mode) => hdModeSelect(mode, setHdMode)}
 					/>
-					<VoltmeterSlider initValue={0} onValueChange={openVoltmeter} />
+					{/* <VoltmeterSlider initValue={0} onValueChange={openVoltmeter} /> */}
 					<ToggleFeature
-						title="LED Drone"
+						title="Voltmeter"
 						onChange={(m) => {
-							console.log(m);
+							openVoltmeter(m);
+							//"bool -> deployment"
 						}}
 					/>
 					<TaskControl task={Task.MANUAL_CONTROL} />
@@ -180,8 +198,8 @@ export default () => {
 						<div className={styles.globalContainer}>
 							<ModeSlider
 								name="Nav Mode"
-								mode={["NORMAL", "BASIC"]}
-								functionTrigger={() => hdModeSelect(0)}
+								mode={["BASIC", "NORMAL"]}
+								functionTrigger={() => navModeSelect(NavMode.Manual_Normal)}
 							/>
 							<TaskControl task={Task.MANUAL_CONTROL} />
 						</div>

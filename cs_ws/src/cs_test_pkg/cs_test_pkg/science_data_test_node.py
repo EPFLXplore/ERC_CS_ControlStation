@@ -17,11 +17,10 @@ class ElecTestNode(Node):
         self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
 
         self.publisher_mass             = self.create_publisher(MassArray, 'EL/mass', 10)
-        self.publisher_spectrometer     = self.create_publisher(SpectroResponse, 'EL/spectrometer', 10)
+        self.publisher_spectrometer     = self.create_publisher(SpectroResponse, 'EL/spectro_response', 10)
         self.publisher_npk              = self.create_publisher(NPK, 'EL/npk', 10)
         # self.publisher_four_in_one      = self.create_publisher(Float32MultiArray, 'EL/four_in_one', 10)
         self.publisher_four_in_one      = self.create_publisher(FourInOne, 'EL/four_in_one', 10)
-        self.publisher_voltage          = self.create_publisher(Voltage, 'EL/voltage', 10)
 
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
@@ -44,7 +43,7 @@ class ElecTestNode(Node):
         self.publisher_mass.publish(mass)
 
         spectro = SpectroResponse()
-        spectro.data = [float(v) for v in numpy.random.randint(10, size=(18))]
+        spectro.data = [float(v) for v in numpy.random.rand(18)]
         
         self.publisher_spectrometer.publish(spectro)
 
@@ -63,9 +62,9 @@ class ElecTestNode(Node):
 
         self.publisher_four_in_one.publish(fio)
 
-        v = Voltage()
-        v.voltage = random.uniform(0, 10)
-        self.publisher_voltage.publish(v)
+        # v = Voltage()
+        # v.voltage = random.uniform(0, 10)
+        # self.publisher_voltage.publish(v)
 
         # self.publisher_potentiometers.publish(msg_float_32_multi)
         # self.publisher_LED_confirm.publish(msg_float_32_multi)

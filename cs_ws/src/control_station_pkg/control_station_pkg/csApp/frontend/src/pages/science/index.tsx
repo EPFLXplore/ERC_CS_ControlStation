@@ -17,6 +17,7 @@ import { Size } from "../../utils/size.type";
 import { Themes } from "../../utils/themes";
 import CameraView from "../../components/CameraView";
 import ModeSlider from "../../components/ModeSlider";
+import tareMassSensor from "../../utils/tareMassSensor";
 
 const candidates = [
 	{ percentage: 78, element: "Phosphate" },
@@ -210,10 +211,11 @@ export default () => {
 						<Table values={npkSensor} sensorType={Sensor.NPK} />
 						<Table values={fourInOneSensor} sensorType={Sensor.ALL} />
 						<Table values={mass} sensorType={Sensor.MASS} />
+						<div className={styles.TareActions}>
+							<Button text="Tare 1" size={Size.SMALL} theme={Themes.BROWN} onClick={() => tareMassSensor(0)} />
+							<Button text="Tare 2" size={Size.SMALL} theme={Themes.BROWN} onClick={() => tareMassSensor(1)} />
+						</div>
 					</div>
-				</div>
-				<div className={styles.taskControlContainer}>
-					<TaskControl task={Task.SCIENCE} />
 				</div>
 				<div className={styles.InfoControllerContainer}>
 					<div className={styles.table}>

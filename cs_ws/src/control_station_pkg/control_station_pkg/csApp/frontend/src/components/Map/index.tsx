@@ -28,6 +28,7 @@ var pointSpacing: number;
 const Map = ({
 	origin,
 	trajectory,
+	path,
 	goals,
 	tempGoal,
 	savedGoals,
@@ -36,6 +37,7 @@ const Map = ({
 }: {
 	origin: Point;
 	trajectory: Point[];
+	path: Point[];
 	goals: Point[];
 	tempGoal: Point | undefined;
 	savedGoals: Goal[];
@@ -93,6 +95,7 @@ const Map = ({
 
 			if (ctx) {
 				drawMap(canvas, ctx, image, origin);
+				drawTrajectory(path, undefined, "#8806CE");
 				drawTrajectory(trajectory, roverIcon);
 				savedGoals.forEach((goal: Goal) =>
 					drawGoal(goal, "#0D99FF", undefined, goal.id)
@@ -101,7 +104,7 @@ const Map = ({
 				goals.forEach((goal: Point) => drawGoal(goal, "#0E6655", roverGoalIcon));
 			}
 		}
-	}, [image, imageWidth, imageHeight, trajectory, goals, tempGoal, savedGoals]);
+	}, [image, imageWidth, imageHeight, trajectory, goals, tempGoal, savedGoals, path]);
 
 	return (
 		<div className={styles.Map}>
@@ -303,9 +306,9 @@ export const drawGoal = (goal: Point, color: string, image?: CanvasImageSource, 
 	}
 };
 
-export const drawTrajectory = (points: Point[], icon: CanvasImageSource) => {
+export const drawTrajectory = (points: Point[], icon: CanvasImageSource | undefined, color?: string) => {
 	if (mapCTX && points.length > 1) {
-		mapCTX.strokeStyle = "red";
+		mapCTX.strokeStyle = color? color : "red";
 		mapCTX.lineWidth = 4;
 		mapCTX.beginPath();
 
@@ -326,8 +329,10 @@ export const drawTrajectory = (points: Point[], icon: CanvasImageSource) => {
 		// Draw the trajectory lines
 		mapCTX.stroke();
 
-		// Call drawGoal on the last point
-		drawGoal(points[points.length - 1], "#004466", icon);
+		if(icon) {
+			// Call drawGoal on the last point
+			drawGoal(points[points.length - 1], "#004466", icon);
+		}
 	}
 };
 

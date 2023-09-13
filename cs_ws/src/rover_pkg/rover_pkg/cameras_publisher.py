@@ -130,6 +130,7 @@ def run_camera(cameras_publisher, camera, pub, i):
         if (ret):
             frame = cameras_publisher.bridge.cv2_to_compressed_imgmsg(frame)
             pub.publish(frame)
+            
         c = cv2.waitKey(1)
         if c == 27:
             enabled[i] = False
