@@ -29,7 +29,7 @@ function createKinematicRequest(id: NavMode) {
 	const csrftoken = getCookie("csrftoken");
 
 	const data = new FormData();
-
+    
     switch (id) {
         case NavMode.Manual_Basic:
             data.append("kinematic", "basic");

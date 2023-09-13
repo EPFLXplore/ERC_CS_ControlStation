@@ -29,7 +29,7 @@ from manage          import setup
 
 from MVC_node.models import gamepad
 
-from std_msgs.msg import Int8MultiArray, Int8, Bool
+from std_msgs.msg import Int8MultiArray, Int8, Bool, String
 from avionics_interfaces.msg import LaserRequest, ServoRequest, SpectroRequest
 
 # ===============================================================
@@ -233,7 +233,8 @@ def nav_mode(request):
     return JsonResponse({})
 
 def nav_kinematic(request):
-    cs.controller.pub_nav_kinematic(String(request.POST.get("kinematic")))
+    kinematic = request.POST.get("kinematic")
+    cs.controller.pub_nav_kinematic(String(data = kinematic))
     return JsonResponse({})
 
 # -----------------------------------

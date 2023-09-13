@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { drawGoal } from "../components/Map";
-import { Point } from "../utils/maths";
+import { Point, getDistance } from "../utils/maths";
 import { getCookie } from "../utils/requests";
 import path from "path";
 
@@ -130,12 +130,24 @@ export function useNavigation() {
 	const [trajectoryPoints, setTrajectoryPoints] = useState<Point[]>([]);
 	const [pathPoints, setPathPoints] = useState<Point[]>([]);
 	const [showPath, setShowPath] = useState<boolean>(true);
+	const [driving_state, setDrivingState] = useState<boolean[]>([false, false, false, false]);
+	const [steering_state, setSteeringState] = useState<boolean[]>([false, false, false, false]);
+	const [info, setInfo] = useState<string>("Welcome in Autonomous Navigation Mode");
+	const [displacement, setDisplacement] = useState<string>("normal");
+	const [routeLeft, setRouteLeft] = useState<number>(0);
 
 	useEffect(() => {
 		let navigationSocket = new WebSocket("ws://127.0.0.1:8000/ws/csApp/info_nav/");
 
 		navigationSocket.onmessage = (e) => {
 			const data = JSON.parse(e.data);
+			const pathPoints = data.path.map((element: number[]) => {
+				return {
+					x: element[0],
+					y: element[1],
+					o: 0,
+				}
+			})
 			
 			setCurrentPosition(data.position);
 			setCurrentOrientation(data.orientation);
@@ -150,13 +162,12 @@ export function useNavigation() {
 					o: data.orientation[2],
 				},
 			]);
-			setPathPoints(data.path.map((element: number[]) => {
-				return {
-					x: element[0],
-					y: element[1],
-					o: 0,
-				}
-			}));
+			setPathPoints(pathPoints);
+			setDrivingState(data.driving_wheel_state);
+			setSteeringState(data.steering_wheel_state);
+			setInfo(data.info);
+			setDisplacement(data.displacement_mode);
+			setRouteLeft(pathPoints.reduce((acc: [number, Point], curr: Point) => [acc[0] + getDistance(acc[1], curr), curr]));
 		};
 
 		navigationSocket.onerror = (e) => {
@@ -202,5 +213,10 @@ export function useNavigation() {
 		showPath,
 		setShowPath,
 		initPos,
+		driving_state,
+		steering_state,
+		info,
+		displacement,
+		routeLeft
 	] as const;
 }
