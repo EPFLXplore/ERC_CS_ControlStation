@@ -24,7 +24,6 @@ class CamerasPublisher(Node):
 
         # publishers for the 6 IMX290 cameras
         self.cam_0_pub = self.create_publisher(CompressedImage, 'camera_0', 1)
-        self.cam_1_pub = self.create_publisher(CompressedImage, 'camera_1', 1)
         #self.cam_2_pub = self.create_publisher(CompressedImage, 'camera_2', 1)
         self.cam_3_pub = self.create_publisher(CompressedImage, 'camera_3', 1)
         self.cam_4_pub = self.create_publisher(CompressedImage, 'camera_4', 1)
@@ -32,8 +31,8 @@ class CamerasPublisher(Node):
 
 
         self.camera_publishers = [self.cam_0_pub, 
-                              self.cam_1_pub,
-                              #self.cam_2_pub, 
+                              None,
+                              None, # self.cam_2_pub, 
                               self.cam_3_pub, 
                               self.cam_4_pub, 
                               self.cam_5_pub]
@@ -43,7 +42,6 @@ class CamerasPublisher(Node):
 
 
         self.camera_0 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=0))
-        self.camera_1 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=1))
         #self.camera_2 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=2))
         self.camera_3 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=3))
         self.camera_4 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=4))
@@ -52,6 +50,7 @@ class CamerasPublisher(Node):
         self.camera_list = [self.camera_0, 
                             self.camera_1,
                             None,
+                            None, #self.camera_2,
                             self.camera_3,
                             self.camera_4, 
                             self.camera_5]

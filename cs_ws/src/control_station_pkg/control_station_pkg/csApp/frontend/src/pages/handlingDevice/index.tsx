@@ -72,61 +72,61 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 				<div className={styles.container}>
 					<button
 						className={availableButtons[0] == 1 ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(0)}
+						onClick={() => buttonSelect(100)}
 					>
 						Switch A 1
 					</button>
 					<button
 						className={availableButtons[1] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(1)}
+						onClick={() => buttonSelect(101)}
 					>
 						Switch A 2
 					</button>
 					<button
 						className={availableButtons[2] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(2)}
+						onClick={() => buttonSelect(102)}
 					>
 						Switch A 3
 					</button>
 					<button
 						className={availableButtons[3] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(3)}
+						onClick={() => buttonSelect(103)}
 					>
 						Switch A 4
 					</button>
 					<button
 						className={availableButtons[4] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(4)}
+						onClick={() => buttonSelect(104)}
 					>
 						Switch A 5
 					</button>
 					<button
 						className={availableButtons[5] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(5)}
+						onClick={() => buttonSelect(105)}
 					>
 						Switch A 6
 					</button>
 					<button
 						className={availableButtons[6] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(6)}
+						onClick={() => buttonSelect(106)}
 					>
 						Switch A 7
 					</button>
 					<button
 						className={availableButtons[7] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(7)}
+						onClick={() => buttonSelect(107)}
 					>
 						Switch A 8
 					</button>
 					<button
 						className={availableButtons[8] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(8)}
+						onClick={() => buttonSelect(108)}
 					>
 						Switch A 9
 					</button>
 					<button
 						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(9)}
+						onClick={() => buttonSelect(109)}
 					>
 						Switch A 10
 					</button>
@@ -140,7 +140,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 						className={availableButtons[11] == 1 ? styles.button : styles.disabledButton}
 						onClick={() => buttonSelect(11)}
 					>
-						Socket
+						Metallic Plate
 					</button>
 					<button
 						className={availableButtons[12] == 1  ? styles.button : styles.disabledButton}
@@ -150,21 +150,99 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 					</button>
 					<button
 						className={availableButtons[13] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(13)}
+						onClick={() => buttonSelect(20)}
 					>
-						Mettalic Plate
+						Voltmeter Detach
+					</button>
+					<button
+						className={availableButtons[13] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(21)}
+					>
+						Voltmeter Retract
 					</button>
 					<button
 						className={availableButtons[14] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(20)}
+						onClick={() => buttonSelect(30)}
 					>
 						Ethernet Socket
 					</button>
 					<button
 						className={availableButtons[15] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(21)}
+						onClick={() => buttonSelect(31)}
 					>
 						Ethernet Cable
+					</button>
+					<button
+						className={styles.button}
+						onClick={() => buttonSelect(30)}
+					>
+						Pick Rock
+					</button>
+					<button
+						className={styles.button}
+						onClick={() => buttonSelect(31)}
+					>
+						Rassor Sample
+					</button>
+					<button
+						className={availableButtons[0] == 1 ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(110)}
+					>
+						Switch A 1 OFF
+					</button>
+					<button
+						className={availableButtons[1] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(111)}
+					>
+						Switch A 2 OFF
+					</button>
+					<button
+						className={availableButtons[2] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(112)}
+					>
+						Switch A 3 OFF
+					</button>
+					<button
+						className={availableButtons[3] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(113)}
+					>
+						Switch A 4 OFF
+					</button>
+					<button
+						className={availableButtons[4] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(114)}
+					>
+						Switch A 5 OFF
+					</button>
+					<button
+						className={availableButtons[5] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(105)}
+					>
+						Switch A 6 OFF
+					</button>
+					<button
+						className={availableButtons[6] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(116)}
+					>
+						Switch A 7 OFF
+					</button>
+					<button
+						className={availableButtons[7] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(117)}
+					>
+						Switch A 8 OFF
+					</button>
+					<button
+						className={availableButtons[8] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(118)}
+					>
+						Switch A 9 OFF
+					</button>
+					<button
+						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(119)}
+					>
+						Switch A 10 OFF
 					</button>
 				</div>
 				<Button size={Size.SMALL} theme={Themes.BROWN} text="Cancel" onClick={() => buttonSelect(-1)} />
