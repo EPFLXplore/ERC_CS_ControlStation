@@ -147,7 +147,6 @@ class CS:
         self.node.create_subscription(Voltage,          'EL/voltage',         self.controller.hd_voltage, 10)  
         
         # -- NAV messages --
-        #self.node.create_subscription(PoseStamped,         '/lio_sam/current_pose',       self.controller.nav_position  , 10)
         self.node.create_subscription(Odometry,         '/lio_sam/odom',       self.controller.nav_odometry  , 10)
         self.node.create_subscription(AngleArray,       'EL/potentiometer',    self.controller.nav_wheel_ang , 10)
         self.node.create_subscription(Path,             '/plan',               self.controller.nav_path      , 10)

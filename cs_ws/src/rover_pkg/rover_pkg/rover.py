@@ -125,12 +125,10 @@ class Rover():
         self.HD_SemiAuto_Id_pub      = self.node.create_publisher(Int8, 'ROVER/HD_SemiAuto_Id'   , 1)
         self.send_HD_element_id_pub  = self.node.create_publisher(Int8, 'ROVER/HD_element_id'    , 1)
         self.send_toggle_info_pub    = self.node.create_publisher(Bool, 'ROVER/HD_toggle_camera' , 1)
-        #self.HD_gamepad_pub          = self.node.create_publisher(Float32MultiArray, 'ROVER/HD_gamepad' , 1)
         
         # Rover --> NAV
         self.Nav_Goal_pub     = self.node.create_publisher(PoseStamped, 'ROVER/NAV_goal'    , 1)
         self.Nav_Status_pub   = self.node.create_publisher(String,      'ROVER/NAV_status'  , 1)
-        #self.Nav_gamepad_pub  = self.node.create_publisher(Joy,         'ROVER/NAV_gamepad' , 1)
 
 
         # Rover --> SC
@@ -140,18 +138,15 @@ class Rover():
 
         # SC --> Rover
         self.node.create_subscription(Int8,              'SC/fsm_state_to_cs'          , self.model.SC.science_fsm_callback   , 10)  # self.SC_infos_pub.publish)
-        # self.node.create_subscription(String,          'sc_state'                    , self.model.SC.set_state_info  , 10)
-        # self.node.create_subscription(String,          'sc_info'                     , self.model.SC.set_text_info   , 10)  # self.SC_infos_pub.publish)
-        # self.node.create_subscription(Int16,           'sc_measurements_humidity'    , self.SC_humidities_pub.publish, 10)
-        # self.node.create_subscription(Int16MultiArray, 'sc_params'                   , self.model.SC.params          , 10)
-        # self.node.create_subscription(Int8,            'TaskProgress'                , self.model.setProgress        , 10)
+
         # NAV --> Rover
-        self.node.create_subscription(PoseStamped,        '/lio_sam/current_pose'          , self.NAV_odometry_pub.publish , 10) # CS DIRECTLY SUBSCRIBED
+        #self.node.create_subscription(PoseStamped,        '/lio_sam/current_pose'          , self.NAV_odometry_pub.publish , 10) # CS DIRECTLY SUBSCRIBED
+
         # HD --> Rover
         self.node.create_subscription(JointState,      'HD/motor_control/joint_telemetry', self.HD_telemetry_pub.publish , 10)
 
 
-        # ==========================================================GAMEPAD FROM CS
+        # ========================================================== GAMEPAD FROM CS
         #self.node.create_subscription(Float32MultiArray,  'CS/HD_gamepad'    , self.HD_gamepad_pub.publish, 10)
         #self.node.create_subscription(Joy,               'CS/NAV_gamepad', self.model.Nav.gamepad, 10)
 
