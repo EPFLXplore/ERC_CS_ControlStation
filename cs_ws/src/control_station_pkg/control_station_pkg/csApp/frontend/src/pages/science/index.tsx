@@ -84,7 +84,7 @@ export default () => {
 					<div className={styles.InfoDiv}>
 						<ModeSlider
 							name="Science Mode"
-							mode={["Data", "Drill"]}
+							mode={["Drill", "Data"]}
 							functionTrigger={() => setMode(1)}
 						/>
 					</div>
@@ -240,7 +240,7 @@ export default () => {
 					</div>
 					<ModeSlider
 						name="Science Mode"
-						mode={["Drill", "Data"]}
+						mode={["Data", "Drill"]}
 						functionTrigger={() => setMode(0)}
 					/>
 				</div>

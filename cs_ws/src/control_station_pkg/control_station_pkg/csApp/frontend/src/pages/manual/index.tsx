@@ -27,6 +27,8 @@ import SettingsModal from "../../components/SettingsModal";
 import navModeSelect from "../../utils/navModeSelect";
 import { HD_Mode } from "../../utils/HDMode";
 import { NavMode } from "../../utils/navMode";
+import { HD_Frame_Mode } from "../../utils/HDModeFrame";
+import hdFrameModeSelect from "../../utils/hdFrameModeSelect";
 
 function useQuery() {
 	const { search } = useLocation();
@@ -58,6 +60,8 @@ export default () => {
 	const [mode, setMode] = useState(
 		defaultMode === "nav" ? Task.NAVIGATION : Task.HANDLING_DEVICE
 	);
+
+	const [hdMode, setHdMode] = useState(HD_Mode.FK);
 
 	const [manualSettings, setManualSettings] = useState(false);
 
@@ -107,10 +111,15 @@ export default () => {
 
 			{mode === Task.HANDLING_DEVICE && (
 				<div className={styles.globalContainer}>
+					{hdMode === HD_Mode.IK && (<ModeSlider
+						name="Frame Mode"
+						mode={["Gripper", "Rover"]}
+						functionTrigger={(mode) => hdFrameModeSelect(mode)}
+					/>)}
 					<ModeSlider
 						name="Arm Mode"
-						mode={["IK", "FK"]}
-						functionTrigger={() => hdModeSelect(HD_Mode.FK)}
+						mode={["FK", "IK"]}
+						functionTrigger={(mode) => hdModeSelect(mode, setHdMode)}
 					/>
 					{/* <VoltmeterSlider initValue={0} onValueChange={openVoltmeter} /> */}
 					<ToggleFeature
@@ -189,7 +198,7 @@ export default () => {
 						<div className={styles.globalContainer}>
 							<ModeSlider
 								name="Nav Mode"
-								mode={["NORMAL", "BASIC"]}
+								mode={["BASIC", "NORMAL"]}
 								functionTrigger={() => navModeSelect(NavMode.Manual_Normal)}
 							/>
 							<TaskControl task={Task.MANUAL_CONTROL} />
