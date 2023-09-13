@@ -39,8 +39,6 @@ class GamepadConsumer(AsyncWebsocketConsumer):
                             json_data['mode'])
         
 
-
-
     async def disconnect(self, close_code):
         utils.gamepad.id = ""
         utils.gamepad.buttons = []
