@@ -199,7 +199,7 @@ export default () => {
 							<ModeSlider
 								name="Nav Mode"
 								mode={["NORMAL", "BASIC"]}
-								functionTrigger={() => navModeSelect(NavMode.Manual_Basic)}
+								functionTrigger={(mode) => navModeSelect(mode as unknown as NavMode)}
 							/>
 							<TaskControl task={Task.MANUAL_CONTROL} />
 						</div>
