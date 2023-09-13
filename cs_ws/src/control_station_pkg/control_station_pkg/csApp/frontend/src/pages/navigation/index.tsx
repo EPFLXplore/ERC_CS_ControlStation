@@ -46,7 +46,11 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 		pathPoints,
 		showPath,
 		setShowPath,
-		initPos
+		initPos,
+		driving_state,
+		steering_state,
+		info,
+		displacement_mode
 	] = useNavigation();
 
 	const [navSettings, setNavlSettings] = useState(false);
@@ -177,7 +181,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 				/>
 				<div className={styles.Info}>
 					<PageHeader
-						title="Camera"
+						title="Autonomous Navigation"
 						settings
 						settingsCallback={() => setNavlSettings(true)}
 					/>
@@ -247,6 +251,9 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 								/>
 							))}
 						</div>
+						<p>
+									<b>Info</b>: {info}
+								</p>
 					</div>
 				</div>
 			</div>
@@ -344,7 +351,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 								</div>
 							</div>
 							<div className="Image of rover" style={{ marginTop: "20px" }}>
-								<WheelsIndicator wheelsOrientation={wheelsPosition} driving_state={[true, true, true, true]} steering_state={[true, true, true, true]} />
+								<WheelsIndicator wheelsOrientation={wheelsPosition} driving_state={driving_state} steering_state={steering_state} />
 							</div>
 						</div>
 					</div>
