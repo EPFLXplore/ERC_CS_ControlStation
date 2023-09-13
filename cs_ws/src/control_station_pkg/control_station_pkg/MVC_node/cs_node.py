@@ -24,6 +24,7 @@ from sensor_msgs.msg       import JointState, Image, Joy, CompressedImage
 
 
 from avionics_interfaces.msg import MassArray, SpectroResponse, NPK, FourInOne, Voltage, LaserRequest, ServoRequest, SpectroRequest, AngleArray, MassCalibOffset
+from custom_msg.msg import Wheelstatus, Motorcmds
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
 django.setup()
@@ -147,9 +148,11 @@ class CS:
         self.node.create_subscription(Voltage,          'EL/voltage',         self.controller.hd_voltage, 10)  
         
         # -- NAV messages --
-        self.node.create_subscription(Odometry,         '/lio_sam/odom',       self.controller.nav_odometry  , 10)
-        self.node.create_subscription(AngleArray,       'EL/potentiometer',    self.controller.nav_wheel_ang , 10)
-        self.node.create_subscription(Path,             '/plan',               self.controller.nav_path      , 10)
+        self.node.create_subscription(Odometry,         '/lio_sam/odom',                self.controller.nav_odometry  , 10)
+        self.node.create_subscription(Path,             '/plan',                        self.controller.nav_path      , 10)
+        self.node.create_subscription(Wheelstatus,      '/NAV/absolute_encoders',       self.controller.nav_wheel, 10)
+        self.node.create_subscription(Motorcmds,        '/NAV/displacement',            self.controller.nav_displacement, 10)
+        
 
         # -- Camera messages --
         self.node.create_subscription(CompressedImage, '/camera_0', cameras_reciever.display_cam_0, 1)

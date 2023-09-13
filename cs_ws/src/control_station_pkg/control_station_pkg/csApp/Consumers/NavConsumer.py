@@ -68,6 +68,8 @@ class NavConsumer(WebsocketConsumer):
                 'driving_wheel_ang': data_json['driving_wheel_ang'],
                 'driving_wheel_state': data_json['driving_wheel_state'],
                 'path' : data_json['path'],
+                'info' : data_json['info'],
+                'displacement_mode' : data_json['displacement_mode'],
             }
         )
 
@@ -85,4 +87,6 @@ class NavConsumer(WebsocketConsumer):
                 'driving_wheel_ang': event['driving_wheel_ang'],
                 'driving_wheel_state': event['driving_wheel_state'],
                 'path' : event['path'],
+                'info' : event['info'],
+                'displacement_mode' : event['displacement_mode'],
         }))

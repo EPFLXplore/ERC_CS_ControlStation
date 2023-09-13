@@ -21,9 +21,12 @@ class Navigation:
         self.driving_wheel_ang = [0,0,0,0]
         self.driving_wheel_state = [0,0,0,0]
 
+        self.info = ""
+        self.displacement_mode = ""
+
         self.path = [[]]
 
-        self.wheels_ang = [0,0,0,0]
+        #self.wheels_ang = [0,0,0,0]
 
         #pas besoin de les save, on les envoye directement au frontend
         #self.__nextId = 0
@@ -78,4 +81,6 @@ class Navigation:
                                                     'steering_wheel_state': [str(val) for val in self.steering_wheel_state],
                                                     'driving_wheel_ang': [str(val) for val in self.driving_wheel_ang],
                                                     'driving_wheel_state': [str(val) for val in self.driving_wheel_state],
+                                                    'info' : self.info,
+                                                    'displacement_mode' : self.displacement_mode,
                                                     })

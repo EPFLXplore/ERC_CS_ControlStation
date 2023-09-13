@@ -245,9 +245,31 @@ class Controller():
 
         self.navigation.UpdateNavSocket()
 
-    def nav_wheel_ang(self, wheel_ang):
-        self.navigation.wheels_ang = [wheel_ang.angles[0], wheel_ang.angles[1], wheel_ang.angles[2], wheel_ang.angles[3]]
+    def nav_wheel(self, msg):
+        """
+        FRONT_LEFT_DRIVE = 0
+        FRONT_RIGHT_DRIVE = 1
+        BACK_RIGHT_DRIVE = 2
+        BACK_LEFT_DRIVE = 3
+        FRONT_LEFT_STEER = 4
+        FRONT_RIGHT_STEER = 5
+        BACK_RIGHT_STEER = 6
+        BACK_LEFT_STEER = 7
+        """
+        #self.navigation.wheels_ang = []
+        self.navigation.steering_wheel_ang = msg.data[0:4]
+        self.navigation.driving_wheel_ang = msg.data[4:8]
+        self.navigation.steering_wheel_state = msg.state[0:4]
+        self.navigation.driving_wheel_state = msg.state[4:8]
+    
         self.navigation.UpdateNavSocket()
+
+    def nav_displacement(self, displacement):
+        self.navigation.displacement_mode = displacement.modedeplacement
+        self.navigation.info = displacement.info
+        self.navigation.UpdateNavSocket()
+
+
 
     def nav_path(self, path):
         self.navigation.path = [[i.pose.position.x, i.pose.position.y, i.pose.position.z] for i in path.poses]
