@@ -11,6 +11,26 @@ export default () => {
 	const bottomRef = useRef<HTMLDivElement | null>(null);
 	const [logs, changeFilter] = useLogs();
 
+	const rows = [
+		"SC_CONTAINER_NODE",
+		"SC_DRILL_NODE",
+		"Node 3",
+		"HD_NODE",
+		"Node 5",
+		"Node 6",
+		"Node 7",
+		"NAV_NODE",
+		"Node 9",
+		"Node 10",
+		"Node 11",
+		"Node 12",
+		"Node 13",
+		"Node 14",
+		"Node 15",
+		"GENERAL_NODE",
+	]; // Rows titles
+	const columns = ["can0", "can1"]; // Columns titles
+
 	useEffect(() => {
 		// 👇️ scroll to bottom every time messages change
 		bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -147,32 +167,72 @@ export default () => {
 	} else {
 		return (
 			<div className="page center">
-			<Background />
-			<BackButton />
-			<div className={styles.TabContainer}>
-				<div className={styles.TabHeader}>
-					<div
-						className={`${styles.TabButton} ${styles.Inactive}`}
-						onClick={() => setMode("logs")}
-					>
-						Logs
+				<Background />
+				<BackButton />
+				<div className={styles.TabContainer}>
+					<div className={styles.TabHeader}>
+						<div
+							className={`${styles.TabButton} ${styles.Inactive}`}
+							onClick={() => setMode("logs")}
+						>
+							Logs
+						</div>
+						<div
+							className={`${styles.TabButton} ${styles.Inactive}`}
+							onClick={() => setMode("console")}
+						>
+							Console
+						</div>
+						<div
+							className={`${styles.TabButton} ${styles.Active}`}
+							onClick={() => setMode("settings")}
+						>
+							Settings
+						</div>
 					</div>
-					<div
-						className={`${styles.TabButton} ${styles.Inactive}`}
-						onClick={() => setMode("console")}
-					>
-						Console
-					</div>
-					<div
-						className={`${styles.TabButton} ${styles.Active}`}
-						onClick={() => setMode("settings")}
-					>
-						Settings
+					<div className={styles.TabContent}>
+						<table className={styles.table}>
+							<thead>
+								<tr>
+									<th>
+										<text>Nodes</text>
+									</th>
+									{columns.map((columnTitle) => (
+										<th key={columnTitle}>
+											<text>{columnTitle}</text>
+										</th>
+									))}
+								</tr>
+							</thead>
+							<tbody>
+								{rows.map((rowTitle, rowIndex) => (
+									<tr key={rowTitle}>
+										<td>
+											<text>{rowTitle}</text>
+										</td>
+										{columns.map((columnTitle) => {
+											switch (columnTitle) {
+												case "can0":
+													return (
+														<td key={`${rowIndex}-${columnTitle}`}>
+															<input type="checkbox" />
+														</td>
+													);
+												case "can1":
+													return (
+														<td key={`${rowIndex}-${columnTitle}`}>
+															<input type="checkbox" />
+														</td>
+													);
+											}
+										})}
+									</tr>
+								))}
+							</tbody>
+						</table>
 					</div>
 				</div>
-				<div className={styles.TabContent}></div>
 			</div>
-		</div>
-	);
-		}		
+		);
+	}
 };

@@ -15,6 +15,8 @@ from avionics_interfaces.msg import AngleArray
 from transforms3d.euler import euler2quat
 from diagnostic_msgs.msg  import DiagnosticStatus
 
+from custom_msg.msg import Wheelstatus, Motorcmds
+
 class NavTestNode(Node):
 
     def __init__(self):
@@ -23,8 +25,9 @@ class NavTestNode(Node):
         # Log publisher
         self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
         self.publisher_odometry = self.create_publisher(Odometry, '/lio_sam/odom', 10)
-        self.publisher_wheel_ang = self.create_publisher(AngleArray, 'EL/potentiometer', 10)
         self.publisher_path = self.create_publisher(Path, '/path', 1)
+        self.publisher_wheel_ang = self.create_publisher(Wheelstatus, 'NAV/absolute_encoders', 10)
+        self.publisher_motorcmds = self.create_publisher(Motorcmds, 'NAV/displacement', 10)
         
         #TODO
         #self.subscription_move_base = self.create_subscription(String,'ROVER/move_base/cancel',self.listener_callback,10)
@@ -53,14 +56,14 @@ class NavTestNode(Node):
         msg = Odometry()
         msg.pose.pose.position.x = random.uniform(-10, 10)
         msg.pose.pose.position.y = random.uniform(0, 25)
-        print(f"positon: x : {msg.pose.pose.position.x} y: {msg.pose.pose.position.y}")
+        #print(f"positon: x : {msg.pose.pose.position.x} y: {msg.pose.pose.position.y}")
         msg.pose.pose.position.z = msg.pose.pose.position.z + random.uniform(-3, 3)
 
         euler = [0, 0, random.uniform(0, 360)]
-        print("orientation in degrees: " + str(euler[2]))
+        #print("orientation in degrees: " + str(euler[2]))
 
         euler[2] = euler[2] * math.pi / 180
-        print("orientation in rad: " + str(euler[2]))
+        #print("orientation in rad: " + str(euler[2]))
         angle = euler2quat(euler[0], euler[1], euler[2])
         msg.pose.pose.orientation.w = angle[0]
         msg.pose.pose.orientation.x = angle[1]
@@ -77,17 +80,23 @@ class NavTestNode(Node):
         msg.twist.twist.angular.y = float(self.i/10 + 100)
         msg.twist.twist.angular.z = float(self.i/10 + 110)
 
-        ang = AngleArray()
-        ang.angles = [random.uniform(0, 360), random.uniform(0, 360), random.uniform(0, 360), random.uniform(0, 360)]
-        self.publisher_wheel_ang.publish(ang)
-
         path = Path()
         #path.poses = [PoseStamped(pose = Pose(point= Point(1.,3. ,2. )))]
         self.publisher_path.publish(path)
 
+        motor = Motorcmds()
+        motor.modedeplacement = "wallah"
+        motor.info = "yasmin"
+        self.publisher_motorcmds.publish(motor)
+
+        status = Wheelstatus()
+        status.data = [1., 2., 3., 4., 5., 6., 7., 8.]
+        status.state = [False, False, True, True, False, False, True, True]
+        self.publisher_wheel_ang.publish(status)
+       
+
         self.publisher_odometry.publish(msg)
         self.i += 1
-
 
     def goal_callback(self, msg):
         self.get_logger().info('Goal callback :' + str(msg.pose.position.x) + " " + str(msg.pose.position.y) + " " + str(msg.pose.position.z))

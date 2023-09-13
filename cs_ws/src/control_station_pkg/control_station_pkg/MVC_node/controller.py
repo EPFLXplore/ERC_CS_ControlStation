@@ -3,10 +3,10 @@
 #
 # @authors: Emile Hreich
 #           emile.janhodithreich@epfl.ch
-#           
+#
 #           Roman Danylovych
 #           roman.danylovych@epfl.ch
-# 
+#
 #           Emma Gaia Poggiolini
 #           emmagaia.poggiolini@epfl.ch
 #
@@ -14,7 +14,7 @@
 #         design pattern)
 #         Here are created all the methods that define the I/O behavior with the
 #         user.
-# 
+#
 # -------------------------------------------------------------------------------
 
 
@@ -36,9 +36,9 @@ from transforms3d.euler import euler2quat, quat2euler
 from avionics_interfaces.msg import MassCalibOffset
 from .models.rover   import Task
 
-from .models.science         import Science
+from .models.science import Science
 from .models.handling_device import HandlingDevice
-from .models.navigation      import Navigation
+from .models.navigation import Navigation
 
 from .models.utils import session
 
@@ -57,6 +57,7 @@ class Controller():
     '''
         Controller (Model View Controller (MVC) template)
     '''
+
     def __init__(self, cs):
         self.cs = cs
         self.science = Science()
@@ -76,15 +77,14 @@ class Controller():
         # self.cs.node.get_logger().info("Linear %d %d %d", tl.x, tl.y, tl.z)
         # self.cs.node.get_logger().info("Angular %d %d %d", ta.x, ta.y, ta.z)
 
-
     # receiving a confirmation from rover after sending an instruction
+
     def rover_confirmation(self, txt):
         if (self.cs.rover.getInWait()):
             #self.cs.node.get_logger().info("Rover Confirmation: %s\n", txt.data)
             self.cs.rover.setReceived(True)
         else:
             self.cs.node.get_logger().info("Received after timeout: %s\n", txt.data)
-
 
     # receive info on progress of task (SUCCESS/FAIL)
     # TODO HASN'T BEEN USED ONCE => NEED TO TELL OTHER SUBSYSTEMS TO PUBLISH ON TaskProgress
@@ -99,33 +99,31 @@ class Controller():
     def rover_subsystem_state(self, data):
         session.subsystems_state = data.data
         async_to_sync(channel_layer.group_send)("session", {"type": "broadcast",
-                                                    'nb_users'   : session.nb_users,
-                                                    'rover_state': session.rover_state,
-                                                    'subsystems_state': session.subsystems_state,
-                                                                })
-
+                                                            'nb_users': session.nb_users,
+                                                            'rover_state': session.rover_state,
+                                                            'subsystems_state': session.subsystems_state,
+                                                            })
 
     def rover_state(self, data):
         session.rover_state = data.data
         async_to_sync(channel_layer.group_send)("session", {"type": "broadcast",
-                                                    'nb_users'   : session.nb_users,
-                                                    'rover_state': session.rover_state,
-                                                    'subsystems_state': session.subsystems_state,
-                                                                })
+                                                            'nb_users': session.nb_users,
+                                                            'rover_state': session.rover_state,
+                                                            'subsystems_state': session.subsystems_state,
+                                                            })
 
-    # ========= SCIENCE CALLBACKS ========= 
-
+    # ========= SCIENCE CALLBACKS =========
 
     def science_state(self, data):
         print("wallah")
         self.science.state = data.data
         print("science drill state :" + str(self.science.state))
         self.science.UpdateScienceDrillSocket()
-        
+
     def science_motors_pos(self, data):
         self.science.motors_pos = data.data
         self.science.UpdateScienceDrillSocket()
-        
+
     def science_motors_vels(self, data):
         self.science.motors_speed = data.data
         self.science.UpdateScienceDrillSocket()
@@ -133,16 +131,17 @@ class Controller():
     def science_motors_currents(self, data):
         self.science.motors_currents = data.data
         self.science.UpdateScienceDrillSocket()
-    
+
     def science_limit_switches(self, data):
         self.science.limit_switches = data.data
         self.science.UpdateScienceDrillSocket()
 
-
     # TODO problems with displaying mass, websocket can't serialize numpy.float32 error
+
     def science_mass(self, data):
         # elec uses channel 2 for the mass (MAY CHANGE IN THE FUTURE)
-        self.science.mass = [data.mass[0], data.mass[1], data.mass[2], data.mass[3]]
+        self.science.mass = [data.mass[0],
+                             data.mass[1], data.mass[2], data.mass[3]]
         self.science.UpdateScienceDataSocket()
 
     # TODO Chaimaa c'est pour toi, fais la moyenne wallah
@@ -155,19 +154,18 @@ class Controller():
         self.science.npk_sensor = [data.nitrogen,
                                    data.phosphorus,
                                    data.potassium]
-        
+
         self.science.UpdateScienceDataSocket()
 
     def science_4in1(self, data):
-        self.science.four_in_one = [data.temperature, 
-                                    data.moisture, 
-                                    data.conductivity, 
+        self.science.four_in_one = [data.temperature,
+                                    data.moisture,
+                                    data.conductivity,
                                     data.ph]
-        
+
         self.science.UpdateScienceDataSocket()
 
-
-    # ========= HD CALLBACKS ========= 
+    # ========= HD CALLBACKS =========
 
     # receive: [id, x, y, z, a, b, c]    (x,y,z) --> translations and (a,b,c) --> rotations
     '''def hd_detected_element(self, arr):
@@ -178,7 +176,6 @@ class Controller():
                                        elements[1], elements[2], elements[3], elements[4], elements[5], elements[6])
         # publish to front-end
         self.sendJson(Task.MAINTENANCE)'''
-
 
     # receive: joint telemetry (info on angles and velocity of joints)
     # Jointstate is a ros message
@@ -245,9 +242,31 @@ class Controller():
 
         self.navigation.UpdateNavSocket()
 
-    def nav_wheel_ang(self, wheel_ang):
-        self.navigation.wheels_ang = [wheel_ang.angles[0], wheel_ang.angles[1], wheel_ang.angles[2], wheel_ang.angles[3]]
+    def nav_wheel(self, msg):
+        """
+        FRONT_LEFT_DRIVE = 0
+        FRONT_RIGHT_DRIVE = 1
+        BACK_RIGHT_DRIVE = 2
+        BACK_LEFT_DRIVE = 3
+        FRONT_LEFT_STEER = 4
+        FRONT_RIGHT_STEER = 5
+        BACK_RIGHT_STEER = 6
+        BACK_LEFT_STEER = 7
+        """
+        #self.navigation.wheels_ang = []
+        self.navigation.steering_wheel_ang = msg.data[0:4]
+        self.navigation.driving_wheel_ang = msg.data[4:8]
+        self.navigation.steering_wheel_state = msg.state[0:4]
+        self.navigation.driving_wheel_state = msg.state[4:8]
+    
         self.navigation.UpdateNavSocket()
+
+    def nav_displacement(self, displacement):
+        self.navigation.displacement_mode = displacement.modedeplacement
+        self.navigation.info = displacement.info
+        self.navigation.UpdateNavSocket()
+
+
 
     def nav_path(self, path):
         self.navigation.path = [[i.pose.position.x, i.pose.position.y, i.pose.position.z] for i in path.poses]
@@ -256,13 +275,14 @@ class Controller():
 
 
     # TODO important to display exceptions in log screen
+
     def log_clbk(self, data):
 
         return
 
         print("log_clbk ")
 
-        #asyncio.set_event_loop(self.cs.loop)
+        # asyncio.set_event_loop(self.cs.loop)
 
         # asyncio.get_event_loop().run_until_complete(channel_layer.group_send("log", {"type": "log.message",'hours': str(datetime.datetime.now().hour),
         #                                                                 'minutes': str(datetime.datetime.now().minute),
@@ -270,23 +290,17 @@ class Controller():
         #                                                                 'severity': int.from_bytes(data.level, "big"),
         #                                                                 'message': data.message,}))
 
-
-
         # asyncio.run(channel_layer.group_send("log", {"type": "log.message",'hours': str(datetime.datetime.now().hour),
         #                                                                 'minutes': str(datetime.datetime.now().minute),
         #                                                                 'seconds': str(datetime.datetime.now().second),
         #                                                                 'severity': int.from_bytes(data.level, "big"),
         #                                                                 'message': data.message,}))
-        
-        
-        async_to_sync(channel_layer.group_send)("log", {"type": "log.message",'hours': str(datetime.datetime.now().hour),
-                                                                        'minutes': str(datetime.datetime.now().minute),
-                                                                        'seconds': str(datetime.datetime.now().second),
-                                                                        'severity': int.from_bytes(data.level, "big"),
-                                                                        'message': data.message,})
-        
 
-
+        async_to_sync(channel_layer.group_send)("log", {"type": "log.message", 'hours': str(datetime.datetime.now().hour),
+                                                        'minutes': str(datetime.datetime.now().minute),
+                                                        'seconds': str(datetime.datetime.now().second),
+                                                        'severity': int.from_bytes(data.level, "big"),
+                                                        'message': data.message, })
 
     # =================================================================================================================
     #                                                    PUBLISHERS
@@ -294,17 +308,17 @@ class Controller():
 
     # sends array to rover: [task, instr]:
     #
-    # TASK: 
-    #       - Manual      = 1 
-    #       - Navigation  = 2 
+    # TASK:
+    #       - Manual      = 1
+    #       - Navigation  = 2
     #       - Maintenance = 3
     #       - Science     = 4
     #
-    # INSTR:  
-    #       - Launch = 1 
-    #       - Abort  = 2 
-    #       - Wait   = 3 
-    #       - Resume = 4 
+    # INSTR:
+    #       - Launch = 1
+    #       - Abort  = 2
+    #       - Wait   = 3
+    #       - Resume = 4
 
     def pub_Task(self, task, instr):
         '''
@@ -312,7 +326,7 @@ class Controller():
         '''
         # checkArgs(task, instr)
 
-        print("pub_Task called") 
+        print("pub_Task called")
 
         arr = [task, instr]
 
@@ -323,9 +337,10 @@ class Controller():
 
         self.cs.rover.setState(Task(task))
 
-        if (task == 1 and instr == 1): self.launch_Manual()
-        if (task == 1 and instr == 2): self.abort_Manual()
-
+        if (task == 1 and instr == 1):
+            self.launch_Manual()
+        if (task == 1 and instr == 2):
+            self.abort_Manual()
 
     ###############################
     #       HANDLING DEVICE       #
@@ -339,6 +354,7 @@ class Controller():
 
     # Never used
     # Expects the mode to be an int
+
     def pub_hd_mode(self, mode):
         if (mode == 0 or mode == 1):
             self.cs.node.get_logger().info("Set HD mode %d", mode)
@@ -366,10 +382,11 @@ class Controller():
     ###############################
 
     # send the coordinates the rover must reach and the orientation it must reach them in
+
     def pub_nav_goal(self, x, y, yaw):
 
         print("pub_nav_goal")
-        
+
         h = Header()
         pose = Pose()
 
@@ -425,16 +442,16 @@ class Controller():
 
     # Debugging commands to individual wheels. Only use in "emergencies".
 
-    #  Message : 
+    #  Message :
     #  [ [wheel_ID] [rotation_velocity] [steering_angle] ]
 
-    #  Wheel_ID : 
+    #  Wheel_ID :
     #  1 : FL | 2 : FR | 3 : HR | 4 : HL
 
     #  rotation_veloctiy (in RPM):
     #  range: -60 and +60
 
-    #  steering_angle (in degrees) : 
+    #  steering_angle (in degrees) :
     #  range: -180 and +180
 
     def pub_debug_wheels(self, wheel_id, rot_vel, range):
@@ -451,7 +468,7 @@ class Controller():
         calib_offset.destination_id = 0
         calib_offset.channel = 0
 
-        self.cs.ELEC_container_pub.publish(calib_offset)
+        self.cs.ELEC_container_calib_pub.publish(calib_offset)
 
 
     # need to publish before drilling and collecting soil
@@ -469,19 +486,19 @@ class Controller():
 
     # launches Gamepad => enables Manual controls
     # is automatically launched from pub_Task when publishing Manual
-    def launch_Manual(self):       #Gamepad 
+    def launch_Manual(self):  # Gamepad
         print("launch manual")
         self.cs.node.get_logger().info("\nTrying manual controls\n")
-        #self.gpad.connect()
-        #self.gpad.run()
+        # self.gpad.connect()
+        # self.gpad.run()
 
     # turns off Gamepad's 'running' flag => stops reading commands from the gamepad
-    # TODO this is not enough. When running manual and accidentally unplugging the joystick, 
+    # TODO this is not enough. When running manual and accidentally unplugging the joystick,
     # aborting didn't stop the gamepad from publishing the last remembered instruction
     # the problem could come from the abort or due to how the gamepad was coded
     def abort_Manual(self):
         self.cs.node.get_logger().info("\nAborting manual controls\n")
-        #self.gpad._running = False
+        # self.gpad._running = False
 
     # TIMEOUT system
     # invoked after sending a message to the rover and expecting a confirmation
@@ -500,14 +517,26 @@ class Controller():
 
     # JSON msg describing the timer
     def elapsed_time(self, data):
-         TimeDict = {
-             'hor': data.data[0],
-             'min': data.data[1],
-             'sec': data.data[2]
-         }
+        TimeDict = {
+            'hor': data.data[0],
+            'min': data.data[1],
+            'sec': data.data[2]
+        }
 
-         message = json.dumps(TimeDict)
+        message = json.dumps(TimeDict)
 
         #  if ws_time.connected:
 
         #      ws_time.send('%s' % message)
+
+    def node_states(self, channel):
+        def callback(self, data):
+            states = data.node_states
+            # async_to_sync(channel_layer.group_send)("session", {"type": "broadcast",
+            #                                                     'nb_users': session.nb_users,
+            #                                                     'rover_state': session.rover_state,
+            #                                                     'subsystems_state': session.subsystems_state,
+            #                                                     })
+            print("node_states")
+            print(states)
+            print(channel)

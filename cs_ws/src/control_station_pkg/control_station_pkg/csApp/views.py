@@ -328,10 +328,12 @@ def resume_science(request):
     return JsonResponse({})
 
 def container_tare(request):
+    print("container tare")
     cs.controller.pub_container_tare()
     return JsonResponse({})
 
 def drill_tare(request):
+    print("drill tare")
     cs.controller.pub_drill_tare()
     return JsonResponse({})
 

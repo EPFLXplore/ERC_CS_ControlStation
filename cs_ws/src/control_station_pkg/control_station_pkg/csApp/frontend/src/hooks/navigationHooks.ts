@@ -120,7 +120,7 @@ export const useGoalTracker = () => {
 	};
 };
 
-export function useNavigation() {
+export function useNavigation(successCallback?: () => void) {
 	const [socket, setSocket] = useState<WebSocket | null>(null);
 	const [currentPosition, setCurrentPosition] = useState([0,0,0]);
 	const [currentOrientation, setCurrentOrientation] = useState([0, 0, 0]);
@@ -162,7 +162,12 @@ export function useNavigation() {
 					o: data.orientation[2],
 				},
 			]);
-			setPathPoints(pathPoints);
+			setPathPoints((prev) => {
+				if(prev.length > 0 && pathPoints.length === 0) {
+					successCallback && successCallback()
+				}
+				return pathPoints;
+			});
 			setDrivingState(data.driving_wheel_state);
 			setSteeringState(data.steering_wheel_state);
 			setInfo(data.info);

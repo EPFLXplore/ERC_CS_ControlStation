@@ -47,7 +47,7 @@ const drawWheels = (
 	ctx.save();
 
 	ctx.translate(margin, margin);
-	ctx.rotate(wheelsOrientation[0]);
+	ctx.rotate(wheelsOrientation[0] * Math.PI / 180);
 	ctx.fillStyle = !driving_state[0] ? "#FFFFFF" : "#FF0000";
 	ctx.fillRect(-10, -20, 15, 30);
 
@@ -60,7 +60,7 @@ const drawWheels = (
 	ctx.save();
 
 	ctx.translate(ctx.canvas.width - 20, margin);
-	ctx.rotate(wheelsOrientation[1]);
+	ctx.rotate(wheelsOrientation[1]* Math.PI / 180);
 	ctx.fillStyle = !driving_state[1] ? "#FFFFFF" : "#FF0000";
 	ctx.fillRect(-10, -20, 15, 30);
 
@@ -73,7 +73,7 @@ const drawWheels = (
 	ctx.save();
 
 	ctx.translate(ctx.canvas.width - 20, ctx.canvas.height - 15);
-	ctx.rotate(wheelsOrientation[2]);
+	ctx.rotate(wheelsOrientation[2]* Math.PI / 180);
 	ctx.fillStyle = !driving_state[2] ? "#FFFFFF" : "#FF0000";
 	ctx.fillRect(-10, -20, 15, 30);
 
@@ -86,7 +86,7 @@ const drawWheels = (
 	ctx.save();
 
 	ctx.translate(margin, ctx.canvas.height - 15);
-	ctx.rotate(wheelsOrientation[3]);
+	ctx.rotate(wheelsOrientation[3]* Math.PI / 180);
 	ctx.fillStyle = !driving_state[3] ? "#FFFFFF" : "#FF0000";
 	ctx.fillRect(-10, -20, 15, 30);
 
