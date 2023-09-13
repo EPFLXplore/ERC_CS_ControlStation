@@ -225,12 +225,11 @@ class Controller():
     #     self.navigation.UpdateNavSocket()
 
     def nav_odometry(self, odometry):
-        print("RECEIVED POSESTAMPED")
 
         self.navigation.position = [odometry.pose.pose.position.x, odometry.pose.pose.position.y, odometry.pose.pose.position.z]
 
-        # orientation = quat2euler(odometry.pose.pose.orientation)
-        # self.navigation.orientation = [orientation[0], orientation[1], orientation[2]]
+        orientation = quat2euler([odometry.pose.pose.orientation.w, odometry.pose.pose.orientation.x, odometry.pose.pose.orientation.y, odometry.pose.pose.orientation.z])
+        self.navigation.orientation = [orientation[0], orientation[1], orientation[2]]
 
         self.navigation.linVel = [odometry.twist.twist.linear.x, odometry.twist.twist.linear.y, odometry.twist.twist.linear.z]
         self.navigation.angVel = [odometry.twist.twist.angular.x, odometry.twist.twist.angular.y, odometry.twist.twist.angular.z]
