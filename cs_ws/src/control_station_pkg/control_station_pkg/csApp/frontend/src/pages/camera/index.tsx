@@ -8,10 +8,12 @@ import { Cameras } from "../../utils/cameras.type";
 import useCameraSelector from "../../hooks/cameraHooks";
 
 export default () => {
-	const [images, cameras, selectCamera, flushCameras] = useCameraSelector([Cameras.CAM1]);
+	const [images, cameras, selectCamera, flushCameras, rotateCams, setRotateCams] =
+		useCameraSelector([Cameras.CAM1]);
 
 	return (
 		<div className="page center">
+			<CameraView images={images} rotate={rotateCams} setRotateCams={setRotateCams} />
 			<Background />
 			<BackButton onGoBack={() => flushCameras()} />
 			<PageHeader
@@ -33,7 +35,6 @@ export default () => {
 				)}
 			/>
 			<Timer end={Date.now() + 10000} />
-			<CameraView images={images} />
 		</div>
 	);
 };

@@ -8,7 +8,7 @@ const ToggleFeature = ({
 	onChange,
 }: {
 	title: string;
-	onChange: (mode: Boolean) => void;
+	onChange: (mode: boolean) => void;
 }) => {
 	return (
 		<div className={styles.sliderContainer}>

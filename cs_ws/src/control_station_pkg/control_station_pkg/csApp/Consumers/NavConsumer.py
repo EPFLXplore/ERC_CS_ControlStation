@@ -13,8 +13,13 @@ Data format :
     'orientation' : [float] * 3
     'linVel' : [float] * 3
     'angVel' : [float] * 3
-    'current_goal' : [float] * 3
-    'wheel_ang': [float] * 4
+    'steering_wheel_ang': [float] * 4
+    'steering_wheel_state': [float] * 4
+    'driving_wheel_ang': [float] * 4
+    'driving_wheel_state': [float] * 4
+    'path' : [[float, float]]       array of 2 points
+    '' : string
+    '' : string
 }
 
 """
@@ -58,8 +63,13 @@ class NavConsumer(WebsocketConsumer):
                 'orientation': data_json['orientation'],
                 'linVel'     : data_json['linVel'],
                 'angVel'     : data_json['angVel'],
-                'current_goal' : data_json['current_goal'],
-                'wheel_ang' : data_json['wheel_ang'],
+                'steering_wheel_ang': data_json['steering_wheel_ang'],
+                'steering_wheel_state': data_json['steering_wheel_state'],
+                'driving_wheel_ang': data_json['driving_wheel_ang'],
+                'driving_wheel_state': data_json['driving_wheel_state'],
+                'path' : data_json['path'],
+                'info' : data_json['info'],
+                'displacement_mode' : data_json['displacement_mode'],
             }
         )
 
@@ -72,6 +82,11 @@ class NavConsumer(WebsocketConsumer):
                 'orientation': event['orientation'],
                 'linVel'     : event['linVel'],
                 'angVel'     : event['angVel'],
-                'current_goal' : event['current_goal'],
-                'wheel_ang' : event['wheel_ang'],
+                'steering_wheel_ang': event['steering_wheel_ang'],
+                'steering_wheel_state': event['steering_wheel_state'],
+                'driving_wheel_ang': event['driving_wheel_ang'],
+                'driving_wheel_state': event['driving_wheel_state'],
+                'path' : event['path'],
+                'info' : event['info'],
+                'displacement_mode' : event['displacement_mode'],
         }))

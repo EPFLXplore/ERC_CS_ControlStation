@@ -48,11 +48,12 @@ class CamerasPublisher(Node):
         self.camera_5 = cv2.VideoCapture(gstreamer_pipeline(sensor_id=5))
 
         self.camera_list = [self.camera_0, 
+                            self.camera_1,
                             None,
                             None, #self.camera_2,
                             self.camera_3,
                             self.camera_4, 
-                            self.camera_5]    
+                            self.camera_5]
 
         self.bridge = CvBridge()
 
@@ -130,6 +131,7 @@ def run_camera(cameras_publisher, camera, pub, i):
         if (ret):
             frame = cameras_publisher.bridge.cv2_to_compressed_imgmsg(frame)
             pub.publish(frame)
+            
         c = cv2.waitKey(1)
         if c == 27:
             enabled[i] = False

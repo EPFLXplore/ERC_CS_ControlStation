@@ -11,6 +11,7 @@ from .models.rover import Rover
 from csApp.models         import *
 from std_msgs.msg         import Int8MultiArray    , Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16, Float32MultiArray
 from diagnostic_msgs.msg  import DiagnosticStatus
+from nav_msgs.msg         import Path
 from std_srvs.srv import SetBool
 import MVC_node.models.utils as utils
 
@@ -22,7 +23,8 @@ from nav_msgs.msg          import Odometry
 from sensor_msgs.msg       import JointState, Image, Joy, CompressedImage
 
 
-from avionics_interfaces.msg import MassArray, SpectroResponse, NPK, FourInOne, Voltage, LaserRequest, ServoRequest, SpectroRequest, AngleArray
+from avionics_interfaces.msg import MassArray, SpectroResponse, NPK, FourInOne, Voltage, LaserRequest, ServoRequest, SpectroRequest, AngleArray, MassCalibOffset
+from custom_msg.msg import Wheelstatus, Motorcmds
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
 django.setup()
@@ -83,6 +85,7 @@ class CS:
         self.HD_Angles_pub          = self.node.create_publisher(Int8MultiArray,    'CS/HD_Angles',        1)
         self.HD_id                  = self.node.create_publisher(Int8,              'CS/HD_element_id',    1)
         self.HD_toggle_camera_pub   = self.node.create_publisher(Bool,              'CS/HD_toggle_camera', 1)
+        self.HD_inverse_frame       = self.node.create_publisher(String,            'ROVER/HD_inverse_frame', 1)
 
         # CS --> ROVER (GAMEPAD)
         self.HD_Gamepad_pub         = self.node.create_publisher(Float32MultiArray,  'CS/HD_gamepad',       1)
@@ -93,18 +96,26 @@ class CS:
         self.HD_InvManual_Coord_pub     = self.node.create_publisher(Int8MultiArray,    'CS/HD_InvManual_Coord',  1)
         self.HD_homeGo_pub              = self.node.create_publisher(Bool,              'CS/HD_reset_arm_pos',    1)
         self.HD_homeSet_pub             = self.node.create_publisher(Bool,              'CS/HD_set_zero_arm_pos', 1)
-        self.HD_toggle_laser_pub        = self.node.create_publisher(LaserRequest,              'EL/laser_req',        1)
-        self.HD_deploy_voltmeter_pub    = self.node.create_publisher(ServoRequest,              'EL/servo_req',        1)
+        self.HD_toggle_laser_pub        = self.node.create_publisher(LaserRequest,              'EL/laser_req',   1)
+        self.HD_deploy_voltmeter_pub    = self.node.create_publisher(ServoRequest,              'EL/servo_req',   1)
+        self.HD_cancel_goal_pub         = self.node.create_publisher(Bool,              'CS/HD_cancel',           1)
 
         # CS --> ROVER (NAV)
 
-        self.Nav_Goal_pub           = self.node.create_publisher(PoseStamped,       'CS/NAV_goal',         1)
-        self.Nav_Cancel_pub         = self.node.create_publisher(Bool,            'CS/NAV_cancel',       1)
-        self.Nav_Joystick_pub       = self.node.create_publisher(Twist,             '/cmd_vel',            1)
+        self.Nav_Goal_pub               = self.node.create_publisher(PoseStamped,       'CS/NAV_goal',         1)
+        self.Nav_Cancel_pub             = self.node.create_publisher(String,              'CS/NAV_cancel',       1)
+        self.Nav_Joystick_pub           = self.node.create_publisher(Twist,             '/cmd_vel',            1)
+        self.Nav_Starting_Point_pub     = self.node.create_publisher(PoseStamped,       '/lio_sam/initial_pose', 1)
+        self.Nav_Mode_pub               = self.node.create_publisher(String,            'ROVER/NAV_mode', 1)
+        self.Nav_Kinematic_pub          = self.node.create_publisher(String,            'ROVER/NAV_kinematic', 1)
         #self.Nav_DebugWheels_pub    = self.node.create_publisher(Int16MultiArray,   '/debug/wheel_cmds',   1)
 
         # CS --> ROVER (SC)
         self.SC_spectro_req          = self.node.create_publisher(SpectroRequest,    'El/spectro_req',    1)
+        
+        # CS --> ROVER (ELEC)
+        self.ELEC_container_calib_pub = self.node.create_publisher(MassCalibOffset,  'EL/container/mass_calib_offset', 1)
+        self.ELEC_drill_calib_pub     = self.node.create_publisher(MassCalibOffset,  'EL/drill/mass_calib_offset',     1)
 
         # Cam
         self.Cam_index_pub = self.node.create_publisher(Int8MultiArray, 'CS/CAM_index', 1)
@@ -137,8 +148,11 @@ class CS:
         self.node.create_subscription(Voltage,          'EL/voltage',         self.controller.hd_voltage, 10)  
         
         # -- NAV messages --
-        self.node.create_subscription(Odometry,         'ROVER/NAV_odometry',            self.controller.nav_odometry      , 10)
-        self.node.create_subscription(AngleArray,         'EL/potentiometer',               self.controller.nav_wheel_ang     , 10)
+        self.node.create_subscription(Odometry,         '/lio_sam/odom',                self.controller.nav_odometry  , 10)
+        self.node.create_subscription(Path,             '/plan',                        self.controller.nav_path      , 10)
+        self.node.create_subscription(Wheelstatus,      '/NAV/absolute_encoders',       self.controller.nav_wheel, 10)
+        self.node.create_subscription(Motorcmds,        '/NAV/displacement',            self.controller.nav_displacement, 10)
+        
 
         # -- Camera messages --
         self.node.create_subscription(CompressedImage, '/camera_0', cameras_reciever.display_cam_0, 1)

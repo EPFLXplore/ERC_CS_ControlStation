@@ -12,6 +12,9 @@ function useCameraSelector(startCamera: Array<Cameras>) {
 	const [sockets, setSockets] = useState<Array<WebSocket | undefined>>([undefined]);
 	const [images, setImages] = React.useState<Array<string>>([""]);
 	const [cameras, setCameras] = useState<Array<Cameras>>(startCamera);
+	const [rotateCams, setRotateCams] = useState<boolean[]>(
+		new Array(startCamera.length).fill(false)
+	);
 
 	/**
 	 * Sets the cameras to be displayed on the screen
@@ -63,6 +66,7 @@ function useCameraSelector(startCamera: Array<Cameras>) {
 
 		let newSockets: Array<WebSocket> = [];
 		setImages(new Array(cameras.length).fill(null));
+		setRotateCams(new Array(cameras.length).fill(false));
 
 		const csrftoken = getCookie("csrftoken");
 		let formData = new FormData();
@@ -162,7 +166,7 @@ function useCameraSelector(startCamera: Array<Cameras>) {
 		setCameras([]);
 	};
 
-	return [images, cameras, selectCamera, flushCameras] as const;
+	return [images, cameras, selectCamera, flushCameras, rotateCams, setRotateCams] as const;
 }
 
 export default useCameraSelector;
