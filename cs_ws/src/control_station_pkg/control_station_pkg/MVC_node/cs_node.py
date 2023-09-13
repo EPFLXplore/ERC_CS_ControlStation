@@ -25,7 +25,8 @@ from nav_msgs.msg import Odometry
 from sensor_msgs.msg import JointState, Image, Joy, CompressedImage
 
 
-from avionics_interfaces.msg import MassArray, SpectroResponse, NPK, FourInOne, Voltage, LaserRequest, ServoRequest, SpectroRequest, AngleArray, MassCalibOffset
+
+from avionics_interfaces.msg import MassArray, SpectroResponse, NPK, FourInOne, Voltage, LaserRequest, ServoRequest, SpectroRequest, AngleArray, MassCalibOffset, NodeStateArray
 from custom_msg.msg import Wheelstatus, Motorcmds
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')

@@ -134,7 +134,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 						className={availableButtons[10] == 1  ? styles.button : styles.disabledButton}
 						onClick={() => buttonSelect(10)}
 					>
-						Button Switch
+						Button Switch ON
 					</button>
 					<button
 						className={availableButtons[11] == 1 ? styles.button : styles.disabledButton}
@@ -147,6 +147,12 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 						onClick={() => buttonSelect(12)}
 					>
 						Magnet
+					</button>
+					<button
+						className={availableButtons[10] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(13)}
+					>
+						Button Switch OFF
 					</button>
 					<button
 						className={availableButtons[13] == 1  ? styles.button : styles.disabledButton}

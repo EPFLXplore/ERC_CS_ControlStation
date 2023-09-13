@@ -39,6 +39,7 @@ from .models.rover   import Task
 from .models.science import Science
 from .models.handling_device import HandlingDevice
 from .models.navigation import Navigation
+from .models.elec import Electronic
 
 from .models.utils import session
 
@@ -63,6 +64,7 @@ class Controller():
         self.science = Science()
         self.handling_device = HandlingDevice()
         self.navigation = Navigation()
+        self.elec = Electronic()
 
     # ===============================
     #            CALLBACKS
@@ -531,12 +533,8 @@ class Controller():
 
     def node_states(self, channel):
         def callback(self, data):
-            states = data.node_states
-            # async_to_sync(channel_layer.group_send)("session", {"type": "broadcast",
-            #                                                     'nb_users': session.nb_users,
-            #                                                     'rover_state': session.rover_state,
-            #                                                     'subsystems_state': session.subsystems_state,
-            #                                                     })
+            self.elec.setStates(data.node_states, channel)
+            
             print("node_states")
             print(states)
             print(channel)
