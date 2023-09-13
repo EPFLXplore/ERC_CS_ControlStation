@@ -253,8 +253,11 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 							))}
 						</div>
 						<p>
-									<b>Info</b>: {info}
-								</p>
+							<b>Info</b>: {info}
+						</p>
+						<p>
+							<b>Mode</b>: {displacement_mode}
+						</p>
 					</div>
 				</div>
 			</div>
