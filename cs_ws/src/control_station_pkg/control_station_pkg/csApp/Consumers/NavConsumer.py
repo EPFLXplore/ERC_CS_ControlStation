@@ -61,11 +61,15 @@ class NavConsumer(WebsocketConsumer):
                 'type': 'nav_message',
                 'position'   : data_json['position'],
                 'orientation': data_json['orientation'],
-                # 'linVel'     : data_json['linVel'],
-                # 'angVel'     : data_json['angVel'],
-                'current_goal' : data_json['current_goal'],
-                'wheel_ang' : data_json['wheel_ang'],
+                'linVel'     : data_json['linVel'],
+                'angVel'     : data_json['angVel'],
+                'steering_wheel_ang': data_json['steering_wheel_ang'],
+                'steering_wheel_state': data_json['steering_wheel_state'],
+                'driving_wheel_ang': data_json['driving_wheel_ang'],
+                'driving_wheel_state': data_json['driving_wheel_state'],
                 'path' : data_json['path'],
+                'info' : data_json['info'],
+                'displacement_mode' : data_json['displacement_mode'],
             }
         )
 
@@ -76,9 +80,13 @@ class NavConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps({
                 'position'   : event['position'],
                 'orientation': event['orientation'],
-                # 'linVel'     : event['linVel'],
-                # 'angVel'     : event['angVel'],
-                'current_goal' : event['current_goal'],
-                'wheel_ang' : event['wheel_ang'],
+                'linVel'     : event['linVel'],
+                'angVel'     : event['angVel'],
+                'steering_wheel_ang': event['steering_wheel_ang'],
+                'steering_wheel_state': event['steering_wheel_state'],
+                'driving_wheel_ang': event['driving_wheel_ang'],
+                'driving_wheel_state': event['driving_wheel_state'],
                 'path' : event['path'],
+                'info' : event['info'],
+                'displacement_mode' : event['displacement_mode'],
         }))

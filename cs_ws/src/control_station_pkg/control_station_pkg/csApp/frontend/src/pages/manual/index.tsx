@@ -66,7 +66,7 @@ export default () => {
 	const [manualSettings, setManualSettings] = useState(false);
 
 	useEffect(() => {
-		navModeSelect(NavMode.Manual_Basic);
+		navModeSelect(NavMode.Manual_Normal);
 		hdModeSelect(HD_Mode.FK);
 	}, []);
 
@@ -187,8 +187,8 @@ export default () => {
 										<div style={{ marginRight: "30px" }}>
 											<p>{wheelsPosition[0]}°</p>
 											<p>{wheelsPosition[1]}°</p>
-											<p>{wheelsPosition[2]}°</p>
 											<p>{wheelsPosition[3]}°</p>
+											<p>{wheelsPosition[2]}°</p>
 										</div>
 									</div>
 								</div>
@@ -198,8 +198,8 @@ export default () => {
 						<div className={styles.globalContainer}>
 							<ModeSlider
 								name="Nav Mode"
-								mode={["BASIC", "NORMAL"]}
-								functionTrigger={() => navModeSelect(NavMode.Manual_Normal)}
+								mode={["NORMAL", "BASIC"]}
+								functionTrigger={(mode) => navModeSelect(mode as unknown as NavMode)}
 							/>
 							<TaskControl task={Task.MANUAL_CONTROL} />
 						</div>

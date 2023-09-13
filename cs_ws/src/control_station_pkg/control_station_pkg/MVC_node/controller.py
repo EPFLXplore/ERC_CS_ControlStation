@@ -222,21 +222,51 @@ class Controller():
     #     self.navigation.UpdateNavSocket()
 
     def nav_odometry(self, odometry):
-        print("RECEIVED POSESTAMPED")
 
         self.navigation.position = [odometry.pose.pose.position.x, odometry.pose.pose.position.y, odometry.pose.pose.position.z]
 
-        orientation = quat2euler(odometry.pose.pose.orientation.w, odometry.pose.pose.orientation.x, odometry.pose.pose.orientation.y, odometry.pose.pose.orientation.z)
-        self.navigation.orientation = [orientation[0], orientation[1], orientation[2]]
+        orientation = quat2euler([odometry.pose.pose.orientation.w, 
+                                    odometry.pose.pose.orientation.x, 
+                                    odometry.pose.pose.orientation.y, 
+                                    odometry.pose.pose.orientation.z])[2]
+        # clamp the orientation from [-pi; pi] to between [0;2 pi]
+        if (orientation < 0):
+            orientation = orientation + 2* np.pi
+        # convert the orientation from radians to degrees
+        orientation = orientation * 180 / np.pi
+        print(orientation)
+        self.navigation.orientation = [0,0, orientation]
 
         self.navigation.linVel = [odometry.twist.twist.linear.x, odometry.twist.twist.linear.y, odometry.twist.twist.linear.z]
         self.navigation.angVel = [odometry.twist.twist.angular.x, odometry.twist.twist.angular.y, odometry.twist.twist.angular.z]
 
         self.navigation.UpdateNavSocket()
 
-    def nav_wheel_ang(self, wheel_ang):
-        self.navigation.wheels_ang = [wheel_ang.angles[0], wheel_ang.angles[1], wheel_ang.angles[2], wheel_ang.angles[3]]
+    def nav_wheel(self, msg):
+        """
+        FRONT_LEFT_DRIVE = 0
+        FRONT_RIGHT_DRIVE = 1
+        BACK_RIGHT_DRIVE = 2
+        BACK_LEFT_DRIVE = 3
+        FRONT_LEFT_STEER = 4
+        FRONT_RIGHT_STEER = 5
+        BACK_RIGHT_STEER = 6
+        BACK_LEFT_STEER = 7
+        """
+        #self.navigation.wheels_ang = []
+        self.navigation.steering_wheel_ang = msg.data[0:4]
+        self.navigation.driving_wheel_ang = msg.data[4:8]
+        self.navigation.steering_wheel_state = msg.state[0:4]
+        self.navigation.driving_wheel_state = msg.state[4:8]
+    
         self.navigation.UpdateNavSocket()
+
+    def nav_displacement(self, displacement):
+        self.navigation.displacement_mode = displacement.modedeplacement
+        self.navigation.info = displacement.info
+        self.navigation.UpdateNavSocket()
+
+
 
     def nav_path(self, path):
         self.navigation.path = [[i.pose.position.x, i.pose.position.y, i.pose.position.z] for i in path.poses]
@@ -438,7 +468,7 @@ class Controller():
         calib_offset.destination_id = 0
         calib_offset.channel = 0
 
-        self.cs.ELEC_container_pub.publish(calib_offset)
+        self.cs.ELEC_container_calib_pub.publish(calib_offset)
 
 
     # need to publish before drilling and collecting soil

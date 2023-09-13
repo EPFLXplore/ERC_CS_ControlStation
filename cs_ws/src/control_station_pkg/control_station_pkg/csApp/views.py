@@ -29,7 +29,7 @@ from manage          import setup
 
 from MVC_node.models import gamepad
 
-from std_msgs.msg import Int8MultiArray, Int8, Bool
+from std_msgs.msg import Int8MultiArray, Int8, Bool, String
 from avionics_interfaces.msg import LaserRequest, ServoRequest, SpectroRequest
 
 # ===============================================================
@@ -208,7 +208,7 @@ def nav_goal(request):
     return JsonResponse({})
 
 def nav_cancel(request):
-
+    print("canceling nav goal")
     cs.controller.pub_cancel_nav_goal()
     return JsonResponse({})
 
@@ -228,10 +228,14 @@ def nav_starting_point(request):
     return JsonResponse({})
 
 def nav_mode(request):
-    cs.controller.pub_nav_mode(String(request.POST.get("mode")))
+    mode = str(request.POST.get("mode"))
+    cs.controller.pub_nav_mode(String(data=mode))
+    return JsonResponse({})
 
 def nav_kinematic(request):
-    cs.controller.pub_nav_kinematic(String(request.POST.get("kinematic")))
+    kinematic = request.POST.get("kinematic")
+    cs.controller.pub_nav_kinematic(String(data = kinematic))
+    return JsonResponse({})
 
 # -----------------------------------
 # Handling device views
@@ -265,7 +269,7 @@ def cancel_hd(request):
 def set_id(request):
     cs.rover.HD.set_joint_positions([10,0,0,0,0,0])
     #cs.controller.sendJson(Task.MAINTENANCE)
-    id = int(request.POST.get("id")) + 20
+    id = int(request.POST.get("id"))
     cs.rover.HD.setElemId(id)
     cs.HD_id.publish(Int8(data=id))
     cs.node.get_logger().info("Maintenance: Set HD id to " + str(id))
@@ -324,10 +328,12 @@ def resume_science(request):
     return JsonResponse({})
 
 def container_tare(request):
+    print("container tare")
     cs.controller.pub_container_tare()
     return JsonResponse({})
 
 def drill_tare(request):
+    print("drill tare")
     cs.controller.pub_drill_tare()
     return JsonResponse({})
 

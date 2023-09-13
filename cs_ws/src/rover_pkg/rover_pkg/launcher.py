@@ -1,4 +1,5 @@
 from subprocess import Popen, PIPE
+import time
 
 class Launcher:
 
@@ -25,6 +26,8 @@ class Launcher:
         self.__start_manual_hd()
 
     def start_auto_nav(self):
+        Popen(["gnome-terminal", "-x", "sh", "-c", "{setup_nav_ws} & ros2 launch ros2_ouster ouster.launch.py; bash"], stdout=PIPE, stderr=PIPE)
+        time.sleep(20)
         Popen(["gnome-terminal", "-x", "sh", "-c", "{setup_nav_ws} & ros2 launch nav.launch.xml; bash"], stdout=PIPE, stderr=PIPE)
         Popen(["gnome-terminal", "-x", "sh", "-c", "{setup_nav_ws} & ros2 launch nav2_bringup navigation_launch.py; bash"], stdout=PIPE, stderr=PIPE)
 
