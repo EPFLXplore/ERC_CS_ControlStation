@@ -44,7 +44,7 @@ export default({
 	mode: Array<string>;
 	functionTrigger: (mode: number) => void;
 }) => {
-	const [activeIndex, setActiveIndex] = useState(1);
+	const [activeIndex, setActiveIndex] = useState(0);
 	//const texts = ["IK", "FK"];
 
 	const _setActiveIndex = (mode: number) => {

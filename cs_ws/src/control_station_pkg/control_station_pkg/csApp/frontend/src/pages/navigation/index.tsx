@@ -344,7 +344,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 								</div>
 							</div>
 							<div className="Image of rover" style={{ marginTop: "20px" }}>
-								<WheelsIndicator wheelsOrientation={wheelsPosition} />
+								<WheelsIndicator wheelsOrientation={wheelsPosition} driving_state={[true, true, true, true]} steering_state={[true, true, true, true]} />
 							</div>
 						</div>
 					</div>

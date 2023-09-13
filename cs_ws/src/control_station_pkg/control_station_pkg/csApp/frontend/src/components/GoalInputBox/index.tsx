@@ -17,6 +17,8 @@ function GoalInputBox({
 	children: React.ReactNode[];
 	name?: string;
 }) {
+	if(!name) name = "";
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.inputContainer}>
