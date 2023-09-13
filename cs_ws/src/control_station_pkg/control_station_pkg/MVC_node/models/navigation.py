@@ -74,8 +74,8 @@ class Navigation:
                                                     'linVel'     : [self.linVel[0], self.linVel[1], self.linVel[2]],
                                                     'angVel'     : [self.angVel[0], self.angVel[1], self.angVel[2]],
                                                     'path' : [str(val) for val in self.path],
-                                                    'steering_wheel_ang': [],
-                                                    'steering_wheel_state': [],
-                                                    'driving_wheel_ang': [],
-                                                    'driving_wheel_state': [],
+                                                    'steering_wheel_ang': [str(val) for val in self.steering_wheel_ang],
+                                                    'steering_wheel_state': [str(val) for val in self.steering_wheel_state],
+                                                    'driving_wheel_ang': [str(val) for val in self.driving_wheel_ang],
+                                                    'driving_wheel_state': [str(val) for val in self.driving_wheel_state],
                                                     })

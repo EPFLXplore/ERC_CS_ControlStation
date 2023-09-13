@@ -221,7 +221,7 @@ class Rover():
                 if instr == Instruction.ABORT.value:
                     self.node.get_logger().info("ABORTING MANUAL")
                     self.Maintenance_pub.publish(Int8(data = -1))
-                    self.Nav_Status.publish(String(data = "stop"))
+                    #self.Nav_Status_pub.publish(String(data = "stop"))
                     self.ROVER_STATE = Task.IDLE
 
         #--------------------------NAVIGATION-----------------------------
@@ -242,13 +242,13 @@ class Rover():
                 if instr == Instruction.ABORT.value:
                     self.node.get_logger().info("ABORTING NAVIGATION")
                     #self.model.Nav.cancelGoal()
-                    self.Nav_Status.publish(String(data="abort"))
+                    self.Nav_Status_pub.publish(String(data="abort"))
                     self.ROVER_STATE = Task.IDLE
                 # CANCEL
                 if instr == Instruction.CANCEL.value:
                     self.node.get_logger().info("CANCEL NAVIGATION GOAL")
                     #self.model.Nav.cancelGoal()
-                    self.Nav_Status.publish(String(data="cancel"))
+                    self.Nav_Status_pub.publish(String(data="cancel"))
                     self.ROVER_STATE = Task.IDLE
                 # WAIT
                 # if instr == Instruction.WAIT.value:

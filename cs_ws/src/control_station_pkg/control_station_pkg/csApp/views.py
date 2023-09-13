@@ -208,7 +208,7 @@ def nav_goal(request):
     return JsonResponse({})
 
 def nav_cancel(request):
-
+    print("canceling nav goal")
     cs.controller.pub_cancel_nav_goal()
     return JsonResponse({})
 
@@ -228,10 +228,13 @@ def nav_starting_point(request):
     return JsonResponse({})
 
 def nav_mode(request):
-    cs.controller.pub_nav_mode(String(request.POST.get("mode")))
+    mode = str(request.POST.get("mode"))
+    cs.controller.pub_nav_mode(String(data=mode))
+    return JsonResponse({})
 
 def nav_kinematic(request):
     cs.controller.pub_nav_kinematic(String(request.POST.get("kinematic")))
+    return JsonResponse({})
 
 # -----------------------------------
 # Handling device views
