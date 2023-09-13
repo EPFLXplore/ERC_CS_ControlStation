@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import GoalInputBox from "../../components/GoalInputBox";
 import navModeSelect from "../../utils/navModeSelect";
 import { NavMode } from "../../utils/navMode";
+import successSound from "../../assets/audio/short-success-sound-glockenspiel-treasure-video-game-6346.mp3"
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 	const {
@@ -52,7 +53,10 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 		info,
 		displacement_mode,
 		routeLeft
-	] = useNavigation();
+	] = useNavigation(() => {
+		const successAudioPlayer = new Audio(successSound)
+		successAudioPlayer.play()
+	});
 
 	const [navSettings, setNavlSettings] = useState(false);
 
