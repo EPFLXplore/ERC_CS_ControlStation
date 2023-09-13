@@ -160,6 +160,7 @@ class Rover():
         self.csConnected = request.data
         #res = SetBool.Response()
         response.success = True
+        self.state_pub.publish(String(data=str(Task.IDLE.name)))
         return response
 
     
