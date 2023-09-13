@@ -22,8 +22,6 @@ const candidates = [
 	{ percentage: 78, element: "Phosphate" },
 	{ percentage: 77.8, element: "Materiau1" },
 	{ percentage: 74, element: "Materiau2" },
-	{ percentage: 73.9, element: "Materiau3" },
-	{ percentage: 73.3, element: "Materiau4" },
 ];
 
 type DataRow = {
@@ -224,8 +222,6 @@ export default () => {
 								<th>Candidate 1</th>
 								<th>Candidate 2</th>
 								<th>Candidate 3</th>
-								<th>Candidate 4</th>
-								<th>Candidate 5</th>
 							</tr>
 						</thead>
 						<tbody>
