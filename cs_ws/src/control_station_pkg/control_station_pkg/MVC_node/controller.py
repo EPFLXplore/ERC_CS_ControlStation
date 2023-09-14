@@ -433,7 +433,7 @@ class Controller():
         pose.orientation.y = q[2]
         pose.orientation.z = q[3]
 
-        self.cs.Nav_Starting_Point_pub(PoseStamped(header=h, pose=pose))
+        self.cs.Nav_Starting_Point_pub.publish(PoseStamped(header=h, pose=pose))
 
 
     # cancel a specific Navigation goal by giving the goal's id
