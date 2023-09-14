@@ -172,8 +172,7 @@ class CS:
         
 
         # -- Camera messages --
-        self.node.create_subscription(
-            CompressedImage, '/camera_0', cameras_reciever.display_cam_0, 1)
+        self.node.create_subscription(CompressedImage, '/camera_0', cameras_reciever.display_cam_0, 1)
         self.node.create_subscription(
             CompressedImage, '/camera_1', cameras_reciever.display_cam_1, 1)  # doesnt work
         self.node.create_subscription(

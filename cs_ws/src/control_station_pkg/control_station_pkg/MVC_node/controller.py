@@ -86,7 +86,8 @@ class Controller():
             #self.cs.node.get_logger().info("Rover Confirmation: %s\n", txt.data)
             self.cs.rover.setReceived(True)
         else:
-            self.cs.node.get_logger().info("Received after timeout: %s\n", txt.data)
+            #self.cs.node.get_logger().info("Received after timeout: %s\n", txt.data)
+            return
 
     # receive info on progress of task (SUCCESS/FAIL)
     # TODO HASN'T BEEN USED ONCE => NEED TO TELL OTHER SUBSYSTEMS TO PUBLISH ON TaskProgress
