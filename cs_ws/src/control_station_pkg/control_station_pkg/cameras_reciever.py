@@ -102,6 +102,7 @@ def display_cam_4(msg):
 
 
 def display_cam_5(msg):
+    print("display_cam_5 received msg")
     global im5 
     im5 = bridge.compressed_imgmsg_to_cv2(msg)
 
