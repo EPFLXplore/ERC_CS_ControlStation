@@ -25,26 +25,7 @@ export const WaveGraph: React.FC<GraphProps> = ({ measure, pointsSecondWave, can
 				chartInstanceRef.current = new Chart(ctx, {
 					type: "line",
 					data: {
-						labels: [
-							"410",
-							"435",
-							"460",
-							"485",
-							"510",
-							"535",
-							"560",
-							"585",
-							"610",
-							"645",
-							"680",
-							"705",
-							"730",
-							"760",
-							"810",
-							"860",
-							"900",
-							"940",
-						],
+						labels: [460,480,500,520,540,660,680,700,720,740,860,880,900,920,940],
 						datasets: [
 							{
 								label: "Current measure",
