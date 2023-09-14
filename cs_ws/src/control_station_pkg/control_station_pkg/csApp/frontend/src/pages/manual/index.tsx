@@ -118,7 +118,8 @@ export default () => {
 					/>)}
 					<ModeSlider
 						name="Arm Mode"
-						mode={["FK", "IK"]}
+						mode={["IK", "FK"]}
+						startMode={HD_Mode.FK}
 						functionTrigger={(mode) => hdModeSelect(mode, setHdMode)}
 					/>
 					{/* <VoltmeterSlider initValue={0} onValueChange={openVoltmeter} /> */}
@@ -209,7 +210,7 @@ export default () => {
 
 			<Timer end={Date.now() + 10000} size={Size.SMALL} />
 			<GamepadHint
-				mode={mode === Task.NAVIGATION ? "NAV" : "HD"}
+				mode={mode === Task.NAVIGATION ? "NAV" : hdMode === HD_Mode.IK ? "IK" : "FK"}
 				selectorCallback={() =>
 					setMode((oldMode) =>
 						oldMode === Task.NAVIGATION ? Task.HANDLING_DEVICE : Task.NAVIGATION

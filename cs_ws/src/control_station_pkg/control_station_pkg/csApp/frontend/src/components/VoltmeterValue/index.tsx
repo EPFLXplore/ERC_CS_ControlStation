@@ -6,7 +6,7 @@ const VoltmeterValue = ({ value }: { value: number }) => {
 	return (
 		<div className={styles.Container}>
 			<p className={styles.Text}>
-				<b>Voltmeter</b> : {roundToTwoDecimals(value)}V
+				<b>Voltmeter</b> : {roundToTwoDecimals(value, 3)}V
 			</p>
 		</div>
 	);

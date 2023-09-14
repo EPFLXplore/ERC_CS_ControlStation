@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import roverWheelsImage from "../../assets/images/icons/rover_wheels.svg";
 
-const WheelsIndicator = ({ wheelsOrientation, driving_state, steering_state }: { wheelsOrientation: number[]; driving_state: boolean[]; steering_state: boolean[]; }) => {
+const WheelsIndicator = ({ wheelsOrientation, driving_state, steering_state }: { wheelsOrientation: number[]; driving_state: string[]; steering_state: string[]; }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [image, setImage] = useState<HTMLImageElement>();
 	const [imageWidth, setImageWidth] = useState<number>(0);
@@ -19,7 +19,7 @@ const WheelsIndicator = ({ wheelsOrientation, driving_state, steering_state }: {
 	}, [roverWheelsImage]);
 
 	useEffect(() => {
-		console.log("use effect draw grid called");
+		console.log(driving_state);
 		// Draw the grid on the canvas
 		const canvas = canvasRef.current;
 		if (canvas && image) {
@@ -38,8 +38,8 @@ const drawWheels = (
 	ctx: CanvasRenderingContext2D,
 	image: HTMLImageElement,
 	wheelsOrientation: number[],
-	driving_state: boolean[],
-	steering_state: boolean[]
+	driving_state: string[],
+	steering_state: string[]
 ) => {
 	const margin = 25;
 
@@ -48,11 +48,11 @@ const drawWheels = (
 
 	ctx.translate(margin, margin);
 	ctx.rotate(wheelsOrientation[0] * Math.PI / 180);
-	ctx.fillStyle = !driving_state[0] ? "#FFFFFF" : "#FF0000";
+	ctx.fillStyle = driving_state[0] === "False" ? "#FFFFFF" : "#FF0000";
 	ctx.fillRect(-10, -20, 15, 30);
 
 	ctx.beginPath();
-	ctx.fillStyle = !steering_state[0] ? "#FFFFFF" : "#FF0000";
+	ctx.fillStyle = steering_state[0] === "False" ? "#FFFFFF" : "#FF0000";
 	ctx.arc(0, -5, 5, 0, 2 * Math.PI);
 	ctx.fill();
 
@@ -61,11 +61,11 @@ const drawWheels = (
 
 	ctx.translate(ctx.canvas.width - 20, margin);
 	ctx.rotate(wheelsOrientation[1]* Math.PI / 180);
-	ctx.fillStyle = !driving_state[1] ? "#FFFFFF" : "#FF0000";
+	ctx.fillStyle = driving_state[1] === "False" ? "#FFFFFF" : "#FF0000";
 	ctx.fillRect(-10, -20, 15, 30);
 
 	ctx.beginPath();
-	ctx.fillStyle = !steering_state[1] ? "#FFFFFF" : "#FF0000";
+	ctx.fillStyle = steering_state[1] === "False" ? "#FFFFFF" : "#FF0000";
 	ctx.arc(-5, -5, 5, 0, 2 * Math.PI);
 	ctx.fill();
 
@@ -74,11 +74,11 @@ const drawWheels = (
 
 	ctx.translate(ctx.canvas.width - 20, ctx.canvas.height - 15);
 	ctx.rotate(wheelsOrientation[2]* Math.PI / 180);
-	ctx.fillStyle = !driving_state[2] ? "#FFFFFF" : "#FF0000";
+	ctx.fillStyle = driving_state[2] === "False" ? "#FFFFFF" : "#FF0000";
 	ctx.fillRect(-10, -20, 15, 30);
 
 	ctx.beginPath();
-	ctx.fillStyle = !steering_state[2] ? "#FFFFFF" : "#FF0000";
+	ctx.fillStyle = steering_state[2] === "False" ? "#FFFFFF" : "#FF0000";
 	ctx.arc(-5, -4, 5, 0, 2 * Math.PI);
 	ctx.fill();
 
@@ -87,11 +87,11 @@ const drawWheels = (
 
 	ctx.translate(margin, ctx.canvas.height - 15);
 	ctx.rotate(wheelsOrientation[3]* Math.PI / 180);
-	ctx.fillStyle = !driving_state[3] ? "#FFFFFF" : "#FF0000";
+	ctx.fillStyle = driving_state[3] === "False" ? "#FFFFFF" : "#FF0000";
 	ctx.fillRect(-10, -20, 15, 30);
 
 	ctx.beginPath();
-	ctx.fillStyle = !steering_state[3] ? "#FFFFFF" : "#FF0000";
+	ctx.fillStyle = steering_state[3] === "False" ? "#FFFFFF" : "#FF0000";
 	ctx.arc(0, -5, 5, 0, 2 * Math.PI);
 	ctx.fill();
 
