@@ -239,7 +239,7 @@ class CS:
             else:
                 axes[5] = 0
 
-            new_axes = [float(i) for i in range(9)]
+            new_axes = [0.0 for i in range(9)]
 
             new_axes[0] = speed
 

@@ -22,7 +22,7 @@ export default () => {
 				optionTitle="Cameras"
 				options={[
 					"Camera 1",
-					//"Camera 2",
+					"Camera 2",
 					"Camera 3",
 					"Camera 4",
 					"Camera 5",
