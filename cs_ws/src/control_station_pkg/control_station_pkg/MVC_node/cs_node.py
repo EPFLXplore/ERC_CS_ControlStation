@@ -157,7 +157,7 @@ class CS:
 
         # -- HD messages --
         self.node.create_subscription(
-            JointState,       'ROVER/HD_telemetry',   self.controller.hd_joint_state, 10)
+            JointState,       '/HD/motor_control/joint_telemetry',   self.controller.hd_joint_state, 10)
         self.node.create_subscription(
             Int8MultiArray,   'HD/ar_tags',           self.controller.hd_ARtags, 10)
         self.node.create_subscription(
@@ -245,14 +245,14 @@ class CS:
 
             new_axes[0] = speed
 
-            # ax 1 gives direction on x axis => -1 if circle is clicked, 1 if square is clicked
-            new_axes[1] = buttons[1] - buttons[2] # button 1 is circle and button 2 is square
+            # ax 2 gives direction on y axis => -1 if circle is clicked, 1 if square is clicked
+            new_axes[2] = buttons[1] - buttons[2] # button 1 is circle and button 2 is square
 
-            # ax 2 gives direction on y axis => -1 if x clickes, 1 if triangle
-            new_axes[2] = buttons[3] - buttons[0]
+            # ax 3 gives direction on z axis => -1 if x clickes, 1 if triangle
+            new_axes[3] = buttons[3] - buttons[0]
 
-            # ax 3 gives direction on z axis => -1 if L2 clicked, 1 if R2 clicked
-            new_axes[3] = axes[2] - axes[5]
+            # ax 1 gives direction on x axis => -1 if L2 clicked, 1 if R2 clicked
+            new_axes[1] = axes[2] - axes[5]
 
             directions = Float32MultiArray()
             directions.data = [float(i) for i in new_axes]
