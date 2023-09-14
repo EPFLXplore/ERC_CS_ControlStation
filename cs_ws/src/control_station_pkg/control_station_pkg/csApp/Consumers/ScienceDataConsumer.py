@@ -51,7 +51,8 @@ class ScienceDataConsumer(WebsocketConsumer):
             self.tab_group_name,
             {
                 'type': 'science_data_message',
-                'mass' : data_json['mass'],
+                'container_mass' : data_json['container_mass'],
+                'drill_mass' : data_json['drill_mass'],
                 'candidates' : data_json['candidates'],
                 'npk_sensor' : data_json['npk_sensor'],
                 'four_in_one' : data_json['four_in_one'],
@@ -64,7 +65,8 @@ class ScienceDataConsumer(WebsocketConsumer):
     def science_data_message(self, event):
 
         self.send(text_data=json.dumps({
-                'mass' : event['mass'],
+                'container_mass' : event['container_mass'],
+                'drill_mass' : event['drill_mass'],
                 'candidates' : event['candidates'],
                 'npk_sensor' : event['npk_sensor'],
                 'four_in_one' : event['four_in_one'],

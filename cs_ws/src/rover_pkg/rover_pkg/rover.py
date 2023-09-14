@@ -70,8 +70,8 @@ class Rover():
         self.state_pub         = self.node.create_publisher(String,            'ROVER/State'                   , 1)
 
         # Rover(SC) --> CS
-        self.SC_fsm_state_pub  = self.node.create_publisher(Int8,                'ROVER/SC_fsm'            , 1)
-        # self.SC_cmd_pub        = self.node.create_publisher(String,            'ROVER/SC_cmd'                  , 1)
+        #self.SC_fsm_state_pub  = self.node.create_publisher(Int8,                'ROVER/SC_fsm'            , 1)
+        self.SC_cmd_pub        = self.node.create_publisher(Int8,                 'ROVER/SC_fsm'                  , 1)
         # self.SC_infos_pub      = self.node.create_publisher(String,            'ROVER/SC_info'                 , 1)
         # self.SC_humidities_pub = self.node.create_publisher(Int16,             'ROVER/SC_measurements_humidity', 1)
         # self.SC_params_pub     = self.node.create_publisher(Int16MultiArray,   'ROVER/SC_params'               , 1)
@@ -238,10 +238,9 @@ class Rover():
         if (task == Task.SCIENCE.value):
             # LAUNCH
             if (instr == Instruction.LAUNCH.value):
-                if(self.ROVER_STATE == Task.IDLE):
-                    self.node.get_logger().info("LAUNCHING SCIENCE")
-                    self.SC_pub.publish(Int8(data=instr))
-                    self.ROVER_STATE = Task.SCIENCE
+                self.node.get_logger().info("LAUNCHING SCIENCE")
+                self.SC_pub.publish(Int8(data=instr))
+                self.ROVER_STATE = Task.SCIENCE
 
             elif (instr == Instruction.ABORT.value):
                 self.node.get_logger().info("ABORTING SCIENCE")
