@@ -469,6 +469,7 @@ class Controller():
 
     # need to publish before placing an element in container to measure mass
     def pub_container_tare(self):
+        print("tare call")
         calib_offset = MassCalibOffset()
         calib_offset.destination_id = 0
         calib_offset.channel = 0

@@ -104,7 +104,7 @@ class CS:
         # CS --> ROVER (NAV)
 
         self.Nav_Goal_pub               = self.node.create_publisher(PoseStamped,       'CS/NAV_goal',         1)
-        self.Nav_Cancel_pub             = self.node.create_publisher(String,              'CS/NAV_cancel',       1)
+        self.Nav_Cancel_pub             = self.node.create_publisher(String,            'CS/NAV_cancel',       1)
         self.Nav_Joystick_pub           = self.node.create_publisher(Twist,             '/cmd_vel',            1)
         self.Nav_Starting_Point_pub     = self.node.create_publisher(PoseStamped,       '/lio_sam/initial_pose', 1)
         self.Nav_Mode_pub               = self.node.create_publisher(String,            'ROVER/NAV_mode', 1)
@@ -124,15 +124,11 @@ class CS:
 
         # ---------------------------------------------------
         # ===== Subscribers =====
-        self.node.create_subscription(
-            String,           'ROVER/RoverConfirm',               self.controller.rover_confirmation, 10)
+        self.node.create_subscription(String,           'ROVER/RoverConfirm',               self.controller.rover_confirmation, 10)
         # self.node.create_subscription(Int8,             'ROVER/TaskProgress',              self.controller.task_progress      , 10)
-        self.node.create_subscription(
-            DiagnosticStatus, 'ROVER/CS_log',                     self.controller.log_clbk, 10)
-        self.node.create_subscription(
-            String,           'ROVER/State',                      self.controller.rover_state, 10)
-        self.node.create_subscription(
-            Int8,             'ROVER/subsystem_state',            self.controller.rover_subsystem_state, 10)
+        self.node.create_subscription(DiagnosticStatus, 'ROVER/CS_log',                     self.controller.log_clbk, 10)
+        self.node.create_subscription(String,           'ROVER/State',                      self.controller.rover_state, 10)
+        self.node.create_subscription(Int8,             'ROVER/subsystem_state',            self.controller.rover_subsystem_state, 10)
 
         # -- SC messages --
         self.node.create_subscription(Int8,               'SC/fsm_state_to_cs',      self.controller.science_state, 10)

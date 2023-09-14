@@ -16,7 +16,8 @@ class ElecTestNode(Node):
         # Log publisher
         self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
 
-        self.publisher_mass             = self.create_publisher(MassArray, 'EL/mass', 10)
+        self.publisher_container_mass             = self.create_publisher(MassArray, 'EL/container/mass', 10)
+        self.publisher_drill_mass                 = self.create_publisher(MassArray, 'EL/drill/mass', 10)
         self.publisher_spectrometer     = self.create_publisher(SpectroResponse, 'EL/spectro_response', 10)
         self.publisher_npk              = self.create_publisher(NPK, 'EL/npk', 10)
         # self.publisher_four_in_one      = self.create_publisher(Float32MultiArray, 'EL/four_in_one', 10)
@@ -42,8 +43,9 @@ class ElecTestNode(Node):
         msg_float_32_multi = Float32MultiArray()
 
         mass = MassArray()
-        mass.mass = [float(self.i) + 0.1, float(self.i) + 0.2, float(self.i) + 0.3, float(self.i) + 0.8]
-        self.publisher_mass.publish(mass)
+        mass.mass = [0.,float(self.i),0.,0.]
+        self.publisher_container_mass.publish(mass)
+        self.publisher_drill_mass.publish(mass)
 
         spectro = SpectroResponse()
         spectro.data = [float(v) for v in numpy.random.rand(18)]
@@ -83,9 +85,8 @@ class ElecTestNode(Node):
     def mass_calib_drill(self, msg):
         print("mass_calib_drill: " + str(msg))
         return
+
     
-
-
 def main(args=None):
     rclpy.init(args=args)
 

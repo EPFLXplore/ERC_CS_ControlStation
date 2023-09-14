@@ -363,6 +363,7 @@ def wait_for_spectro():
 
 def sc_reset_spectro(request):
     #Yasmin call ta function
+    
     return JsonResponse({})
 
 
