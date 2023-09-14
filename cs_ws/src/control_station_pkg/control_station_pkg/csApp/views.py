@@ -273,6 +273,7 @@ def set_id(request):
     cs.rover.HD.setElemId(id)
     cs.HD_id.publish(Int8(data=id))
     cs.node.get_logger().info("Maintenance: Set HD id to " + str(id))
+    print("id:", cs.rover.HD.getElemId())
     #print(cs.rover.HD.getElemId())
     #cs.controller.pub_hd_elemId(id)
     return JsonResponse({})
@@ -294,9 +295,9 @@ def deploy_hd_voltmeter(request):
     servoRequest = ServoRequest()
     servoRequest.channel = 1
     if (request.POST.get("deployment") == "open"):
-        servoRequest.angle = 110
+        servoRequest.angle = float(20)
     else :
-        servoRequest.angle = 0
+        servoRequest.angle = float(180)
     cs.HD_deploy_voltmeter_pub.publish(servoRequest)
     return JsonResponse({})
 

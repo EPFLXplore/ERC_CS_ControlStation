@@ -134,7 +134,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 						className={availableButtons[10] == 1  ? styles.button : styles.disabledButton}
 						onClick={() => buttonSelect(10)}
 					>
-						Button Switch
+						Button Switch ON
 					</button>
 					<button
 						className={availableButtons[11] == 1 ? styles.button : styles.disabledButton}
@@ -147,6 +147,12 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 						onClick={() => buttonSelect(12)}
 					>
 						Magnet
+					</button>
+					<button
+						className={availableButtons[10] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(13)}
+					>
+						Button Switch OFF
 					</button>
 					<button
 						className={availableButtons[13] == 1  ? styles.button : styles.disabledButton}
@@ -174,15 +180,51 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 					</button>
 					<button
 						className={styles.button}
-						onClick={() => buttonSelect(30)}
+						onClick={() => buttonSelect(40)}
 					>
 						Pick Rock
 					</button>
 					<button
 						className={styles.button}
-						onClick={() => buttonSelect(31)}
+						onClick={() => buttonSelect(41)}
 					>
 						Rassor Sample
+					</button>
+					<button
+						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(50)}
+					>
+						Position 1
+					</button>
+					<button
+						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(51)}
+					>
+						Position 2
+					</button>
+					<button
+						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(52)}
+					>
+						Position 3
+					</button>
+					<button
+						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(53)}
+					>
+						Position 4
+					</button>
+					<button
+						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(54)}
+					>
+						Position 5
+					</button>
+					<button
+						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
+						onClick={() => buttonSelect(55)}
+					>
+						Position 6
 					</button>
 					<button
 						className={availableButtons[0] == 1 ? styles.button : styles.disabledButton}

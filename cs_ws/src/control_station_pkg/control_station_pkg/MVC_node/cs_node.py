@@ -225,6 +225,7 @@ class CS:
             send gamepad data to rover
         '''
         axes = [float(i) for i in axes]
+        print("in cs send data")
 
         # BEHAVIOR WHEN HD IS IN INVERSE_KINEMATICS
         if(target == 'IK'):
@@ -240,7 +241,7 @@ class CS:
             else:
                 axes[5] = 0
 
-            new_axes = [float(i) for i in range(9)]
+            new_axes = [float(0) for i in range(9)]
 
             new_axes[0] = speed
 
@@ -254,7 +255,7 @@ class CS:
             new_axes[3] = axes[2] - axes[5]
 
             directions = Float32MultiArray()
-            directions.data = new_axes
+            directions.data = [float(i) for i in new_axes]
             self.HD_Gamepad_pub.publish(directions)
 
 
@@ -271,17 +272,51 @@ class CS:
             if (buttons[5] == 1):
                 axes[5] = -axes[5]
 
-            directions = Float32MultiArray()
-            directions.data = axes[:6]
+            new_axes = axes.copy()
+            # First join dir is given by ax 3 (r3 gauche droite)
+            new_axes[0] = axes[3]
+            new_axes[1] = -axes[4] #J2 <=> ax 4 (r3 haut bas)
+            #J3 <=> R2 (ax 5) (negative if button 5 (R1 clicked))
+            new_axes[2] = axes[5]
+            #J4 <=> L2 (ax 2) (negative if button 4 (L1 clicked))
+            new_axes[3] = axes[2]
+            #J5 <=> L3 haut bas = ax 1 TODO: Check if 1 is up or down
+            new_axes[4] = -axes[1]
+            #J6 <=> L3 gauche droite = ax 0
+            new_axes[5] = axes[0]
 
-            # Gripper are buttons 1 and 2
+
+            directions = Float32MultiArray()
+            data = []
+            data.append(speed)
+            data.extend(new_axes[:6])
+
+            
+
+            # Gripper are buttons 1 and 2 for value 1 and 3 and 0 for 0.1
             # transform them into speeds
             if (buttons[2] == 1):
-                directions.data.append(-1)
+                data.append(-1)
             elif (buttons[1] == 1):
-                directions.data.append(1)
+                data.append(1)
+            elif (buttons[3] == 1):
+                data.append(0.1)
+            elif (buttons[0] == 1):
+                data.append(-0.1)
             else:
-                directions.data.append(0)
+                data.append(0)
+
+            # Ressort are ax 6 for value 1 and ax 7 for 0.1
+            # transform them into speeds
+            if (axes[6] != 0):
+                data.append(-axes[6])
+            elif (axes[7] != 0):
+                data.append(-axes[7]/10)
+            else:
+                data.append(0)
+
+            data = [float(i) for i in data]
+            directions.data = data
             print(directions.data)
             self.HD_Gamepad_pub.publish(directions)
 

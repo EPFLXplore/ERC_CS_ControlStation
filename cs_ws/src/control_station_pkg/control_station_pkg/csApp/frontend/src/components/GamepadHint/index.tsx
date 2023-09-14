@@ -9,7 +9,7 @@ const GamepadHint = ({
 	visible = false,
 }: {
 	selectorCallback?: () => void;
-	mode: "NAV" | "HD";
+	mode: "NAV" | "IK" | "FK";
 	visible?: boolean;
 }) => {
 	const [gamepad, gamepadState, gamepadCommandState] = useGamepad(mode, selectorCallback);

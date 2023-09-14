@@ -51,6 +51,7 @@ class CameraConsumer(WebsocketConsumer):
     # Receive message from room group
     def video_message(self, event):
         data = event['video_data']
+        print("received message in room group")
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({
