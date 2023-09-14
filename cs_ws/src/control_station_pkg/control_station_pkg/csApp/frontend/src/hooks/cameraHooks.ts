@@ -92,6 +92,7 @@ function useCameraSelector(startCamera: Array<Cameras>) {
 			);
 
 			cameraSocket.onmessage = (e) => {
+				console.log("Message camera " + cameras[i]);
 				const data = JSON.parse(e.data);
 				console.log("received image from camera " + cameras[i]);
 				setImage(data.data, i);

@@ -26,7 +26,8 @@ class HdTestNode(Node):
         self.subscription_maintenance = self.create_subscription(Int8,'ROVER/Maintenance',self.maintenance_callback,10)
         self.subscription_gamepad = self.create_subscription(Joy,'ROVER/HD_gamepad',self.gamepad_callback,10)
 
-        
+        self.subscription_inverse_frame = self.create_subscription(String,'ROVER/HD_inverse_frame' ,self.inverse_frame_callback,10)
+
 
         timer_period = 1.0  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
@@ -77,6 +78,10 @@ class HdTestNode(Node):
             self.j = 0
             self.get_logger().info('Received gamepad:" %s"' % msg.buttons)
         #self.get_logger().info('Received gamepad:" %s"' % msg.axes)
+
+    def inverse_frame_callback(self, msg):
+        self.get_logger().info('Received inverse_frame: "%s"' % msg.data)
+
 
 
 def main(args=None):

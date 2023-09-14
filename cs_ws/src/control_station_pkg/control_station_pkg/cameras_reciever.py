@@ -55,6 +55,7 @@ def encode_stream(s):
     return img
 
 def display_cam_0(msg):
+    print("DISPLAY CAM 0")
     global im0
     im0 = bridge.compressed_imgmsg_to_cv2(msg)
     img = encode_stream(im0)

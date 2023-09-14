@@ -86,7 +86,8 @@ class Controller():
             #self.cs.node.get_logger().info("Rover Confirmation: %s\n", txt.data)
             self.cs.rover.setReceived(True)
         else:
-            self.cs.node.get_logger().info("Received after timeout: %s\n", txt.data)
+            #self.cs.node.get_logger().info("Received after timeout: %s\n", txt.data)
+            return
 
     # receive info on progress of task (SUCCESS/FAIL)
     # TODO HASN'T BEEN USED ONCE => NEED TO TELL OTHER SUBSYSTEMS TO PUBLISH ON TaskProgress
@@ -236,7 +237,6 @@ class Controller():
             orientation = orientation + 2* np.pi
         # convert the orientation from radians to degrees
         orientation = orientation * 180 / np.pi
-        print(orientation)
         self.navigation.orientation = [0,0, orientation]
 
         self.navigation.linVel = [odometry.twist.twist.linear.x, odometry.twist.twist.linear.y, odometry.twist.twist.linear.z]
@@ -255,6 +255,7 @@ class Controller():
         BACK_RIGHT_STEER = 6
         BACK_LEFT_STEER = 7
         """
+        print(msg.state)
         #self.navigation.wheels_ang = []
         self.navigation.steering_wheel_ang = msg.data[0:4]
         self.navigation.driving_wheel_ang = msg.data[4:8]
