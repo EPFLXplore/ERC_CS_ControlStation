@@ -181,10 +181,8 @@ class CS:
         
 
         # -- Elec messages --
-        self.node.create_subscription(
-            NodeStateArray, '/can0/EL/node_state', self.controller.node_states(0), 10)
-        self.node.create_subscription(
-            NodeStateArray, '/can1/EL/node_state', self.controller.node_states(1), 10)
+        self.node.create_subscription( NodeStateArray, '/can0/EL/node_state', self.controller.can0_node_states, 10)
+        self.node.create_subscription( NodeStateArray, '/can1/EL/node_state', self.controller.can1_node_states, 10)
 
         thr = threading.Thread(target=rclpy.spin, args=(self.node,)).start()
         print("start spinning")

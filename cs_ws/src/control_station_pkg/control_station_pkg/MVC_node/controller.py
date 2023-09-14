@@ -142,26 +142,12 @@ class Controller():
     # TODO problems with displaying mass, websocket can't serialize numpy.float32 error
 
     def science_container_mass(self, data):
-        try:
-            print(data)
-            print("science_container_mass : " + str(data.mass))
-            self.science.container_mass = data.mass[1]
-        except Exception as ex:
-            pass
-        # elec uses channel 2 for the mass (MAY CHANGE IN THE FUTURE)
-
-        #self.science.UpdateScienceDataSocket()
+        self.science.container_mass = data.mass[1]
+        self.science.UpdateScienceDataSocket()
 
     def science_drill_mass(self, data):
-        try:
-            print(data)
-            print("science_drill_mass : " + str(data.mass))
-            self.science.drill_mass = data.mass[1]
-        except Exception as ex:
-            pass
-        # elec uses channel 2 for the mass (MAY CHANGE IN THE FUTURE)
-
-        #self.science.UpdateScienceDataSocket()
+        self.science.drill_mass = data.mass[1]
+        self.science.UpdateScienceDataSocket()
 
     # TODO Chaimaa c'est pour toi, fais la moyenne wallah
     def science_spectrometer(self, data):
@@ -548,10 +534,8 @@ class Controller():
 
         #      ws_time.send('%s' % message)
 
-    def node_states(self, channel):
-        def callback(self, data):
-            self.elec.setStates(data.node_states, channel)
-            
-            print("node_states")
-            print(states)
-            print(channel)
+    def can0_node_states(self, data):
+        self.elec.setStates(data.node_states, 0)
+
+    def can1_node_states(self, data):
+        self.elec.setStates(data.node_states, 1)
