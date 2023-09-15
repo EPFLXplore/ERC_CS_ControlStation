@@ -536,7 +536,9 @@ class Controller():
         #      ws_time.send('%s' % message)
 
     def can0_node_states(self, data):
-        self.elec.setStates(data.node_state, 0)
+        self.elec.can0 = data.node_state
+        self.elec.UpdateElecDeviceSocket()
 
     def can1_node_states(self, data):
-        self.elec.setStates(data.node_state, 1)
+        self.elec.can1 = data.node_state
+        self.elec.UpdateElecDeviceSocket()
