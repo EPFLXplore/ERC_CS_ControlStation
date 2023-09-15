@@ -215,29 +215,30 @@ class CS:
 
             # Need to interpolate axes 2 and 5 to go from range [-1,1] to binary values 0 or 1
             if (axes[2] >= 0):
-                axes[2] = 1    
+                axes[2] = 1.    
             else:
-                axes[2] = 0
+                axes[2] = 0.
 
             if (axes[5] >= 0):
-                axes[5] = 1    
+                axes[5] = 1.    
             else:
-                axes[5] = 0
+                axes[5] = 0.
 
             new_axes = [0.0 for i in range(9)]
 
-            new_axes[0] = speed
+            new_axes[0] = float(1 - abs(axes[1]))
 
             # ax 2 gives direction on y axis => -1 if circle is clicked, 1 if square is clicked
-            new_axes[2] = buttons[1] - buttons[2] # button 1 is circle and button 2 is square
+            new_axes[2] = float(buttons[1] - buttons[2]) # button 1 is circle and button 2 is square
 
             # ax 3 gives direction on z axis => -1 if x clickes, 1 if triangle
-            new_axes[3] = buttons[3] - buttons[0]
+            new_axes[3] = float(buttons[3] - buttons[0])
 
             # ax 1 gives direction on x axis => -1 if L2 clicked, 1 if R2 clicked
-            new_axes[1] = axes[2] - axes[5]
+            new_axes[1] = float(axes[2] - axes[5])
 
             directions = Float32MultiArray()
+            print(new_axes)
             directions.data = new_axes
             self.HD_Gamepad_pub.publish(directions)
 
