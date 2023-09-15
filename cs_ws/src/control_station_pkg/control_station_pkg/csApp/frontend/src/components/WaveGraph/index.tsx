@@ -59,7 +59,10 @@ export const WaveGraph: React.FC<GraphProps> = ({ measure, pointsSecondWave, can
 							},
 							y: {
 								display: true,
-								max: 1,
+								max: Math.max(
+									measure.map((point) => point.y).reduce((a, b) => Math.max(a, b)),
+									pointsSecondWave.map((point) => point.y).reduce((a, b) => Math.max(a, b))
+								),
 								min: 0,
 								title: {
 									display: true,

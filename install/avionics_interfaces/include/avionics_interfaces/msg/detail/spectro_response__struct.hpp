@@ -38,7 +38,7 @@ struct SpectroResponse_
       rosidl_runtime_cpp::MessageInitialization::ZERO == _init)
     {
       this->id = 0;
-      std::fill<typename std::array<float, 10>::iterator, float>(this->data.begin(), this->data.end(), 0.0f);
+      std::fill<typename std::array<float, 18>::iterator, float>(this->data.begin(), this->data.end(), 0.0f);
       this->success = false;
     }
   }
@@ -50,7 +50,7 @@ struct SpectroResponse_
       rosidl_runtime_cpp::MessageInitialization::ZERO == _init)
     {
       this->id = 0;
-      std::fill<typename std::array<float, 10>::iterator, float>(this->data.begin(), this->data.end(), 0.0f);
+      std::fill<typename std::array<float, 18>::iterator, float>(this->data.begin(), this->data.end(), 0.0f);
       this->success = false;
     }
   }
@@ -60,7 +60,7 @@ struct SpectroResponse_
     uint16_t;
   _id_type id;
   using _data_type =
-    std::array<float, 10>;
+    std::array<float, 18>;
   _data_type data;
   using _success_type =
     bool;
@@ -74,7 +74,7 @@ struct SpectroResponse_
     return *this;
   }
   Type & set__data(
-    const std::array<float, 10> & _arg)
+    const std::array<float, 18> & _arg)
   {
     this->data = _arg;
     return *this;

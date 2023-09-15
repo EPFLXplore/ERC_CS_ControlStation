@@ -45,7 +45,7 @@ avionics_interfaces__msg__SpectroResponse__are_equal(const avionics_interfaces__
     return false;
   }
   // data
-  for (size_t i = 0; i < 10; ++i) {
+  for (size_t i = 0; i < 18; ++i) {
     if (lhs->data[i] != rhs->data[i]) {
       return false;
     }
@@ -68,7 +68,7 @@ avionics_interfaces__msg__SpectroResponse__copy(
   // id
   output->id = input->id;
   // data
-  for (size_t i = 0; i < 10; ++i) {
+  for (size_t i = 0; i < 18; ++i) {
     output->data[i] = input->data[i];
   }
   // success

@@ -56,7 +56,7 @@ static bool _SpectroResponse__cdr_serialize(
 
   // Field name: data
   {
-    size_t size = 10;
+    size_t size = 18;
     auto array_ptr = ros_message->data;
     cdr.serializeArray(array_ptr, size);
   }
@@ -85,7 +85,7 @@ static bool _SpectroResponse__cdr_deserialize(
 
   // Field name: data
   {
-    size_t size = 10;
+    size_t size = 18;
     auto array_ptr = ros_message->data;
     cdr.deserializeArray(array_ptr, size);
   }
@@ -122,7 +122,7 @@ size_t get_serialized_size_avionics_interfaces__msg__SpectroResponse(
   }
   // field.name data
   {
-    size_t array_size = 10;
+    size_t array_size = 18;
     auto array_ptr = ros_message->data;
     (void)array_ptr;
     size_t item_size = sizeof(array_ptr[0]);
@@ -168,7 +168,7 @@ size_t max_serialized_size_avionics_interfaces__msg__SpectroResponse(
   }
   // member: data
   {
-    size_t array_size = 10;
+    size_t array_size = 18;
 
     current_alignment += array_size * sizeof(uint32_t) +
       eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));

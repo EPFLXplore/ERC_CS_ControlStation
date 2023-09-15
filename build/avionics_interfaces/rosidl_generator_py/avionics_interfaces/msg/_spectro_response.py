@@ -63,13 +63,13 @@ class SpectroResponse(metaclass=Metaclass_SpectroResponse):
 
     _fields_and_field_types = {
         'id': 'uint16',
-        'data': 'float[10]',
+        'data': 'float[18]',
         'success': 'boolean',
     }
 
     SLOT_TYPES = (
         rosidl_parser.definition.BasicType('uint16'),  # noqa: E501
-        rosidl_parser.definition.Array(rosidl_parser.definition.BasicType('float'), 10),  # noqa: E501
+        rosidl_parser.definition.Array(rosidl_parser.definition.BasicType('float'), 18),  # noqa: E501
         rosidl_parser.definition.BasicType('boolean'),  # noqa: E501
     )
 
@@ -79,10 +79,10 @@ class SpectroResponse(metaclass=Metaclass_SpectroResponse):
             ', '.join(sorted(k for k in kwargs.keys() if '_' + k not in self.__slots__))
         self.id = kwargs.get('id', int())
         if 'data' not in kwargs:
-            self.data = numpy.zeros(10, dtype=numpy.float32)
+            self.data = numpy.zeros(18, dtype=numpy.float32)
         else:
             self.data = numpy.array(kwargs.get('data'), dtype=numpy.float32)
-            assert self.data.shape == (10, )
+            assert self.data.shape == (18, )
         self.success = kwargs.get('success', bool())
 
     def __repr__(self):
@@ -152,8 +152,8 @@ class SpectroResponse(metaclass=Metaclass_SpectroResponse):
         if isinstance(value, numpy.ndarray):
             assert value.dtype == numpy.float32, \
                 "The 'data' numpy.ndarray() must have the dtype of 'numpy.float32'"
-            assert value.size == 10, \
-                "The 'data' numpy.ndarray() must have a size of 10"
+            assert value.size == 18, \
+                "The 'data' numpy.ndarray() must have a size of 18"
             self._data = value
             return
         if __debug__:
@@ -167,10 +167,10 @@ class SpectroResponse(metaclass=Metaclass_SpectroResponse):
                   isinstance(value, UserList)) and
                  not isinstance(value, str) and
                  not isinstance(value, UserString) and
-                 len(value) == 10 and
+                 len(value) == 18 and
                  all(isinstance(v, float) for v in value) and
                  True), \
-                "The 'data' field must be a set or sequence with length 10 and each value of type 'float'"
+                "The 'data' field must be a set or sequence with length 18 and each value of type 'float'"
         self._data = numpy.array(value, dtype=numpy.float32)
 
     @property

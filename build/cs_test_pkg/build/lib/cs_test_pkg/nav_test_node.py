@@ -1,17 +1,21 @@
 
+import math
 import random
 import rclpy
 from rclpy.node import Node
 
 from std_msgs.msg import String
-from nav_msgs.msg import Odometry
-from geometry_msgs.msg import PoseStamped
+from nav_msgs.msg import Odometry, Path
+from geometry_msgs.msg import PoseStamped, Point, Pose
 from diagnostic_msgs.msg import DiagnosticStatus
 
 from std_msgs.msg import Int8MultiArray, Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16, Float32MultiArray
 from avionics_interfaces.msg import AngleArray
 
+from transforms3d.euler import euler2quat
 from diagnostic_msgs.msg  import DiagnosticStatus
+
+from custom_msg.msg import Wheelstatus, Motorcmds
 
 class NavTestNode(Node):
 
@@ -20,16 +24,20 @@ class NavTestNode(Node):
         
         # Log publisher
         self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
-        self.publisher_odometry = self.create_publisher(Odometry, 'NAV/odometry/filtered', 10)
-        self.publisher_wheel_ang = self.create_publisher(AngleArray, 'EL/potentiometer', 10)
+        self.publisher_odometry = self.create_publisher(Odometry, '/lio_sam/odom', 10)
+        self.publisher_path = self.create_publisher(Path, '/path', 1)
+        self.publisher_wheel_ang = self.create_publisher(Wheelstatus, 'NAV/absolute_encoders', 10)
+        self.publisher_motorcmds = self.create_publisher(Motorcmds, 'NAV/displacement', 10)
         
         #TODO
         #self.subscription_move_base = self.create_subscription(String,'ROVER/move_base/cancel',self.listener_callback,10)
         self.subscription_goal =        self.create_subscription(PoseStamped,'ROVER/NAV_goal',self.goal_callback,10)
         self.subscription_navigation =  self.create_subscription(String,'ROVER/NAV_status',self.navigation_callback,10)
+        self.subscription_mode =       self.create_subscription(String,'ROVER/NAV_mode',self.mode_callback,10)
+        self.subscription_kinematic = self.create_subscription(String,'ROVER/NAV_kinematic',self.kinematic_callback,10)
+        self.subscription_starting_point = self.create_subscription(PoseStamped,'/lio_sam/initial_pose',self.starting_point_callback,10)
 
-
-        timer_period = 1  # seconds
+        timer_period = 5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.i = 0
 
@@ -48,10 +56,20 @@ class NavTestNode(Node):
         msg = Odometry()
         msg.pose.pose.position.x = random.uniform(-10, 10)
         msg.pose.pose.position.y = random.uniform(0, 25)
+        #print(f"positon: x : {msg.pose.pose.position.x} y: {msg.pose.pose.position.y}")
         msg.pose.pose.position.z = msg.pose.pose.position.z + random.uniform(-3, 3)
-        msg.pose.pose.orientation.x = msg.pose.pose.orientation.x + random.uniform(-10, 10)
-        msg.pose.pose.orientation.y = msg.pose.pose.orientation.y + random.uniform(-10, 10)
-        msg.pose.pose.orientation.z = msg.pose.pose.orientation.z + random.uniform(-10, 10)
+
+        euler = [0, 0, random.uniform(0, 360)]
+        #print("orientation in degrees: " + str(euler[2]))
+
+        euler[2] = euler[2] * math.pi / 180
+        #print("orientation in rad: " + str(euler[2]))
+        angle = euler2quat(euler[0], euler[1], euler[2])
+        msg.pose.pose.orientation.w = angle[0]
+        msg.pose.pose.orientation.x = angle[1]
+        msg.pose.pose.orientation.y = angle[2]
+        msg.pose.pose.orientation.z = angle[3]
+
         msg.child_frame_id = "nav test child frame id"
         msg.header.frame_id = "nav test header"
         msg.header.stamp = self.get_clock().now().to_msg()
@@ -62,13 +80,23 @@ class NavTestNode(Node):
         msg.twist.twist.angular.y = float(self.i/10 + 100)
         msg.twist.twist.angular.z = float(self.i/10 + 110)
 
-        ang = AngleArray()
-        ang.angles = [random.uniform(0, 360), random.uniform(0, 360), random.uniform(0, 360), random.uniform(0, 360)]
-        self.publisher_wheel_ang.publish(ang)
+        path = Path()
+        #path.poses = [PoseStamped(pose = Pose(point= Point(1.,3. ,2. )))]
+        self.publisher_path.publish(path)
+
+        motor = Motorcmds()
+        motor.modedeplacement = "wallah"
+        motor.info = "yasmin"
+        self.publisher_motorcmds.publish(motor)
+
+        status = Wheelstatus()
+        status.data = [1., 2., 3., 4., 5., 6., 7., 8.]
+        status.state = [False, False, True, True, False, False, True, True]
+        self.publisher_wheel_ang.publish(status)
+       
 
         self.publisher_odometry.publish(msg)
         self.i += 1
-
 
     def goal_callback(self, msg):
         self.get_logger().info('Goal callback :' + str(msg.pose.position.x) + " " + str(msg.pose.position.y) + " " + str(msg.pose.position.z))
@@ -76,6 +104,14 @@ class NavTestNode(Node):
     def navigation_callback(self, msg):
         self.get_logger().info('Navigation callback: "%s"' % msg.data)
 
+    def mode_callback(self, msg):
+        self.get_logger().info('Mode callback: "%s"' % msg.data)
+
+    def kinematic_callback(self, msg):
+        self.get_logger().info('Kinematic callback: "%s"' % msg.data)
+
+    def starting_point_callback(self, msg):
+        self.get_logger().info('Starting point callback :' + str(msg.pose.position.x) + " " + str(msg.pose.position.y) + " " + str(msg.pose.position.z))
 
 
 def main(args=None):

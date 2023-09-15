@@ -99,6 +99,7 @@ class Science:
         
         return percentages_similarity
 
+    
         
     def compare(self, measured_file):
         """ Compare measured spectrum with database and print results.
@@ -112,6 +113,14 @@ class Science:
         # Return the list of candidates sorted by their percentage similarity
         return identified_minerals
 
+    def normalize_spectrum(self, spectrum):
+        # Normalize the spectrum by dividing all values by the maximum value in the spectrum.
+        max_value = max(spectrum)
+        if (max_value < 1):
+            return spectrum
+        normalized_spectrum = [x / max_value for x in spectrum]
+        return normalized_spectrum
+
     def transform_spectrometer(self, data):
         """Transform the spectrometer data to the wavelength of the science bay"""
 
@@ -120,16 +129,16 @@ class Science:
         new_data[1] = data[3]
         new_data[6] = data[10]
         new_data[7] = data[11]
-        new_data[9] = data[15]
-        new_data[11] = data[16]
-        new_data[13] = data[17]
+        new_data[10] = data[15]
+        new_data[12] = data[16]
+        new_data[14] = data[17]
 
         # We now populate the rest of the array with interpolated values: [2,3,4,5,6,8,9,11,13]
         for i in range(2,15):
             if i in self.wavelength_interpolate_index:
                 new_data[i] = np.interp(self.wavelengths_output[i], self.wavelengths_input, data)
 
-        return new_data
+        return self.normalize_spectrum(new_data)
 
     def reset_spectrometer(self):
         """Reset the spectrometer list"""

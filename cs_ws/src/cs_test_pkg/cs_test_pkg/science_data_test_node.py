@@ -54,8 +54,12 @@ class ElecTestNode(Node):
 
         # spectro.data = [0.0, 0.0, 0.0, 0.0, 0.0, 0.02876550713, 0.03264730867,0.0396051291,0.03471689202,0.01984709654,0.0124561039,0.01435534943,0.01593096503,0.01561790272,0.02023586665,0.02924617856,0.03574094764,0.03884951685]
         hematite = [4.47125, 1.91, 3.78, 6.36, 4.6, 2.79, 0.54, 0.51, 46.81, 0.44, 1.02, 0.43, -0.81, 0, 2.065, 1.11, 0.0, 0.0]
-
-        spectro.data = [float(v) for v in hematite]
+        basalt = [
+    0.037906, 0.037702, 0.037906, 0.037817, 0.037728, 0.037639, 0.03755, 0.03746, 
+    0.037371, 0.037272, 0.037006, 0.036827, 0.036648, 0.036465, 0.036336, 
+    0.036207, 0.036067, 0.035926
+]
+        spectro.data = [float(v) for v in basalt]
         self.publisher_spectrometer.publish(spectro)
 
         npk = NPK()
@@ -74,8 +78,8 @@ class ElecTestNode(Node):
         self.publisher_four_in_one.publish(fio)
 
         v = Voltage()
-        v.voltage = random.uniform(0, 10)
-        self.publisher_voltage.publish(v)
+        # v.voltage = random.uniform(0, 10)
+        # self.publisher_voltage.publish(v)
 
         # self.publisher_potentiometers.publish(msg_float_32_multi)
         # self.publisher_LED_confirm.publish(msg_float_32_multi)

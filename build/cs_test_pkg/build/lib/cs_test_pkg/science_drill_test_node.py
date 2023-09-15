@@ -6,6 +6,7 @@ from rclpy.node import Node
 from std_msgs.msg import String, Int8, Float32MultiArray, Int8MultiArray
 from diagnostic_msgs.msg import DiagnosticStatus
 
+from avionics_interfaces.msg import FourInOne, Voltage, NPK, MassArray, SpectroResponse, MassCalibOffset, SpectroRequest
 
 class ScienceTestNode(Node):
 
@@ -22,6 +23,8 @@ class ScienceTestNode(Node):
         self.publisher_motors_currents = self.create_publisher(Float32MultiArray, 'SC/motors_currents', 10)
         self.publisher_limit_switches = self.create_publisher(Int8MultiArray, 'SC/limit_switches', 10)
 
+        self.subscription_spectro_request      =        self.create_subscription(SpectroRequest,'El/spectro_req', self.spectro_request,1)
+        
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.i = 0
@@ -58,6 +61,9 @@ class ScienceTestNode(Node):
 
         self.i += 1
 
+
+    def spectro_request(self, msg):
+        print("spectro_request msg : " + str(msg))
 
 def main(args=None):
     rclpy.init(args=args)

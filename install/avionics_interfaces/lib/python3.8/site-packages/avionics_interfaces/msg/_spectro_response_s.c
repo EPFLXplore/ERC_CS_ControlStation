@@ -76,7 +76,7 @@ bool avionics_interfaces__msg__spectro_response__convert_from_py(PyObject * _pym
       Py_INCREF(seq_field);
       assert(PyArray_NDIM(seq_field) == 1);
       assert(PyArray_TYPE(seq_field) == NPY_FLOAT32);
-      Py_ssize_t size = 10;
+      Py_ssize_t size = 18;
       float * dest = ros_message->data;
       for (Py_ssize_t i = 0; i < size; ++i) {
         float tmp = *(npy_float32 *)PyArray_GETPTR1(seq_field, i);
@@ -143,7 +143,7 @@ PyObject * avionics_interfaces__msg__spectro_response__convert_to_py(void * raw_
     assert(sizeof(npy_float32) == sizeof(float));
     npy_float32 * dst = (npy_float32 *)PyArray_GETPTR1(seq_field, 0);
     float * src = &(ros_message->data[0]);
-    memcpy(dst, src, 10 * sizeof(float));
+    memcpy(dst, src, 18 * sizeof(float));
     Py_DECREF(field);
   }
   {  // success

@@ -40,20 +40,20 @@ void SpectroResponse_fini_function(void * message_memory)
 size_t size_function__SpectroResponse__data(const void * untyped_member)
 {
   (void)untyped_member;
-  return 10;
+  return 18;
 }
 
 const void * get_const_function__SpectroResponse__data(const void * untyped_member, size_t index)
 {
   const auto & member =
-    *reinterpret_cast<const std::array<float, 10> *>(untyped_member);
+    *reinterpret_cast<const std::array<float, 18> *>(untyped_member);
   return &member[index];
 }
 
 void * get_function__SpectroResponse__data(void * untyped_member, size_t index)
 {
   auto & member =
-    *reinterpret_cast<std::array<float, 10> *>(untyped_member);
+    *reinterpret_cast<std::array<float, 18> *>(untyped_member);
   return &member[index];
 }
 
@@ -79,7 +79,7 @@ static const ::rosidl_typesupport_introspection_cpp::MessageMember SpectroRespon
     0,  // upper bound of string
     nullptr,  // members of sub message
     true,  // is array
-    10,  // array size
+    18,  // array size
     false,  // is upper bound
     offsetof(avionics_interfaces::msg::SpectroResponse, data),  // bytes offset in struct
     nullptr,  // default value

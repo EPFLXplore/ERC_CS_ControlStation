@@ -54,6 +54,7 @@ class CamerasPublisher(Node):
                             self.camera_3,
                             None, #self.camera_4, 
                             None#self.camera_5]
+        ]
 
         self.bridge = CvBridge()
 

@@ -53,7 +53,7 @@ static rosidl_typesupport_introspection_c__MessageMember SpectroResponse__rosidl
     0,  // upper bound of string
     NULL,  // members of sub message
     true,  // is array
-    10,  // array size
+    18,  // array size
     false,  // is upper bound
     offsetof(avionics_interfaces__msg__SpectroResponse, data),  // bytes offset in struct
     NULL,  // default value

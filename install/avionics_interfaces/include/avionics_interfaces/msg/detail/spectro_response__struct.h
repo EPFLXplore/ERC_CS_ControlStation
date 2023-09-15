@@ -21,7 +21,7 @@ extern "C"
 typedef struct avionics_interfaces__msg__SpectroResponse
 {
   uint16_t id;
-  float data[10];
+  float data[18];
   bool success;
 } avionics_interfaces__msg__SpectroResponse;
 

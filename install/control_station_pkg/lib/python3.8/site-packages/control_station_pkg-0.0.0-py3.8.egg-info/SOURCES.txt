@@ -9,6 +9,7 @@ setup.py
 ../../../build/control_station_pkg/control_station_pkg.egg-info/top_level.txt
 ../../../build/control_station_pkg/control_station_pkg.egg-info/zip-safe
 control_station_pkg/__init__.py
+control_station_pkg/camera_subscriber.py
 control_station_pkg/cameras_reciever.py
 control_station_pkg/control_station.py
 control_station_pkg/manage.py

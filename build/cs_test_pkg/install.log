@@ -1,10 +1,12 @@
 /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg/science_drill_test_node.py
+/home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg/cam_test_node.py
 /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg/nav_test_node.py
 /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg/gamepad_test_node.py
 /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg/science_data_test_node.py
 /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg/hd_test_node.py
 /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg/__init__.py
 /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg/__pycache__/science_drill_test_node.cpython-38.pyc
+/home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg/__pycache__/cam_test_node.cpython-38.pyc
 /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg/__pycache__/nav_test_node.cpython-38.pyc
 /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg/__pycache__/gamepad_test_node.cpython-38.pyc
 /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg/__pycache__/science_data_test_node.cpython-38.pyc
@@ -19,6 +21,7 @@
 /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg-0.0.0-py3.8.egg-info/PKG-INFO
 /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg-0.0.0-py3.8.egg-info/dependency_links.txt
 /home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages/cs_test_pkg-0.0.0-py3.8.egg-info/zip-safe
+/home/yasmin/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg/cam_test_node
 /home/yasmin/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg/elec_test_node
 /home/yasmin/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg/gamepad_test_node
 /home/yasmin/CS_workspace/install/cs_test_pkg/lib/cs_test_pkg/hd_test_node

@@ -5,7 +5,7 @@
 
 module avionics_interfaces {
   module msg {
-    typedef float float__10[10];
+    typedef float float__18[18];
     @verbatim (language="comment", text=
       " SpectroResponse.msg")
     struct SpectroResponse {
@@ -13,7 +13,7 @@ module avionics_interfaces {
 
       @verbatim (language="comment", text=
         " Response to 18 wavelengths")
-      float__10 data;
+      float__18 data;
 
       @verbatim (language="comment", text=
         " True if successful measurement")

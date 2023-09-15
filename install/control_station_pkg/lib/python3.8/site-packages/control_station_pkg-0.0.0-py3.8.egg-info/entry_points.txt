@@ -1,4 +1,5 @@
 [console_scripts]
+camera_subscriber = control_station_pkg.camera_subscriber:main
 cameras_reciever = control_station_pkg.cameras_reciever
 control_station = control_station_pkg.control_station:main
 

@@ -329,9 +329,9 @@ def resume_science(request):
     cs.controller.pub_Task(4,4)
     return JsonResponse({})
 
-def sc_reset_spectro(request):
-    cs.controller.science.reset_spectrometer()
-    return JsonResponse({})
+# def sc_reset_spectro(request):
+#     cs.controller.science.reset_spectrometer()
+#     return JsonResponse({})
 
 # def confirm_science(request):
 #     cs.controller.pub_Task(4,2)
@@ -401,6 +401,7 @@ def wait_for_spectro():
 
 def sc_reset_spectro(request):
     #Yasmin call ta function
+    cs.controller.science.reset_spectrometer()
     
     return JsonResponse({})
 

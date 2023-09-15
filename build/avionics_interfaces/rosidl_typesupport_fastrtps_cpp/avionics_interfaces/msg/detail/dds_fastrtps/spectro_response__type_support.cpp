@@ -88,7 +88,7 @@ get_serialized_size(
   }
   // Member: data
   {
-    size_t array_size = 10;
+    size_t array_size = 18;
     size_t item_size = sizeof(ros_message.data[0]);
     current_alignment += array_size * item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
@@ -128,7 +128,7 @@ max_serialized_size_SpectroResponse(
 
   // Member: data
   {
-    size_t array_size = 10;
+    size_t array_size = 18;
 
     current_alignment += array_size * sizeof(uint32_t) +
       eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));
