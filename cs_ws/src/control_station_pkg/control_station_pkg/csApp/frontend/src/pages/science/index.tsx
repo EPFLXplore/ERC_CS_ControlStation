@@ -19,12 +19,6 @@ import CameraView from "../../components/CameraView";
 import ModeSlider from "../../components/ModeSlider";
 import tareMassSensor from "../../utils/tareMassSensor";
 
-const candidates = [
-	{ percentage: 78, element: "Phosphate" },
-	{ percentage: 77.8, element: "Materiau1" },
-	{ percentage: 74, element: "Materiau2" },
-];
-
 type DataRow = {
 	id: string;
 	velocity: number;
@@ -43,7 +37,7 @@ export default () => {
 	const rows = ["Velocity", "Distance", "Current"]; // Rows titles
 	const columns = ["Module1", "Module2", "Drill"]; // Columns titles
 
-	const [mass, npkSensor, fourInOneSensor, spectrometer, spectrometerCandidate] =
+	const [mass, npkSensor, fourInOneSensor, spectrometer, spectrometerCandidate, candidates] =
 		useScienceDataInfos();
 
 	if (mode === 0) {
@@ -230,7 +224,7 @@ export default () => {
 							<tr>
 								{candidates.map((candidate, index) => (
 									<td>
-										{candidate.percentage}%, {candidate.element}
+										{candidate}
 									</td>
 								))}
 							</tr>

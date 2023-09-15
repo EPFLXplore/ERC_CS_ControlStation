@@ -153,7 +153,7 @@ class CS:
             Int8,             'HD/task_outcome',      self.controller.hd_task_outcome, 10)
         self.node.create_subscription(
             Voltage,          'EL/voltage',         self.controller.hd_voltage, 10)
-        self.node.create_subscription(String,        '/detected_panel',            self.controller.setReady, 10)
+        self.node.create_subscription(String,        '/detected_panel',            self.controller.hd_set_ready, 10)
 
         # -- NAV messages --
         self.node.create_subscription(Odometry,         '/lio_sam/odom',                self.controller.nav_odometry  , 10)

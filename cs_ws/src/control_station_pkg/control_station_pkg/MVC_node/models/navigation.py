@@ -18,7 +18,7 @@ class Navigation:
 
         self.steering_wheel_ang = [0,0,0,0]
         self.steering_wheel_state = [0,0,0,0]
-        # self.driving_wheel_ang = [0,0,0,0]
+        self.driving_wheel_ang = [0,0,0,0]
         self.driving_wheel_state = [0,0,0,0]
 
         self.info = ""
