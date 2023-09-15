@@ -18,7 +18,7 @@ class Navigation:
 
         self.steering_wheel_ang = [0,0,0,0]
         self.steering_wheel_state = [0,0,0,0]
-        self.driving_wheel_ang = [0,0,0,0]
+        # self.driving_wheel_ang = [0,0,0,0]
         self.driving_wheel_state = [0,0,0,0]
 
         self.info = ""
@@ -79,7 +79,7 @@ class Navigation:
                                                     'path' : [str(val) for val in self.path],
                                                     'steering_wheel_ang': [str(val) for val in self.steering_wheel_ang],
                                                     'steering_wheel_state': [str(val) for val in self.steering_wheel_state],
-                                                    'driving_wheel_ang': [str(val) for val in self.driving_wheel_ang],
+                                                    'driving_wheel_ang': [],
                                                     'driving_wheel_state': [str(val) for val in self.driving_wheel_state],
                                                     'info' : self.info,
                                                     'displacement_mode' : self.displacement_mode,
