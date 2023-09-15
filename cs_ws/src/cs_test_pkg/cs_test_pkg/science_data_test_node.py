@@ -17,7 +17,7 @@ class ElecTestNode(Node):
         self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
 
         self.publisher_mass             = self.create_publisher(MassArray, 'EL/mass', 10)
-        self.publisher_spectrometer     = self.create_publisher(SpectroResponse, 'EL/spectro_response', 10)
+        self.publisher_spectrometer     = self.create_publisher(SpectroResponse, 'EL/spectro_response', 18)
         self.publisher_npk              = self.create_publisher(NPK, 'EL/npk', 10)
         # self.publisher_four_in_one      = self.create_publisher(Float32MultiArray, 'EL/four_in_one', 10)
         self.publisher_four_in_one      = self.create_publisher(FourInOne, 'EL/four_in_one', 10)
@@ -45,10 +45,10 @@ class ElecTestNode(Node):
         spectro = SpectroResponse()
         tagish_lake = [0.007349932773,0.006989646542,0.007349384025,0.00703783557,0.006375787783,0.006325031004,0.008950258024,0.01054136222,0.01184727656,0.01166846905]
         # spectro.data = [float(v) for v in numpy.random.rand(18)]
+        luvial = [6.53428571,6.69,56.62,5.46,11.49,62.1,4.26,4.59,34.26,2.65,11.15,0.86,2.41,0.84,5.90857143,14.85,9.13,2.6]
 
         # spectro.data = [0.0, 0.0, 0.0, 0.0, 0.0, 0.02876550713, 0.03264730867,0.0396051291,0.03471689202,0.01984709654,0.0124561039,0.01435534943,0.01593096503,0.01561790272,0.02023586665,0.02924617856,0.03574094764,0.03884951685]
-        # hematite = [4.47125, 1.91, 3.78, 6.36, 4.6, 2.79, 0.54, 0.51, 46.81, 0.44, 1.02, 0.43, -0.81, 0, 2.065, 1.11, 0.0, 0.0]
-        hematite = [46.81, 0.44, 1.02, 0.43, -0.81, 0, 2.065, 1.11, 0.0, 0.0]
+        hematite = [4.47125, 1.91, 3.78, 6.36, 4.6, 2.79, 0.54, 0.51, 46.81, 0.44, 1.02, 0.43, -0.81, 0, 2.065, 1.11, 0.0, 0.0]
 
         spectro.data = [float(v) for v in hematite]
         self.publisher_spectrometer.publish(spectro)

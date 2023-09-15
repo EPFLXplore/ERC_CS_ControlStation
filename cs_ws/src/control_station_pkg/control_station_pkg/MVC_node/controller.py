@@ -146,7 +146,10 @@ class Controller():
 
     # TODO Chaimaa c'est pour toi, fais la moyenne wallah
     def science_spectrometer(self, data):
-        self.science.spectrometer_list.append(data.data)
+
+        # Transform the received spectrometer by interpolating it to match the database wavelength
+        new_data = self.science.transform_spectrometer(data.data)
+        self.science.spectrometer_list.append(new_data)
         self.science.mean_spectrometer()
         self.science.store_spectrum()
         self.science.FindClosestCandidate()

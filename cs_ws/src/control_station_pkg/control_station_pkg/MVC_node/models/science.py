@@ -25,9 +25,10 @@ class Science:
         self.spectrometer_mean = []
         self.npk_sensor = [0,0,0]
         self.four_in_one = [0,0,0,0]
-        self.spectrometer_closest_candidate = [0 for i in range(18)]
-
-        # self.wavelengths = [410,435,460,485,510,535,560,585,610,645,680,705,730,760,810,860,900,940]
+        self.spectrometer_closest_candidate = [0 for i in range(15)]
+        self.wavelengths_input = [410,435,460,485,510,535,560,585,610,645,680,705,730,760,810,860,900,940]
+        self.wavelengths_output = [460,480,500,520,540,660,680,700,720,740,860,880,900,920,940]
+        self.wavelength_interpolate_index = [2,3,4,5,6,8,9,11,13]
 
         self.nb_measures = 0
 
@@ -78,7 +79,7 @@ class Science:
         for filename in os.listdir(database_dir):
             if filename.endswith('.csv'):
                 filepath = os.path.join(database_dir, filename)
-                database_spectrum = pd.read_csv(filepath)['reflectance']
+                database_spectrum = pd.read_csv(filepath)['Calibrated reflectance']
                 
                 # Calculate RMSD between measured spectrum and this database spectrum
                 rmsd = self.calculate_rmsd(measured_spectrum, database_spectrum)
@@ -104,11 +105,30 @@ class Science:
         Args: 
             measured_file (str): Path to the measured spectrum file.
         """
-        database_directory = str(Path(__file__).parent.absolute()) + '/data/database3/'
+        database_directory = str(Path(__file__).parent.absolute()) + '/data/output-data/'
         identified_minerals = self.identify_mineral(measured_file, database_directory)
 
         # Return the list of candidates sorted by their percentage similarity
         return identified_minerals
+
+    def transform_spectrometer(self, data):
+        """Transform the spectrometer data to the wavelength of the science bay"""
+
+        new_data = [0 for i in range(15)]
+        new_data[0] = data[2]
+        new_data[1] = data[3]
+        new_data[6] = data[10]
+        new_data[7] = data[11]
+        new_data[9] = data[15]
+        new_data[11] = data[16]
+        new_data[13] = data[17]
+
+        # We now populate the rest of the array with interpolated values: [2,3,4,5,6,8,9,11,13]
+        for i in range(2,15):
+            if i in self.wavelength_interpolate_index:
+                new_data[i] = np.interp(self.wavelengths_output[i], self.wavelengths_input, data)
+
+        return new_data
 
     def reset_spectrometer(self):
         """Reset the spectrometer list"""
@@ -134,16 +154,14 @@ class Science:
         self.candidates = [str(round(similarity[1], 2)) + '%, ' + similarity[0] for similarity in similarities]
         
         # We now load the spectrum of the closest candidate from the database
-        path = str(Path(__file__).parent.absolute()) + '/data/database3/'
+        path = str(Path(__file__).parent.absolute()) + '/data/output-data/'
 
-        db_spectro = pd.read_csv(path + similarities[0][0] + '.csv') \
-                .groupby('wavenumber_cm1').mean() \
-                .sort_values(by='wavenumber_cm1')['reflectance'].tolist()
+        db_spectro = pd.read_csv(path + similarities[0][0] + '.csv')['Calibrated reflectance'].tolist()
         # We need to read db_spectro as a list and add leading zeros to match the length of the measured spectrum
-        leading_zeros = [0] * (len(self.spectrometer_mean) - len(db_spectro))
-        final = leading_zeros + db_spectro
-        logging.info("db_spectro: " + str(final))
-        self.spectrometer_closest_candidate = final
+        logging.info("db_spectro: " + str(db_spectro))
+        self.spectrometer_closest_candidate = db_spectro
+
+        print(similarities)
 
         pass
     
