@@ -186,7 +186,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 				/>
 				<div className={styles.Info}>
 					<PageHeader
-						title="Autonomous Navigation"
+						title="Auto Navigation"
 						settings
 						settingsCallback={() => setNavlSettings(true)}
 					/>

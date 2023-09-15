@@ -214,6 +214,10 @@ class Controller():
         self.handling_device.task_outcome = outcome.data
         #self.handling_device.UpdateHandlingDeviceSocket()
 
+    def hd_set_ready(self, ready):
+        self.handling_device.setReady(ready.data)
+        self.handling_device.UpdateHandlingDeviceSocket()
+        
     # ========= NAVIGATION CALLBACKS =========
 
     # receives an Odometry message from NAVIGATION
@@ -261,7 +265,7 @@ class Controller():
         print(msg.state)
         #self.navigation.wheels_ang = []
         self.navigation.steering_wheel_ang = msg.data[0:4]
-        self.navigation.driving_wheel_ang = msg.data[4:8]
+        # self.navigation.driving_wheel_ang = msg.data[4:8]
         self.navigation.steering_wheel_state = msg.state[0:4]
         self.navigation.driving_wheel_state = msg.state[4:8]
     
@@ -542,10 +546,12 @@ class Controller():
         #      ws_time.send('%s' % message)
 
     def can0_node_states(self, data):
-        self.elec.setStates(data.node_state, 0)
+        self.elec.can0 = data.node_state
+        self.elec.UpdateElecDeviceSocket()
 
     def can1_node_states(self, data):
-        self.elec.setStates(data.node_state, 1)
+        self.elec.can1 = data.node_state
+        self.elec.UpdateElecDeviceSocket()
 
     def blinkLed(self, nextState):
         self.cs.ELEC_led_req.publish(LEDRequest(destination_id=0, state = 3))

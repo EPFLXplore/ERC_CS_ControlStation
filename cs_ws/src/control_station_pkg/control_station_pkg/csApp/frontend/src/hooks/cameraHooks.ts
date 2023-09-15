@@ -158,6 +158,12 @@ function useCameraSelector(startCamera: Array<Cameras>) {
 					!(cameras.includes(Cameras.CAM7) && cameras.length > 1) && select
 				);
 				break;
+			case "Camera Nav":
+				setCamera(
+					Cameras.CAM8,
+					!(cameras.includes(Cameras.CAM8) && cameras.length > 1) && select
+				);
+				break;
 			default:
 				setCamera(Cameras.NOCAM, select);
 		}

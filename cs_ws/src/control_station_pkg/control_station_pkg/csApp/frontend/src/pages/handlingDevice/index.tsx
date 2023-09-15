@@ -3,14 +3,11 @@ import Background from "../../components/Background";
 import JointPositions from "../../components/JointPositions";
 import { Mode } from "../../utils/mode.type";
 import styles from "./style.module.sass";
-import GamepadHint from "../../components/GamepadHint";
 import PageHeader from "../../components/PageHeader";
-import DistanceHint from "../../components/DistanceHint";
 import CameraView from "../../components/CameraView";
 import { Cameras } from "../../utils/cameras.type";
 import Timer from "../../components/Timer";
 import { Size } from "../../utils/size.type";
-import ModeSlider from "../../components/ModeSlider";
 import JointSpeed from "../../components/JointSpeed";
 import useHandlingDevice from "../../hooks/handlingDeviceHooks";
 import JointCurrents from "../../components/JointCurrents";
@@ -24,10 +21,11 @@ import { HD_Mode } from "../../utils/HDMode";
 import Button from "../../components/Button";
 import { Themes } from "../../utils/themes";
 import VoltmeterValue from "../../components/VoltmeterValue";
+import ButtonSelector from "../../components/ButtonSelector";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 	const [images, cameras, selectCamera, flushCameras, rotateCams, setRotateCams] =
-		useCameraSelector([Cameras.CAM1]);
+		useCameraSelector([Cameras.CAM7]);
 	const [jointPositions, jointVelocities, jointCurrents, availableButtons,
 		taskSuccess,
 		voltmeter,
@@ -49,13 +47,14 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 				settings
 				optionTitle="Cameras"
 				options={[
-					"Camera 1",
+					//"Camera 1",
 					//"Camera 2",
 					"Camera 3",
 					"Camera 4",
 					// "Camera 5",
 					// "Camera 6",
 					"Camera Gripper",
+					"Camera Nav"
 				]}
 				optionsCallback={selectCamera}
 				currentOptions={cameras.map((camera) =>
@@ -69,224 +68,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 				<VoltmeterValue value={voltmeter} />
 			</div>
 			<div className={styles.globalContainer}>
-				<div className={styles.container}>
-					<button
-						className={availableButtons[0] == 1 ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(100)}
-					>
-						Switch A 1
-					</button>
-					<button
-						className={availableButtons[1] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(101)}
-					>
-						Switch A 2
-					</button>
-					<button
-						className={availableButtons[2] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(102)}
-					>
-						Switch A 3
-					</button>
-					<button
-						className={availableButtons[3] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(103)}
-					>
-						Switch A 4
-					</button>
-					<button
-						className={availableButtons[4] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(104)}
-					>
-						Switch A 5
-					</button>
-					<button
-						className={availableButtons[5] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(105)}
-					>
-						Switch A 6
-					</button>
-					<button
-						className={availableButtons[6] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(106)}
-					>
-						Switch A 7
-					</button>
-					<button
-						className={availableButtons[7] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(107)}
-					>
-						Switch A 8
-					</button>
-					<button
-						className={availableButtons[8] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(108)}
-					>
-						Switch A 9
-					</button>
-					<button
-						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(109)}
-					>
-						Switch A 10
-					</button>
-					<button
-						className={availableButtons[10] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(10)}
-					>
-						Button Switch ON
-					</button>
-					<button
-						className={availableButtons[11] == 1 ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(11)}
-					>
-						Metallic Plate
-					</button>
-					<button
-						className={availableButtons[12] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(12)}
-					>
-						Magnet
-					</button>
-					<button
-						className={availableButtons[10] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(13)}
-					>
-						Button Switch OFF
-					</button>
-					<button
-						className={availableButtons[13] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(20)}
-					>
-						Voltmeter Detach
-					</button>
-					<button
-						className={availableButtons[13] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(21)}
-					>
-						Voltmeter Retract
-					</button>
-					<button
-						className={availableButtons[14] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(30)}
-					>
-						Ethernet Socket
-					</button>
-					<button
-						className={availableButtons[15] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(31)}
-					>
-						Ethernet Cable
-					</button>
-					<button
-						className={styles.button}
-						onClick={() => buttonSelect(40)}
-					>
-						Pick Rock
-					</button>
-					<button
-						className={styles.button}
-						onClick={() => buttonSelect(41)}
-					>
-						Rassor Sample
-					</button>
-					<button
-						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(50)}
-					>
-						Position 1
-					</button>
-					<button
-						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(51)}
-					>
-						Position 2
-					</button>
-					<button
-						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(52)}
-					>
-						Position 3
-					</button>
-					<button
-						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(53)}
-					>
-						Position 4
-					</button>
-					<button
-						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(54)}
-					>
-						Position 5
-					</button>
-					<button
-						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(55)}
-					>
-						Position 6
-					</button>
-					<button
-						className={availableButtons[0] == 1 ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(110)}
-					>
-						Switch A 1 OFF
-					</button>
-					<button
-						className={availableButtons[1] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(111)}
-					>
-						Switch A 2 OFF
-					</button>
-					<button
-						className={availableButtons[2] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(112)}
-					>
-						Switch A 3 OFF
-					</button>
-					<button
-						className={availableButtons[3] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(113)}
-					>
-						Switch A 4 OFF
-					</button>
-					<button
-						className={availableButtons[4] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(114)}
-					>
-						Switch A 5 OFF
-					</button>
-					<button
-						className={availableButtons[5] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(105)}
-					>
-						Switch A 6 OFF
-					</button>
-					<button
-						className={availableButtons[6] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(116)}
-					>
-						Switch A 7 OFF
-					</button>
-					<button
-						className={availableButtons[7] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(117)}
-					>
-						Switch A 8 OFF
-					</button>
-					<button
-						className={availableButtons[8] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(118)}
-					>
-						Switch A 9 OFF
-					</button>
-					<button
-						className={availableButtons[9] == 1  ? styles.button : styles.disabledButton}
-						onClick={() => buttonSelect(119)}
-					>
-						Switch A 10 OFF
-					</button>
-				</div>
+				<ButtonSelector availableButtons={availableButtons} buttonSelect={buttonSelect}/>
 				<Button size={Size.SMALL} theme={Themes.BROWN} text="Cancel" onClick={() => buttonSelect(-1)} />
 				<TaskControl task={Task.HANDLING_DEVICE} />
 			</div>

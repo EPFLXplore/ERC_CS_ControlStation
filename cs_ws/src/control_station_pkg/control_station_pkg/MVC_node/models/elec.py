@@ -6,18 +6,12 @@ class Electronic:
 
         self.channel_layer = get_channel_layer()
 
-        self.can0 = []
-        self.can1  = []
-    
-    def setStates(self, arr, can):
-        if(can == 0):
-            self.can0 = arr
-        elif(can == 1):
-            self.can1 = arr
-        else:
-            raise Exception("can must be 0 or 1")
+        self.can0 = [False]*16
+        self.can1 = [False]*16
         
-        async_to_sync(self.channel_layer.group_send)("session", {"type": "broadcast",
-                                                                'can0': self.can0,
-                                                                'can1': self.can1,
+    def UpdateElecDeviceSocket(self):
+
+        async_to_sync(self.channel_layer.group_send)("elec", {"type": "elec_message",
+                                                                'can0': str(x for x in self.can0),
+                                                                'can1': str(x for x in self.can1)
                                                                 })

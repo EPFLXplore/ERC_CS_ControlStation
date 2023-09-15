@@ -52,6 +52,7 @@ export default () => {
 		taskSuccess,
 		voltmeter,
 		openVoltmeter,
+		ready
 	] = useHandlingDevice();
 	const [currentPosition, currentOrientation, wheelsPosition, linearVelocity, angularVelocity] =
 		useNavigation();
@@ -137,7 +138,7 @@ export default () => {
 			{mode === Task.NAVIGATION && (
 				<div className={styles.CamSpace}>
 					<div className={styles.StatsContainer}>
-						<div className={styles.InfoText}>
+						<div className={`${ready ? styles.Ready : ""} ${styles.InfoText}`}>
 							<div>
 								<h3>Current position</h3>
 								<div className={styles.InfoArrangement}>

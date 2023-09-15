@@ -55,6 +55,7 @@ class HDConsumer(WebsocketConsumer):
                 'available_buttons': data_json['available_buttons'],
                 'task_outcome': data_json['task_outcome'],
                 'voltage': data_json['voltage'],
+                'ready': data_json['ready'],
             }
         )
 
@@ -72,4 +73,5 @@ class HDConsumer(WebsocketConsumer):
                 'available_buttons': event['available_buttons'],
                 'task_outcome': event['task_outcome'],
                 'voltage': event['voltage'],
+                'ready': event['ready'],
             }))
