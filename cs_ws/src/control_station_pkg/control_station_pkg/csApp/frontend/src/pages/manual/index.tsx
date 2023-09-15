@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BackButton from "../../components/BackButton";
 import Background from "../../components/Background";
 import JointPositions from "../../components/JointPositions";
@@ -24,6 +24,11 @@ import ToggleFeature from "../../components/ToggleFeature";
 import VoltmeterSlider from "../../components/VoltmeterSlider";
 import VoltmeterValue from "../../components/VoltmeterValue";
 import SettingsModal from "../../components/SettingsModal";
+import navModeSelect from "../../utils/navModeSelect";
+import { HD_Mode } from "../../utils/HDMode";
+import { NavMode } from "../../utils/navMode";
+import { HD_Frame_Mode } from "../../utils/HDModeFrame";
+import hdFrameModeSelect from "../../utils/hdFrameModeSelect";
 
 function useQuery() {
 	const { search } = useLocation();
@@ -34,10 +39,7 @@ function useQuery() {
 export default () => {
 	const [images, cameras, selectCamera, flushCameras, rotateCams, setRotateCams] =
 		useCameraSelector([
-			Cameras.CAM1,
-			// Cameras.CAM2,
-			// Cameras.CAM3,
-			// Cameras.CAM4,
+			Cameras.CAM4,
 		]);
 	const [
 		jointPositions,
@@ -47,6 +49,7 @@ export default () => {
 		taskSuccess,
 		voltmeter,
 		openVoltmeter,
+		ready
 	] = useHandlingDevice();
 	const [currentPosition, currentOrientation, wheelsPosition, linearVelocity, angularVelocity] =
 		useNavigation();
@@ -56,7 +59,14 @@ export default () => {
 		defaultMode === "nav" ? Task.NAVIGATION : Task.HANDLING_DEVICE
 	);
 
+	const [hdMode, setHdMode] = useState(HD_Mode.FK);
+
 	const [manualSettings, setManualSettings] = useState(false);
+
+	useEffect(() => {
+		navModeSelect(NavMode.Manual_Normal);
+		hdModeSelect(HD_Mode.FK);
+	}, []);
 
 	return (
 		<div className="page">
@@ -71,16 +81,17 @@ export default () => {
 				optionTitle="Cameras"
 				options={[
 					"Camera 1",
-					// "Camera 2",
+					"Camera 2",
 					"Camera 3",
 					"Camera 4",
-					// "Camera 5",
-					// "Camera 6",
+					"Camera 5",
+					"Camera 6",
 					"Camera Gripper",
+					"Camera Nav"
 				]}
 				optionsCallback={selectCamera}
 				currentOptions={cameras.map((camera) =>
-					camera < 6 ? "Camera " + (camera + 1) : "Camera Gripper"
+					camera < 6 ? "Camera " + (camera + 1) : camera < 7 ? "Camera Gripper" : "Camera Nav"
 				)}
 			/>
 			<div className={styles.Subheader}>
@@ -99,10 +110,16 @@ export default () => {
 
 			{mode === Task.HANDLING_DEVICE && (
 				<div className={styles.globalContainer}>
+					{hdMode === HD_Mode.IK && (<ModeSlider
+						name="Frame Mode"
+						mode={["Gripper", "Rover"]}
+						functionTrigger={(mode) => hdFrameModeSelect(mode)}
+					/>)}
 					<ModeSlider
 						name="Arm Mode"
 						mode={["IK", "FK"]}
-						functionTrigger={() => hdModeSelect(0)}
+						startMode={HD_Mode.FK}
+						functionTrigger={(mode) => hdModeSelect(mode, setHdMode)}
 					/>
 					{/* <VoltmeterSlider initValue={0} onValueChange={openVoltmeter} /> */}
 					<ToggleFeature
@@ -112,12 +129,6 @@ export default () => {
 							//"bool -> deployment"
 						}}
 					/>
-					<ToggleFeature
-						title="LED Drone"
-						onChange={(m) => {
-							console.log(m);
-						}}
-					/>
 					<TaskControl task={Task.MANUAL_CONTROL} />
 				</div>
 			)}
@@ -125,7 +136,7 @@ export default () => {
 			{mode === Task.NAVIGATION && (
 				<div className={styles.CamSpace}>
 					<div className={styles.StatsContainer}>
-						<div className={styles.InfoText}>
+						<div className={`${ready ? styles.Ready : ""} ${styles.InfoText}`}>
 							<div>
 								<h3>Current position</h3>
 								<div className={styles.InfoArrangement}>
@@ -176,8 +187,8 @@ export default () => {
 										<div style={{ marginRight: "30px" }}>
 											<p>{wheelsPosition[0]}°</p>
 											<p>{wheelsPosition[1]}°</p>
-											<p>{wheelsPosition[2]}°</p>
 											<p>{wheelsPosition[3]}°</p>
+											<p>{wheelsPosition[2]}°</p>
 										</div>
 									</div>
 								</div>
@@ -188,7 +199,7 @@ export default () => {
 							<ModeSlider
 								name="Nav Mode"
 								mode={["NORMAL", "BASIC"]}
-								functionTrigger={() => hdModeSelect(0)}
+								functionTrigger={(mode) => navModeSelect(mode as unknown as NavMode)}
 							/>
 							<TaskControl task={Task.MANUAL_CONTROL} />
 						</div>
@@ -198,7 +209,7 @@ export default () => {
 
 			<Timer end={Date.now() + 10000} size={Size.SMALL} />
 			<GamepadHint
-				mode={mode === Task.NAVIGATION ? "NAV" : "HD"}
+				mode={mode === Task.NAVIGATION ? "NAV" : hdMode === HD_Mode.IK ? "IK" : "FK"}
 				selectorCallback={() =>
 					setMode((oldMode) =>
 						oldMode === Task.NAVIGATION ? Task.HANDLING_DEVICE : Task.NAVIGATION

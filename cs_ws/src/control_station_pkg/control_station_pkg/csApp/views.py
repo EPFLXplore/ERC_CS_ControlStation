@@ -21,13 +21,15 @@ from django.http            import HttpResponse, JsonResponse
 from django.shortcuts       import render
 from django.shortcuts       import redirect
 
+import math
+
 from MVC_node.controller import *
 from MVC_node.models.rover  import Task
 from manage          import setup
 
 from MVC_node.models import gamepad
 
-from std_msgs.msg import Int8MultiArray, Int8, Bool
+from std_msgs.msg import Int8MultiArray, Int8, Bool, String
 from avionics_interfaces.msg import LaserRequest, ServoRequest, SpectroRequest
 
 # ===============================================================
@@ -199,14 +201,20 @@ def nav_goal(request):
 
     x = float(request.POST.get("x"))
     y = float(request.POST.get("y"))
-    yaw = float(request.POST.get("yaw"))
+    # convert from degrees to radians
+    yaw = float(request.POST.get("yaw")) * math.pi / 180 
 
     cs.controller.pub_nav_goal(x, y, yaw)
     return JsonResponse({})
 
 def nav_cancel(request):
-
+    print("canceling nav goal")
     cs.controller.pub_cancel_nav_goal()
+    return JsonResponse({})
+
+def nav_abort(request):
+
+    cs.controller.pub_abort_nav_goal()
     return JsonResponse({})
 
 def nav_starting_point(request):
@@ -219,6 +227,16 @@ def nav_starting_point(request):
 
     return JsonResponse({})
 
+def nav_mode(request):
+    mode = str(request.POST.get("mode"))
+    print("nav mode : ", mode)
+    cs.controller.pub_nav_mode(String(data=mode))
+    return JsonResponse({})
+
+def nav_kinematic(request):
+    kinematic = request.POST.get("kinematic")
+    cs.controller.pub_nav_kinematic(String(data = kinematic))
+    return JsonResponse({})
 
 # -----------------------------------
 # Handling device views
@@ -245,18 +263,18 @@ def resume_hd(request):
     cs.controller.pub_Task(3,4)
     return JsonResponse({})
 
-def retry_hd(request):
-    cs.node.get_logger().info("Maintenance: Retry")
-    cs.controller.pub_Task(3,5)
-    return JsonResponse({})
+def cancel_hd(request):
+    cs.node.get_logger().info("Maintenance: Cancel Goal")
+    cs.controller.pub_Task(3,8)
 
 def set_id(request):
     cs.rover.HD.set_joint_positions([10,0,0,0,0,0])
     #cs.controller.sendJson(Task.MAINTENANCE)
-    id = int(request.POST.get("id")) + 20
+    id = int(request.POST.get("id"))
     cs.rover.HD.setElemId(id)
     cs.HD_id.publish(Int8(data=id))
     cs.node.get_logger().info("Maintenance: Set HD id to " + str(id))
+    print("id:", cs.rover.HD.getElemId())
     #print(cs.rover.HD.getElemId())
     #cs.controller.pub_hd_elemId(id)
     return JsonResponse({})
@@ -268,23 +286,26 @@ def set_hd_mode(request):
     cs.node.get_logger().info("Maintenance: Set HD mode to " +  str(mode))
     return JsonResponse({})
 
-
-def toggle_hd_laser(request):
-    toggle = bool(request.POST.get("toggle"))
-    cs.HD_toggle_laser_pub.publish(LaserRequest(enable=toggle))
-    return JsonResponse({})
+# def toggle_hd_laser(request):
+#     toggle = bool(request.POST.get("toggle"))
+#     cs.HD_toggle_laser_pub.publish(LaserRequest(enable=toggle))
+#     return JsonResponse({})
 
 def deploy_hd_voltmeter(request):
     print("deploying voltmeter")
     servoRequest = ServoRequest()
     servoRequest.channel = 1
     if (request.POST.get("deployment") == "open"):
-        servoRequest.angle = 110
+        servoRequest.angle = float(20)
     else :
-        servoRequest.angle = 0
+        servoRequest.angle = float(180)
     cs.HD_deploy_voltmeter_pub.publish(servoRequest)
-
     return JsonResponse({})
+
+def set_hd_inverse_frame(request):
+    cs.HD_inverse_frame.publish(String(data=request.POST.get("inverse_frame")))
+    return JsonResponse({})
+
 
 # -----------------------------------
 # Science views
@@ -296,7 +317,7 @@ def launch_science(request):
     return JsonResponse({})
 
 def abort_science(request):
-    cs.controller.pub_Task(4,2)     #0 -> 2 ?
+    cs.controller.pub_Task(4,2)
     cs.rover.setState(Task.IDLE)
     return JsonResponse({})
 
@@ -345,12 +366,16 @@ def sc_reset_spectro(request):
 
 # def get_parameters(request):
 #     return sc_send_cmd(4)
+def container_tare(request):
+    print("container tare")
+    cs.controller.pub_container_tare()
+    return JsonResponse({})
 
-# def get_sc_info(request):
-#     return sc_send_cmd(5)
+def drill_tare(request):
+    print("drill tare")
+    cs.controller.pub_drill_tare()
+    return JsonResponse({})
 
-# def get_sc_state(request):
-#     return sc_send_cmd(6)
 
 
 def sc_send_cmd(val):
@@ -376,6 +401,7 @@ def wait_for_spectro():
 
 def sc_reset_spectro(request):
     #Yasmin call ta function
+    
     return JsonResponse({})
 
 

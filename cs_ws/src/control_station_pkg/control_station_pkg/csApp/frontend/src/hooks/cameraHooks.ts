@@ -92,8 +92,9 @@ function useCameraSelector(startCamera: Array<Cameras>) {
 			);
 
 			cameraSocket.onmessage = (e) => {
+				console.log("Message camera " + cameras[i]);
 				const data = JSON.parse(e.data);
-				console.log(data.data);
+				console.log("received image from camera " + cameras[i]);
 				setImage(data.data, i);
 			};
 
@@ -155,6 +156,12 @@ function useCameraSelector(startCamera: Array<Cameras>) {
 				setCamera(
 					Cameras.CAM7,
 					!(cameras.includes(Cameras.CAM7) && cameras.length > 1) && select
+				);
+				break;
+			case "Camera Nav":
+				setCamera(
+					Cameras.CAM8,
+					!(cameras.includes(Cameras.CAM8) && cameras.length > 1) && select
 				);
 				break;
 			default:

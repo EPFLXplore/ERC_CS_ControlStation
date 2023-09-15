@@ -26,18 +26,23 @@ urlpatterns = [
     path('navigation/resume',       resume_nav,     name='resume_nav'),
     path('navigation/nav_goal',     nav_goal,       name="nav_goal"),
     path('navigation/nav_cancel',   nav_cancel,     name="nav_cancel"),
+    path('navigation/nav_abort',    nav_abort,     name="nav_abort"),
     path('navigation/nav_starting_point',    nav_starting_point,      name="nav_starting_point"),
+    path('navigation/nav_mode',              nav_mode,                name="nav_mode"),
+    path('navigation/nav_kinematic',         nav_kinematic,           name="nav_kinematic"),
 
     #Handlingdevice
-    path('handlingdevice/launch',   launch_hd,      name='launch_hd'),
-    path('handlingdevice/wait',     wait_hd,        name='wait_hd'),
-    path('handlingdevice/abort',    abort_hd,       name='abort_hd'),
-    path('handlingdevice/resume',   resume_hd,      name='resume_hd'),
-    path('handlingdevice/retry',    retry_hd,       name='retry_hd'),
-    path('handlingdevice/set_id',   set_id,         name='set_id'),
+    path('handlingdevice/launch',    launch_hd,      name='launch_hd'),
+    path('handlingdevice/wait',      wait_hd,        name='wait_hd'),
+    path('handlingdevice/abort',     abort_hd,       name='abort_hd'),
+    path('handlingdevice/resume',    resume_hd,      name='resume_hd'),
+    path('handlingdevice/cancel_hd', cancel_hd,     name='cancel_goal'),
+    # path('handlingdevice/retry',    retry_hd,       name='retry_hd'),
+    path('handlingdevice/set_id',    set_id,         name='set_id'),
     path('handlingdevice/set_hd_mode',   set_hd_mode,         name='set_hd_mode'),
     path('handlingdevice/deploy_hd_voltmeter',   deploy_hd_voltmeter,         name='deploy_hd_voltmeter'),
-    path('handlingdevice/toggle_hd_laser',   toggle_hd_laser,         name='toggle_hd_laser'),
+    #path('handlingdevice/toggle_hd_laser',   toggle_hd_laser,         name='toggle_hd_laser'),
+    path('handlingdevice/set_hd_inverse_frame',   set_hd_inverse_frame,         name='set_hd_inverse_frame'),
     
     #Science
     path('science/launch',         launch_science, name='launch_science'),
@@ -45,7 +50,9 @@ urlpatterns = [
     path('science/abort',           abort_science, name='abort_science'),
     path('science/resume',          resume_science,   name='resume_science'),
     path('science/mesure_spectro', sc_mesure_spectro, name='sc_mesure_spectro'),
-    path('science/reset_spectro',   sc_reset_spectro, name='sc_reset_spectro'),
+    path('science/reset_spectro',  sc_reset_spectro, name='sc_reset_spectro'),
+    path('science/container_tare', container_tare, name='container_tare'),
+    path('science/drill_tare',     drill_tare, name='drill_tare'),
 
     #Cameras
     path('cameras/enable_cameras', enable_cameras, name='enable_cameras'),

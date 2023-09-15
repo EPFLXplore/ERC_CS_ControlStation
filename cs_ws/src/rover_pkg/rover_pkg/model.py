@@ -241,6 +241,11 @@ class HandlingDevice:
             #self.rover.HD_SemiAuto_Id_pub.publish(id) TODO: SEE WHY THIS IS USEFUL
 
     
+    def cancel_goal(self, val):
+        self.rover.node.get_logger().info("HD: sending cancel goal")
+        self.rover.Maintenance_pub.publish(Int8(data = 5))
+
+    
     def handle_hd_gamepad(self, axes):
         self.rover.HD_Gamepad_pub.publish(axes)
 

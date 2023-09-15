@@ -1,0 +1,81 @@
+@import '../../styles/variables.sass'
+    
+.container 
+    display: flex
+    flex-direction: column
+    padding: 1vh 1vw
+    background-color: rgba($primaryDark2Color, 0.8)
+    border-radius: 2vh
+    align-items: flex-startcenter
+    justify-content: space-between
+    margin: 10px
+    overflow: auto
+    max-height: 30vh
+
+.container::-webkit-scrollbar-track 
+    background-color: rgba(0, 0, 0, 0)
+
+.container::-webkit-scrollbar 
+    width: 10px
+    background-color: rgba(0, 0, 0, 0)
+
+.container::-webkit-scrollbar-thumb 
+    background-color: $secondaryColor
+    border-radius: 20px
+
+.container::-webkit-scrollbar-thumb:hover 
+    background-color: $secondaryColor
+    width: 5px
+    height: 5px
+
+.button
+    background-color: rgba($primaryDark2Color, 0.8)
+    color: $secondaryColor
+    border: 2px solid $secondaryColor
+    border-radius: 12px
+    padding: 5px 10px
+    margin: 5px 0
+    cursor: pointer
+    font-size: 1.1rem         //adjust font size as needed
+    text-align: center        // center the text within the button
+    white-space: nowrap       // prevent line breaks within the button
+    text-overflow: ellipsis
+    font-weight: bold
+
+    &:hover
+        scale: 1.1
+
+    &:focus
+        scale: 1.1
+        background-color: $secondaryColor
+        color: $textLightColor
+
+
+.disabledButton
+    background-color: rgba($primaryDark2Color, 0.8)
+    color: rgba($secondaryColor, 0.5)
+    border: 2px solid rgba($secondaryColor, 0.5)
+    border-radius: 12px
+    padding: 5px 10px
+    margin: 5px 0
+    cursor: pointer
+    font-size: 1.1rem         //adjust font size as needed
+    text-align: center        // center the text within the button
+    white-space: nowrap       // prevent line breaks within the button
+    text-overflow: ellipsis
+    font-weight: bold
+
+.Menu
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+
+    button
+        width: 50px
+        height: 50px
+        background-color: transparent
+        border: none
+        color: $secondaryColor
+        font-size: 24px
+        cursor: pointer
+        transition: opacity 0.2s

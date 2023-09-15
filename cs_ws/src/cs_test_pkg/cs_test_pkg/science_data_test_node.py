@@ -6,7 +6,7 @@ from rclpy.node import Node
 from std_msgs.msg         import Int8MultiArray, Int8, Int32, Int32MultiArray, Bool, String, Int16MultiArray, Int16, Float32MultiArray
 from diagnostic_msgs.msg  import DiagnosticStatus
 
-from avionics_interfaces.msg import FourInOne, Voltage, NPK, MassArray, SpectroResponse
+from avionics_interfaces.msg import FourInOne, Voltage, NPK, MassArray, SpectroResponse, MassCalibOffset
 
 class ElecTestNode(Node):
 
@@ -16,11 +16,15 @@ class ElecTestNode(Node):
         # Log publisher
         self.publisher_log = self.create_publisher(DiagnosticStatus, 'ROVER/CS_log', 10)
 
-        self.publisher_mass             = self.create_publisher(MassArray, 'EL/mass', 10)
-        self.publisher_spectrometer     = self.create_publisher(SpectroResponse, 'EL/spectro_response', 18)
+        self.publisher_container_mass             = self.create_publisher(MassArray, 'EL/container/mass', 10)
+        self.publisher_drill_mass                 = self.create_publisher(MassArray, 'EL/drill/mass', 10)
+        self.publisher_spectrometer     = self.create_publisher(SpectroResponse, 'EL/spectro_response', 10)
         self.publisher_npk              = self.create_publisher(NPK, 'EL/npk', 10)
         # self.publisher_four_in_one      = self.create_publisher(Float32MultiArray, 'EL/four_in_one', 10)
         self.publisher_four_in_one      = self.create_publisher(FourInOne, 'EL/four_in_one', 10)
+
+        self.subscription_mass_calib_container =        self.create_subscription(MassCalibOffset,'EL/container/mass_calib_offset', self.mass_calib_container,1)
+        self.subscription_mass_calib_drill     =        self.create_subscription(MassCalibOffset,'EL/drill/mass_calib_offset', self.mass_calib_drill,1)
 
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
@@ -39,8 +43,9 @@ class ElecTestNode(Node):
         msg_float_32_multi = Float32MultiArray()
 
         mass = MassArray()
-        mass.mass = [float(self.i) + 0.1, float(self.i) + 0.2, float(self.i) + 0.3, float(self.i) + 0.8]
-        self.publisher_mass.publish(mass)
+        mass.mass = [0.,float(self.i),0.,0.]
+        self.publisher_container_mass.publish(mass)
+        self.publisher_drill_mass.publish(mass)
 
         spectro = SpectroResponse()
         tagish_lake = [0.007349932773,0.006989646542,0.007349384025,0.00703783557,0.006375787783,0.006325031004,0.008950258024,0.01054136222,0.01184727656,0.01166846905]
@@ -70,7 +75,7 @@ class ElecTestNode(Node):
 
         v = Voltage()
         v.voltage = random.uniform(0, 10)
-        # self.publisher_voltage.publish(v)
+        self.publisher_voltage.publish(v)
 
         # self.publisher_potentiometers.publish(msg_float_32_multi)
         # self.publisher_LED_confirm.publish(msg_float_32_multi)
@@ -79,7 +84,15 @@ class ElecTestNode(Node):
         
         self.i += 1
 
+    def mass_calib_container(self, msg):
+        print("mass_calib_container: " + str(msg))
+        return
+    
+    def mass_calib_drill(self, msg):
+        print("mass_calib_drill: " + str(msg))
+        return
 
+    
 def main(args=None):
     rclpy.init(args=args)
 
