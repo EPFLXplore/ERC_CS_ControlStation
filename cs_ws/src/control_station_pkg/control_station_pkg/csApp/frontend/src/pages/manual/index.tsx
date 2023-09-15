@@ -39,9 +39,9 @@ function useQuery() {
 export default () => {
 	const [images, cameras, selectCamera, flushCameras, rotateCams, setRotateCams] =
 		useCameraSelector([
-			Cameras.CAM1,
+			//Cameras.CAM1,
 			// Cameras.CAM2,
-			// Cameras.CAM3,
+			Cameras.CAM3,
 			// Cameras.CAM4,
 		]);
 	const [
@@ -83,17 +83,18 @@ export default () => {
 				}}
 				optionTitle="Cameras"
 				options={[
-					"Camera 1",
+					// "Camera 1",
 					// "Camera 2",
 					"Camera 3",
 					"Camera 4",
 					// "Camera 5",
 					// "Camera 6",
 					"Camera Gripper",
+					"Camera Nav"
 				]}
 				optionsCallback={selectCamera}
 				currentOptions={cameras.map((camera) =>
-					camera < 6 ? "Camera " + (camera + 1) : "Camera Gripper"
+					camera < 6 ? "Camera " + (camera + 1) : camera < 7 ? "Camera Gripper" : "Camera Nav"
 				)}
 			/>
 			<div className={styles.Subheader}>

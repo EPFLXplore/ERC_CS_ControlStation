@@ -153,7 +153,7 @@ class CS:
             Int8,             'HD/task_outcome',      self.controller.hd_task_outcome, 10)
         self.node.create_subscription(
             Voltage,          'EL/voltage',         self.controller.hd_voltage, 10)
-        self.node.create_subscription(String,        '/detected_panel',            self.controller.setReady, 10)
+        self.node.create_subscription(String,        '/detected_panel',            self.controller.hd_set_ready, 10)
 
         # -- NAV messages --
         self.node.create_subscription(Odometry,         '/lio_sam/odom',                self.controller.nav_odometry  , 10)
@@ -176,13 +176,7 @@ class CS:
             CompressedImage, '/camera_5', cameras_reciever.display_cam_5, 1)
 
 
-        udp = QoSProfile(
-            reliability=QoSReliabilityPolicy.RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT,
-            history=QoSHistoryPolicy.RMW_QOS_POLICY_HISTORY_KEEP_LAST,
-            depth=1
-        )
-
-        self.node.create_subscription(Image, 'HD/vision/video_frames', cameras_reciever.display_cam_gripper, qos_profile=udp)
+        self.node.create_subscription(Image, 'HD/vision/video_frames', cameras_reciever.display_cam_gripper, 10)#qos_profile=udp)
         
         self.node.create_subscription(Image, '/right/image_rect', cameras_reciever.display_cam_nav, 10)
 
@@ -265,6 +259,19 @@ class CS:
                 axes[2] = -axes[2]
             if (buttons[5] == 1):
                 axes[5] = -axes[5]
+
+            new_axes = axes.copy()
+            # First join dir is given by ax 3 (r3 gauche droite)
+            new_axes[0] = axes[3]
+            new_axes[1] = -axes[4] #J2 <=> ax 4 (r3 haut bas)
+            #J3 <=> R2 (ax 5) (negative if button 5 (R1 clicked))
+            new_axes[2] = axes[5]
+            #J4 <=> L2 (ax 2) (negative if button 4 (L1 clicked))
+            new_axes[3] = axes[2]
+            #J5 <=> L3 haut bas = ax 1 TODO: Check if 1 is up or down
+            new_axes[4] = -axes[1]
+            #J6 <=> L3 gauche droite = ax 0
+            new_axes[5] = axes[0]
 
             directions = Float32MultiArray()
             directions.data = axes[:6]
