@@ -264,7 +264,7 @@ def resume_hd(request):
 
 def cancel_hd(request):
     cs.node.get_logger().info("Maintenance: Cancel Goal")
-    cs.controller.pub_Task()
+    cs.controller.pub_Task(3,8)
 
 def set_id(request):
     cs.rover.HD.set_joint_positions([10,0,0,0,0,0])
@@ -273,6 +273,7 @@ def set_id(request):
     cs.rover.HD.setElemId(id)
     cs.HD_id.publish(Int8(data=id))
     cs.node.get_logger().info("Maintenance: Set HD id to " + str(id))
+    print("id:", cs.rover.HD.getElemId())
     #print(cs.rover.HD.getElemId())
     #cs.controller.pub_hd_elemId(id)
     return JsonResponse({})
@@ -284,19 +285,19 @@ def set_hd_mode(request):
     cs.node.get_logger().info("Maintenance: Set HD mode to " +  str(mode))
     return JsonResponse({})
 
-def toggle_hd_laser(request):
-    toggle = bool(request.POST.get("toggle"))
-    cs.HD_toggle_laser_pub.publish(LaserRequest(enable=toggle))
-    return JsonResponse({})
+# def toggle_hd_laser(request):
+#     toggle = bool(request.POST.get("toggle"))
+#     cs.HD_toggle_laser_pub.publish(LaserRequest(enable=toggle))
+#     return JsonResponse({})
 
 def deploy_hd_voltmeter(request):
     print("deploying voltmeter")
     servoRequest = ServoRequest()
     servoRequest.channel = 1
     if (request.POST.get("deployment") == "open"):
-        servoRequest.angle = 110
+        servoRequest.angle = float(20)
     else :
-        servoRequest.angle = 0
+        servoRequest.angle = float(180)
     cs.HD_deploy_voltmeter_pub.publish(servoRequest)
     return JsonResponse({})
 
@@ -362,6 +363,7 @@ def wait_for_spectro():
 
 def sc_reset_spectro(request):
     #Yasmin call ta function
+    
     return JsonResponse({})
 
 

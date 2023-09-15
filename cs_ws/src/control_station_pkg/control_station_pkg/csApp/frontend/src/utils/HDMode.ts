@@ -1,5 +1,5 @@
 export enum HD_Mode {
-    FK,
     IK,
+    FK,
     Auto
 }

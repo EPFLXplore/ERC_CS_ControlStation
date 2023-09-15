@@ -95,17 +95,18 @@ class CS:
 
         #TODO necessary?
         #self.HD_ManualVelocity_pub  = self.node.create_publisher('HD_ManualVelocity',  Float32,        1)
-        self.HD_InvManual_Coord_pub     = self.node.create_publisher(Int8MultiArray,    'CS/HD_InvManual_Coord',  1)
-        self.HD_homeGo_pub              = self.node.create_publisher(Bool,              'CS/HD_reset_arm_pos',    1)
-        self.HD_homeSet_pub             = self.node.create_publisher(Bool,              'CS/HD_set_zero_arm_pos', 1)
-        self.HD_toggle_laser_pub        = self.node.create_publisher(LaserRequest,              'EL/laser_req',   1)
+        #self.HD_InvManual_Coord_pub     = self.node.create_publisher(Int8MultiArray,    'CS/HD_InvManual_Coord',  1)
+        #self.HD_homeGo_pub              = self.node.create_publisher(Bool,              'CS/HD_reset_arm_pos',    1)
+        #self.HD_homeSet_pub             = self.node.create_publisher(Bool,              'CS/HD_set_zero_arm_pos', 1)
+        #self.HD_toggle_laser_pub        = self.node.create_publisher(LaserRequest,              'EL/laser_req',   1)
         self.HD_deploy_voltmeter_pub    = self.node.create_publisher(ServoRequest,              'EL/servo_req',   1)
-        self.HD_cancel_goal_pub         = self.node.create_publisher(Bool,              'CS/HD_cancel',           1)
+        self.HD_cancel_goal_pub         = self.node.create_publisher(Bool,                      'CS/HD_cancel',   1)
+
 
         # CS --> ROVER (NAV)
 
         self.Nav_Goal_pub               = self.node.create_publisher(PoseStamped,       'CS/NAV_goal',         1)
-        self.Nav_Cancel_pub             = self.node.create_publisher(String,              'CS/NAV_cancel',       1)
+        self.Nav_Cancel_pub             = self.node.create_publisher(String,            'CS/NAV_cancel',       1)
         self.Nav_Joystick_pub           = self.node.create_publisher(Twist,             '/cmd_vel',            1)
         self.Nav_Starting_Point_pub     = self.node.create_publisher(PoseStamped,       '/lio_sam/initial_pose', 1)
         self.Nav_Mode_pub               = self.node.create_publisher(String,            'ROVER/NAV_mode', 1)
@@ -113,53 +114,39 @@ class CS:
         #self.Nav_DebugWheels_pub    = self.node.create_publisher(Int16MultiArray,   '/debug/wheel_cmds',   1)
 
         # CS --> ROVER (SC)
-        self.SC_spectro_req          = self.node.create_publisher(SpectroRequest,    'El/spectro_req',    1)
+        self.SC_spectro_req          = self.node.create_publisher(SpectroRequest,    'EL/spectro_req',    1)
         
         # CS --> ROVER (ELEC)
         self.ELEC_container_calib_pub = self.node.create_publisher(MassCalibOffset,  'EL/container/mass_calib_offset', 1)
         self.ELEC_drill_calib_pub     = self.node.create_publisher(MassCalibOffset,  'EL/drill/mass_calib_offset',     1)
 
         # Cam
-        self.Cam_index_pub = self.node.create_publisher(
-            Int8MultiArray, 'CS/CAM_index', 1)
-        self.gripper_cam_pub = self.node.create_publisher(
-            Int8, 'ROVER/HD_toggle_cameras', 1)
+        self.Cam_index_pub      = self.node.create_publisher(Int8MultiArray,    'CS/CAM_index', 1)
+        self.gripper_cam_pub    = self.node.create_publisher(Int8,              'ROVER/HD_toggle_cameras', 1)
 
         # ---------------------------------------------------
         # ===== Subscribers =====
-        self.node.create_subscription(
-            String,           'ROVER/RoverConfirm',               self.controller.rover_confirmation, 10)
+        self.node.create_subscription(String,           'ROVER/RoverConfirm',               self.controller.rover_confirmation, 10)
         # self.node.create_subscription(Int8,             'ROVER/TaskProgress',              self.controller.task_progress      , 10)
-        self.node.create_subscription(
-            DiagnosticStatus, 'ROVER/CS_log',                     self.controller.log_clbk, 10)
-        self.node.create_subscription(
-            String,           'ROVER/State',                      self.controller.rover_state, 10)
-        self.node.create_subscription(
-            Int8,             'ROVER/subsystem_state',            self.controller.rover_subsystem_state, 10)
+        self.node.create_subscription(DiagnosticStatus, 'ROVER/CS_log',                     self.controller.log_clbk, 10)
+        self.node.create_subscription(String,           'ROVER/State',                      self.controller.rover_state, 10)
+        self.node.create_subscription(Int8,             'ROVER/subsystem_state',            self.controller.rover_subsystem_state, 10)
 
         # -- SC messages --
-        self.node.create_subscription(
-            Int8,               'SC/fsm_state_to_cs',      self.controller.science_state, 10)
-        self.node.create_subscription(
-            Float32MultiArray,  'SC/motors_pos',           self.controller.science_motors_pos, 10)
-        self.node.create_subscription(
-            Float32MultiArray,  'SC/motors_speed',         self.controller.science_motors_vels, 10)
-        self.node.create_subscription(
-            Float32MultiArray,  'SC/motors_currents',      self.controller.science_motors_currents, 10)
-        self.node.create_subscription(
-            Int8MultiArray,     'SC/limit_switches',       self.controller.science_limit_switches, 10)
-        self.node.create_subscription(
-            MassArray,         'EL/mass',           self.controller.science_mass, 10)
-        self.node.create_subscription(
-            SpectroResponse,   'EL/spectrometer',   self.controller.science_spectrometer, 10)
-        self.node.create_subscription(
-            NPK,               'EL/npk',            self.controller.science_npk, 10)
-        self.node.create_subscription(
-            FourInOne,         'EL/four_in_one',    self.controller.science_4in1, 10)
+        self.node.create_subscription(Int8,               'SC/fsm_state_to_cs',      self.controller.science_state, 10)
+        self.node.create_subscription(Float32MultiArray,  'SC/motors_pos',           self.controller.science_motors_pos, 10)
+        self.node.create_subscription(Float32MultiArray,  'SC/motors_speed',         self.controller.science_motors_vels, 10)
+        self.node.create_subscription(Float32MultiArray,  'SC/motors_currents',      self.controller.science_motors_currents, 10)
+        self.node.create_subscription(Int8MultiArray,     'SC/limit_switches',       self.controller.science_limit_switches, 10)
+        self.node.create_subscription(MassArray,         'EL/container/mass',        self.controller.science_container_mass, 10)
+        self.node.create_subscription(MassArray,         'EL/drill/mass',            self.controller.science_drill_mass, 10)
+        self.node.create_subscription(SpectroResponse,   'EL/spectro_response',   self.controller.science_spectrometer, 10)
+        self.node.create_subscription(NPK,               'EL/npk',            self.controller.science_npk, 10)
+        self.node.create_subscription(FourInOne,         'EL/four_in_one',    self.controller.science_4in1, 10)
 
         # -- HD messages --
         self.node.create_subscription(
-            JointState,       'ROVER/HD_telemetry',   self.controller.hd_joint_state, 10)
+            JointState,       '/HD/motor_control/joint_telemetry',   self.controller.hd_joint_state, 10)
         self.node.create_subscription(
             Int8MultiArray,   'HD/ar_tags',           self.controller.hd_ARtags, 10)
         self.node.create_subscription(
@@ -175,8 +162,7 @@ class CS:
         
 
         # -- Camera messages --
-        self.node.create_subscription(
-            CompressedImage, '/camera_0', cameras_reciever.display_cam_0, 1)
+        self.node.create_subscription(CompressedImage, '/camera_0', cameras_reciever.display_cam_0, 1)
         self.node.create_subscription(
             CompressedImage, '/camera_1', cameras_reciever.display_cam_1, 1)  # doesnt work
         self.node.create_subscription(
@@ -200,10 +186,8 @@ class CS:
         
 
         # -- Elec messages --
-        self.node.create_subscription(
-            NodeStateArray, '/can0/EL/node_state', self.controller.node_states(0), 10)
-        self.node.create_subscription(
-            NodeStateArray, '/can1/EL/node_state', self.controller.node_states(1), 10)
+        self.node.create_subscription( NodeStateArray, '/can0/EL/node_state', self.controller.can0_node_states, 10)
+        self.node.create_subscription( NodeStateArray, '/can1/EL/node_state', self.controller.can1_node_states, 10)
 
         thr = threading.Thread(target=rclpy.spin, args=(self.node,)).start()
         print("start spinning")
@@ -240,29 +224,30 @@ class CS:
 
             # Need to interpolate axes 2 and 5 to go from range [-1,1] to binary values 0 or 1
             if (axes[2] >= 0):
-                axes[2] = 1    
+                axes[2] = 1.    
             else:
-                axes[2] = 0
+                axes[2] = 0.
 
             if (axes[5] >= 0):
-                axes[5] = 1    
+                axes[5] = 1.    
             else:
-                axes[5] = 0
+                axes[5] = 0.
 
-            new_axes = [float(i) for i in range(9)]
+            new_axes = [0.0 for i in range(9)]
 
-            new_axes[0] = speed
+            new_axes[0] = float(1 - abs(axes[1]))
 
-            # ax 1 gives direction on x axis => -1 if circle is clicked, 1 if square is clicked
-            new_axes[1] = buttons[1] - buttons[2] # button 1 is circle and button 2 is square
+            # ax 2 gives direction on y axis => -1 if circle is clicked, 1 if square is clicked
+            new_axes[2] = float(buttons[1] - buttons[2]) # button 1 is circle and button 2 is square
 
-            # ax 2 gives direction on y axis => -1 if x clickes, 1 if triangle
-            new_axes[2] = buttons[3] - buttons[0]
+            # ax 3 gives direction on z axis => -1 if x clickes, 1 if triangle
+            new_axes[3] = float(buttons[3] - buttons[0])
 
-            # ax 3 gives direction on z axis => -1 if L2 clicked, 1 if R2 clicked
-            new_axes[3] = axes[2] - axes[5]
+            # ax 1 gives direction on x axis => -1 if L2 clicked, 1 if R2 clicked
+            new_axes[1] = float(axes[2] - axes[5])
 
             directions = Float32MultiArray()
+            print(new_axes)
             directions.data = new_axes
             self.HD_Gamepad_pub.publish(directions)
 

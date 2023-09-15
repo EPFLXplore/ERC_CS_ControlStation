@@ -14,7 +14,7 @@ function useScienceDataInfos() {
 		scienceDataSocket.onmessage = (e) => {
 			const data = JSON.parse(e.data);
 
-			setMass(data.mass);
+			setMass([data.drill_mass, data.container_mass]);
 			setNpkSensor(data.npk_sensor);
 			setFourInOneSensor(data.four_in_one);
 			setSpectrometer(data.spectrometer);

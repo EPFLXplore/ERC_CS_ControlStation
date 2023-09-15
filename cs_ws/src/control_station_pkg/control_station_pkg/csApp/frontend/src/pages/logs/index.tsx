@@ -15,11 +15,11 @@ export default () => {
 		"SC_CONTAINER_NODE",
 		"SC_DRILL_NODE",
 		"Node 3",
-		"HD_NODE",
+		"Node 4",
 		"Node 5",
 		"Node 6",
 		"Node 7",
-		"NAV_NODE",
+		"Node 8",
 		"Node 9",
 		"Node 10",
 		"Node 11",
@@ -27,7 +27,7 @@ export default () => {
 		"Node 13",
 		"Node 14",
 		"Node 15",
-		"GENERAL_NODE",
+		"Node 16",
 	]; // Rows titles
 	const columns = ["can0", "can1"]; // Columns titles
 
@@ -215,7 +215,7 @@ export default () => {
 												case "can0":
 													return (
 														<td key={`${rowIndex}-${columnTitle}`}>
-															<input type="checkbox" />
+															<input type="checkbox"  />
 														</td>
 													);
 												case "can1":

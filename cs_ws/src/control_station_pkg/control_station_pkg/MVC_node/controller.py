@@ -33,12 +33,13 @@ from geometry_msgs.msg import Pose, Point, Twist, PoseStamped, Quaternion
 from actionlib_msgs.msg import GoalID
 from transforms3d.euler import euler2quat, quat2euler
 
-from avionics_interfaces.msg import MassCalibOffset
+from avionics_interfaces.msg import MassArray, SpectroResponse, NPK, FourInOne, Voltage, LaserRequest, ServoRequest, SpectroRequest, AngleArray, MassCalibOffset, NodeStateArray
 from .models.rover   import Task
 
 from .models.science import Science
 from .models.handling_device import HandlingDevice
 from .models.navigation import Navigation
+from .models.elec import Electronic
 
 from .models.utils import session
 
@@ -63,6 +64,7 @@ class Controller():
         self.science = Science()
         self.handling_device = HandlingDevice()
         self.navigation = Navigation()
+        self.elec = Electronic()
 
     # ===============================
     #            CALLBACKS
@@ -84,7 +86,8 @@ class Controller():
             #self.cs.node.get_logger().info("Rover Confirmation: %s\n", txt.data)
             self.cs.rover.setReceived(True)
         else:
-            self.cs.node.get_logger().info("Received after timeout: %s\n", txt.data)
+            #self.cs.node.get_logger().info("Received after timeout: %s\n", txt.data)
+            return
 
     # receive info on progress of task (SUCCESS/FAIL)
     # TODO HASN'T BEEN USED ONCE => NEED TO TELL OTHER SUBSYSTEMS TO PUBLISH ON TaskProgress
@@ -138,10 +141,12 @@ class Controller():
 
     # TODO problems with displaying mass, websocket can't serialize numpy.float32 error
 
-    def science_mass(self, data):
-        # elec uses channel 2 for the mass (MAY CHANGE IN THE FUTURE)
-        self.science.mass = [data.mass[0],
-                             data.mass[1], data.mass[2], data.mass[3]]
+    def science_container_mass(self, data):
+        self.science.container_mass = data.mass[1]
+        self.science.UpdateScienceDataSocket()
+
+    def science_drill_mass(self, data):
+        self.science.drill_mass = data.mass[1]
         self.science.UpdateScienceDataSocket()
 
     # TODO Chaimaa c'est pour toi, fais la moyenne wallah
@@ -234,7 +239,6 @@ class Controller():
             orientation = orientation + 2* np.pi
         # convert the orientation from radians to degrees
         orientation = orientation * 180 / np.pi
-        print(orientation)
         self.navigation.orientation = [0,0, orientation]
 
         self.navigation.linVel = [odometry.twist.twist.linear.x, odometry.twist.twist.linear.y, odometry.twist.twist.linear.z]
@@ -253,6 +257,7 @@ class Controller():
         BACK_RIGHT_STEER = 6
         BACK_LEFT_STEER = 7
         """
+        print(msg.state)
         #self.navigation.wheels_ang = []
         self.navigation.steering_wheel_ang = msg.data[0:4]
         self.navigation.driving_wheel_ang = msg.data[4:8]
@@ -431,7 +436,7 @@ class Controller():
         pose.orientation.y = q[2]
         pose.orientation.z = q[3]
 
-        self.cs.Nav_Starting_Point_pub(PoseStamped(header=h, pose=pose))
+        self.cs.Nav_Starting_Point_pub.publish(PoseStamped(header=h, pose=pose))
 
 
     # cancel a specific Navigation goal by giving the goal's id
@@ -464,6 +469,7 @@ class Controller():
 
     # need to publish before placing an element in container to measure mass
     def pub_container_tare(self):
+        print("tare call")
         calib_offset = MassCalibOffset()
         calib_offset.destination_id = 0
         calib_offset.channel = 0
@@ -529,14 +535,8 @@ class Controller():
 
         #      ws_time.send('%s' % message)
 
-    def node_states(self, channel):
-        def callback(self, data):
-            states = data.node_states
-            # async_to_sync(channel_layer.group_send)("session", {"type": "broadcast",
-            #                                                     'nb_users': session.nb_users,
-            #                                                     'rover_state': session.rover_state,
-            #                                                     'subsystems_state': session.subsystems_state,
-            #                                                     })
-            print("node_states")
-            print(states)
-            print(channel)
+    def can0_node_states(self, data):
+        self.elec.setStates(data.node_state, 0)
+
+    def can1_node_states(self, data):
+        self.elec.setStates(data.node_state, 1)

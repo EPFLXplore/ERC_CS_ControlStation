@@ -13,7 +13,8 @@ class Science:
         self.channel_layer = get_channel_layer()
         
         #SCIENCE DATA
-        self.mass = [0, 0, 0, 0]
+        self.container_mass = 0
+        self.drill_mass = 0
         self.candidates = []
         self.spectrometer = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
         self.spectrometer_closest_candidate = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
@@ -45,7 +46,8 @@ class Science:
         async_to_sync(self.channel_layer.group_send)("science_data", 
             {
                 "type": "science_data_message",
-                'mass' : [str(self.mass[0]), str(self.mass[1])],
+                'container_mass' : str(self.container_mass),
+                'drill_mass' : str(self.drill_mass),
                 'spectrometer' : [str(val) for val in self.spectrometer],
                 'spectrometer_closest_candidate' : [str(val) for val in self.spectrometer_closest_candidate],
                 'npk_sensor' : [self.npk_sensor[0], self.npk_sensor[1], self.npk_sensor[2]],
