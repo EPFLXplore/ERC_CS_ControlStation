@@ -215,7 +215,7 @@ export default () => {
 												case "can0":
 													return (
 														<td key={`${rowIndex}-${columnTitle}`}>
-															<input type="checkbox" />
+															<input type="checkbox"  />
 														</td>
 													);
 												case "can1":
