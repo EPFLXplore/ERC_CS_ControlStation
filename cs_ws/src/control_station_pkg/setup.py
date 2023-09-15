@@ -21,7 +21,8 @@ setup(
     entry_points={
         'console_scripts': [
             'control_station = control_station_pkg.control_station:main',
-            'cameras_reciever = control_station_pkg.cameras_reciever'
+            'cameras_reciever = control_station_pkg.cameras_reciever',
+            'camera_subscriber = control_station_pkg.camera_subscriber:main'
         ],
     },
 )
