@@ -36,6 +36,15 @@ const CameraView = ({
 					src={images[0] ?? DefaultImage}
 					alt="Camera"
 					className={rotate[0] ? styles.RotatedImage : styles.Image}
+					onContextMenu={(e) => {
+						e.preventDefault();
+						const a = document.createElement('a');
+
+						a.setAttribute('download', 'reactflow.png');
+						a.setAttribute('href', images[0] ?? DefaultImage);
+						a.click();
+						console.log("Saved!");
+					}}
 					onDoubleClick={() => {
 						console.log("Clicked");
 						if (setRotateCams) {
@@ -52,6 +61,15 @@ const CameraView = ({
 					src={images[0] ?? DefaultImage}
 					alt="Camera"
 					className={rotate[0] ? styles.RotatedHalf : styles.Half}
+					onContextMenu={(e) => {
+						e.preventDefault();
+						const a = document.createElement('a');
+
+						a.setAttribute('download', 'reactflow.png');
+						a.setAttribute('href', images[0] ?? DefaultImage);
+						a.click();
+						console.log("Saved!");
+					}}
 					onDoubleClick={() => {
 						if (setRotateCams) {
 							setRotateCams([!rotate[0], rotate[1]]);
@@ -62,6 +80,15 @@ const CameraView = ({
 					src={images[1] ?? DefaultImage}
 					alt="Camera"
 					className={rotate[1] ? styles.RotatedHalf : styles.Half}
+					onContextMenu={(e) => {
+						e.preventDefault();
+						const a = document.createElement('a');
+
+						a.setAttribute('download', 'reactflow.png');
+						a.setAttribute('href', images[1] ?? DefaultImage);
+						a.click();
+						console.log("Saved!");
+					}}
 					onDoubleClick={() => {
 						if (setRotateCams) {
 							setRotateCams([rotate[0], !rotate[1]]);
@@ -77,6 +104,15 @@ const CameraView = ({
 					src={images[0] ?? DefaultImage}
 					alt="Camera"
 					className={rotate[0] ? styles.RotatedQuarter : styles.Quarter}
+					onContextMenu={(e) => {
+						e.preventDefault();
+						const a = document.createElement('a');
+
+						a.setAttribute('download', 'reactflow.png');
+						a.setAttribute('href', images[0] ?? DefaultImage);
+						a.click();
+						console.log("Saved!");
+					}}
 					onDoubleClick={() => {
 						if (setRotateCams) {
 							setRotateCams([!rotate[0], rotate[1], rotate[2]]);
@@ -87,6 +123,15 @@ const CameraView = ({
 					src={images[1] ?? DefaultImage}
 					alt="Camera"
 					className={rotate[1] ? styles.RotatedQuarter : styles.Quarter}
+					onContextMenu={(e) => {
+						e.preventDefault();
+						const a = document.createElement('a');
+
+						a.setAttribute('download', 'reactflow.png');
+						a.setAttribute('href', images[1] ?? DefaultImage);
+						a.click();
+						console.log("Saved!");
+					}}
 					onDoubleClick={() => {
 						if (setRotateCams) {
 							setRotateCams([rotate[0], !rotate[1], rotate[2]]);
@@ -97,6 +142,15 @@ const CameraView = ({
 					src={images[2] ?? DefaultImage}
 					alt="Camera"
 					className={rotate[2] ? styles.RotatedQuarter : styles.Quarter}
+					onContextMenu={(e) => {
+						e.preventDefault();
+						const a = document.createElement('a');
+
+						a.setAttribute('download', 'reactflow.png');
+						a.setAttribute('href', images[2] ?? DefaultImage);
+						a.click();
+						console.log("Saved!");
+					}}
 					onDoubleClick={() => {
 						if (setRotateCams) {
 							setRotateCams([rotate[0], rotate[1], !rotate[2]]);

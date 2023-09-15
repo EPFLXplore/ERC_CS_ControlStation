@@ -305,8 +305,8 @@ class CS:
             # print("Axes before interpolation")
             # print(axes[2])
 
-            axes[2] = (axes[2] + 1)
-            axes[5] = (axes[5] + 1)
+            axes[2] = (axes[2] + 1) / 2
+            axes[5] = (axes[5] + 1) / 2
 
             # print("Axes after interpolation")
             # print(axes[2])
