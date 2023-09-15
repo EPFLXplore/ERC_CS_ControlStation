@@ -6,6 +6,8 @@ import sys
 import django
 import numpy as np
 
+from rclpy.qos import ReliabilityPolicy, QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
+
 from .controller import Controller
 from .models.rover import Rover
 
@@ -173,11 +175,16 @@ class CS:
         self.node.create_subscription(
             CompressedImage, '/camera_5', cameras_reciever.display_cam_5, 1)
 
-        # self.node.create_subscription(CompressedImage, 'HD/camera_flux', cameras_reciever.display_cam_gripper, 10)
-        self.node.create_subscription(Image, 'HD/vision/video_frames', cameras_reciever.display_cam_gripper, 10)
 
-        self.node.create_subscription(Image, '/right/image_rect', cameras_reciever.display_cam_nav, 10)
+        udp = QoSProfile(
+            reliability=QoSReliabilityPolicy.RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT,
+            history=QoSHistoryPolicy.RMW_QOS_POLICY_HISTORY_KEEP_LAST,
+            depth=1
+        )
+
+        self.node.create_subscription(Image, 'HD/vision/video_frames', cameras_reciever.display_cam_gripper, qos_profile=udp)
         
+        self.node.create_subscription(Image, '/right/image_rect', cameras_reciever.display_cam_nav, 10)
 
         # -- Elec messages --
         self.node.create_subscription( NodeStateArray, '/can0/EL/node_state', self.controller.can0_node_states, 10)
