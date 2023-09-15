@@ -213,6 +213,10 @@ class Controller():
         self.handling_device.task_outcome = outcome.data
         #self.handling_device.UpdateHandlingDeviceSocket()
 
+    def hd_set_ready(self, ready):
+        self.handling_device.setReady(ready.data)
+        self.handling_device.UpdateHandlingDeviceSocket()
+        
     # ========= NAVIGATION CALLBACKS =========
 
     # receives an Odometry message from NAVIGATION

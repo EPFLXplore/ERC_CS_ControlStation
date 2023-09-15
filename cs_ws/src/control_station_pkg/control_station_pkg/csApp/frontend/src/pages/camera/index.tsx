@@ -9,7 +9,7 @@ import useCameraSelector from "../../hooks/cameraHooks";
 
 export default () => {
 	const [images, cameras, selectCamera, flushCameras, rotateCams, setRotateCams] =
-		useCameraSelector([Cameras.CAM6]);
+		useCameraSelector([Cameras.CAM3]);
 
 	return (
 		<div className="page center">
@@ -23,11 +23,12 @@ export default () => {
 				options={[
 					// "Camera 1",
 					// "Camera 2",
-					// "Camera 3",
-					// "Camera 4",
+					"Camera 3",
+					"Camera 4",
 					// "Camera 5",
-					"Camera 6",
+					//"Camera 6",
 					"Camera Gripper",
+					"Camera Nav"
 				]}
 				optionsCallback={selectCamera}
 				currentOptions={cameras.map((camera) =>

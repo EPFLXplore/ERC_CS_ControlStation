@@ -9,6 +9,7 @@ function useHandlingDevice() {
 	const [availableButtons, setAvailableButtons] = useState(new Array(16).fill(false));
 	const [taskSuccess, setTaskSuccess] = useState(false);
 	const [voltmeter, setVoltmeter] = useState(0);
+	const [ready, setReady] = useState(false);
 
 	useEffect(() => {
 		let handlingDeviceSocket = new WebSocket("ws://127.0.0.1:8000/ws/csApp/info_hd/");
@@ -22,6 +23,7 @@ function useHandlingDevice() {
 			setAvailableButtons(data.available_buttons);
 			setTaskSuccess(data.task_outcome);
 			setVoltmeter(data.voltage);
+			setReady(data.ready == 1);
 		};
 
 		handlingDeviceSocket.onerror = (e) => {
@@ -62,6 +64,7 @@ function useHandlingDevice() {
 		taskSuccess,
 		voltmeter,
 		openVoltmeter,
+		ready
 	] as const;
 }
 

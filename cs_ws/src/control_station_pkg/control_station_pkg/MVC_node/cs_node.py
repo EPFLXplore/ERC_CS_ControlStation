@@ -6,6 +6,8 @@ import sys
 import django
 import numpy as np
 
+from rclpy.qos import ReliabilityPolicy, QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
+
 from .controller import Controller
 from .models.rover import Rover
 
@@ -151,13 +153,14 @@ class CS:
             Int8,             'HD/task_outcome',      self.controller.hd_task_outcome, 10)
         self.node.create_subscription(
             Voltage,          'EL/voltage',         self.controller.hd_voltage, 10)
+        self.node.create_subscription(String,        '/detected_panel',            self.controller.setReady, 10)
 
         # -- NAV messages --
         self.node.create_subscription(Odometry,         '/lio_sam/odom',                self.controller.nav_odometry  , 10)
         self.node.create_subscription(Path,             '/plan',                        self.controller.nav_path      , 10)
         self.node.create_subscription(Wheelstatus,      '/NAV/absolute_encoders',       self.controller.nav_wheel, 10)
         self.node.create_subscription(Motorcmds,        '/NAV/displacement',            self.controller.nav_displacement, 10)
-        
+
 
         # -- Camera messages --
         self.node.create_subscription(CompressedImage, '/camera_0', cameras_reciever.display_cam_0, 1)
@@ -172,9 +175,16 @@ class CS:
         self.node.create_subscription(
             CompressedImage, '/camera_5', cameras_reciever.display_cam_5, 1)
 
-        # self.node.create_subscription(CompressedImage, 'HD/camera_flux', cameras_reciever.display_cam_gripper, 10)
-        self.node.create_subscription(Image, 'HD/vision/video_frames', cameras_reciever.display_cam_gripper, 10)
+
+        udp = QoSProfile(
+            reliability=QoSReliabilityPolicy.RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT,
+            history=QoSHistoryPolicy.RMW_QOS_POLICY_HISTORY_KEEP_LAST,
+            depth=1
+        )
+
+        self.node.create_subscription(Image, 'HD/vision/video_frames', cameras_reciever.display_cam_gripper, qos_profile=udp)
         
+        self.node.create_subscription(Image, '/right/image_rect', cameras_reciever.display_cam_nav, 10)
 
         # -- Elec messages --
         self.node.create_subscription( NodeStateArray, '/can0/EL/node_state', self.controller.can0_node_states, 10)
