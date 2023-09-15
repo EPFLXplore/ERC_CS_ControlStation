@@ -112,7 +112,7 @@ class CS:
         #self.Nav_DebugWheels_pub    = self.node.create_publisher(Int16MultiArray,   '/debug/wheel_cmds',   1)
 
         # CS --> ROVER (SC)
-        self.SC_spectro_req          = self.node.create_publisher(SpectroRequest,    'El/spectro_req',    1)
+        self.SC_spectro_req          = self.node.create_publisher(SpectroRequest,    'EL/spectro_req',    1)
         
         # CS --> ROVER (ELEC)
         self.ELEC_container_calib_pub = self.node.create_publisher(MassCalibOffset,  'EL/container/mass_calib_offset', 1)
@@ -138,7 +138,7 @@ class CS:
         self.node.create_subscription(Int8MultiArray,     'SC/limit_switches',       self.controller.science_limit_switches, 10)
         self.node.create_subscription(MassArray,         'EL/container/mass',        self.controller.science_container_mass, 10)
         self.node.create_subscription(MassArray,         'EL/drill/mass',            self.controller.science_drill_mass, 10)
-        self.node.create_subscription(SpectroResponse,   'EL/spectrometer',   self.controller.science_spectrometer, 10)
+        self.node.create_subscription(SpectroResponse,   'EL/spectro_response',   self.controller.science_spectrometer, 10)
         self.node.create_subscription(NPK,               'EL/npk',            self.controller.science_npk, 10)
         self.node.create_subscription(FourInOne,         'EL/four_in_one',    self.controller.science_4in1, 10)
 
