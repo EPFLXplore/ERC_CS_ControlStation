@@ -25,7 +25,7 @@ import ButtonSelector from "../../components/ButtonSelector";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 	const [images, cameras, selectCamera, flushCameras, rotateCams, setRotateCams] =
-		useCameraSelector([Cameras.CAM1]);
+		useCameraSelector([Cameras.CAM7]);
 	const [jointPositions, jointVelocities, jointCurrents, availableButtons,
 		taskSuccess,
 		voltmeter,
@@ -47,13 +47,14 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.SEMI_AUTONOMOUS> }) => {
 				settings
 				optionTitle="Cameras"
 				options={[
-					"Camera 1",
+					//"Camera 1",
 					//"Camera 2",
 					"Camera 3",
 					"Camera 4",
 					// "Camera 5",
 					// "Camera 6",
 					"Camera Gripper",
+					"Camera Nav"
 				]}
 				optionsCallback={selectCamera}
 				currentOptions={cameras.map((camera) =>

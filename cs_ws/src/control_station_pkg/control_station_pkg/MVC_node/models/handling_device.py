@@ -37,6 +37,8 @@ class HandlingDevice:
 
         self.voltage = 0.0
 
+        self.ready = 0
+
     #--------HD mode--------
 
     def setHDMode(self, mode):
@@ -100,6 +102,9 @@ class HandlingDevice:
 
     def getElements(self):
         return self.__elements
+    
+    def setReady(self, ready):
+        self.ready = 1 if(ready == "reached") else 0
 
 
 # TASK: 
@@ -133,4 +138,5 @@ class HandlingDevice:
                                                         'available_buttons' : [str(val) for val in self.available_buttons],
                                                         'task_outcome' : str(self.task_outcome),
                                                         'voltage' : str(self.voltage),
+                                                        'ready' : str(self.ready),
                                                         })

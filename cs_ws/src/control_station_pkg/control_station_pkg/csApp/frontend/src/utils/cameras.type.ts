@@ -7,4 +7,5 @@ export enum Cameras {
 	CAM5,
 	CAM6,
 	CAM7,
+	CAM8,
 }
