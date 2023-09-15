@@ -39,10 +39,7 @@ function useQuery() {
 export default () => {
 	const [images, cameras, selectCamera, flushCameras, rotateCams, setRotateCams] =
 		useCameraSelector([
-			//Cameras.CAM1,
-			// Cameras.CAM2,
-			Cameras.CAM3,
-			// Cameras.CAM4,
+			Cameras.CAM4,
 		]);
 	const [
 		jointPositions,
@@ -83,12 +80,12 @@ export default () => {
 				}}
 				optionTitle="Cameras"
 				options={[
-					// "Camera 1",
-					// "Camera 2",
+					"Camera 1",
+					"Camera 2",
 					"Camera 3",
 					"Camera 4",
-					// "Camera 5",
-					// "Camera 6",
+					"Camera 5",
+					"Camera 6",
 					"Camera Gripper",
 					"Camera Nav"
 				]}
