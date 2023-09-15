@@ -25,7 +25,7 @@ from nav_msgs.msg import Odometry
 from sensor_msgs.msg import JointState, Image, Joy, CompressedImage
 
 
-from avionics_interfaces.msg import MassArray, SpectroResponse, NPK, FourInOne, Voltage, LaserRequest, ServoRequest, SpectroRequest, AngleArray, MassCalibOffset, NodeStateArray
+from avionics_interfaces.msg import MassArray, SpectroResponse, NPK, FourInOne, Voltage, LaserRequest, ServoRequest, SpectroRequest, AngleArray, MassCalibOffset, NodeStateArray, LEDRequest
 from custom_msg.msg import Wheelstatus, Motorcmds
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
@@ -117,6 +117,7 @@ class CS:
         # CS --> ROVER (ELEC)
         self.ELEC_container_calib_pub = self.node.create_publisher(MassCalibOffset,  'EL/container/mass_calib_offset', 1)
         self.ELEC_drill_calib_pub     = self.node.create_publisher(MassCalibOffset,  'EL/drill/mass_calib_offset',     1)
+        self.ELEC_led_req             = self.node.create_publisher(LEDRequest,       'EL/led_req',     1)
 
         # Cam
         self.Cam_index_pub      = self.node.create_publisher(Int8MultiArray,    'CS/CAM_index', 1)
