@@ -22,6 +22,7 @@
 # Libraries
 
 import datetime
+from threading import Thread
 from turtle import pos
 import json
 import time
@@ -33,7 +34,7 @@ from geometry_msgs.msg import Pose, Point, Twist, PoseStamped, Quaternion
 from actionlib_msgs.msg import GoalID
 from transforms3d.euler import euler2quat, quat2euler
 
-from avionics_interfaces.msg import MassArray, SpectroResponse, NPK, FourInOne, Voltage, LaserRequest, ServoRequest, SpectroRequest, AngleArray, MassCalibOffset, NodeStateArray
+from avionics_interfaces.msg import MassArray, SpectroResponse, NPK, FourInOne, Voltage, LaserRequest, ServoRequest, SpectroRequest, AngleArray, MassCalibOffset, NodeStateArray, LEDRequest
 from .models.rover   import Task
 
 from .models.science import Science
@@ -418,6 +419,11 @@ class Controller():
         self.cs.Nav_Status_pub.publish(String("abort"))
 
     def pub_nav_mode(self, mode):
+        if (mode.data == "auto"):
+            Thread(target=self.blinkLed, args=(2,)).start()
+        else:
+            self.cs.ELEC_led_req.publish(LEDRequest(destination_id=0, state = 1))
+            
         self.cs.Nav_Mode_pub.publish(mode)
     
     def pub_nav_kinematic(self, kinematic):
@@ -546,3 +552,8 @@ class Controller():
     def can1_node_states(self, data):
         self.elec.can1 = data.node_state
         self.elec.UpdateElecDeviceSocket()
+
+    def blinkLed(self, nextState):
+        self.cs.ELEC_led_req.publish(LEDRequest(destination_id=0, state = 3))
+        time.sleep(5)
+        self.cs.ELEC_led_req.publish(LEDRequest(destination_id=0, state = nextState))

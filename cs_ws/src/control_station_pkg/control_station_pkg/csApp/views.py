@@ -229,6 +229,7 @@ def nav_starting_point(request):
 
 def nav_mode(request):
     mode = str(request.POST.get("mode"))
+    print("nav mode : ", mode)
     cs.controller.pub_nav_mode(String(data=mode))
     return JsonResponse({})
 
@@ -302,7 +303,7 @@ def deploy_hd_voltmeter(request):
     return JsonResponse({})
 
 def set_hd_inverse_frame(request):
-    cs.HD_inverse_frame.publish(String(request.POST.get("inverse_frame")))
+    cs.HD_inverse_frame.publish(String(data=request.POST.get("inverse_frame")))
     return JsonResponse({})
 
 
