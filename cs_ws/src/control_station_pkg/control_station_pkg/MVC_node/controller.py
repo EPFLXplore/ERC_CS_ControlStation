@@ -439,6 +439,7 @@ class Controller():
     def pub_nav_starting_point(self, x, y, yaw):
 
         h = Header()
+        h.frame_id = 'map'
         pose = Pose()
 
         point = Point(x=x, y=y, z=0.0)
