@@ -269,8 +269,8 @@ class Controller():
         """
         print(msg.state)
         #self.navigation.wheels_ang = []
-        self.navigation.steering_wheel_ang = msg.data[0:4]
-        self.navigation.driving_wheel_ang = msg.data[4:8]
+        self.navigation.steering_wheel_ang = [float(i/65536 * 360) for i in msg.data[0:4]]
+        self.navigation.driving_wheel_ang = [float(i/65536 * 360) for i in msg.data[4:8]]
         self.navigation.steering_wheel_state = msg.state[0:4]
         self.navigation.driving_wheel_state = msg.state[4:8]
     
