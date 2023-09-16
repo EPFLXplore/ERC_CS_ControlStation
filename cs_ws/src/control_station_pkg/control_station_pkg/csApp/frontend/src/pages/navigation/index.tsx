@@ -22,6 +22,7 @@ import GoalInputBox from "../../components/GoalInputBox";
 import navModeSelect from "../../utils/navModeSelect";
 import { NavMode } from "../../utils/navMode";
 import successSound from "../../assets/audio/short-success-sound-glockenspiel-treasure-video-game-6346.mp3"
+import ToggleFeature from "../../components/ToggleFeature";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 	const {
@@ -59,6 +60,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 	});
 
 	const [navSettings, setNavlSettings] = useState(false);
+	const [obstacles, setObstacles] = useState(false);
 
 	const handleAddGoal = () => {
 		// Get the values from the input fields
@@ -183,6 +185,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 							};
 						});
 					}}
+					triggerObstacles={obstacles}
 				/>
 				<div className={styles.Info}>
 					<PageHeader
@@ -412,6 +415,8 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 						}
 						{<></>}
 					</GoalInputBox>
+					<h3 style={{marginTop: "30px"}}>Show Obstacles</h3>
+					<ToggleFeature title="Obstacles" onChange={(mode) => setObstacles(!mode)} />
 				</SettingsModal>
 			</div>
 		</div>
