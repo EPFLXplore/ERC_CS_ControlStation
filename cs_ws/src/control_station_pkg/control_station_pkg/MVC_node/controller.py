@@ -418,10 +418,10 @@ class Controller():
         self.cs.Nav_Goal_pub.publish(PoseStamped(header=h, pose=pose))
 
     def pub_cancel_nav_goal(self):
-        self.cs.Nav_Status_pub.publish(String("cancel"))
+        self.cs.Nav_Cancel_pub.publish(String(data="cancel"))
 
     def pub_abort_nav_goal(self):
-        self.cs.Nav_Status_pub.publish(String("abort"))
+        self.cs.Nav_Status_pub.publish(String(data="abort"))
 
     def pub_nav_mode(self, mode):
         if (mode.data == "auto"):
