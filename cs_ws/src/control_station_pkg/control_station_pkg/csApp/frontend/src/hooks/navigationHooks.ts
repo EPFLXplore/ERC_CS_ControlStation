@@ -3,6 +3,7 @@ import { drawGoal } from "../components/Map";
 import { Point, getDistance } from "../utils/maths";
 import { getCookie } from "../utils/requests";
 import path from "path";
+import simplify from "simplify-js";
 
 export type Goal = Point & { id: string };
 
@@ -127,7 +128,7 @@ export function useNavigation(successCallback?: () => void) {
 	const [wheelsPosition, setWheelsPosition] = useState([0, 0, 0, 0]);
 	const [linearVelocity, setLinearVelocity] = useState([0, 0, 0]);
 	const [angularVelocity, setAngularVelocity] = useState([0, 0, 0]);
-	const [trajectoryPoints, setTrajectoryPoints] = useState<Point[]>([]);
+	const [trajectoryPoints, setTrajectoryPoints] = useState<(Point | {x: number; y: number})[]>([]);
 	const [pathPoints, setPathPoints] = useState<Point[]>([]);
 	const [showPath, setShowPath] = useState<boolean>(true);
 	const [driving_state, setDrivingState] = useState<string[]>(["False", "False", "False", "False"]);
@@ -154,14 +155,25 @@ export function useNavigation(successCallback?: () => void) {
 			setWheelsPosition(data.steering_wheel_ang);
 			setLinearVelocity(data.linVel);
 			setAngularVelocity(data.angVel);
-			setTrajectoryPoints((prevPoints) => [
-				...prevPoints,
-				{
-					x: data.position[0],
-					y: data.position[1],
-					o: data.orientation[2],
-				},
-			]);
+			setTrajectoryPoints((prevPoints) => {
+				if(prevPoints.length > 1000) {
+					return [
+						...simplify(prevPoints, 0.3, false),
+						{
+							x: data.position[0],
+							y: data.position[1],
+							o: data.orientation[2],
+						},]
+				} else {
+					return [
+					...prevPoints,
+					{
+						x: data.position[0],
+						y: data.position[1],
+						o: data.orientation[2],
+					},]
+				}
+			});
 			setPathPoints((prev) => {
 				if(prev.length > 0 && pathPoints.length === 0) {
 					successCallback && successCallback()
