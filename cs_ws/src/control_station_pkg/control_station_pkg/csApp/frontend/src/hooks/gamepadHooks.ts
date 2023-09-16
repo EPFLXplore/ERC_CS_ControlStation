@@ -87,7 +87,8 @@ function useGamepad(mode: string, selectorCallback?: () => void) {
 					if (gamepadCommandState === GamepadCommandState.UI) {
 						if (
 							(gamepad.getState().buttons[9] && OS === "Windows") ||
-							(gamepad.getState().buttons[7] && OS === "Linux")
+							//(gamepad.getState().buttons[7] && OS === "Linux")
+							(gamepad.getState().axes[2] === 1 && gamepad.getState().axes[5] === 1  && OS === "Linux")
 						) {
 							console.log("Gamepad Command State: CONTROL");
 							setGamepadCommandState(GamepadCommandState.CONTROL);

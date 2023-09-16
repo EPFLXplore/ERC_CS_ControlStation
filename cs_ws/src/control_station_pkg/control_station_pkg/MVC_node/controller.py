@@ -269,8 +269,8 @@ class Controller():
         """
         print(msg.state)
         #self.navigation.wheels_ang = []
-        self.navigation.steering_wheel_ang = msg.data[0:4]
-        self.navigation.driving_wheel_ang = msg.data[4:8]
+        self.navigation.steering_wheel_ang = [float(i/65536 * 360) for i in msg.data[0:4]]
+        self.navigation.driving_wheel_ang = [float(i/65536 * 360) for i in msg.data[4:8]]
         self.navigation.steering_wheel_state = msg.state[0:4]
         self.navigation.driving_wheel_state = msg.state[4:8]
     
@@ -452,7 +452,16 @@ class Controller():
         pose.orientation.y = q[2]
         pose.orientation.z = q[3]
 
-        self.cs.Nav_Starting_Point_pub.publish(PoseStamped(header=h, pose=pose))
+        startingPoint = PoseStamped(header=h, pose=pose)
+        self.cs.Nav_Starting_Point_pub.publish(startingPoint)
+        #Thread(target=self.spam_nav_stating_point, args=(startingPoint,)).start()
+        
+
+    # def spam_nav_stating_point(self, startingPoint):
+    #     finish = False
+    #     while not finish :
+    #         self.pub_nav_starting_point(startingPoint[0], startingPoint[1], startingPoint[2])
+    #         time.sleep(0.1)
 
 
     # cancel a specific Navigation goal by giving the goal's id
