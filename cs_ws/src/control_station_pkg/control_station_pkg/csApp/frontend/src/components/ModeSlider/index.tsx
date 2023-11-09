@@ -38,13 +38,15 @@ import { useState } from "react";
 export default({
 	name,
 	mode,
+	startMode,
 	functionTrigger,
 } : {
 	name: string;
 	mode: Array<string>;
+	startMode?: number;
 	functionTrigger: (mode: number) => void;
 }) => {
-	const [activeIndex, setActiveIndex] = useState(1);
+	const [activeIndex, setActiveIndex] = useState(startMode || 0);
 	//const texts = ["IK", "FK"];
 
 	const _setActiveIndex = (mode: number) => {

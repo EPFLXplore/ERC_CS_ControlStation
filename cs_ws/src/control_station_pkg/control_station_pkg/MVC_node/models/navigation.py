@@ -12,11 +12,21 @@ class Navigation:
         self.channel_layer = get_channel_layer()
 
         self.position = [0,0,0]
-        self.orientation = [0,0,0,0]
+        self.orientation = [0,0,0]
         self.linVel = [0,0,0]
         self.angVel = [0,0,0]
 
-        self.wheels_ang = [0,0,0,0]
+        self.steering_wheel_ang = [0,0,0,0]
+        self.steering_wheel_state = [0,0,0,0]
+        self.driving_wheel_ang = [0,0,0,0]
+        self.driving_wheel_state = [0,0,0,0]
+
+        self.info = ""
+        self.displacement_mode = ""
+
+        self.path = [[]]
+
+        #self.wheels_ang = [0,0,0,0]
 
         #pas besoin de les save, on les envoye directement au frontend
         #self.__nextId = 0
@@ -62,10 +72,15 @@ class Navigation:
         #                                                                 })
         
         async_to_sync(self.channel_layer.group_send)("nav", {"type": "nav_message",
-                                                    'position'   : [self.position[0], self.position[1], self.position[2]],
-                                                    'orientation': [self.orientation[0], self.orientation[1], self.orientation[2], self.orientation[3]],
+                                                    'position'   : [str(val) for val in self.position],
+                                                    'orientation': [str(val) for val in self.orientation],
                                                     'linVel'     : [self.linVel[0], self.linVel[1], self.linVel[2]],
                                                     'angVel'     : [self.angVel[0], self.angVel[1], self.angVel[2]],
-                                                    'current_goal' : "",
-                                                    'wheel_ang' : [str(val) for val in self.wheels_ang],
-                                                                })
+                                                    'path' : [str(val) for val in self.path],
+                                                    'steering_wheel_ang': [str(val) for val in self.steering_wheel_ang],
+                                                    'steering_wheel_state': [str(val) for val in self.steering_wheel_state],
+                                                    'driving_wheel_ang': [],
+                                                    'driving_wheel_state': [str(val) for val in self.driving_wheel_state],
+                                                    'info' : self.info,
+                                                    'displacement_mode' : self.displacement_mode,
+                                                    })

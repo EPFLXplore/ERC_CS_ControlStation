@@ -1,0 +1,22 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from avionics_interfaces/msg/MassConfigRequestMCU.msg
+// generated code does not contain a copyright notice
+
+
+module avionics_interfaces {
+  module msg {
+    @verbatim (language="comment", text=
+      " MassConfigRequestMCU.msg")
+    struct MassConfigRequestMCU {
+      uint16 id;
+
+      boolean req_offset;
+
+      boolean req_scale;
+
+      boolean req_alpha;
+
+      boolean req_channels_status;
+    };
+  };
+};

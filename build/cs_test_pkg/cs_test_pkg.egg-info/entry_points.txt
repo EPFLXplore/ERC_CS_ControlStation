@@ -1,0 +1,9 @@
+[console_scripts]
+cam_test_node = cs_test_pkg.cam_test_node:main
+elec_test_node = cs_test_pkg.elec_test_node:main
+gamepad_test_node = cs_test_pkg.gamepad_test_node:main
+hd_test_node = cs_test_pkg.hd_test_node:main
+nav_test_node = cs_test_pkg.nav_test_node:main
+science_data_test_node = cs_test_pkg.science_data_test_node:main
+science_drill_test_node = cs_test_pkg.science_drill_test_node:main
+

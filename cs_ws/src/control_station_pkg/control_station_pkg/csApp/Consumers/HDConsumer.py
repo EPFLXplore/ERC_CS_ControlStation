@@ -55,12 +55,15 @@ class HDConsumer(WebsocketConsumer):
                 'available_buttons': data_json['available_buttons'],
                 'task_outcome': data_json['task_outcome'],
                 'voltage': data_json['voltage'],
+                'ready': data_json['ready'],
             }
         )
 
 
     # Receive message from room group
     def hd_message(self, event):
+
+        print("HDConsumer: hd_message")
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({
@@ -70,4 +73,5 @@ class HDConsumer(WebsocketConsumer):
                 'available_buttons': event['available_buttons'],
                 'task_outcome': event['task_outcome'],
                 'voltage': event['voltage'],
+                'ready': event['ready'],
             }))

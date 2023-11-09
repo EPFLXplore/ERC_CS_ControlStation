@@ -1,0 +1,667 @@
+[0.077s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[0.077s] DEBUG:colcon:Parsed command line arguments: Namespace(allow_overriding=[], ament_cmake_args=None, base_paths=['.'], build_base='build', catkin_cmake_args=None, catkin_skip_building_tests=False, cmake_args=None, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, cmake_target=None, cmake_target_skip_unavailable=False, continue_on_error=False, event_handlers=None, executor='parallel', ignore_user_meta=False, install_base='install', log_base=None, log_level=None, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0xffffaf9c87f0>>, merge_install=False, metas=['./colcon.meta'], packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_end=None, packages_ignore=None, packages_ignore_regex=None, packages_select=None, packages_select_build_failed=False, packages_select_by_dep=None, packages_select_regex=None, packages_select_test_failures=False, packages_skip=None, packages_skip_build_finished=False, packages_skip_by_dep=None, packages_skip_regex=None, packages_skip_test_passed=False, packages_skip_up_to=None, packages_start=None, packages_up_to=None, packages_up_to_regex=None, parallel_workers=4, paths=None, symlink_install=False, test_result_base=None, verb_extension=<colcon_core.verb.build.BuildVerb object at 0xffffaf9c87f0>, verb_name='build', verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0xffffaf9c8d60>)
+[0.089s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.089s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.089s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.089s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.089s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.089s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.089s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/yasmin/CS_workspace'
+[0.089s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.089s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.089s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.089s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.089s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.089s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.089s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.089s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.089s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(SCRIPTS) by extensions ['ignore', 'ignore_ament_install']
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(SCRIPTS) by extension 'ignore'
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(SCRIPTS) by extension 'ignore_ament_install'
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(SCRIPTS) by extensions ['colcon_pkg']
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(SCRIPTS) by extension 'colcon_pkg'
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(SCRIPTS) by extensions ['colcon_meta']
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(SCRIPTS) by extension 'colcon_meta'
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(SCRIPTS) by extensions ['ros']
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(SCRIPTS) by extension 'ros'
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(SCRIPTS) by extensions ['cmake', 'python']
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(SCRIPTS) by extension 'cmake'
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(SCRIPTS) by extension 'python'
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(SCRIPTS) by extensions ['python_setup_py']
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(SCRIPTS) by extension 'python_setup_py'
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.099s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws) by extensions ['ignore', 'ignore_ament_install']
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws) by extension 'ignore'
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws) by extension 'ignore_ament_install'
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws) by extensions ['colcon_pkg']
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws) by extension 'colcon_pkg'
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws) by extensions ['colcon_meta']
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws) by extension 'colcon_meta'
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws) by extensions ['ros']
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws) by extension 'ros'
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws) by extensions ['cmake', 'python']
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws) by extension 'cmake'
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws) by extension 'python'
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws) by extensions ['python_setup_py']
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws) by extension 'python_setup_py'
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src) by extensions ['ignore', 'ignore_ament_install']
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src) by extension 'ignore'
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src) by extension 'ignore_ament_install'
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src) by extensions ['colcon_pkg']
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src) by extension 'colcon_pkg'
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src) by extensions ['colcon_meta']
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src) by extension 'colcon_meta'
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src) by extensions ['ros']
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src) by extension 'ros'
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src) by extensions ['cmake', 'python']
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src) by extension 'cmake'
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src) by extension 'python'
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src) by extensions ['python_setup_py']
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src) by extension 'python_setup_py'
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/avionics_interfaces) by extensions ['ignore', 'ignore_ament_install']
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/avionics_interfaces) by extension 'ignore'
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/avionics_interfaces) by extension 'ignore_ament_install'
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/avionics_interfaces) by extensions ['colcon_pkg']
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/avionics_interfaces) by extension 'colcon_pkg'
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/avionics_interfaces) by extensions ['colcon_meta']
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/avionics_interfaces) by extension 'colcon_meta'
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/avionics_interfaces) by extensions ['ros']
+[0.100s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/avionics_interfaces) by extension 'ros'
+[0.102s] DEBUG:colcon.colcon_core.package_identification:Package 'cs_ws/src/avionics_interfaces' with type 'ros.ament_cmake' and name 'avionics_interfaces'
+[0.102s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/control_station_pkg) by extensions ['ignore', 'ignore_ament_install']
+[0.102s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/control_station_pkg) by extension 'ignore'
+[0.102s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/control_station_pkg) by extension 'ignore_ament_install'
+[0.102s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/control_station_pkg) by extensions ['colcon_pkg']
+[0.102s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/control_station_pkg) by extension 'colcon_pkg'
+[0.102s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/control_station_pkg) by extensions ['colcon_meta']
+[0.102s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/control_station_pkg) by extension 'colcon_meta'
+[0.102s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/control_station_pkg) by extensions ['ros']
+[0.102s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/control_station_pkg) by extension 'ros'
+[0.102s] DEBUG:colcon.colcon_core.package_identification:Package 'cs_ws/src/control_station_pkg' with type 'ros.ament_python' and name 'control_station_pkg'
+[0.102s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/cs_test_pkg) by extensions ['ignore', 'ignore_ament_install']
+[0.102s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/cs_test_pkg) by extension 'ignore'
+[0.103s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/cs_test_pkg) by extension 'ignore_ament_install'
+[0.103s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/cs_test_pkg) by extensions ['colcon_pkg']
+[0.103s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/cs_test_pkg) by extension 'colcon_pkg'
+[0.103s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/cs_test_pkg) by extensions ['colcon_meta']
+[0.103s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/cs_test_pkg) by extension 'colcon_meta'
+[0.103s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/cs_test_pkg) by extensions ['ros']
+[0.103s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/cs_test_pkg) by extension 'ros'
+[0.103s] DEBUG:colcon.colcon_core.package_identification:Package 'cs_ws/src/cs_test_pkg' with type 'ros.ament_python' and name 'cs_test_pkg'
+[0.103s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/rover_pkg) by extensions ['ignore', 'ignore_ament_install']
+[0.103s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/rover_pkg) by extension 'ignore'
+[0.103s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/rover_pkg) by extension 'ignore_ament_install'
+[0.103s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/rover_pkg) by extensions ['colcon_pkg']
+[0.103s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/rover_pkg) by extension 'colcon_pkg'
+[0.103s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/rover_pkg) by extensions ['colcon_meta']
+[0.103s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/rover_pkg) by extension 'colcon_meta'
+[0.103s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/rover_pkg) by extensions ['ros']
+[0.103s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/rover_pkg) by extension 'ros'
+[0.104s] DEBUG:colcon.colcon_core.package_identification:Package 'cs_ws/src/rover_pkg' with type 'ros.ament_python' and name 'rover_pkg'
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/xplore_interfaces) by extensions ['ignore', 'ignore_ament_install']
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/xplore_interfaces) by extension 'ignore'
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/xplore_interfaces) by extension 'ignore_ament_install'
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/xplore_interfaces) by extensions ['colcon_pkg']
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/xplore_interfaces) by extension 'colcon_pkg'
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/xplore_interfaces) by extensions ['colcon_meta']
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/xplore_interfaces) by extension 'colcon_meta'
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/xplore_interfaces) by extensions ['ros']
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(cs_ws/src/xplore_interfaces) by extension 'ros'
+[0.104s] DEBUG:colcon.colcon_core.package_identification:Package 'cs_ws/src/xplore_interfaces' with type 'ros.ament_cmake' and name 'xplore_interfaces'
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules) by extensions ['ignore', 'ignore_ament_install']
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules) by extension 'ignore'
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules) by extension 'ignore_ament_install'
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules) by extensions ['colcon_pkg']
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules) by extension 'colcon_pkg'
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules) by extensions ['colcon_meta']
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules) by extension 'colcon_meta'
+[0.104s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules) by extensions ['ros']
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules) by extension 'ros'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules) by extensions ['cmake', 'python']
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules) by extension 'cmake'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules) by extension 'python'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules) by extensions ['python_setup_py']
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules) by extension 'python_setup_py'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle) by extensions ['ignore', 'ignore_ament_install']
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle) by extension 'ignore'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle) by extension 'ignore_ament_install'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle) by extensions ['colcon_pkg']
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle) by extension 'colcon_pkg'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle) by extensions ['colcon_meta']
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle) by extension 'colcon_meta'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle) by extensions ['ros']
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle) by extension 'ros'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle) by extensions ['cmake', 'python']
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle) by extension 'cmake'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle) by extension 'python'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle) by extensions ['python_setup_py']
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle) by extension 'python_setup_py'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color) by extensions ['ignore', 'ignore_ament_install']
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color) by extension 'ignore'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color) by extension 'ignore_ament_install'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color) by extensions ['colcon_pkg']
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color) by extension 'colcon_pkg'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color) by extensions ['colcon_meta']
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color) by extension 'colcon_meta'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color) by extensions ['ros']
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color) by extension 'ros'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color) by extensions ['cmake', 'python']
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color) by extension 'cmake'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color) by extension 'python'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color) by extensions ['python_setup_py']
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color) by extension 'python_setup_py'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color/dist) by extensions ['ignore', 'ignore_ament_install']
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color/dist) by extension 'ignore'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color/dist) by extension 'ignore_ament_install'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color/dist) by extensions ['colcon_pkg']
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color/dist) by extension 'colcon_pkg'
+[0.105s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color/dist) by extensions ['colcon_meta']
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color/dist) by extension 'colcon_meta'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color/dist) by extensions ['ros']
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color/dist) by extension 'ros'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color/dist) by extensions ['cmake', 'python']
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color/dist) by extension 'cmake'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color/dist) by extension 'python'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color/dist) by extensions ['python_setup_py']
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/@kurkle/color/dist) by extension 'python_setup_py'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js) by extensions ['ignore', 'ignore_ament_install']
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js) by extension 'ignore'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js) by extension 'ignore_ament_install'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js) by extensions ['colcon_pkg']
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js) by extension 'colcon_pkg'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js) by extensions ['colcon_meta']
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js) by extension 'colcon_meta'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js) by extensions ['ros']
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js) by extension 'ros'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js) by extensions ['cmake', 'python']
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js) by extension 'cmake'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js) by extension 'python'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js) by extensions ['python_setup_py']
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js) by extension 'python_setup_py'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/auto) by extensions ['ignore', 'ignore_ament_install']
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/auto) by extension 'ignore'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/auto) by extension 'ignore_ament_install'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/auto) by extensions ['colcon_pkg']
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/auto) by extension 'colcon_pkg'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/auto) by extensions ['colcon_meta']
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/auto) by extension 'colcon_meta'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/auto) by extensions ['ros']
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/auto) by extension 'ros'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/auto) by extensions ['cmake', 'python']
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/auto) by extension 'cmake'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/auto) by extension 'python'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/auto) by extensions ['python_setup_py']
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/auto) by extension 'python_setup_py'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist) by extensions ['ignore', 'ignore_ament_install']
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist) by extension 'ignore'
+[0.106s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist) by extension 'ignore_ament_install'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist) by extensions ['colcon_pkg']
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist) by extension 'colcon_pkg'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist) by extensions ['colcon_meta']
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist) by extension 'colcon_meta'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist) by extensions ['ros']
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist) by extension 'ros'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist) by extensions ['cmake', 'python']
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist) by extension 'cmake'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist) by extension 'python'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist) by extensions ['python_setup_py']
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist) by extension 'python_setup_py'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/chunks) by extensions ['ignore', 'ignore_ament_install']
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/chunks) by extension 'ignore'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/chunks) by extension 'ignore_ament_install'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/chunks) by extensions ['colcon_pkg']
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/chunks) by extension 'colcon_pkg'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/chunks) by extensions ['colcon_meta']
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/chunks) by extension 'colcon_meta'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/chunks) by extensions ['ros']
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/chunks) by extension 'ros'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/chunks) by extensions ['cmake', 'python']
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/chunks) by extension 'cmake'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/chunks) by extension 'python'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/chunks) by extensions ['python_setup_py']
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/chunks) by extension 'python_setup_py'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/controllers) by extensions ['ignore', 'ignore_ament_install']
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/controllers) by extension 'ignore'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/controllers) by extension 'ignore_ament_install'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/controllers) by extensions ['colcon_pkg']
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/controllers) by extension 'colcon_pkg'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/controllers) by extensions ['colcon_meta']
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/controllers) by extension 'colcon_meta'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/controllers) by extensions ['ros']
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/controllers) by extension 'ros'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/controllers) by extensions ['cmake', 'python']
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/controllers) by extension 'cmake'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/controllers) by extension 'python'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/controllers) by extensions ['python_setup_py']
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/controllers) by extension 'python_setup_py'
+[0.107s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/core) by extensions ['ignore', 'ignore_ament_install']
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/core) by extension 'ignore'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/core) by extension 'ignore_ament_install'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/core) by extensions ['colcon_pkg']
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/core) by extension 'colcon_pkg'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/core) by extensions ['colcon_meta']
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/core) by extension 'colcon_meta'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/core) by extensions ['ros']
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/core) by extension 'ros'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/core) by extensions ['cmake', 'python']
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/core) by extension 'cmake'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/core) by extension 'python'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/core) by extensions ['python_setup_py']
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/core) by extension 'python_setup_py'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/elements) by extensions ['ignore', 'ignore_ament_install']
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/elements) by extension 'ignore'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/elements) by extension 'ignore_ament_install'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/elements) by extensions ['colcon_pkg']
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/elements) by extension 'colcon_pkg'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/elements) by extensions ['colcon_meta']
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/elements) by extension 'colcon_meta'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/elements) by extensions ['ros']
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/elements) by extension 'ros'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/elements) by extensions ['cmake', 'python']
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/elements) by extension 'cmake'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/elements) by extension 'python'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/elements) by extensions ['python_setup_py']
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/elements) by extension 'python_setup_py'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/helpers) by extensions ['ignore', 'ignore_ament_install']
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/helpers) by extension 'ignore'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/helpers) by extension 'ignore_ament_install'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/helpers) by extensions ['colcon_pkg']
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/helpers) by extension 'colcon_pkg'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/helpers) by extensions ['colcon_meta']
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/helpers) by extension 'colcon_meta'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/helpers) by extensions ['ros']
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/helpers) by extension 'ros'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/helpers) by extensions ['cmake', 'python']
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/helpers) by extension 'cmake'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/helpers) by extension 'python'
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/helpers) by extensions ['python_setup_py']
+[0.108s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/helpers) by extension 'python_setup_py'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/platform) by extensions ['ignore', 'ignore_ament_install']
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/platform) by extension 'ignore'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/platform) by extension 'ignore_ament_install'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/platform) by extensions ['colcon_pkg']
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/platform) by extension 'colcon_pkg'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/platform) by extensions ['colcon_meta']
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/platform) by extension 'colcon_meta'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/platform) by extensions ['ros']
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/platform) by extension 'ros'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/platform) by extensions ['cmake', 'python']
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/platform) by extension 'cmake'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/platform) by extension 'python'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/platform) by extensions ['python_setup_py']
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/platform) by extension 'python_setup_py'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins) by extensions ['ignore', 'ignore_ament_install']
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins) by extension 'ignore'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins) by extension 'ignore_ament_install'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins) by extensions ['colcon_pkg']
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins) by extension 'colcon_pkg'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins) by extensions ['colcon_meta']
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins) by extension 'colcon_meta'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins) by extensions ['ros']
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins) by extension 'ros'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins) by extensions ['cmake', 'python']
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins) by extension 'cmake'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins) by extension 'python'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins) by extensions ['python_setup_py']
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins) by extension 'python_setup_py'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins/plugin.filler) by extensions ['ignore', 'ignore_ament_install']
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins/plugin.filler) by extension 'ignore'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins/plugin.filler) by extension 'ignore_ament_install'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins/plugin.filler) by extensions ['colcon_pkg']
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins/plugin.filler) by extension 'colcon_pkg'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins/plugin.filler) by extensions ['colcon_meta']
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins/plugin.filler) by extension 'colcon_meta'
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins/plugin.filler) by extensions ['ros']
+[0.109s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins/plugin.filler) by extension 'ros'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins/plugin.filler) by extensions ['cmake', 'python']
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins/plugin.filler) by extension 'cmake'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins/plugin.filler) by extension 'python'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins/plugin.filler) by extensions ['python_setup_py']
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/plugins/plugin.filler) by extension 'python_setup_py'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/scales) by extensions ['ignore', 'ignore_ament_install']
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/scales) by extension 'ignore'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/scales) by extension 'ignore_ament_install'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/scales) by extensions ['colcon_pkg']
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/scales) by extension 'colcon_pkg'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/scales) by extensions ['colcon_meta']
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/scales) by extension 'colcon_meta'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/scales) by extensions ['ros']
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/scales) by extension 'ros'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/scales) by extensions ['cmake', 'python']
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/scales) by extension 'cmake'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/scales) by extension 'python'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/scales) by extensions ['python_setup_py']
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/scales) by extension 'python_setup_py'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/types) by extensions ['ignore', 'ignore_ament_install']
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/types) by extension 'ignore'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/types) by extension 'ignore_ament_install'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/types) by extensions ['colcon_pkg']
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/types) by extension 'colcon_pkg'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/types) by extensions ['colcon_meta']
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/types) by extension 'colcon_meta'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/types) by extensions ['ros']
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/types) by extension 'ros'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/types) by extensions ['cmake', 'python']
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/types) by extension 'cmake'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/types) by extension 'python'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/types) by extensions ['python_setup_py']
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/dist/types) by extension 'python_setup_py'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/helpers) by extensions ['ignore', 'ignore_ament_install']
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/helpers) by extension 'ignore'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/helpers) by extension 'ignore_ament_install'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/helpers) by extensions ['colcon_pkg']
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/helpers) by extension 'colcon_pkg'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/helpers) by extensions ['colcon_meta']
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/helpers) by extension 'colcon_meta'
+[0.110s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/helpers) by extensions ['ros']
+[0.111s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/helpers) by extension 'ros'
+[0.111s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/helpers) by extensions ['cmake', 'python']
+[0.111s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/helpers) by extension 'cmake'
+[0.111s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/helpers) by extension 'python'
+[0.111s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/helpers) by extensions ['python_setup_py']
+[0.111s] Level 1:colcon.colcon_core.package_identification:_identify(node_modules/chart.js/helpers) by extension 'python_setup_py'
+[0.111s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.111s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.111s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.111s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.111s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.121s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.122s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.123s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 5 installed packages in /home/yasmin/CS_workspace/install
+[0.124s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 256 installed packages in /opt/ros/foxy
+[0.125s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.150s] Level 5:colcon.colcon_core.verb:set package 'avionics_interfaces' build argument 'cmake_args' from command line to 'None'
+[0.150s] Level 5:colcon.colcon_core.verb:set package 'avionics_interfaces' build argument 'cmake_target' from command line to 'None'
+[0.150s] Level 5:colcon.colcon_core.verb:set package 'avionics_interfaces' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.150s] Level 5:colcon.colcon_core.verb:set package 'avionics_interfaces' build argument 'cmake_clean_cache' from command line to 'False'
+[0.150s] Level 5:colcon.colcon_core.verb:set package 'avionics_interfaces' build argument 'cmake_clean_first' from command line to 'False'
+[0.150s] Level 5:colcon.colcon_core.verb:set package 'avionics_interfaces' build argument 'cmake_force_configure' from command line to 'False'
+[0.150s] Level 5:colcon.colcon_core.verb:set package 'avionics_interfaces' build argument 'ament_cmake_args' from command line to 'None'
+[0.150s] Level 5:colcon.colcon_core.verb:set package 'avionics_interfaces' build argument 'catkin_cmake_args' from command line to 'None'
+[0.150s] Level 5:colcon.colcon_core.verb:set package 'avionics_interfaces' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.150s] DEBUG:colcon.colcon_core.verb:Building package 'avionics_interfaces' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/yasmin/CS_workspace/build/avionics_interfaces', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/yasmin/CS_workspace/install/avionics_interfaces', 'merge_install': False, 'path': '/home/yasmin/CS_workspace/cs_ws/src/avionics_interfaces', 'symlink_install': False, 'test_result_base': None}
+[0.151s] Level 5:colcon.colcon_core.verb:set package 'cs_test_pkg' build argument 'cmake_args' from command line to 'None'
+[0.151s] Level 5:colcon.colcon_core.verb:set package 'cs_test_pkg' build argument 'cmake_target' from command line to 'None'
+[0.151s] Level 5:colcon.colcon_core.verb:set package 'cs_test_pkg' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.151s] Level 5:colcon.colcon_core.verb:set package 'cs_test_pkg' build argument 'cmake_clean_cache' from command line to 'False'
+[0.151s] Level 5:colcon.colcon_core.verb:set package 'cs_test_pkg' build argument 'cmake_clean_first' from command line to 'False'
+[0.151s] Level 5:colcon.colcon_core.verb:set package 'cs_test_pkg' build argument 'cmake_force_configure' from command line to 'False'
+[0.151s] Level 5:colcon.colcon_core.verb:set package 'cs_test_pkg' build argument 'ament_cmake_args' from command line to 'None'
+[0.151s] Level 5:colcon.colcon_core.verb:set package 'cs_test_pkg' build argument 'catkin_cmake_args' from command line to 'None'
+[0.151s] Level 5:colcon.colcon_core.verb:set package 'cs_test_pkg' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.151s] DEBUG:colcon.colcon_core.verb:Building package 'cs_test_pkg' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/yasmin/CS_workspace/build/cs_test_pkg', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/yasmin/CS_workspace/install/cs_test_pkg', 'merge_install': False, 'path': '/home/yasmin/CS_workspace/cs_ws/src/cs_test_pkg', 'symlink_install': False, 'test_result_base': None}
+[0.152s] Level 5:colcon.colcon_core.verb:set package 'rover_pkg' build argument 'cmake_args' from command line to 'None'
+[0.152s] Level 5:colcon.colcon_core.verb:set package 'rover_pkg' build argument 'cmake_target' from command line to 'None'
+[0.152s] Level 5:colcon.colcon_core.verb:set package 'rover_pkg' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.152s] Level 5:colcon.colcon_core.verb:set package 'rover_pkg' build argument 'cmake_clean_cache' from command line to 'False'
+[0.152s] Level 5:colcon.colcon_core.verb:set package 'rover_pkg' build argument 'cmake_clean_first' from command line to 'False'
+[0.152s] Level 5:colcon.colcon_core.verb:set package 'rover_pkg' build argument 'cmake_force_configure' from command line to 'False'
+[0.152s] Level 5:colcon.colcon_core.verb:set package 'rover_pkg' build argument 'ament_cmake_args' from command line to 'None'
+[0.152s] Level 5:colcon.colcon_core.verb:set package 'rover_pkg' build argument 'catkin_cmake_args' from command line to 'None'
+[0.152s] Level 5:colcon.colcon_core.verb:set package 'rover_pkg' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.152s] DEBUG:colcon.colcon_core.verb:Building package 'rover_pkg' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/yasmin/CS_workspace/build/rover_pkg', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/yasmin/CS_workspace/install/rover_pkg', 'merge_install': False, 'path': '/home/yasmin/CS_workspace/cs_ws/src/rover_pkg', 'symlink_install': False, 'test_result_base': None}
+[0.153s] Level 5:colcon.colcon_core.verb:set package 'xplore_interfaces' build argument 'cmake_args' from command line to 'None'
+[0.153s] Level 5:colcon.colcon_core.verb:set package 'xplore_interfaces' build argument 'cmake_target' from command line to 'None'
+[0.153s] Level 5:colcon.colcon_core.verb:set package 'xplore_interfaces' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.153s] Level 5:colcon.colcon_core.verb:set package 'xplore_interfaces' build argument 'cmake_clean_cache' from command line to 'False'
+[0.153s] Level 5:colcon.colcon_core.verb:set package 'xplore_interfaces' build argument 'cmake_clean_first' from command line to 'False'
+[0.153s] Level 5:colcon.colcon_core.verb:set package 'xplore_interfaces' build argument 'cmake_force_configure' from command line to 'False'
+[0.153s] Level 5:colcon.colcon_core.verb:set package 'xplore_interfaces' build argument 'ament_cmake_args' from command line to 'None'
+[0.153s] Level 5:colcon.colcon_core.verb:set package 'xplore_interfaces' build argument 'catkin_cmake_args' from command line to 'None'
+[0.153s] Level 5:colcon.colcon_core.verb:set package 'xplore_interfaces' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.153s] DEBUG:colcon.colcon_core.verb:Building package 'xplore_interfaces' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/yasmin/CS_workspace/build/xplore_interfaces', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/yasmin/CS_workspace/install/xplore_interfaces', 'merge_install': False, 'path': '/home/yasmin/CS_workspace/cs_ws/src/xplore_interfaces', 'symlink_install': False, 'test_result_base': None}
+[0.153s] Level 5:colcon.colcon_core.verb:set package 'control_station_pkg' build argument 'cmake_args' from command line to 'None'
+[0.154s] Level 5:colcon.colcon_core.verb:set package 'control_station_pkg' build argument 'cmake_target' from command line to 'None'
+[0.154s] Level 5:colcon.colcon_core.verb:set package 'control_station_pkg' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.154s] Level 5:colcon.colcon_core.verb:set package 'control_station_pkg' build argument 'cmake_clean_cache' from command line to 'False'
+[0.154s] Level 5:colcon.colcon_core.verb:set package 'control_station_pkg' build argument 'cmake_clean_first' from command line to 'False'
+[0.154s] Level 5:colcon.colcon_core.verb:set package 'control_station_pkg' build argument 'cmake_force_configure' from command line to 'False'
+[0.154s] Level 5:colcon.colcon_core.verb:set package 'control_station_pkg' build argument 'ament_cmake_args' from command line to 'None'
+[0.154s] Level 5:colcon.colcon_core.verb:set package 'control_station_pkg' build argument 'catkin_cmake_args' from command line to 'None'
+[0.154s] Level 5:colcon.colcon_core.verb:set package 'control_station_pkg' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.154s] DEBUG:colcon.colcon_core.verb:Building package 'control_station_pkg' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/yasmin/CS_workspace/build/control_station_pkg', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/yasmin/CS_workspace/install/control_station_pkg', 'merge_install': False, 'path': '/home/yasmin/CS_workspace/cs_ws/src/control_station_pkg', 'symlink_install': False, 'test_result_base': None}
+[0.154s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.158s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.158s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/yasmin/CS_workspace/cs_ws/src/avionics_interfaces' with build type 'ament_cmake'
+[0.158s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/yasmin/CS_workspace/cs_ws/src/avionics_interfaces'
+[0.161s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.161s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.161s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.165s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/yasmin/CS_workspace/cs_ws/src/cs_test_pkg' with build type 'ament_python'
+[0.165s] Level 1:colcon.colcon_core.shell:create_environment_hook('cs_test_pkg', 'ament_prefix_path')
+[0.166s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/cs_test_pkg/share/cs_test_pkg/hook/ament_prefix_path.ps1'
+[0.167s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/yasmin/CS_workspace/install/cs_test_pkg/share/cs_test_pkg/hook/ament_prefix_path.dsv'
+[0.167s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/cs_test_pkg/share/cs_test_pkg/hook/ament_prefix_path.sh'
+[0.169s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.169s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.173s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/yasmin/CS_workspace/cs_ws/src/rover_pkg' with build type 'ament_python'
+[0.173s] Level 1:colcon.colcon_core.shell:create_environment_hook('rover_pkg', 'ament_prefix_path')
+[0.175s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/rover_pkg/share/rover_pkg/hook/ament_prefix_path.ps1'
+[0.175s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/yasmin/CS_workspace/install/rover_pkg/share/rover_pkg/hook/ament_prefix_path.dsv'
+[0.176s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/rover_pkg/share/rover_pkg/hook/ament_prefix_path.sh'
+[0.177s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.177s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.181s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/yasmin/CS_workspace/cs_ws/src/xplore_interfaces' with build type 'ament_cmake'
+[0.181s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/yasmin/CS_workspace/cs_ws/src/xplore_interfaces'
+[0.183s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.183s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.191s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/yasmin/CS_workspace/build/avionics_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/yasmin/CS_workspace/install/rover_pkg:/home/yasmin/CS_workspace/install/cs_test_pkg:/home/yasmin/CS_workspace/install/control_station_pkg:/opt/ros/foxy /usr/bin/cmake --build /home/yasmin/CS_workspace/build/avionics_interfaces -- -j4 -l4
+[0.297s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/yasmin/CS_workspace/cs_ws/src/cs_test_pkg'
+[0.299s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.299s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.403s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/yasmin/CS_workspace/cs_ws/src/rover_pkg'
+[0.405s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.405s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.413s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/yasmin/CS_workspace/build/xplore_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/yasmin/CS_workspace/install/rover_pkg:/home/yasmin/CS_workspace/install/cs_test_pkg:/home/yasmin/CS_workspace/install/control_station_pkg:/opt/ros/foxy /usr/bin/cmake --build /home/yasmin/CS_workspace/build/xplore_interfaces -- -j4 -l4
+[0.436s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/yasmin/CS_workspace/build/avionics_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/yasmin/CS_workspace/install/rover_pkg:/home/yasmin/CS_workspace/install/cs_test_pkg:/home/yasmin/CS_workspace/install/control_station_pkg:/opt/ros/foxy /usr/bin/cmake --build /home/yasmin/CS_workspace/build/avionics_interfaces -- -j4 -l4
+[0.614s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/yasmin/CS_workspace/cs_ws/src/rover_pkg': PYTHONPATH=/home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../../build/rover_pkg build --build-base /home/yasmin/CS_workspace/build/rover_pkg/build install --prefix /home/yasmin/CS_workspace/install/rover_pkg --record /home/yasmin/CS_workspace/build/rover_pkg/install.log --single-version-externally-managed
+[0.617s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/yasmin/CS_workspace/cs_ws/src/cs_test_pkg': PYTHONPATH=/home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../../build/cs_test_pkg build --build-base /home/yasmin/CS_workspace/build/cs_test_pkg/build install --prefix /home/yasmin/CS_workspace/install/cs_test_pkg --record /home/yasmin/CS_workspace/build/cs_test_pkg/install.log --single-version-externally-managed
+[0.659s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/yasmin/CS_workspace/build/xplore_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/yasmin/CS_workspace/install/rover_pkg:/home/yasmin/CS_workspace/install/cs_test_pkg:/home/yasmin/CS_workspace/install/control_station_pkg:/opt/ros/foxy /usr/bin/cmake --build /home/yasmin/CS_workspace/build/xplore_interfaces -- -j4 -l4
+[0.758s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/yasmin/CS_workspace/build/xplore_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/yasmin/CS_workspace/install/rover_pkg:/home/yasmin/CS_workspace/install/cs_test_pkg:/home/yasmin/CS_workspace/install/control_station_pkg:/opt/ros/foxy /usr/bin/cmake --install /home/yasmin/CS_workspace/build/xplore_interfaces
+[0.779s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/yasmin/CS_workspace/cs_ws/src/rover_pkg' returned '0': PYTHONPATH=/home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../../build/rover_pkg build --build-base /home/yasmin/CS_workspace/build/rover_pkg/build install --prefix /home/yasmin/CS_workspace/install/rover_pkg --record /home/yasmin/CS_workspace/build/rover_pkg/install.log --single-version-externally-managed
+[0.783s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/rover_pkg' for CMake module files
+[0.783s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/rover_pkg' for CMake config files
+[0.783s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/rover_pkg/lib'
+[0.783s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/rover_pkg/bin'
+[0.783s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/rover_pkg/lib/pkgconfig/rover_pkg.pc'
+[0.784s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages'
+[0.784s] Level 1:colcon.colcon_core.shell:create_environment_hook('rover_pkg', 'pythonpath')
+[0.785s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/rover_pkg/share/rover_pkg/hook/pythonpath.ps1'
+[0.785s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/yasmin/CS_workspace/install/rover_pkg/share/rover_pkg/hook/pythonpath.dsv'
+[0.785s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/rover_pkg/share/rover_pkg/hook/pythonpath.sh'
+[0.786s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/rover_pkg/bin'
+[0.786s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(rover_pkg)
+[0.787s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/rover_pkg/share/rover_pkg/package.ps1'
+[0.788s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/yasmin/CS_workspace/install/rover_pkg/share/rover_pkg/package.dsv'
+[0.788s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/rover_pkg/share/rover_pkg/package.sh'
+[0.788s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/rover_pkg/share/rover_pkg/package.bash'
+[0.789s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/rover_pkg/share/rover_pkg/package.zsh'
+[0.789s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/yasmin/CS_workspace/install/rover_pkg/share/colcon-core/packages/rover_pkg)
+[0.792s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/cs_test_pkg' for CMake module files
+[0.792s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/yasmin/CS_workspace/cs_ws/src/cs_test_pkg' returned '0': PYTHONPATH=/home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../../build/cs_test_pkg build --build-base /home/yasmin/CS_workspace/build/cs_test_pkg/build install --prefix /home/yasmin/CS_workspace/install/cs_test_pkg --record /home/yasmin/CS_workspace/build/cs_test_pkg/install.log --single-version-externally-managed
+[0.793s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/cs_test_pkg' for CMake config files
+[0.793s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/cs_test_pkg/lib'
+[0.793s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/cs_test_pkg/bin'
+[0.793s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/cs_test_pkg/lib/pkgconfig/cs_test_pkg.pc'
+[0.793s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages'
+[0.793s] Level 1:colcon.colcon_core.shell:create_environment_hook('cs_test_pkg', 'pythonpath')
+[0.799s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/cs_test_pkg/share/cs_test_pkg/hook/pythonpath.ps1'
+[0.800s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/yasmin/CS_workspace/install/cs_test_pkg/share/cs_test_pkg/hook/pythonpath.dsv'
+[0.800s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/cs_test_pkg/share/cs_test_pkg/hook/pythonpath.sh'
+[0.802s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/cs_test_pkg/bin'
+[0.802s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(cs_test_pkg)
+[0.804s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/cs_test_pkg/share/cs_test_pkg/package.ps1'
+[0.804s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/yasmin/CS_workspace/install/cs_test_pkg/share/cs_test_pkg/package.dsv'
+[0.804s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/cs_test_pkg/share/cs_test_pkg/package.sh'
+[0.804s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/cs_test_pkg/share/cs_test_pkg/package.bash'
+[0.804s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/cs_test_pkg/share/cs_test_pkg/package.zsh'
+[0.805s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/yasmin/CS_workspace/install/cs_test_pkg/share/colcon-core/packages/cs_test_pkg)
+[0.805s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(xplore_interfaces)
+[0.807s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/xplore_interfaces' for CMake module files
+[0.808s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/yasmin/CS_workspace/build/xplore_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/yasmin/CS_workspace/install/rover_pkg:/home/yasmin/CS_workspace/install/cs_test_pkg:/home/yasmin/CS_workspace/install/control_station_pkg:/opt/ros/foxy /usr/bin/cmake --install /home/yasmin/CS_workspace/build/xplore_interfaces
+[0.808s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/xplore_interfaces' for CMake config files
+[0.808s] Level 1:colcon.colcon_core.shell:create_environment_hook('xplore_interfaces', 'cmake_prefix_path')
+[0.809s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/hook/cmake_prefix_path.ps1'
+[0.810s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/hook/cmake_prefix_path.dsv'
+[0.810s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/hook/cmake_prefix_path.sh'
+[0.810s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/xplore_interfaces/lib'
+[0.810s] Level 1:colcon.colcon_core.shell:create_environment_hook('xplore_interfaces', 'ld_library_path_lib')
+[0.812s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/hook/ld_library_path_lib.ps1'
+[0.812s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/hook/ld_library_path_lib.dsv'
+[0.812s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/hook/ld_library_path_lib.sh'
+[0.812s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/xplore_interfaces/bin'
+[0.812s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/xplore_interfaces/lib/pkgconfig/xplore_interfaces.pc'
+[0.812s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/xplore_interfaces/lib/python3.8/site-packages'
+[0.813s] Level 1:colcon.colcon_core.shell:create_environment_hook('xplore_interfaces', 'pythonpath')
+[0.814s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/hook/pythonpath.ps1'
+[0.814s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/hook/pythonpath.dsv'
+[0.814s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/hook/pythonpath.sh'
+[0.815s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/xplore_interfaces/bin'
+[0.816s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/package.ps1'
+[0.816s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/package.dsv'
+[0.816s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/package.sh'
+[0.817s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/package.bash'
+[0.817s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/package.zsh'
+[0.817s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/yasmin/CS_workspace/install/xplore_interfaces/share/colcon-core/packages/xplore_interfaces)
+[0.892s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(xplore_interfaces)
+[0.894s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/xplore_interfaces' for CMake module files
+[0.894s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/xplore_interfaces' for CMake config files
+[0.895s] Level 1:colcon.colcon_core.shell:create_environment_hook('xplore_interfaces', 'cmake_prefix_path')
+[0.896s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/hook/cmake_prefix_path.ps1'
+[0.896s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/hook/cmake_prefix_path.dsv'
+[0.897s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/hook/cmake_prefix_path.sh'
+[0.897s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/xplore_interfaces/lib'
+[0.897s] Level 1:colcon.colcon_core.shell:create_environment_hook('xplore_interfaces', 'ld_library_path_lib')
+[0.898s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/hook/ld_library_path_lib.ps1'
+[0.899s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/hook/ld_library_path_lib.dsv'
+[0.899s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/hook/ld_library_path_lib.sh'
+[0.899s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/xplore_interfaces/bin'
+[0.899s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/xplore_interfaces/lib/pkgconfig/xplore_interfaces.pc'
+[0.899s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/xplore_interfaces/lib/python3.8/site-packages'
+[0.899s] Level 1:colcon.colcon_core.shell:create_environment_hook('xplore_interfaces', 'pythonpath')
+[0.901s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/hook/pythonpath.ps1'
+[0.901s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/hook/pythonpath.dsv'
+[0.901s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/hook/pythonpath.sh'
+[0.901s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/xplore_interfaces/bin'
+[0.903s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/package.ps1'
+[0.903s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/package.dsv'
+[0.903s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/package.sh'
+[0.904s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/package.bash'
+[0.904s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/xplore_interfaces/share/xplore_interfaces/package.zsh'
+[0.904s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/yasmin/CS_workspace/install/xplore_interfaces/share/colcon-core/packages/xplore_interfaces)
+[1.069s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/yasmin/CS_workspace/build/avionics_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/yasmin/CS_workspace/install/rover_pkg:/home/yasmin/CS_workspace/install/cs_test_pkg:/home/yasmin/CS_workspace/install/control_station_pkg:/opt/ros/foxy /usr/bin/cmake --install /home/yasmin/CS_workspace/build/avionics_interfaces
+[1.118s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(avionics_interfaces)
+[1.121s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/avionics_interfaces' for CMake module files
+[1.121s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/yasmin/CS_workspace/build/avionics_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/yasmin/CS_workspace/install/rover_pkg:/home/yasmin/CS_workspace/install/cs_test_pkg:/home/yasmin/CS_workspace/install/control_station_pkg:/opt/ros/foxy /usr/bin/cmake --install /home/yasmin/CS_workspace/build/avionics_interfaces
+[1.121s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/avionics_interfaces' for CMake config files
+[1.121s] Level 1:colcon.colcon_core.shell:create_environment_hook('avionics_interfaces', 'cmake_prefix_path')
+[1.123s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/hook/cmake_prefix_path.ps1'
+[1.123s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/hook/cmake_prefix_path.dsv'
+[1.123s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/hook/cmake_prefix_path.sh'
+[1.124s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/avionics_interfaces/lib'
+[1.124s] Level 1:colcon.colcon_core.shell:create_environment_hook('avionics_interfaces', 'ld_library_path_lib')
+[1.125s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/hook/ld_library_path_lib.ps1'
+[1.125s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/hook/ld_library_path_lib.dsv'
+[1.125s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/hook/ld_library_path_lib.sh'
+[1.126s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/avionics_interfaces/bin'
+[1.126s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/avionics_interfaces/lib/pkgconfig/avionics_interfaces.pc'
+[1.126s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/avionics_interfaces/lib/python3.8/site-packages'
+[1.126s] Level 1:colcon.colcon_core.shell:create_environment_hook('avionics_interfaces', 'pythonpath')
+[1.127s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/hook/pythonpath.ps1'
+[1.127s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/hook/pythonpath.dsv'
+[1.127s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/hook/pythonpath.sh'
+[1.128s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/avionics_interfaces/bin'
+[1.129s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/package.ps1'
+[1.130s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/package.dsv'
+[1.130s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/package.sh'
+[1.130s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/package.bash'
+[1.130s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/package.zsh'
+[1.130s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/yasmin/CS_workspace/install/avionics_interfaces/share/colcon-core/packages/avionics_interfaces)
+[1.632s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(avionics_interfaces)
+[1.634s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/avionics_interfaces' for CMake module files
+[1.634s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/avionics_interfaces' for CMake config files
+[1.635s] Level 1:colcon.colcon_core.shell:create_environment_hook('avionics_interfaces', 'cmake_prefix_path')
+[1.636s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/hook/cmake_prefix_path.ps1'
+[1.636s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/hook/cmake_prefix_path.dsv'
+[1.636s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/hook/cmake_prefix_path.sh'
+[1.637s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/avionics_interfaces/lib'
+[1.637s] Level 1:colcon.colcon_core.shell:create_environment_hook('avionics_interfaces', 'ld_library_path_lib')
+[1.638s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/hook/ld_library_path_lib.ps1'
+[1.639s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/hook/ld_library_path_lib.dsv'
+[1.639s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/hook/ld_library_path_lib.sh'
+[1.639s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/avionics_interfaces/bin'
+[1.639s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/avionics_interfaces/lib/pkgconfig/avionics_interfaces.pc'
+[1.639s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/avionics_interfaces/lib/python3.8/site-packages'
+[1.639s] Level 1:colcon.colcon_core.shell:create_environment_hook('avionics_interfaces', 'pythonpath')
+[1.640s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/hook/pythonpath.ps1'
+[1.641s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/hook/pythonpath.dsv'
+[1.641s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/hook/pythonpath.sh'
+[1.641s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/avionics_interfaces/bin'
+[1.643s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/package.ps1'
+[1.643s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/package.dsv'
+[1.643s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/package.sh'
+[1.644s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/package.bash'
+[1.644s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/avionics_interfaces/share/avionics_interfaces/package.zsh'
+[1.644s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/yasmin/CS_workspace/install/avionics_interfaces/share/colcon-core/packages/avionics_interfaces)
+[1.644s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/yasmin/CS_workspace/cs_ws/src/control_station_pkg' with build type 'ament_python'
+[1.645s] Level 1:colcon.colcon_core.shell:create_environment_hook('control_station_pkg', 'ament_prefix_path')
+[1.646s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/control_station_pkg/share/control_station_pkg/hook/ament_prefix_path.ps1'
+[1.647s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/yasmin/CS_workspace/install/control_station_pkg/share/control_station_pkg/hook/ament_prefix_path.dsv'
+[1.647s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/control_station_pkg/share/control_station_pkg/hook/ament_prefix_path.sh'
+[1.648s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.648s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.751s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/yasmin/CS_workspace/cs_ws/src/control_station_pkg'
+[1.753s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.753s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.922s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/yasmin/CS_workspace/cs_ws/src/control_station_pkg': CMAKE_PREFIX_PATH=/home/yasmin/CS_workspace/install/avionics_interfaces:/home/yasmin/CS_workspace/install/xplore_interfaces LD_LIBRARY_PATH=/home/yasmin/CS_workspace/install/avionics_interfaces/lib:/home/yasmin/CS_workspace/install/xplore_interfaces/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib PYTHONPATH=/home/yasmin/CS_workspace/install/control_station_pkg/lib/python3.8/site-packages:/home/yasmin/CS_workspace/install/avionics_interfaces/lib/python3.8/site-packages:/home/yasmin/CS_workspace/install/xplore_interfaces/lib/python3.8/site-packages:/home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages:/home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages:/home/yasmin/CS_workspace/install/control_station_pkg/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages /usr/bin/python3 setup.py egg_info --egg-base ../../../build/control_station_pkg build --build-base /home/yasmin/CS_workspace/build/control_station_pkg/build install --prefix /home/yasmin/CS_workspace/install/control_station_pkg --record /home/yasmin/CS_workspace/build/control_station_pkg/install.log --single-version-externally-managed
+[2.048s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/control_station_pkg' for CMake module files
+[2.048s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/yasmin/CS_workspace/cs_ws/src/control_station_pkg' returned '0': CMAKE_PREFIX_PATH=/home/yasmin/CS_workspace/install/avionics_interfaces:/home/yasmin/CS_workspace/install/xplore_interfaces LD_LIBRARY_PATH=/home/yasmin/CS_workspace/install/avionics_interfaces/lib:/home/yasmin/CS_workspace/install/xplore_interfaces/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib PYTHONPATH=/home/yasmin/CS_workspace/install/control_station_pkg/lib/python3.8/site-packages:/home/yasmin/CS_workspace/install/avionics_interfaces/lib/python3.8/site-packages:/home/yasmin/CS_workspace/install/xplore_interfaces/lib/python3.8/site-packages:/home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages:/home/yasmin/CS_workspace/install/cs_test_pkg/lib/python3.8/site-packages:/home/yasmin/CS_workspace/install/control_station_pkg/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages /usr/bin/python3 setup.py egg_info --egg-base ../../../build/control_station_pkg build --build-base /home/yasmin/CS_workspace/build/control_station_pkg/build install --prefix /home/yasmin/CS_workspace/install/control_station_pkg --record /home/yasmin/CS_workspace/build/control_station_pkg/install.log --single-version-externally-managed
+[2.048s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/control_station_pkg' for CMake config files
+[2.049s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/control_station_pkg/lib'
+[2.049s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/control_station_pkg/bin'
+[2.049s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/control_station_pkg/lib/pkgconfig/control_station_pkg.pc'
+[2.049s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/control_station_pkg/lib/python3.8/site-packages'
+[2.049s] Level 1:colcon.colcon_core.shell:create_environment_hook('control_station_pkg', 'pythonpath')
+[2.050s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/control_station_pkg/share/control_station_pkg/hook/pythonpath.ps1'
+[2.051s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/yasmin/CS_workspace/install/control_station_pkg/share/control_station_pkg/hook/pythonpath.dsv'
+[2.051s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/yasmin/CS_workspace/install/control_station_pkg/share/control_station_pkg/hook/pythonpath.sh'
+[2.051s] Level 1:colcon.colcon_core.environment:checking '/home/yasmin/CS_workspace/install/control_station_pkg/bin'
+[2.051s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(control_station_pkg)
+[2.053s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/control_station_pkg/share/control_station_pkg/package.ps1'
+[2.053s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/yasmin/CS_workspace/install/control_station_pkg/share/control_station_pkg/package.dsv'
+[2.053s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/control_station_pkg/share/control_station_pkg/package.sh'
+[2.053s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/control_station_pkg/share/control_station_pkg/package.bash'
+[2.054s] INFO:colcon.colcon_core.shell:Creating package script '/home/yasmin/CS_workspace/install/control_station_pkg/share/control_station_pkg/package.zsh'
+[2.054s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/yasmin/CS_workspace/install/control_station_pkg/share/colcon-core/packages/control_station_pkg)
+[2.054s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[2.054s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[2.055s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[2.055s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[2.059s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[2.059s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[2.059s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[2.066s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[2.067s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/yasmin/CS_workspace/install/local_setup.ps1'
+[2.068s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/yasmin/CS_workspace/install/_local_setup_util_ps1.py'
+[2.069s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/yasmin/CS_workspace/install/setup.ps1'
+[2.070s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/yasmin/CS_workspace/install/local_setup.sh'
+[2.070s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/yasmin/CS_workspace/install/_local_setup_util_sh.py'
+[2.070s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/yasmin/CS_workspace/install/setup.sh'
+[2.071s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/yasmin/CS_workspace/install/local_setup.bash'
+[2.071s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/yasmin/CS_workspace/install/setup.bash'
+[2.072s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/yasmin/CS_workspace/install/local_setup.zsh'
+[2.073s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/yasmin/CS_workspace/install/setup.zsh'

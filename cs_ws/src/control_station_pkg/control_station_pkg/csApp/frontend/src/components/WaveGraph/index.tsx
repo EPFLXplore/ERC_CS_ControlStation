@@ -6,7 +6,7 @@ Chart.register(...registerables);
 interface GraphProps {
 	measure: { x: number; y: number }[];
 	pointsSecondWave: { x: number; y: number }[];
-	candidates: { percentage: number; element: string }[];
+	candidates: string[];
 }
 
 export const WaveGraph: React.FC<GraphProps> = ({ measure, pointsSecondWave, candidates }) => {
@@ -25,26 +25,7 @@ export const WaveGraph: React.FC<GraphProps> = ({ measure, pointsSecondWave, can
 				chartInstanceRef.current = new Chart(ctx, {
 					type: "line",
 					data: {
-						labels: [
-							"410",
-							"435",
-							"460",
-							"485",
-							"510",
-							"535",
-							"560",
-							"585",
-							"610",
-							"645",
-							"680",
-							"705",
-							"730",
-							"760",
-							"810",
-							"860",
-							"900",
-							"940",
-						],
+						labels: [460,480,500,520,540,660,680,700,720,740,860,880,900,920,940],
 						datasets: [
 							{
 								label: "Current measure",
@@ -78,7 +59,10 @@ export const WaveGraph: React.FC<GraphProps> = ({ measure, pointsSecondWave, can
 							},
 							y: {
 								display: true,
-								max: 10,
+								max: Math.max(
+									measure.map((point) => point.y).reduce((a, b) => Math.max(a, b)),
+									pointsSecondWave.map((point) => point.y).reduce((a, b) => Math.max(a, b))
+								),
 								min: 0,
 								title: {
 									display: true,
@@ -109,7 +93,7 @@ export const WaveGraph: React.FC<GraphProps> = ({ measure, pointsSecondWave, can
 		<div className={styles.GraphContainer}>
 			<div className={styles.text}>
 				<h3>
-					{candidates[0].percentage}%, {candidates[0].element}
+					{candidates[0]}
 				</h3>
 			</div>
 			<canvas ref={chartRef} />

@@ -1,0 +1,22 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from avionics_interfaces/msg/LEDResponse.msg
+// generated code does not contain a copyright notice
+
+
+module avionics_interfaces {
+  module msg {
+    @verbatim (language="comment", text=
+      " LEDResponse.msg")
+    struct LEDResponse {
+      uint16 id;
+
+      @verbatim (language="comment", text=
+        " Current LED state")
+      uint8 state;
+
+      @verbatim (language="comment", text=
+        " True if LED has been set to the correct state")
+      boolean success;
+    };
+  };
+};

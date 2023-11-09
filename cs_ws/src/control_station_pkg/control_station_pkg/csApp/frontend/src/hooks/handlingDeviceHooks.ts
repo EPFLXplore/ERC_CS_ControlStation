@@ -6,9 +6,10 @@ function useHandlingDevice() {
 	const [jointPositions, setJointPositions] = useState([0, 0, 0, 0, 0, 0]);
 	const [jointVelocities, setJointVelocities] = useState([0, 0, 0, 0, 0, 0]);
 	const [jointCurrents, setJointCurrents] = useState([0, 0, 0, 0, 0, 0]);
-	const [detectedTags, setDetectedTags] = useState([false, false, false, false]);
+	const [availableButtons, setAvailableButtons] = useState(new Array(16).fill(false));
 	const [taskSuccess, setTaskSuccess] = useState(false);
 	const [voltmeter, setVoltmeter] = useState(0);
+	const [ready, setReady] = useState(false);
 
 	useEffect(() => {
 		let handlingDeviceSocket = new WebSocket("ws://127.0.0.1:8000/ws/csApp/info_hd/");
@@ -19,9 +20,10 @@ function useHandlingDevice() {
 			setJointPositions(data.joint_position);
 			setJointVelocities(data.joint_velocity);
 			setJointCurrents(data.joint_current);
-			setDetectedTags(data.detected_tags);
+			setAvailableButtons(data.available_buttons);
 			setTaskSuccess(data.task_outcome);
 			setVoltmeter(data.voltage);
+			setReady(data.ready == 1);
 		};
 
 		handlingDeviceSocket.onerror = (e) => {
@@ -32,15 +34,15 @@ function useHandlingDevice() {
 		setSocket(handlingDeviceSocket);
 	}, []);
 
-	const openVoltmeter = (angle: number) => {
+	const openVoltmeter = (open: boolean) => {
 		const csrftoken = getCookie("csrftoken");
 		const data = new FormData();
-		data.append("id", angle.toString());
+		data.append("deployment", open ? "open" : "close");
 
 		let request = new Request(
 			"http://127.0.0.1:8000/csApp/handlingdevice/deploy_hd_voltmeter",
 			{
-				method: "GET",
+				method: "POST",
 				headers: {
 					"X-CSRFToken": csrftoken ?? "",
 				},
@@ -58,10 +60,11 @@ function useHandlingDevice() {
 		jointPositions,
 		jointVelocities,
 		jointCurrents,
-		detectedTags,
+		availableButtons,
 		taskSuccess,
 		voltmeter,
 		openVoltmeter,
+		ready
 	] as const;
 }
 

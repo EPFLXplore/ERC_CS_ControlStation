@@ -3,6 +3,7 @@ import map from "../../assets/images/mars_yard_2023.png";
 import roverIconImage from "../../assets/images/icons/rover_icon.svg";
 import roverGoalIconImage from "../../assets/images/icons/rover_goal.svg";
 import roverTempGoalIconImage from "../../assets/images/icons/rover_goal_temp.svg";
+import obstacles from "../../assets/images/mars_yard_2023_obstacles.png";
 import { useState, useEffect, useRef } from "react";
 import { roundToTwoDecimals } from "../../utils/maths";
 import { Goal } from "../../hooks/navigationHooks";
@@ -28,22 +29,27 @@ var pointSpacing: number;
 const Map = ({
 	origin,
 	trajectory,
+	path,
 	goals,
 	tempGoal,
 	savedGoals,
 	onMapClick,
 	onMapDrag,
+	triggerObstacles = false,
 }: {
 	origin: Point;
 	trajectory: Point[];
+	path: Point[];
 	goals: Point[];
 	tempGoal: Point | undefined;
 	savedGoals: Goal[];
 	onMapClick?: (x: number, y: number) => void;
 	onMapDrag?: (x: number, y: number) => void;
+	triggerObstacles?: boolean;
 }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [image, setImage] = useState<HTMLImageElement>();
+	const [imageObstacles, setImageObstacles] = useState<HTMLImageElement>();
 	const [roverIcon, setRoverIcon] = useState<HTMLImageElement>(new Image());
 	const [roverGoalIcon, setRoverGoalIcon] = useState<HTMLImageElement>(new Image());
 	const [roverTempGoalIcon, setRoverTempGoalIcon] = useState<HTMLImageElement>(new Image());
@@ -84,6 +90,19 @@ const Map = ({
 	}, [map]);
 
 	useEffect(() => {
+		if(triggerObstacles) {
+			// Load the obstacles image
+			const imgObstacles = new Image();
+			imgObstacles.onload = () => {
+				setImageObstacles(imgObstacles);
+			};
+			imgObstacles.src = obstacles;
+		} else {
+			setImageObstacles(undefined);
+		}
+	}, [triggerObstacles])
+
+	useEffect(() => {
 		console.log("use effect draw grid called");
 		// Draw the grid on the canvas
 		const canvas = canvasRef.current;
@@ -92,7 +111,8 @@ const Map = ({
 			mapCTX = ctx;
 
 			if (ctx) {
-				drawMap(canvas, ctx, image, origin);
+				drawMap(canvas, ctx, image, imageObstacles, origin);
+				drawTrajectory(path, undefined, "#8806CE");
 				drawTrajectory(trajectory, roverIcon);
 				savedGoals.forEach((goal: Goal) =>
 					drawGoal(goal, "#0D99FF", undefined, goal.id)
@@ -101,7 +121,7 @@ const Map = ({
 				goals.forEach((goal: Point) => drawGoal(goal, "#0E6655", roverGoalIcon));
 			}
 		}
-	}, [image, imageWidth, imageHeight, trajectory, goals, tempGoal, savedGoals]);
+	}, [image, imageWidth, imageHeight, trajectory, goals, tempGoal, savedGoals, path, triggerObstacles]);
 
 	return (
 		<div className={styles.Map}>
@@ -163,6 +183,7 @@ const drawMap = (
 	canvas: HTMLCanvasElement,
 	ctx: CanvasRenderingContext2D,
 	image: CanvasImageSource,
+	imageOb: CanvasImageSource | undefined,
 	origin: Point
 ) => {
 	// Clear the canvas
@@ -170,6 +191,17 @@ const drawMap = (
 
 	// Draw the image as the background
 	ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+	if(imageOb) {
+		let angle = (-90 * Math.PI) / 180;
+		ctx.globalAlpha = 0.5;
+		ctx.translate(- 15, canvas.height);
+		ctx.rotate(angle);
+		ctx.drawImage(imageOb, 0, 0, canvas.height + 20, canvas.width + 40);
+		ctx.rotate(-angle);
+		ctx.translate(15, -canvas.height);
+		ctx.globalAlpha = 1.0
+	}
 
 	// Set the origin of the grid
 	const gridOriginX = origin.x;
@@ -303,9 +335,9 @@ export const drawGoal = (goal: Point, color: string, image?: CanvasImageSource, 
 	}
 };
 
-export const drawTrajectory = (points: Point[], icon: CanvasImageSource) => {
+export const drawTrajectory = (points: Point[], icon: CanvasImageSource | undefined, color?: string) => {
 	if (mapCTX && points.length > 1) {
-		mapCTX.strokeStyle = "red";
+		mapCTX.strokeStyle = color? color : "red";
 		mapCTX.lineWidth = 4;
 		mapCTX.beginPath();
 
@@ -326,8 +358,10 @@ export const drawTrajectory = (points: Point[], icon: CanvasImageSource) => {
 		// Draw the trajectory lines
 		mapCTX.stroke();
 
-		// Call drawGoal on the last point
-		drawGoal(points[points.length - 1], "#004466", icon);
+		if(icon) {
+			// Call drawGoal on the last point
+			drawGoal(points[points.length - 1], "#004466", icon);
+		}
 	}
 };
 

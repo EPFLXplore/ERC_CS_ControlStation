@@ -26,6 +26,7 @@ setup(
             'hd_test_node = cs_test_pkg.hd_test_node:main',
             'nav_test_node = cs_test_pkg.nav_test_node:main',
             'gamepad_test_node = cs_test_pkg.gamepad_test_node:main',
+            'cam_test_node = cs_test_pkg.cam_test_node:main',
             
         ],
     },

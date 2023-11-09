@@ -1,0 +1,55 @@
+running egg_info
+creating ../../../build/rover_pkg/rover_pkg.egg-info
+writing ../../../build/rover_pkg/rover_pkg.egg-info/PKG-INFO
+writing dependency_links to ../../../build/rover_pkg/rover_pkg.egg-info/dependency_links.txt
+writing entry points to ../../../build/rover_pkg/rover_pkg.egg-info/entry_points.txt
+writing requirements to ../../../build/rover_pkg/rover_pkg.egg-info/requires.txt
+writing top-level names to ../../../build/rover_pkg/rover_pkg.egg-info/top_level.txt
+writing manifest file '../../../build/rover_pkg/rover_pkg.egg-info/SOURCES.txt'
+reading manifest file '../../../build/rover_pkg/rover_pkg.egg-info/SOURCES.txt'
+writing manifest file '../../../build/rover_pkg/rover_pkg.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/yasmin/CS_workspace/build/rover_pkg/build
+creating /home/yasmin/CS_workspace/build/rover_pkg/build/lib
+creating /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+copying rover_pkg/gripper_camera.py -> /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+copying rover_pkg/Globals.py -> /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+copying rover_pkg/model.py -> /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+copying rover_pkg/rover.py -> /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+copying rover_pkg/launcher.py -> /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+copying rover_pkg/cameras_test.py -> /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+copying rover_pkg/__init__.py -> /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+copying rover_pkg/cameras_publisher.py -> /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+running install
+running install_lib
+creating /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+copying /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg/gripper_camera.py -> /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+copying /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg/Globals.py -> /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+copying /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg/model.py -> /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+copying /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg/rover.py -> /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+copying /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg/launcher.py -> /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+copying /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg/cameras_test.py -> /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+copying /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg/__init__.py -> /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+copying /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg/cameras_publisher.py -> /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+byte-compiling /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg/gripper_camera.py to gripper_camera.cpython-38.pyc
+byte-compiling /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg/Globals.py to Globals.cpython-38.pyc
+byte-compiling /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg/model.py to model.cpython-38.pyc
+byte-compiling /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg/rover.py to rover.cpython-38.pyc
+byte-compiling /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg/launcher.py to launcher.cpython-38.pyc
+byte-compiling /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg/cameras_test.py to cameras_test.cpython-38.pyc
+byte-compiling /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg/__init__.py to __init__.cpython-38.pyc
+byte-compiling /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg/cameras_publisher.py to cameras_publisher.cpython-38.pyc
+running install_data
+creating /home/yasmin/CS_workspace/install/rover_pkg/share/ament_index
+creating /home/yasmin/CS_workspace/install/rover_pkg/share/ament_index/resource_index
+creating /home/yasmin/CS_workspace/install/rover_pkg/share/ament_index/resource_index/packages
+copying resource/rover_pkg -> /home/yasmin/CS_workspace/install/rover_pkg/share/ament_index/resource_index/packages
+copying package.xml -> /home/yasmin/CS_workspace/install/rover_pkg/share/rover_pkg
+running install_egg_info
+Copying ../../../build/rover_pkg/rover_pkg.egg-info to /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg-0.0.0-py3.8.egg-info
+running install_scripts
+Installing cameras_publisher script to /home/yasmin/CS_workspace/install/rover_pkg/lib/rover_pkg
+Installing gripper_camera script to /home/yasmin/CS_workspace/install/rover_pkg/lib/rover_pkg
+Installing rover script to /home/yasmin/CS_workspace/install/rover_pkg/lib/rover_pkg
+writing list of installed files to '/home/yasmin/CS_workspace/build/rover_pkg/install.log'

@@ -1,0 +1,38 @@
+[0.447s] Invoking command in '/home/yasmin/CS_workspace/cs_ws/src/rover_pkg': PYTHONPATH=/home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../../build/rover_pkg build --build-base /home/yasmin/CS_workspace/build/rover_pkg/build install --prefix /home/yasmin/CS_workspace/install/rover_pkg --record /home/yasmin/CS_workspace/build/rover_pkg/install.log --single-version-externally-managed
+[0.546s] running egg_info
+[0.546s] writing ../../../build/rover_pkg/rover_pkg.egg-info/PKG-INFO
+[0.547s] writing dependency_links to ../../../build/rover_pkg/rover_pkg.egg-info/dependency_links.txt
+[0.547s] writing entry points to ../../../build/rover_pkg/rover_pkg.egg-info/entry_points.txt
+[0.547s] writing requirements to ../../../build/rover_pkg/rover_pkg.egg-info/requires.txt
+[0.548s] writing top-level names to ../../../build/rover_pkg/rover_pkg.egg-info/top_level.txt
+[0.568s] reading manifest file '../../../build/rover_pkg/rover_pkg.egg-info/SOURCES.txt'
+[0.569s] writing manifest file '../../../build/rover_pkg/rover_pkg.egg-info/SOURCES.txt'
+[0.569s] running build
+[0.569s] running build_py
+[0.570s] copying rover_pkg/gripper_camera.py -> /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+[0.570s] copying rover_pkg/model.py -> /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+[0.570s] copying rover_pkg/rover.py -> /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+[0.571s] copying rover_pkg/launcher.py -> /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+[0.571s] copying rover_pkg/cameras_publisher.py -> /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg
+[0.571s] running install
+[0.572s] running install_lib
+[0.572s] copying /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg/gripper_camera.py -> /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+[0.572s] copying /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg/model.py -> /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+[0.572s] copying /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg/rover.py -> /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+[0.572s] copying /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg/launcher.py -> /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+[0.573s] copying /home/yasmin/CS_workspace/build/rover_pkg/build/lib/rover_pkg/cameras_publisher.py -> /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg
+[0.574s] byte-compiling /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg/gripper_camera.py to gripper_camera.cpython-38.pyc
+[0.574s] byte-compiling /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg/model.py to model.cpython-38.pyc
+[0.575s] byte-compiling /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg/rover.py to rover.cpython-38.pyc
+[0.577s] byte-compiling /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg/launcher.py to launcher.cpython-38.pyc
+[0.577s] byte-compiling /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg/cameras_publisher.py to cameras_publisher.cpython-38.pyc
+[0.577s] running install_data
+[0.578s] running install_egg_info
+[0.579s] removing '/home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg-0.0.0-py3.8.egg-info' (and everything under it)
+[0.580s] Copying ../../../build/rover_pkg/rover_pkg.egg-info to /home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages/rover_pkg-0.0.0-py3.8.egg-info
+[0.588s] running install_scripts
+[0.590s] Installing cameras_publisher script to /home/yasmin/CS_workspace/install/rover_pkg/lib/rover_pkg
+[0.590s] Installing gripper_camera script to /home/yasmin/CS_workspace/install/rover_pkg/lib/rover_pkg
+[0.590s] Installing rover script to /home/yasmin/CS_workspace/install/rover_pkg/lib/rover_pkg
+[0.591s] writing list of installed files to '/home/yasmin/CS_workspace/build/rover_pkg/install.log'
+[0.608s] Invoked command in '/home/yasmin/CS_workspace/cs_ws/src/rover_pkg' returned '0': PYTHONPATH=/home/yasmin/CS_workspace/install/rover_pkg/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../../build/rover_pkg build --build-base /home/yasmin/CS_workspace/build/rover_pkg/build install --prefix /home/yasmin/CS_workspace/install/rover_pkg --record /home/yasmin/CS_workspace/build/rover_pkg/install.log --single-version-externally-managed

@@ -12,6 +12,9 @@ function useCameraSelector(startCamera: Array<Cameras>) {
 	const [sockets, setSockets] = useState<Array<WebSocket | undefined>>([undefined]);
 	const [images, setImages] = React.useState<Array<string>>([""]);
 	const [cameras, setCameras] = useState<Array<Cameras>>(startCamera);
+	const [rotateCams, setRotateCams] = useState<boolean[]>(
+		new Array(startCamera.length).fill(false)
+	);
 
 	/**
 	 * Sets the cameras to be displayed on the screen
@@ -63,6 +66,7 @@ function useCameraSelector(startCamera: Array<Cameras>) {
 
 		let newSockets: Array<WebSocket> = [];
 		setImages(new Array(cameras.length).fill(null));
+		setRotateCams(new Array(cameras.length).fill(false));
 
 		const csrftoken = getCookie("csrftoken");
 		let formData = new FormData();
@@ -88,8 +92,9 @@ function useCameraSelector(startCamera: Array<Cameras>) {
 			);
 
 			cameraSocket.onmessage = (e) => {
+				console.log("Message camera " + cameras[i]);
 				const data = JSON.parse(e.data);
-				console.log(data.data);
+				console.log("received image from camera " + cameras[i]);
 				setImage(data.data, i);
 			};
 
@@ -153,6 +158,12 @@ function useCameraSelector(startCamera: Array<Cameras>) {
 					!(cameras.includes(Cameras.CAM7) && cameras.length > 1) && select
 				);
 				break;
+			case "Camera Nav":
+				setCamera(
+					Cameras.CAM8,
+					!(cameras.includes(Cameras.CAM8) && cameras.length > 1) && select
+				);
+				break;
 			default:
 				setCamera(Cameras.NOCAM, select);
 		}
@@ -162,7 +173,7 @@ function useCameraSelector(startCamera: Array<Cameras>) {
 		setCameras([]);
 	};
 
-	return [images, cameras, selectCamera, flushCameras] as const;
+	return [images, cameras, selectCamera, flushCameras, rotateCams, setRotateCams] as const;
 }
 
 export default useCameraSelector;

@@ -37,6 +37,8 @@ class HandlingDevice:
 
         self.voltage = 0.0
 
+        self.ready = 0
+
     #--------HD mode--------
 
     def setHDMode(self, mode):
@@ -100,6 +102,9 @@ class HandlingDevice:
 
     def getElements(self):
         return self.__elements
+    
+    def setReady(self, ready):
+        self.ready = 1 if(ready == "reached") else 0
 
 
 # TASK: 
@@ -125,11 +130,13 @@ class HandlingDevice:
 
 
     def UpdateHandlingDeviceSocket(self):
+            
             async_to_sync(self.channel_layer.group_send)("hd", {"type": "hd_message",
                                                         'joint_position': [str(val) for val in self.joint_positions],
                                                         'joint_velocity': [str(val) for val in self.joint_velocities],
                                                         'joint_current': [str(val) for val in self.joint_current],
                                                         'available_buttons' : [str(val) for val in self.available_buttons],
-                                                        'task_outcome' : str(False),
+                                                        'task_outcome' : str(self.task_outcome),
                                                         'voltage' : str(self.voltage),
+                                                        'ready' : str(self.ready),
                                                         })

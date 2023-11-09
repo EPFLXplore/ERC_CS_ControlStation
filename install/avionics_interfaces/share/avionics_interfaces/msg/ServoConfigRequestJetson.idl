@@ -1,0 +1,33 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from avionics_interfaces/msg/ServoConfigRequestJetson.msg
+// generated code does not contain a copyright notice
+
+
+module avionics_interfaces {
+  module msg {
+    typedef float float__4[4];
+    @verbatim (language="comment", text=
+      " ServoConfigRequestJetson.msg")
+    struct ServoConfigRequestJetson {
+      uint16 destination_id;
+
+      float__4 min_duty;
+
+      float__4 max_duty;
+
+      float__4 min_angles;
+
+      float__4 max_angles;
+
+      boolean remote_command;
+
+      boolean set_min_duty;
+
+      boolean set_max_duty;
+
+      boolean set_min_angles;
+
+      boolean set_max_angles;
+    };
+  };
+};

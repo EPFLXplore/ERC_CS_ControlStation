@@ -38,8 +38,6 @@ class CameraConsumer(WebsocketConsumer):
     # Receive message from WebSocket
     def receive(self, text_data):
 
-        print("message received in cameras consumer")
-
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {

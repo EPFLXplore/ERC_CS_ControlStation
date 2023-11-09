@@ -1,0 +1,15 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from xplore_interfaces/srv/DisableCamera.srv
+// generated code does not contain a copyright notice
+
+
+module xplore_interfaces {
+  module srv {
+    struct DisableCamera_Request {
+      int8 index;
+    };
+    struct DisableCamera_Response {
+      boolean success;
+    };
+  };
+};

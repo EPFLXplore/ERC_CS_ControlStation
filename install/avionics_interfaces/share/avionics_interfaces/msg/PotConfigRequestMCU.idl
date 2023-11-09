@@ -1,0 +1,24 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from avionics_interfaces/msg/PotConfigRequestMCU.msg
+// generated code does not contain a copyright notice
+
+
+module avionics_interfaces {
+  module msg {
+    @verbatim (language="comment", text=
+      " PotConfigRequestMCU.msg")
+    struct PotConfigRequestMCU {
+      uint16 id;
+
+      boolean req_min_voltages;
+
+      boolean req_max_voltages;
+
+      boolean req_min_angles;
+
+      boolean req_max_angles;
+
+      boolean req_channels_status;
+    };
+  };
+};

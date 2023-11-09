@@ -17,14 +17,7 @@ import { Size } from "../../utils/size.type";
 import { Themes } from "../../utils/themes";
 import CameraView from "../../components/CameraView";
 import ModeSlider from "../../components/ModeSlider";
-
-const candidates = [
-	{ percentage: 78, element: "Phosphate" },
-	{ percentage: 77.8, element: "Materiau1" },
-	{ percentage: 74, element: "Materiau2" },
-	{ percentage: 73.9, element: "Materiau3" },
-	{ percentage: 73.3, element: "Materiau4" },
-];
+import tareMassSensor from "../../utils/tareMassSensor";
 
 type DataRow = {
 	id: string;
@@ -36,19 +29,21 @@ type DataRow = {
 export default () => {
 	const [mode, setMode] = useState(0);
 
-	const [images, cameras, selectCamera, flushCameras] = useCameraSelector([Cameras.CAM1]);
+	const [images, cameras, selectCamera, flushCameras, rotateCams, setRotateCams] =
+		useCameraSelector([Cameras.CAM1]);
 	const [state, limitSwitches, module1, module2, drill, measureSpectro, resetSpectro] =
 		useScienceDrillInfos();
 	const sensorType = "Sensor Data";
 	const rows = ["Velocity", "Distance", "Current"]; // Rows titles
 	const columns = ["Module1", "Module2", "Drill"]; // Columns titles
 
-	const [mass, npkSensor, fourInOneSensor, spectrometer, spectrometerCandidate] =
+	const [mass, npkSensor, fourInOneSensor, spectrometer, spectrometerCandidate, candidates] =
 		useScienceDataInfos();
 
 	if (mode === 0) {
 		return (
 			<div>
+				<CameraView images={images} rotate={rotateCams} setRotateCams={setRotateCams} />
 				<Background />
 				<BackButton onGoBack={() => flushCameras()} />
 				<div className={styles.InfoControllerContainer}>
@@ -188,8 +183,6 @@ export default () => {
 						</table>
 					</div>
 				</div>
-
-				<CameraView images={images} />
 			</div>
 		);
 	} else {
@@ -212,10 +205,11 @@ export default () => {
 						<Table values={npkSensor} sensorType={Sensor.NPK} />
 						<Table values={fourInOneSensor} sensorType={Sensor.ALL} />
 						<Table values={mass} sensorType={Sensor.MASS} />
+						<div className={styles.TareActions}>
+							<Button text="Tare 1" size={Size.SMALL} theme={Themes.BROWN} onClick={() => tareMassSensor(0)} />
+							<Button text="Tare 2" size={Size.SMALL} theme={Themes.BROWN} onClick={() => tareMassSensor(1)} />
+						</div>
 					</div>
-				</div>
-				<div className={styles.taskControlContainer}>
-					<TaskControl task={Task.SCIENCE} />
 				</div>
 				<div className={styles.InfoControllerContainer}>
 					<div className={styles.table}>
@@ -224,15 +218,13 @@ export default () => {
 								<th>Candidate 1</th>
 								<th>Candidate 2</th>
 								<th>Candidate 3</th>
-								<th>Candidate 4</th>
-								<th>Candidate 5</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
 								{candidates.map((candidate, index) => (
 									<td>
-										{candidate.percentage}%, {candidate.element}
+										{candidate}
 									</td>
 								))}
 							</tr>
