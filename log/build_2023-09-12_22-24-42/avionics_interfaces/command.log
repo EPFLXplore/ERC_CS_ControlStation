@@ -1,4 +1,0 @@
-Invoking command in '/home/yasmin/CS_workspace/build/avionics_interfaces': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/yasmin/CS_workspace/build/avionics_interfaces -- -j4 -l4
-Invoked command in '/home/yasmin/CS_workspace/build/avionics_interfaces' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/yasmin/CS_workspace/build/avionics_interfaces -- -j4 -l4
-Invoking command in '/home/yasmin/CS_workspace/build/avionics_interfaces': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/yasmin/CS_workspace/build/avionics_interfaces
-Invoked command in '/home/yasmin/CS_workspace/build/avionics_interfaces' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/yasmin/CS_workspace/build/avionics_interfaces

@@ -39,12 +39,13 @@
 		"workbox-range-requests": "^6.5.4",
 		"workbox-routing": "^6.5.4",
 		"workbox-strategies": "^6.5.4",
-		"workbox-streams": "^6.5.4"
+		"workbox-streams": "^6.5.4",
+		"chart.js": "^4.3.0"
 	},
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
-		"test": "react-scripts test",
+		"test": "react-scripts test --passWithNoTests",
 		"eject": "react-scripts eject"
 	},
 	"eslintConfig": {

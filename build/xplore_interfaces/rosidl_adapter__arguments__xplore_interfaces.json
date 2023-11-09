@@ -1,8 +1,0 @@
-{
-  "package_name": "xplore_interfaces",
-  "non_idl_tuples": [
-    "/home/yasmin/CS_workspace/cs_ws/src/xplore_interfaces:msg/CameraError.msg",
-    "/home/yasmin/CS_workspace/cs_ws/src/xplore_interfaces:srv/DisableCamera.srv",
-    "/home/yasmin/CS_workspace/cs_ws/src/xplore_interfaces:srv/EnableCamera.srv"
-  ]
-}

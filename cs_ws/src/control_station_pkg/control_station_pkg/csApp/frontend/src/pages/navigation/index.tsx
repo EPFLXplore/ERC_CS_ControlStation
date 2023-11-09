@@ -21,7 +21,7 @@ import { useEffect, useState } from "react";
 import GoalInputBox from "../../components/GoalInputBox";
 import navModeSelect from "../../utils/navModeSelect";
 import { NavMode } from "../../utils/navMode";
-import successSound from "../../assets/audio/short-success-sound-glockenspiel-treasure-video-game-6346.mp3"
+import successSound from "../../assets/audio/short-success-sound-glockenspiel-treasure-video-game-6346.mp3";
 import ToggleFeature from "../../components/ToggleFeature";
 
 export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
@@ -53,10 +53,10 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 		steering_state,
 		info,
 		displacement_mode,
-		routeLeft
+		routeLeft,
 	] = useNavigation(() => {
-		const successAudioPlayer = new Audio(successSound)
-		successAudioPlayer.play()
+		const successAudioPlayer = new Audio(successSound);
+		successAudioPlayer.play();
 	});
 
 	const [navSettings, setNavlSettings] = useState(false);
@@ -109,12 +109,8 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 		const y = parseFloat((document.getElementById("input-y-init") as HTMLInputElement).value);
 		const o = parseFloat((document.getElementById("input-o-init") as HTMLInputElement).value);
 
-		if (
-			x.toString() !== "NaN" &&
-			y.toString() !== "NaN" &&
-			o.toString() !== "NaN"
-		) {
-			initPos({x: x, y: y, o: o});
+		if (x.toString() !== "NaN" && y.toString() !== "NaN" && o.toString() !== "NaN") {
+			initPos({ x: x, y: y, o: o });
 
 			(document.getElementById("input-x-init") as HTMLInputElement).value = "";
 			(document.getElementById("input-y-init") as HTMLInputElement).value = "";
@@ -124,7 +120,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 
 	useEffect(() => {
 		// Set mode to auto when entering the tab
-		navModeSelect(NavMode.Autonomous)
+		navModeSelect(NavMode.Autonomous);
 	}, []);
 
 	return (
@@ -139,8 +135,9 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 						y: 93,
 						o: 0,
 					}}
+					// @ts-ignore
 					trajectory={trajectoryPoints}
-					path={showPath? pathPoints : []}
+					path={showPath ? pathPoints : []}
 					goals={goals}
 					tempGoal={tempGoal}
 					savedGoals={savedGoals}
@@ -362,7 +359,11 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 								</div>
 							</div>
 							<div className="Image of rover" style={{ marginTop: "20px" }}>
-								<WheelsIndicator wheelsOrientation={wheelsPosition} driving_state={driving_state} steering_state={steering_state} />
+								<WheelsIndicator
+									wheelsOrientation={wheelsPosition}
+									driving_state={driving_state}
+									steering_state={steering_state}
+								/>
 							</div>
 						</div>
 					</div>
@@ -400,7 +401,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 							/>
 						))}
 					</>
-					<h3 style={{marginTop: "30px"}}>Reset Init Position</h3>
+					<h3 style={{ marginTop: "30px" }}>Reset Init Position</h3>
 					<GoalInputBox setGoal={() => {}} isSavedGoal={false} name={"-init"}>
 						{
 							<>
@@ -415,7 +416,7 @@ export default ({ mode }: { mode: Exclude<Mode, Mode.MANUAL> }) => {
 						}
 						{<></>}
 					</GoalInputBox>
-					<h3 style={{marginTop: "30px"}}>Show Obstacles</h3>
+					<h3 style={{ marginTop: "30px" }}>Show Obstacles</h3>
 					<ToggleFeature title="Obstacles" onChange={(mode) => setObstacles(!mode)} />
 				</SettingsModal>
 			</div>

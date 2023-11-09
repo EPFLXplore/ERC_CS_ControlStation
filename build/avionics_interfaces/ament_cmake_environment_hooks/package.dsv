@@ -1,4 +1,0 @@
-source;share/avionics_interfaces/local_setup.bash
-source;share/avionics_interfaces/local_setup.dsv
-source;share/avionics_interfaces/local_setup.sh
-source;share/avionics_interfaces/local_setup.zsh
