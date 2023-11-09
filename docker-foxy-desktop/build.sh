@@ -1,0 +1,1 @@
+docker build --pull --no-cache --progress=plain -t ghcr.io/epflxplore/cs:foxy-desktop -f Dockerfile ..
