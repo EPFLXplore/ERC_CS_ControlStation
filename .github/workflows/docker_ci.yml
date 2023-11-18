@@ -33,8 +33,6 @@ jobs:
       # install applicaion dependencies
       - name: Install dependencies
         run: |
-          npm cache clean --force
-          rm -rf node_modules
           npm install
           npm ci
         working-directory: ./cs_ws/src/control_station_pkg/control_station_pkg/csApp/frontend
