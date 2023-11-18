@@ -73,7 +73,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-         with:
+        with:
           submodules: "true"
           token: ${{ secrets.TOKEN }}
 
