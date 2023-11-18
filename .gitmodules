@@ -1,0 +1,3 @@
+[submodule "cs_ws/src/control_station_pkg/control_station_pkg/csApp/frontend"]
+	path = cs_ws/src/control_station_pkg/control_station_pkg/csApp/frontend
+	url = https://github.com/EPFLXplore/ERC_CS_GUI
