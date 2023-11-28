@@ -32,7 +32,7 @@ current_dir=$(pwd)
 parent_dir=$(dirname "$current_dir")
 
 docker run -it \
-    --name cs_foxy_desktop \
+    --name cs_humble_desktop \
     --rm \
     --privileged \
     --net=host \
@@ -45,5 +45,5 @@ docker run -it \
     -v /dev:/dev \
     -v /home/xplore/dev_ws/src/cs_ws/src/control_station_pkg/control_station_pkg/csApp/frontend/build \
     -v $parent_dir:/home/xplore/dev_ws/src \
-    -v cs_foxy_desktop_home_volume:/home/xplore \
-    ghcr.io/epflxplore/cs:foxy-desktop
+    -v cs_humble_desktop_home_volume:/home/xplore \
+    ghcr.io/epflxplore/cs:humble-desktop

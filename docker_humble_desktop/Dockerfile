@@ -15,7 +15,7 @@ RUN npm run build
 ###########################################
 # Xplore Control Station image Build Docker
 ###########################################
-FROM ghcr.io/epflxplore/docker_commons:foxy-desktop as build-cs
+FROM ghcr.io/epflxplore/docker_commons:humble-desktop as build-cs
 
 ARG DEBIAN_FRONTEND=noninteractive
 
