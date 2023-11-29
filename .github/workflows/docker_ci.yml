@@ -61,7 +61,7 @@ jobs:
       matrix:
         node-version: [16]
         include:
-          - dockerfile: ./docker_foxy_desktop/Dockerfile
+          - dockerfile: ./docker_humble_desktop/Dockerfile
             context: .
             tag: humble-desktop
             platform: linux/amd64
