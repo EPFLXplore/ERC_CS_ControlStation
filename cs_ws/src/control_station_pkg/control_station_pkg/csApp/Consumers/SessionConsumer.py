@@ -16,6 +16,7 @@ Data format :
     nb_users : int,
     rover_state : int,
     subsystems_state : int,
+    signal_strength : int,
 }
 
 """
@@ -51,6 +52,7 @@ class SessionConsumer(WebsocketConsumer):
                 "nb_users": utils.session.nb_users,
                 "rover_state": utils.session.rover_state,
                 "subsystems_state": utils.session.subsystems_state,
+                "signal_strength": utils.session.signal_strength,
                 }
         )
 
@@ -72,7 +74,9 @@ class SessionConsumer(WebsocketConsumer):
                 "type": "broadcast", 
                 "nb_users": utils.session.nb_users,
                 "rover_state": utils.session.rover_state,
-                "subsystems_state": utils.session.subsystems_state,}
+                "subsystems_state": utils.session.subsystems_state,
+                "signal_strength": utils.session.signal_strength,
+            }
         )
         # Leave room group
         async_to_sync(self.channel_layer.group_discard)(
@@ -88,6 +92,7 @@ class SessionConsumer(WebsocketConsumer):
                 "nb_users": data_json["current_tab"],
                 "rover_state": data_json["rover_state"],
                 "subsystems_state": data_json["subsystems_state"],
+                "signal_strength": data_json["signal_strength"],
         })
 
     # Receive message from room group
@@ -97,4 +102,5 @@ class SessionConsumer(WebsocketConsumer):
             "nb_users": data_json["nb_users"],
             "rover_state": data_json["rover_state"],
             "subsystems_state": data_json["subsystems_state"],
+            "signal_strength": data_json["signal_strength"],
         }))

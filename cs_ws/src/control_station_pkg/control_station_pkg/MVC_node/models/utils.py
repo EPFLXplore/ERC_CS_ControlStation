@@ -7,6 +7,7 @@ class Session:
         self.nb_users = 0
         self.rover_state = 0
         self.subsystems_state = 0
+        self.signal_strength = 0
         #comment representer les tab utilise par les users ?
 
 class Cameras:

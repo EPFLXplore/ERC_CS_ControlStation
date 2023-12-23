@@ -1,6 +1,7 @@
 import asyncio
 import threading
 import os
+from network_monitor import NetworkMonitor
 import rclpy
 import sys
 import django
@@ -123,6 +124,10 @@ class CS:
         # Cam
         self.Cam_index_pub      = self.node.create_publisher(Int8MultiArray,    'CS/CAM_index', 1)
         self.gripper_cam_pub    = self.node.create_publisher(Int8,              'ROVER/HD_toggle_cameras', 1)
+
+        # Network Monitor
+        self.signal_strength_pub = self.node.create_publisher(Int32, 'CS/network_signal_strength', 1)
+        NetworkMonitor(self.signal_strength_pub).start()
 
         # ---------------------------------------------------
         # ===== Subscribers =====
