@@ -43,7 +43,7 @@ RUN pip install --no-cache-dir channels==3.0.5 \
     transforms3d==0.4.1 \
     scikit-image \
     autobahn==22.7.1 \
-    twisted==17.9.0 \
+    twisted \
     redis==4.3.4
 
 RUN pip3 install websocket-client==1.4.1
