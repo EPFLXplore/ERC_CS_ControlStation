@@ -54,7 +54,7 @@ class NetworkMonitor(Thread):
             ssh.kill()
 
             for line in result:
-                if b"2C:C8:1B:18:9A:AF" in line:
+                if b"wlan1" in line:
                     line = line.decode("utf-8")
                     signal_strength = int(re.search(r'-[0-9]*dBm', line)[0].split('dBm')[0])
                     break

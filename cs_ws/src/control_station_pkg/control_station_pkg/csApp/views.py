@@ -30,7 +30,7 @@ from manage          import setup
 from MVC_node.models import gamepad
 
 from std_msgs.msg import Int8MultiArray, Int8, Bool, String
-from avionics_interfaces.msg import LaserRequest, ServoRequest, SpectroRequest
+from custom_msg.msg import LaserRequest, ServoRequest, SpectroRequest
 
 # ===============================================================
 # Control Station setup

@@ -1,7 +1,7 @@
 import asyncio
 import threading
 import os
-from network_monitor import NetworkMonitor
+from .network_monitor import NetworkMonitor
 import rclpy
 import sys
 import django

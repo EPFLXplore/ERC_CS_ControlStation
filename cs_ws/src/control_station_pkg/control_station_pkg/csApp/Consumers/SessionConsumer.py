@@ -39,7 +39,9 @@ class SessionConsumer(WebsocketConsumer):
 
 
         self.tab_name = 'homepage'
-        self.tab_group_name = 'tab_%s' % self.tab_name
+        # self.tab_group_name = 'tab_%s' % self.tab_name
+        self.tab_group_name = 'session'
+
 
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
@@ -97,6 +99,8 @@ class SessionConsumer(WebsocketConsumer):
 
     # Receive message from room group
     def broadcast(self, data_json):
+
+        print("Received: ", data_json["signal_strength"])
 
         self.send(text_data=json.dumps({
             "nb_users": data_json["nb_users"],

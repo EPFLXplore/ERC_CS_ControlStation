@@ -31,8 +31,10 @@ class setup:
     def __init__(self):
         try:
             from MVC_node.cs_node import CS
-        except:
+        except Exception as err:
             print("import error")
+            print(err)
+            print("\n\n")
 
         self.CONTROL_STATION = CS()
 
