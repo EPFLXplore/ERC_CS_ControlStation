@@ -17,6 +17,8 @@ import re
 from time import sleep
 from threading import Thread
 from std_msgs.msg import Int32
+from socket import AddressFamily
+import psutil
 
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
@@ -35,6 +37,7 @@ class NetworkMonitor(Thread):
         Thread.__init__(self)
         self.publisher = publisher
         self._stop_event = False
+        self.mac_addr = self.get_mac_addr()
 
     def run(self):
         while not self._stop_event:
@@ -45,7 +48,7 @@ class NetworkMonitor(Thread):
         self._stop_event = True
 
     def get_network_strength(self):
-        signal_strength = 0
+        signal_strength = 1
 
         # Get the signal strength
         try:
@@ -54,7 +57,11 @@ class NetworkMonitor(Thread):
             ssh.kill()
 
             for line in result:
-                if b"wlan1" in line:
+                if b"2C:C8:1B:18:9A:AF" in line and signal_strength == 1:
+                    line = line.decode("utf-8")
+                    signal_strength = int(re.search(r'-[0-9]*dBm', line)[0].split('dBm')[0])
+                    break
+                if self.mac_addr.encode('utf-8') in line:
                     line = line.decode("utf-8")
                     signal_strength = int(re.search(r'-[0-9]*dBm', line)[0].split('dBm')[0])
                     break
@@ -74,3 +81,13 @@ class NetworkMonitor(Thread):
                                                             'subsystems_state': session.subsystems_state,
                                                             'signal_strength': session.signal_strength
                                                             })
+        
+    @staticmethod
+    def get_mac_addr():
+        # Iterate over all the keys in the dictionary
+        for interface in psutil.net_if_addrs():
+            # Check if the interface has a valid MAC address
+            if("wlp0s20f3" in interface):
+                for i in psutil.net_if_addrs()[interface]:
+                    if(i.family == AddressFamily.AF_PACKET):
+                        return i.address.upper()
