@@ -21,7 +21,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # Install CS packages
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y --no-install-recommends redis-server
+RUN apt-get install -y --no-install-recommends redis-server python-evdev
 RUN apt install -y curl
 
 # Add USB rules
