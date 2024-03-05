@@ -22,7 +22,6 @@ ARG DEBIAN_FRONTEND=noninteractive
 # Install CS packages
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y --no-install-recommends redis-server
-RUN apt-get install -y python-evdev
 RUN apt install -y curl
 
 # Add USB rules
@@ -36,7 +35,8 @@ WORKDIR /home/$USERNAME/dev_ws/src
 COPY . .
 
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir install Django==4.1.1
+    pip install --no-cache-dir install Django==4.1.1 && \
+    pip install --no-cache-dir evdev
 
 RUN pip install --no-cache-dir channels==3.0.5 \
     pandas==2.0.3 \
