@@ -185,6 +185,8 @@ class CS:
         
         self.node.create_subscription(Image, '/right/image_rect', cameras_reciever.display_cam_nav, 10)
 
+        self.node.create_subscription(CompressedImage, 'camera_new', cameras_reciever.display_cam_new, 1)
+
         # -- Elec messages --
         self.node.create_subscription( NodeStateArray, '/can0/EL/node_state', self.controller.can0_node_states, 10)
         self.node.create_subscription( NodeStateArray, '/can1/EL/node_state', self.controller.can1_node_states, 10)
