@@ -64,7 +64,7 @@ jobs:
           - dockerfile: ./docker_humble_desktop/Dockerfile
             context: .
             tag: humble-desktop
-            platform: linux/amd64
+            platform: linux/amd64,linux/arm64
 
     permissions:
       contents: read
