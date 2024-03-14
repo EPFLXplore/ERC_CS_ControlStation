@@ -100,8 +100,6 @@ class SessionConsumer(WebsocketConsumer):
     # Receive message from room group
     def broadcast(self, data_json):
 
-        print("Received: ", data_json["signal_strength"])
-
         self.send(text_data=json.dumps({
             "nb_users": data_json["nb_users"],
             "rover_state": data_json["rover_state"],

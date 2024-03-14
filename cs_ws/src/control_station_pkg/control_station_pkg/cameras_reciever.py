@@ -132,7 +132,7 @@ def display_cam_nav(msg):
     
 def display_cam_new(msg):
     global imnew 
-    imnew = bridge.imgmsg_to_cv2(msg)
+    imnew = bridge.compressed_imgmsg_to_cv2(msg)
 
     img = encode_stream(imnew)
     async_to_sync(channel_layer.group_send)("video8", {"type": "video_message",
