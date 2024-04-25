@@ -1,6 +1,7 @@
 import time
 from . import gamepad
 
+'''
 class Session:
     def __init__(self):
         self.sessions_list = {}
@@ -8,7 +9,6 @@ class Session:
         self.rover_state = 0
         self.subsystems_state = 0
         self.signal_strength = 0
-        #comment representer les tab utilise par les users ?
 
 class Cameras:
     def __init__(self):
@@ -49,9 +49,10 @@ class Log:
     def add(self, msg):
         self.log.append(msg)
         self.last_log = msg
+'''
 
-session = Session()
-timer = Timer(600)
+#session = Session()
+#timer = Timer(600)
 gamepad = gamepad.Gamepad()
-cameras = Cameras()
-log = Log()
+#cameras = Cameras()
+#log = Log()

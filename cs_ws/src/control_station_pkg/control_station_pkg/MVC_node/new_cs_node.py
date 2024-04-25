@@ -1,24 +1,17 @@
 import threading
 import os
-from .network_monitor import NetworkMonitor
 import rclpy
 from rclpy.action import ActionClient 
 import sys
 import django
-
-from .controller import Controller
-from .models.rover import Rover
-
-from csApp.models         import *
-from std_msgs.msg         import Int8MultiArray, Bool, String, Float32MultiArray
-from std_srvs.srv import SetBool
-
+import time
+from .new_controller import Controller
+from csApp.models import *
+from std_msgs.msg import Int8MultiArray, Bool, String, Float32MultiArray
 from sensor_msgs.msg import Joy
-from custom_msg.msg import MassArray, SpectroResponse, NPK, FourInOne, Voltage, LaserRequest, ServoRequest, SpectroRequest, AngleArray, MassCalibOffset, NodeStateArray, LEDRequest, Wheelstatus, Motorcmds
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
 django.setup()
-
 
 class CS:
     '''
@@ -33,65 +26,53 @@ class CS:
         self.node = rclpy.create_node("CONTROL_STATION")
 
         self.controller = Controller(self)
-        self.rover = Rover() # CHELOU ON USE PAS
         self.roverConnected = False
-        
-        print("Waiting for ROVER_ONLINE service...")
-        self.onlineConfirmClient = self.node.create_client(
-            SetBool, "ROVER_ONLINE")
-        print("Sending Request...")
-        self.sendRequest()
+
+        while not self.roverConnected:
+            node_names = self.node.get_node_names()
+
+            if '/ROVER' in node_names:
+                self.node.get_logger().info("Rover Node Found")
+                self.roverConnected = True
+            else:
+                self.node.get_logger().info("Rover Node Not Found. Retrying in 1 second...")
+                time.sleep(1)
 
         # ==================================================
         # ==================================================
         
         # ===== Subscribers =====
         self.node.create_subscription(String, 'Rover/RoverState', self.controller.rover_state, 10)
-        self.node.create_subscription(GamepadCmdsNavigation, 'CS/GamepadCmdsNavigation', , 10)
-        self.node.create_subscription(GamepadCmdsHandlingDevice, 'CS/GamepadCmdsHandlingDevice', , 10)
+        #self.node.create_subscription(GamepadCmdsNavigation, 'CS/GamepadCmdsNavigation', , 10)
+        #self.node.create_subscription(GamepadCmdsHandlingDevice, 'CS/GamepadCmdsHandlingDevice', , 10)
         
         # ===== Services =====
-        self.change_mode_system = self.node.create_client(ChangeModeSystem , 'change_mode_system') 
+        #self.change_mode_system = self.node.create_client(ChangeModeSystem , 'change_mode_system') 
         
-        # Doit etre remplacé par un service TODOOOOOOOOOOO ??
+        # ===== Actions =====
+        #self.handling_device_manipulation = ActionClient(self.node, HandlingDeviceManipulation, 'handling_device_manipulation')
+        #self.navigation_reach = ActionClient(self.node, NavigationReach, 'navigation_reach')
+        #self.drill_terrain = ActionClient(self.node, DrillTerrain, 'drill_terrain')
+
+        # ==================================================
+        # ==================================================
+        
+        self.NAV_Gamepad_pub = self.node.create_publisher(
+            Joy,               'CS/NAV_gamepad',       1)
+        self.HD_Gamepad_pub = self.node.create_publisher(
+            Float32MultiArray,  'CS/HD_gamepad',       1)
+        
+         # Doit etre remplacé par un service
         self.Task_pub = self.node.create_publisher(
             Int8MultiArray,    'CS/Task',             1)
         self.CS_confirm_pub = self.node.create_publisher(
             Bool,              'CS/Confirm',          1)
-        
-        # ===== Actions =====
-        self.handling_device_manipulation = ActionClient(self.node, HandlingDeviceManipulation, 'handling_device_manipulation')
-        self.navigation_reach = ActionClient(self.node, NavigationReach, 'navigation_reach')
-        self.drill_terrain = ActionClient(self.node, DrillTerrain, 'drill_terrain')
-
-        # ==================================================
-        # ==================================================
 
         thr = threading.Thread(target=rclpy.spin, args=(self.node,)).start()
         print("Start spinning CONTROL_STATION Node")
 
     # ===============================================================================================================================================
     # ===============================================================================================================================================
-
-    def sendRequest(self):
-        self.node.get_logger().info('Sending request, waiting for Rover...')
-        while not self.onlineConfirmClient.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('Service ROVER_ONLINE not available, waiting again...')
-
-
-        self.node.get_logger().info('Service ROVER_ONLINE is available')
-        self.roverConnected = True # WEIRD?
-        req = SetBool.Request()
-        req.data = True
-        future = self.onlineConfirmClient.call_async(req)
-        future.add_done_callback(self.roverAnswerReceived)
-        
-
-    def roverAnswerReceived(self, future):
-        self.node.get_logger().info('Received message from rover')
-        self.roverConnected = future.result().success # WEIRD
-        self.node.get_logger().info('ROVER is online')
-
 
     def send_gamepad_data(self, axes, buttons, id, target, speed=1):
         '''

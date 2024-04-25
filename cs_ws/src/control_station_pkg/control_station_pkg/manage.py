@@ -30,7 +30,7 @@ class setup:
     
     def __init__(self):
         try:
-            from MVC_node.cs_node import CS
+            from MVC_node.new_cs_node import CS
         except Exception as err:
             print("import error")
             print(err)
