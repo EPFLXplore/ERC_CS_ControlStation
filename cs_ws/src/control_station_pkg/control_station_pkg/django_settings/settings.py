@@ -147,4 +147,6 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'csApp/static'),
     os.path.join(BASE_DIR, 'csApp/frontend/build/static'),
+    os.path.join(BASE_DIR, 'csApp/frontend/build'),
+    os.path.join(BASE_DIR, 'csApp/frontend/build/config/data'),
 ]
