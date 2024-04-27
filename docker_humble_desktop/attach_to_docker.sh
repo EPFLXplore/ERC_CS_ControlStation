@@ -1,0 +1,1 @@
+docker exec -it cs_humble_desktop bash
