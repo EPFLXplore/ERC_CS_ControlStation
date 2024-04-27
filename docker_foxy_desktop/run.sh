@@ -46,4 +46,5 @@ docker run -it \
     -v /home/xplore/dev_ws/src/cs_ws/src/control_station_pkg/control_station_pkg/csApp/frontend/build \
     -v $parent_dir:/home/xplore/dev_ws/src \
     -v cs_foxy_desktop_home_volume:/home/xplore \
-    ghcr.io/epflxplore/cs:foxy-desktop
+    ghcr.io/epflxplore/cs:foxy-desktop \
+    /bin/bash -c "sudo chown -R $USERNAME:$USERNAME /home/$USERNAME; /bin/bash"
