@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import re_path
 from django.urls import include, path
+from django.conf.urls.static import static
 
 from . import views
 
@@ -23,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     #path('launcher/', views.launcher, name='launcher'),
     path('csApp/', include('csApp.urls')),
-    #path('cameras/', include('cameras.urls')),
+    #path('cameras/', include('cameras.urls'))
+    ] + static('kerby_description/', document_root='csApp/frontend/build/kerby_description') + [
     re_path(r'^(?!/csApp).*$', views.new_control_station, name='new CS'),
 ]

@@ -31,7 +31,7 @@ class CS:
         while not self.roverConnected:
             node_names = self.node.get_node_names()
 
-            if '/ROVER' in node_names:
+            if 'ROVER' in node_names:
                 self.node.get_logger().info("Rover Node Found")
                 self.roverConnected = True
             else:
