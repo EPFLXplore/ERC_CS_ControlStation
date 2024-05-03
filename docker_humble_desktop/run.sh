@@ -43,7 +43,6 @@ docker run -it \
     -v $XAUTH:$XAUTH \
     -v /run/user/1000/at-spi:/run/user/1000/at-spi \
     -v /dev:/dev \
-    -v /home/xplore/dev_ws/src/cs_ws/src/control_station_pkg/control_station_pkg/csApp/frontend/build \
     -v $parent_dir:/home/xplore/dev_ws/src \
     -v cs_humble_desktop_home_volume:/home/xplore \
     ghcr.io/epflxplore/cs:humble-desktop

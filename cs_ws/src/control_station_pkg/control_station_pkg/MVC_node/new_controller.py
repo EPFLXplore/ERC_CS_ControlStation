@@ -154,6 +154,6 @@ class Controller():
     # ===========================================================================
 
     def rover_state(self, data):
-        async_to_sync(channel_layer.group_send)("session", {"type": "rover_message",
+        async_to_sync(channel_layer.group_send)("rover", {"type": "rover_message",
                                                             'rover_state': data.data
                                                             })
