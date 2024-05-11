@@ -10,6 +10,9 @@ from csApp.models import *
 from std_msgs.msg import Int8MultiArray, Bool, String, Float32MultiArray
 from sensor_msgs.msg import Joy
 
+from custom_msg.srv import ChangeModeSystem
+from custom_msg.action import DrillTerrain, HDManipulation, NAVReachGoal
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ControlStation.settings')
 django.setup()
 
@@ -47,12 +50,12 @@ class CS:
         #self.node.create_subscription(GamepadCmdsHandlingDevice, 'CS/GamepadCmdsHandlingDevice', , 10)
         
         # ===== Services =====
-        #self.change_mode_system = self.node.create_client(ChangeModeSystem , 'change_mode_system') 
+        self.change_mode_system = self.node.create_client(ChangeModeSystem , 'change_mode_system') 
         
         # ===== Actions =====
-        #self.handling_device_manipulation = ActionClient(self.node, HandlingDeviceManipulation, 'handling_device_manipulation')
-        #self.navigation_reach = ActionClient(self.node, NavigationReach, 'navigation_reach')
-        #self.drill_terrain = ActionClient(self.node, DrillTerrain, 'drill_terrain')
+        self.handling_device_manipulation = ActionClient(self.node, HDManipulation, 'handling_device_manipulation')
+        self.navigation_reach = ActionClient(self.node, NAVReachGoal, 'navigation_reach')
+        self.drill_terrain = ActionClient(self.node, DrillTerrain, 'drill_terrain')
 
         # ==================================================
         # ==================================================
