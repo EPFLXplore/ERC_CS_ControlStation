@@ -1,0 +1,1 @@
+ros2 action send_goal -f /Rover/DrillTerrain custom_msg/action/DrillTerrain "{}"
