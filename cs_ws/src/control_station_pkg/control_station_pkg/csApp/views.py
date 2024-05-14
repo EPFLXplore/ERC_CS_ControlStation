@@ -65,3 +65,13 @@ def enable_cameras(request):
     print("camera enabled")
     print(camera_list)
     return JsonResponse({})
+
+# ----------------------------------
+# change system mode
+
+def change_system_mode(request):
+    system = request.POST.get("system")
+    mode = request.POST.get("mode")
+    cs.change_mode_system.send_request(system, mode)
+    print("send service request to change the subsystem " + system + " to " + mode)
+    return JsonResponse({})
