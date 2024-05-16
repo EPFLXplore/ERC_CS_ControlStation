@@ -55,7 +55,7 @@ urlpatterns = [
     # path('science/drill_tare',     drill_tare, name='drill_tare'),
 
     path('cameras/enable_cameras', enable_cameras, name='enable_cameras'),
-    path('changeModeSystem/', change_system_mode, name='change_system_mode')
+    path('changeModeSystem', change_system_mode, name='change_system_mode')
 
     # path('science/confirm',         confirm_science, name='confirm_science'),
     # path('science/abort',           abort_science,  name='abort_science'),

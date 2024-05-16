@@ -30,9 +30,8 @@ class Controller():
         req.mode = mode
         
         future = self.cs.change_mode_system.call_async(req)
-        rclpy.spin_until_future_complete(self, future)
+        rclpy.spin_until_future_complete(self.cs.node, future)
         result = future.result()
-        
         return (result.systems_state, result.error_type, result.error_message)
     
     # ===========================================================================

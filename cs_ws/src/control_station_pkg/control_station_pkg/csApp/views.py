@@ -70,8 +70,8 @@ def enable_cameras(request):
 # change system mode
 
 def change_system_mode(request):
-    system = request.POST.get("system")
-    mode = request.POST.get("mode")
-    cs.change_mode_system.send_request(system, mode)
-    print("send service request to change the subsystem " + system + " to " + mode)
-    return JsonResponse({})
+    system = int(request.POST.get("system"))
+    mode = int(request.POST.get("mode"))
+    print(f"{system} {mode}")
+    (status, err, err_message) = cs.controller.send_request_system(system, mode)
+    return JsonResponse({"status": status, "error_type": err, "error_message": err_message})

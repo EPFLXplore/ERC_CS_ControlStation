@@ -50,7 +50,7 @@ class CS:
         #self.node.create_subscription(GamepadCmdsHandlingDevice, 'CS/GamepadCmdsHandlingDevice', , 10)
         
         # ===== Services =====
-        self.change_mode_system = self.node.create_client(ChangeModeSystem , 'change_mode_system') 
+        self.change_mode_system = self.node.create_client(ChangeModeSystem , '/Rover/ChangeModeSystem') 
         
         # ===== Actions =====
         self.handling_device_manipulation = ActionClient(self.node, HDManipulation, 'handling_device_manipulation')
@@ -70,8 +70,10 @@ class CS:
             Int8MultiArray,    'CS/Task',             1)
         self.CS_confirm_pub = self.node.create_publisher(
             Bool,              'CS/Confirm',          1)
-
-        thr = threading.Thread(target=rclpy.spin, args=(self.node,)).start()
+        
+        executor = rclpy.executors.MultiThreadedExecutor()
+        executor.add_node(self.node)
+        thr = threading.Thread(target=executor.spin, daemon=True).start()
         print("Start spinning CONTROL_STATION Node")
 
     # ===============================================================================================================================================
