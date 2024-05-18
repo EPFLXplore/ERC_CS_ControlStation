@@ -8,6 +8,7 @@ import time
 from .new_controller import Controller
 from csApp.models import *
 from std_msgs.msg import Int8MultiArray, Bool, String, Float32MultiArray
+from rclpy.callback_groups import ReentrantCallbackGroup, MutuallyExclusiveCallbackGroup
 from sensor_msgs.msg import Joy
 
 from custom_msg.srv import ChangeModeSystem
@@ -43,14 +44,14 @@ class CS:
 
         # ==================================================
         # ==================================================
-        
+        bb = ReentrantCallbackGroup()
         # ===== Subscribers =====
-        self.node.create_subscription(String, 'Rover/RoverState', self.controller.rover_state, 10)
+        self.node.create_subscription(String, 'Rover/RoverState', self.controller.rover_state, 10, callback_group=bb)
         #self.node.create_subscription(GamepadCmdsNavigation, 'CS/GamepadCmdsNavigation', , 10)
         #self.node.create_subscription(GamepadCmdsHandlingDevice, 'CS/GamepadCmdsHandlingDevice', , 10)
         
         # ===== Services =====
-        self.change_mode_system = self.node.create_client(ChangeModeSystem , '/Rover/ChangeModeSystem') 
+        self.change_mode_system = self.node.create_client(ChangeModeSystem , '/Rover/ChangeModeSystem', callback_group=bb) 
         
         # ===== Actions =====
         self.handling_device_manipulation = ActionClient(self.node, HDManipulation, 'handling_device_manipulation')
@@ -73,7 +74,9 @@ class CS:
         
         executor = rclpy.executors.MultiThreadedExecutor()
         executor.add_node(self.node)
-        thr = threading.Thread(target=executor.spin, daemon=True).start()
+        self.thr = threading.Thread(target=executor.spin, daemon=True)
+        self.thr.start()
+        
         print("Start spinning CONTROL_STATION Node")
 
     # ===============================================================================================================================================

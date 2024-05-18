@@ -19,5 +19,6 @@ fi
 # Store the parameter in a variable
 system=$1
 mode=$2
-
+cd ../../../
+source install/setup.bash
 ros2 service call /Rover/ChangeModeSystem custom_msg/srv/ChangeModeSystem "{system: $system, mode: $mode}"
