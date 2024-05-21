@@ -29,6 +29,7 @@ from MVC_node.models import gamepad
 
 from std_msgs.msg import Int8MultiArray, Int8, Bool, String
 from custom_msg.msg import ServoRequest, SpectroRequest
+from geometry_msgs.msg import Pose2D
 
 # ===============================================================
 # Control Station setup
@@ -139,27 +140,48 @@ def cancel_done_callback(future, name, handle):
 # ----------------------------------
 # start an action
 
-def start_action(request):
+async def start_action(request):
     name = request.POST.get("name")
 
     if name == "navigation":
         mode = int(request.POST.get("mode"))
-        # need the goal argument, which is a pose 2d
+
+        goal = Pose2D()
+        goal.x = float(request.POST.get("0"))
+        goal.y = float(request.POST.get("1"))
+        goal.theta = float(request.POST.get("2"))
 
         if not cs.controller.nav_action:
-            (result, final_pos, error_type, error_message) = cs.controller.send_navigation_reach_goal()
-            return JsonResponse({"status", 1})
+            (result, final_pos, error_type, error_message) = cs.controller.send_navigation_reach_goal(mode, goal)
+            if(error_type == 0):
+                # no error occured
+                return JsonResponse({"status": True, "result": result, "final_pos": final_pos})
+            else:
+
+                return JsonResponse({"status": False, "error_messaage": error_message})
 
     if name == "handling_device":
-        #task_id = int(request.POST.get("task_id"))
-        #task_type = int(request.POST.get("task_type"))
+        task_id = int(request.POST.get("task_id"))
+        task_type = int(request.POST.get("task_type"))
 
         if not cs.controller.hd_action:
-            (result, error_type, error_message) = cs.controller.send_handling_device_manipulation_goal()
-            return JsonResponse({"status", 1})
+            (result, error_type, error_message) = cs.controller.send_handling_device_manipulation_goal(task_type, task_id)
+            if(error_type == 0):
+                # no error occured
+                return JsonResponse({"status": True, "result": result})
+            else:
+                return JsonResponse({"status": False, "error_messaage": error_message})
     
     if name == "drill":
         if not cs.controller.drill_action:
-            (result, error_type, error_message) = cs.controller.send_drill_terrain_goal()
-            return JsonResponse({"status", 1})
+            res = await cs.controller.send_drill_terrain_goal()
+            if len(res) == 3 and res[1] == 0:
+                result, error_type, error_message = res
+            else:
+                raise Exception("problem ")
+            if(error_type == 0):
+                # no error occured
+                return JsonResponse({"status": True, "result": result})
+            else:
+                return JsonResponse({"status": False, "error_messaage": error_message})
     

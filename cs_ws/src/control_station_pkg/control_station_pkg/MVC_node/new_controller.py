@@ -6,6 +6,8 @@ from asgiref.sync import async_to_sync
 from custom_msg.srv import ChangeModeSystem
 from custom_msg.action import DrillTerrain, HDManipulation, NAVReachGoal
 
+from concurrent.futures import Future
+
 channel_layer = get_channel_layer()
 
 class Controller():
@@ -57,6 +59,8 @@ class Controller():
             self.hd_action = self.cs.handling_device_manipulation.send_goal_async(goal, feedback_callback=self.handling_device_manipulation_feedback)
             self.hd_action.add_done_callback(self.handling_device_manipulation_callback)
         
+            # CHANGE WITH FUTURES LIKE WITH DRILL ACTION
+
         else:
             self.cs.node.get_logger("A HD action is already running")
         
@@ -64,7 +68,7 @@ class Controller():
         goal_handle = future.result()
         if not goal_handle.accepted:
             self.cs.node.get_logger().info('Goal HD rejected')
-            return
+            return ("goal rejected", 1, "the goal was rejected by the subsystem")
 
         self.cs.node.get_logger().info('Goal accepted for HD Manipulation')
         self.hd_action = True
@@ -103,6 +107,8 @@ class Controller():
             self.nav_action = self.cs.navigation_reach.send_goal_async(goal_, feedback_callback=self.navigation_reach_feedback)
             self.nav_action.add_done_callback(self.navigation_reach_callback)
         
+            # CHANGE WITH FUTURES LIKE WITH DRILL ACTION
+
         else:
             self.cs.node.get_logger("A NAV action is already running")
         
@@ -110,7 +116,7 @@ class Controller():
         goal_handle = future.result()
         if not goal_handle.accepted:
             self.cs.node.get_logger().info('Goal NAV rejected')
-            return
+            return ("goal rejected", "", 1, "the goal was rejected by the subsystem")
 
         self.cs.node.get_logger().info('Goal accepted for Navigation Reach')
         self.nav_action = True
@@ -145,13 +151,18 @@ class Controller():
 
             self.drill_action = self.cs.drill_terrain.send_goal_async(goal, feedback_callback=self.drill_terrain_feedback)
             self.drill_action.add_done_callback(self.drill_terrain_callback)
+            self.future_drill = Future()
+            return self.result_future
         else:
-            self.cs.node.get_logger("A DRILL action is already running")
+            future = Future()
+            future.set_result(("goal rejected", 1, "A DRILL action is already running"))
+            return future
         
     def drill_terrain_callback(self, future):
         goal_handle = future.result()
         if not goal_handle.accepted:
             self.cs.node.get_logger().info('Goal Drill rejected')
+            self.future_drill.set_result(("goal rejected", 1, "the goal was rejected by the subsystem"))
             return
 
         self.cs.node.get_logger().info('Goal accepted for Drill')
@@ -168,12 +179,12 @@ class Controller():
         error_message = result.error_message
         self.drill_action = False
 
-        return (result, error_type, error_message)
+        self.future_drill.set_result((result, error_type, error_message))
+        #return (result, error_type, error_message)
     
     def drill_terrain_feedback(self, feedback_msg):
         feedback = feedback_msg.feedback
         self.cs.node.get_logger().info(f"Feedback Drill action: {feedback.current_status}, {feedback.warning_type}, {feedback.warning_message}")
-
 
     # ===========================================================================
     # ===========================================================================
