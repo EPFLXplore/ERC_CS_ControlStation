@@ -67,6 +67,7 @@ class Controller():
             return
 
         self.cs.node.get_logger().info('Goal accepted for HD Manipulation')
+        self.hd_action = True
 
         get_result_future = goal_handle.get_result_async()
         get_result_future.add_done_callback(self.handling_device_manipulation_result_callback)
@@ -112,6 +113,7 @@ class Controller():
             return
 
         self.cs.node.get_logger().info('Goal accepted for Navigation Reach')
+        self.nav_action = True
 
         get_result_future = goal_handle.get_result_async()
         get_result_future.add_done_callback(self.navigation_reach_result_callback)
@@ -153,6 +155,7 @@ class Controller():
             return
 
         self.cs.node.get_logger().info('Goal accepted for Drill')
+        self.drill_action = True
 
         get_result_future = goal_handle.get_result_async()
         get_result_future.add_done_callback(self.drill_terrain_result_callback)

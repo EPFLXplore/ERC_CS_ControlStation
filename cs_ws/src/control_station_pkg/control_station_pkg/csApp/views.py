@@ -34,9 +34,6 @@ from custom_msg.msg import ServoRequest, SpectroRequest
 # Control Station setup
 
 cs = setup().CONTROL_STATION
-status = False
-err = ""
-err_message = ""
 
 # -----------------------------------
 # gamepad views
@@ -80,23 +77,30 @@ def change_system_mode(request):
     thr.start()
 
     #(status, err, err_message) = cs.controller.send_request_system(system, mode)
-    print(status)
-    return JsonResponse({"status": status, "error_type": err, "error_message": err_message})
+    #print(status)
+    #return JsonResponse({"status": status, "error_type": err, "error_message": err_message})
+
+# ----------------------------------
+# cancel all actions
+
+
 
 def cancel_all_actions():
     print("cancelling all goals")
-    cancel_actions_(cs.controller.nav_action, "nav")
-    cancel_actions_(cs.controller.hd_action, "hd")
+    cancel_actions_(cs.controller.nav_action, "navigation")
+    cancel_actions_(cs.controller.hd_action, "handling_device")
     cancel_actions_(cs.controller.drill_action, "drill")
 
-
-    return JsonResponse({})
+    return JsonResponse({"status":[cs.controller.nav_action, cs.controller.hd_action, cs.controller.drill_action]})
 
 def cancel_actions_(handle, name):
     if handle:
-        cs.node.get_logger().info('Canceling goal ' + name)
+        print(f'Canceling goal {name}')
         cancel_future = handle.cancel_goal_async()
-        cancel_future.add_done_callback(cancel_done_callback)
+        cancel_future.add_done_callback(lambda f: cancel_done_callback(f, name, handle))
+
+# ----------------------------------
+# cancel single action
 
 def cancel_action(request):
     name = request.POST.get("name")
@@ -105,27 +109,35 @@ def cancel_action(request):
         if cs.controller.nav_action:
             cs.node.get_logger().info('Canceling goal ' + name)
             cancel_future = cs.controller.nav_action.cancel_goal_async()
+            cancel_future.add_done_callback(lambda f: cancel_done_callback(f, name, cs.controller.nav_action))
+            return JsonResponse({"status", cs.controller.nav_action})
     
     if name == "handling_device":
         if cs.controller.hd_action:
             cs.node.get_logger().info('Canceling goal ' + name)
             cancel_future = cs.controller.hd_action.cancel_goal_async()
+            cancel_future.add_done_callback(lambda f: cancel_done_callback(f, name, cs.controller.hd_action))
+            return JsonResponse({"status", cs.controller.hd_action})
 
     if name == "drill":
         if cs.controller.drill_action:
             cs.node.get_logger().info('Canceling goal ' + name)
             cancel_future = cs.controller.drill_action.cancel_goal_async()
+            cancel_future.add_done_callback(lambda f: cancel_done_callback(f, name, cs.controller.drill_action))
+            return JsonResponse({"status", cs.controller.drill_action})
     
-    cancel_future.add_done_callback(cancel_done_callback)
-    return JsonResponse({"result", 1})
 
-def cancel_done_callback(future):
+def cancel_done_callback(future, name, handle):
     cancel_response = future.result()
     if cancel_response.goal_id:
-        print('Goal successfully canceled')
+        print(f'Goal {name} successfully canceled')
+        handle = True
     else:
-        print('Goal cancellation failed')
+        print(f'Goal {name} cancellation failed')
+        handle - False
 
+# ----------------------------------
+# start an action
 
 def start_action(request):
     name = request.POST.get("name")
@@ -134,18 +146,20 @@ def start_action(request):
         mode = int(request.POST.get("mode"))
         # need the goal argument, which is a pose 2d
 
-        if cs.controller.nav_action:
-            cs.controller.send_navigation_reach_goal()
+        if not cs.controller.nav_action:
+            (result, final_pos, error_type, error_message) = cs.controller.send_navigation_reach_goal()
+            return JsonResponse({"status", 1})
 
     if name == "handling_device":
         #task_id = int(request.POST.get("task_id"))
         #task_type = int(request.POST.get("task_type"))
 
-        if cs.controller.hd_action:
-            cs.controller.send_handling_device_manipulation_goal()
+        if not cs.controller.hd_action:
+            (result, error_type, error_message) = cs.controller.send_handling_device_manipulation_goal()
+            return JsonResponse({"status", 1})
     
     if name == "drill":
-        if cs.controller.drill_action:
-            cs.controller.send_drill_terrain_goal()
+        if not cs.controller.drill_action:
+            (result, error_type, error_message) = cs.controller.send_drill_terrain_goal()
+            return JsonResponse({"status", 1})
     
-    return JsonResponse({"result", 1})
