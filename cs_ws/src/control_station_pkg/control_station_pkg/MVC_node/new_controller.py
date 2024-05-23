@@ -26,7 +26,7 @@ class Controller():
     # CHANGE MODE SYSTEM SERVICE   
     # ===========================================================================
     
-    def send_request_system(self, system, mode, status):
+    def send_request_system(self, system, mode, queue):
         while not self.cs.change_mode_system.wait_for_service(timeout_sec=1.0):
             self.cs.node.get_logger().info('Service ChangeModeSystem not available, waiting again...')
 
@@ -36,12 +36,17 @@ class Controller():
         req.mode = mode
         
         future = self.cs.change_mode_system.call_async(req)
-        #rclpy.spin_until_future_complete(self.cs.node, future)
-        future.add_done_callback(lambda future: print("okok"))
-        result = future.result()
-        #status = result.systems_state
-        #return (result.systems_state, result.error_type, result.error_message)
+        future.add_done_callback(lambda f: self.service_callback(f, queue))
+        return self.result_future
     
+    def service_callback(self, future, result):
+        try:
+            response = future.result()
+            result.put((response.systems_state, response.error_type, response.error_message))
+                
+        except Exception as e:
+            result.put(("", 1, "exception {e}"))
+
     # ===========================================================================
     # HANDLING DEVICE MANIPULATION ACTION
     # ===========================================================================
@@ -152,7 +157,7 @@ class Controller():
             self.drill_action = self.cs.drill_terrain.send_goal_async(goal, feedback_callback=self.drill_terrain_feedback)
             self.drill_action.add_done_callback(self.drill_terrain_callback)
             self.future_drill = Future()
-            return self.result_future
+            return self.future_drill
         else:
             future = Future()
             future.set_result(("goal rejected", 1, "A DRILL action is already running"))

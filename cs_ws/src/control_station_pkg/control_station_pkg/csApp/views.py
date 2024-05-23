@@ -26,6 +26,7 @@ from MVC_node.new_controller import *
 from manage          import setup
 
 from MVC_node.models import gamepad
+import queue
 
 from std_msgs.msg import Int8MultiArray, Int8, Bool, String
 from custom_msg.msg import ServoRequest, SpectroRequest
@@ -74,12 +75,19 @@ def change_system_mode(request):
     system = int(request.POST.get("system"))
     mode = int(request.POST.get("mode"))
 
-    thr = threading.Thread(target=cs.controller.send_request_system, args=(system, mode, status))
+    q = queue.Queue()
+    thr = threading.Thread(target=cs.controller.send_request_system, args=(system, mode, q))
     thr.start()
+    thr.join()  # Wait for the thread to complete
 
-    #(status, err, err_message) = cs.controller.send_request_system(system, mode)
-    #print(status)
-    #return JsonResponse({"status": status, "error_type": err, "error_message": err_message})
+    # Retrieve the result from the queue
+    result = q.get()
+    if result:
+
+        system_state, error_type, error_message = result
+        return JsonResponse({"status": system_state, "error_type": error_type, "error_message": error_message})
+    else:
+        raise Exception("error service")
 
 # ----------------------------------
 # cancel all actions
