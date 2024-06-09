@@ -1,0 +1,6 @@
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/EPFLXplore/ERC_CS_GUI
+[submodule "custom_msg"]
+	path = custom_msg
+	url = https://github.com/EPFLXplore/ERC_SE_CustomMessages
