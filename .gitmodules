@@ -1,8 +1,0 @@
-[submodule "cs_ws/src/control_station_pkg/control_station_pkg/csApp/frontend"]
-	path = cs_ws/src/control_station_pkg/control_station_pkg/csApp/frontend
-	url = https://github.com/EPFLXplore/ERC_CS_GUI
-[submodule "cs_ws/src/custom_msg"]
-	path = cs_ws/src/custom_msg
-	url = https://github.com/EPFLXplore/ERC_SE_CustomMessages
-[submodule "cs_ws/src/control_station_pkg/control_station_pkg/csApp/frontend/"]
-	branch = ui-2.0
