@@ -4,3 +4,6 @@
 [submodule "frontend"]
 	path = frontend
 	url = https://github.com/EPFLXplore/ERC_CS_GUI
+[submodule "rosbridge_suite"]
+	path = rosbridge_suite
+	url = git@github.com:RobotWebTools/rosbridge_suite.git

@@ -8,7 +8,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 # Install CS packages
 RUN echo "Install packages ROS"
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y ros-${ROS_DISTRO}-rosbridge-server
+# RUN apt-get install -y ros-${ROS_DISTRO}-rosbridge-server  --> To add when they release the version with ros2 actions
 RUN apt-get install curl
 
 # nvm environment variables
