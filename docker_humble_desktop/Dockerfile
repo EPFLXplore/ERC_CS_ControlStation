@@ -40,6 +40,9 @@ RUN nvm install $NODE_VERSION \
     && [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" \
     && nvm use default
 
+# Add rosbridge dependencies
+RUN pip install pymongo tornado
+
 # Set a diretory to store the project
 WORKDIR /home/$USERNAME/dev_ws/src
 COPY . .
