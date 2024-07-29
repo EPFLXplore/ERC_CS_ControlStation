@@ -31,7 +31,7 @@ current_dir=$(pwd)
 # Use dirname to get the parent directory
 parent_dir=$(dirname "$current_dir")
 
-docker run -it \
+/usr/bin/docker run \
     --name cs_humble_desktop \
     --rm \
     --privileged \

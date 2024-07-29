@@ -1,0 +1,15 @@
+# Service to launch the cs node. Copy this file: sudo cp ~/Desktop/ERC_CS_Rover/rovernode.service /etc/systemd/system/rovernode.service and run sudo systemctl enable rovernode.service to enable the service.
+
+
+[Unit]
+Description=CS Node Service
+After=docker.service
+Requires=docker.service
+
+[Service]
+Restart=always
+ExecStart=/bin/bash "/home/xplore/ERC_CS_ControlStation/start_cs.sh"
+ExecStop=/usr/bin/docker stop cs_humble_desktop
+
+[Install]
+WantedBy=default.target
