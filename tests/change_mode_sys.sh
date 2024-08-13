@@ -1,6 +1,6 @@
 # Check if two arguments are passed
 if [ "$#" -ne 2 ]; then
-    echo "Usage: $0 <system integer> <mode integer>"
+    echo "Usage: $0 <system integer> <mode integer> hahaha"
     exit 1
 fi
 
