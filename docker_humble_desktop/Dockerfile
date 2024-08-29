@@ -10,6 +10,7 @@ RUN echo "Install packages ROS"
 RUN apt-get update && apt-get upgrade -y
 # RUN apt-get install -y ros-${ROS_DISTRO}-rosbridge-server  --> To add when they release the version with ros2 actions
 RUN apt-get install curl
+RUN apt install ros-humble-rmw-cyclonedds-cpp -y
 
 # nvm environment variables
 WORKDIR /usr/local/nvm
