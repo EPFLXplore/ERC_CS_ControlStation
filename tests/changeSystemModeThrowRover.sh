@@ -1,6 +1,13 @@
+# System -> 0: nav, 1: hd, 2: cameras, 3: drill
+# Mode -> nav:   {0: off, 1: manual, 2: auto}
+#         hd:    {0: off, 1: manual direct, 2: manual inverse, 3: auto}
+#         cam:   {0: off, 1: stream}
+#         drill: {0: off, 1: on}
+
+
 # Check if two arguments are passed
 if [ "$#" -ne 2 ]; then
-    echo "Usage: $0 <system integer> <mode integer> hahaha"
+    echo "Usage: $0 <system integer> <mode integer>"
     exit 1
 fi
 

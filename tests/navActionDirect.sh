@@ -1,3 +1,8 @@
+# Mode  -> 0: ?, ...
+# x     -> position x
+# y     -> position y
+# theta -> orientation theta
+
 # Check if four arguments are passed
 if [ "$#" -ne 4 ]; then
     echo "Usage: $0 <mode integer> <pose x float1> <pose y float2> <theta float3>"
