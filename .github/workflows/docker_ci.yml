@@ -2,7 +2,7 @@ name: Docker CI
 
 on:
   push:
-    branches: ["rosbridge_cs"]
+    branches: ["humble"]
 
 env:
   REGISTRY: ghcr.io
