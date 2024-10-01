@@ -1,0 +1,26 @@
+services:
+    cs:
+        stdin_open: true
+        container_name: cs_humble_desktop
+        ports:
+            - 8000:8000
+        networks:
+            - cs_frontend_net
+        environment:
+            - XAUTHORITY=${XAUTH}
+        volumes:
+            - /tmp/.X11-unix:/tmp/.X11-unix:rw
+            - $XAUTH:$XAUTH
+            - /run/user/1000/at-spi:/run/user/1000/at-spi
+            - /dev:/dev
+            - ${PARENT_DIR}:/home/xplore/dev_ws/src
+            - cs_humble_desktop_home_volume:/home/xplore
+        image: ghcr.io/epflxplore/cs:humble-desktop
+
+volumes:
+    cs_humble_desktop_home_volume:
+        external: true
+        name: cs_humble_desktop_home_volume
+
+networks:
+    cs_frontend_net:

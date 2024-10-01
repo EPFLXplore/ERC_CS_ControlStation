@@ -1,11 +1,5 @@
-#!/bin/sh
-#exec >> launch_output.log 2>&1
-
-echo "xplore" > pass.tmp
-su root < pass.tmp
-. ~/.bashrc
-. /opt/ros/foxy/setup.sh
-
-cd Desktop/ROVER/rover_ws
-. install/setup.sh
-ros2 run rover_pkg rover
+cd ..
+source /opt/ros/humble/setup.bash
+colcon build
+source install/setup.bash
+ros2 launch rosbridge_server rosbridge_websocket_launch.xml call_services_in_new_thread:=true send_action_goals_in_new_thread:=true & (cd src/frontend && npm start)
