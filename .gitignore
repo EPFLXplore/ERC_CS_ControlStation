@@ -6,6 +6,8 @@ cs_ws/log/
 cs_ws/install/
 *.pyc
 
+ssh_backend/node_modules/*
+
 # Redis Backup file
 *.rdb
 
