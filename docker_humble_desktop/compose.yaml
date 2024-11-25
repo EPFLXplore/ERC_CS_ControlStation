@@ -3,7 +3,8 @@ services:
         stdin_open: true
         container_name: cs_humble_desktop
         ports:
-            - 8000:8000
+            - 3000:3000
+            - 9090:9090
         networks:
             - cs_frontend_net
         environment:
