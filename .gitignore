@@ -6,6 +6,8 @@ cs_ws/log/
 cs_ws/install/
 *.pyc
 
+docker_humble_desktop/build.sh
+
 ssh_backend/node_modules/*
 
 # Redis Backup file
