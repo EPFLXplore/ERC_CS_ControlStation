@@ -5,7 +5,7 @@ cs_ws/devel/
 cs_ws/log/
 cs_ws/install/
 *.pyc
-
+log/**
 docker_humble_desktop/build.sh
 
 ssh_backend/node_modules/*
