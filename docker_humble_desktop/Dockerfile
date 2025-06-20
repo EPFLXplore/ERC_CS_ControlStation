@@ -25,12 +25,6 @@ RUN curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v0.39.7/i
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
-RUN ls $NVM_DIR
-
-# Add USB rules
-RUN echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="03e7", MODE="0666"' | sudo tee /etc/udev/rules.d/80-movidius.rules
-RUN /etc/init.d/udev restart
-
 USER $USERNAME
 
 # install node and npm
