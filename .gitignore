@@ -7,6 +7,7 @@ cs_ws/install/
 *.pyc
 log/**
 docker_humble_desktop/build.sh
+sensor_data/
 
 ssh_backend/node_modules/*
 
