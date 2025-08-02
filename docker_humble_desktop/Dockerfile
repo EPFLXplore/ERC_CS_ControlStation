@@ -16,6 +16,7 @@ RUN echo "Install packages ROS"
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y ros-${ROS_DISTRO}-rosbridge-server
 RUN apt install ros-humble-rmw-cyclonedds-cpp -y
+RUN apt install net-tools iputils-ping -y
 
 # nvm environment variables
 WORKDIR /usr/local/nvm

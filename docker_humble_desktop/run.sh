@@ -47,3 +47,6 @@ docker run -it \
     -v cs_humble_desktop_home_volume:/home/xplore \
     ghcr.io/epflxplore/cs:humble-desktop \
     /bin/bash -c "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp; /bin/bash"
+
+    # -v ~/Documents/xplore/ERC_CS_ControlStation/docker_humble_desktop/cyclonedds.xml:/home/xplore/cyclonedds.xml:ro \
+    # -e CYCLONEDDS_URI="file:///home/xplore/cyclonedds.xml" \

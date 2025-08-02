@@ -8,6 +8,7 @@ cs_ws/install/
 log/**
 docker_humble_desktop/build.sh
 sensor_data/
+frontend/ssh_backend/mass_arm_data.csv
 
 ssh_backend/node_modules/*
 
