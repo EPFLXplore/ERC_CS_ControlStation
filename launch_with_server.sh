@@ -13,7 +13,7 @@ ros2 launch rosbridge_server rosbridge_websocket_launch.xml \
   fragment_timeout:=600 \
   unregister_timeout:=10.0 \
   bson_only_mode:=false \
-  default_call_service_timeout:=5.0 & \
+  default_call_service_timeout:=25.0 & \
 (cd src/frontend && npm start) & \
 (cd src/frontend/ssh_backend && node ssh_server.js)
 
