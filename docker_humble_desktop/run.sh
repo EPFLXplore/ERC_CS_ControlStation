@@ -1,5 +1,8 @@
 # If not working, first do: sudo rm -rf /tmp/.docker.xauth
 # If still not working, try running the script as root.
+echo "Launching Chrome at http://localhost:3000/ ..."
+google-chrome --new-window "http://localhost:3000/" >/dev/null 2>&1 &
+sleep 1
 
 XAUTH=/tmp/.docker.xauth
 
