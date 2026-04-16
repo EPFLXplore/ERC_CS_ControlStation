@@ -28,6 +28,17 @@ ls -FAlh $XAUTH
 echo ""
 echo "Running docker..."
 
+if docker ps --format '{{.Names}}' | grep -Fxq cs_humble_desktop; then
+    echo "Container cs_humble_desktop is already running. Opening a shell in it..."
+    docker exec -it cs_humble_desktop bash
+    exit 0
+fi
+
+if docker ps -a --format '{{.Names}}' | grep -Fxq cs_humble_desktop; then
+    echo "Removing stale container cs_humble_desktop..."
+    docker rm cs_humble_desktop >/dev/null
+fi
+
 # Get the current working directory
 current_dir=$(pwd)
 
