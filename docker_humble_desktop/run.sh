@@ -45,6 +45,9 @@ current_dir=$(pwd)
 # Use dirname to get the parent directory
 parent_dir=$(dirname "$current_dir")
 
+# Directory containing this script (for CycloneDDS config mount)
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
 docker run -it \
     --name cs_humble_desktop \
     --rm \
@@ -53,18 +56,17 @@ docker run -it \
     -e DISPLAY=unix$DISPLAY \
     -e QT_X11_NO_MITSHM=1 \
     -e XAUTHORITY=$XAUTH \
+    -e CYCLONEDDS_URI="file:///home/xplore/cyclonedds.xml" \
     -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
     -v $XAUTH:$XAUTH \
     -v /run/user/1000/at-spi:/run/user/1000/at-spi \
     -v /dev:/dev \
     -v $parent_dir:/home/xplore/dev_ws/src \
     -v cs_humble_desktop_home_volume:/home/xplore \
+    -v "$SCRIPT_DIR/cyclonedds.xml:/home/xplore/cyclonedds.xml:ro" \
     ghcr.io/epflxplore/cs:humble-desktop \
     bash -lc "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp; \
               cd /home/xplore/dev_ws/src; \
               chmod +x ./launch_with_server.sh; \
               ./launch_with_server.sh; \
               exec bash"
-
-    # -v ~/Documents/xplore/ERC_CS_ControlStation/docker_humble_desktop/cyclonedds.xml:/home/xplore/cyclonedds.xml:ro \
-    # -e CYCLONEDDS_URI="file:///home/xplore/cyclonedds.xml" \
