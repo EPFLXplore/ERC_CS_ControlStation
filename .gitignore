@@ -7,6 +7,8 @@ cs_ws/install/
 *.pyc
 log/**
 docker_humble_desktop/build.sh
+docker_humble_desktop/run.sh
+docker_humble_desktop/go_in_docker.sh
 sensor_data/
 frontend/ssh_backend/mass_arm_data.csv
 

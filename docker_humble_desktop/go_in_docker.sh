@@ -48,11 +48,10 @@ docker run -it \
     -v /dev:/dev \
     -v $parent_dir:/home/xplore/dev_ws/src \
     -v cs_humble_desktop_home_volume:/home/xplore \
+    -v /home/mehdi/cyclonedds.xml:/home/xplore/cyclonedds.xml:ro \
+    -e CYCLONEDDS_URI="file:///home/xplore/cyclonedds.xml" \
     ghcr.io/epflxplore/cs:humble-desktop \
     bash -lc "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp; \
               cd /home/xplore/dev_ws/src; \
               chmod +x ./launch_with_server.sh; \
               exec bash"
-
-    # -v ~/Documents/xplore/ERC_CS_ControlStation/docker_humble_desktop/cyclonedds.xml:/home/xplore/cyclonedds.xml:ro \
-    # -e CYCLONEDDS_URI="file:///home/xplore/cyclonedds.xml" \
