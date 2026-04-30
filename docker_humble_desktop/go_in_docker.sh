@@ -1,11 +1,25 @@
+#!/bin/bash
 # If not working, first do: sudo rm -rf /tmp/.docker.xauth
 # If still not working, try running the script as root.
+
+# --- CycloneDDS config from host ---
+if [ -z "$CYCLONEDDS_URI" ]; then
+    echo "[ERROR] CYCLONEDDS_URI is not set on the host. Please set it in your ~/.bashrc:"
+    echo "  export CYCLONEDDS_URI=file:///path/to/your/cyclone.xml"
+    exit 1
+fi
+CYCLONE_FILE="${CYCLONEDDS_URI#file://}"
+if [ ! -f "$CYCLONE_FILE" ]; then
+    echo "[ERROR] CycloneDDS config file not found: $CYCLONE_FILE"
+    exit 1
+fi
+echo "[INFO] Using CycloneDDS config: $CYCLONE_FILE"
+
 echo "Launching Chrome at http://localhost:3000/ ..."
 google-chrome --new-window "http://localhost:3000/" >/dev/null 2>&1 &
 sleep 1
 
 XAUTH=/tmp/.docker.xauth
-
 echo "Preparing Xauthority data..."
 xauth_list=$(xauth nlist :0 | tail -n 1 | sed -e 's/^..../ffff/')
 if [ ! -f $XAUTH ]; then
@@ -16,7 +30,6 @@ if [ ! -f $XAUTH ]; then
     fi
     chmod a+r $XAUTH
 fi
-
 echo "Done."
 echo ""
 echo "Verifying file contents:"
@@ -28,10 +41,7 @@ ls -FAlh $XAUTH
 echo ""
 echo "Running docker..."
 
-# Get the current working directory
 current_dir=$(pwd)
-
-# Use dirname to get the parent directory
 parent_dir=$(dirname "$current_dir")
 
 docker run -it \
@@ -48,10 +58,10 @@ docker run -it \
     -v /dev:/dev \
     -v $parent_dir:/home/xplore/dev_ws/src \
     -v cs_humble_desktop_home_volume:/home/xplore \
-    -v /home/mehdi/cyclonedds.xml:/home/xplore/cyclonedds.xml:ro \
-    -e CYCLONEDDS_URI="file:///home/xplore/cyclonedds.xml" \
+    -v "$CYCLONE_FILE":"$CYCLONE_FILE":ro \
+    -e CYCLONEDDS_URI="$CYCLONEDDS_URI" \
+    -e RMW_IMPLEMENTATION=rmw_cyclonedds_cpp \
     ghcr.io/epflxplore/cs:humble-desktop \
-    bash -lc "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp; \
-              cd /home/xplore/dev_ws/src; \
+    bash -lc "cd /home/xplore/dev_ws/src; \
               chmod +x ./launch_with_server.sh; \
               exec bash"
