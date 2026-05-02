@@ -40,18 +40,6 @@ echo "Permissions:"
 ls -FAlh $XAUTH
 echo ""
 echo "Running docker..."
-if docker ps --format '{{.Names}}' | grep -Fxq cs_humble_desktop; then
-    echo "Container cs_humble_desktop is already running. Opening a shell in it..."
-    docker exec -it \
-        -e RMW_IMPLEMENTATION=rmw_cyclonedds_cpp \
-        -e CYCLONEDDS_URI="$CYCLONEDDS_URI" \
-        cs_humble_desktop bash
-    exit 0
-fi
-if docker ps -a --format '{{.Names}}' | grep -Fxq cs_humble_desktop; then
-    echo "Removing stale container cs_humble_desktop..."
-    docker rm cs_humble_desktop >/dev/null
-fi
 
 current_dir=$(pwd)
 parent_dir=$(dirname "$current_dir")
@@ -70,11 +58,10 @@ docker run -it \
     -v /dev:/dev \
     -v $parent_dir:/home/xplore/dev_ws/src \
     -v cs_humble_desktop_home_volume:/home/xplore \
-    -v "$CYCLONE_FILE":/cyclone.xml:ro \
-    -e CYCLONEDDS_URI="file:///cyclone.xml" \
+    -v "$CYCLONE_FILE":"$CYCLONE_FILE":ro \
+    -e CYCLONEDDS_URI="$CYCLONEDDS_URI" \
     -e RMW_IMPLEMENTATION=rmw_cyclonedds_cpp \
     ghcr.io/epflxplore/cs:humble-desktop \
     bash -lc "cd /home/xplore/dev_ws/src; \
               chmod +x ./launch_with_server.sh; \
-              ./launch_with_server.sh; \
               exec bash"
