@@ -2,27 +2,7 @@
 <CycloneDDS xmlns="https://cdds.io/config">
   <Domain Id="0">
     <General>
-      <!-- No <Interfaces> block: CycloneDDS auto-selects a usable NIC (e.g. Wi-Fi or Ethernet).
-           Use this setup only when testing locally on this machine without the rover.
-           For rover / fixed-LAN operation, add an <Interfaces> block with the correct
-           wired interface name (check with ip a or ifconfig), for example:
-             <Interfaces>
-               <NetworkInterface name="enp129s0" />
-             </Interfaces> -->
-      <Interfaces>
-        <NetworkInterface name="enp129s0" />
-      </Interfaces> 
       <AllowMulticast>true</AllowMulticast>
-      <MaxMessageSize>65500B</MaxMessageSize>
     </General>
-    <Discovery>
-      <Peers>
-        <Peer address="169.254.55.231"/>
-        <Peer address="169.254.55.230"/>
-        <Peer address="169.254.55.252"/>
-        <Peer address="169.254.55.240"/>
-        <!-- <Peer address="169.254.56.221"/> -->
-      </Peers>
-    </Discovery>
   </Domain>
 </CycloneDDS>
