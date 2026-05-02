@@ -21,7 +21,7 @@
         <Peer address="169.254.55.230"/>
         <Peer address="169.254.55.252"/>
         <Peer address="169.254.55.240"/>
-        <Peer address="169.254.56.221"/>
+        <!-- <Peer address="169.254.56.221"/> -->
       </Peers>
     </Discovery>
   </Domain>
