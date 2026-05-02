@@ -70,8 +70,8 @@ docker run -it \
     -v /dev:/dev \
     -v $parent_dir:/home/xplore/dev_ws/src \
     -v cs_humble_desktop_home_volume:/home/xplore \
-    -v "$CYCLONE_FILE":"$CYCLONE_FILE":ro \
-    -e CYCLONEDDS_URI="$CYCLONEDDS_URI" \
+    -v "$CYCLONE_FILE":/cyclone.xml:ro \
+    -e CYCLONEDDS_URI="file:///cyclone.xml" \
     -e RMW_IMPLEMENTATION=rmw_cyclonedds_cpp \
     ghcr.io/epflxplore/cs:humble-desktop \
     bash -lc "cd /home/xplore/dev_ws/src; \
