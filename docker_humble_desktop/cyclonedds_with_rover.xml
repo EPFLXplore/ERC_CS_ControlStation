@@ -18,7 +18,7 @@
       <Interfaces>
         <NetworkInterface name="enp129s0" />
       </Interfaces>
-      <AllowMulticast>true</AllowMulticast>
+      <AllowMulticast>spdp</AllowMulticast>
       <MaxMessageSize>65500B</MaxMessageSize>
     </General>
     <Discovery>
