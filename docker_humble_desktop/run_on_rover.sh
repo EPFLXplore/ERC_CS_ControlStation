@@ -96,6 +96,11 @@ docker run -it \
 	-e XAUTHORITY=$XAUTH \
 	-e CYCLONEDDS_URI="$CYCLONEDDS_URI" \
 	-e RMW_IMPLEMENTATION=rmw_cyclonedds_cpp \
+	-e ROS_DOMAIN_ID="${ROS_DOMAIN_ID:-0}" \
+	-e REACT_APP_DDS_PROFILE=rover \
+	-e REACT_APP_ROS_DOMAIN_ID="${ROS_DOMAIN_ID:-0}" \
+	-e REACT_APP_RMW_IMPLEMENTATION=rmw_cyclonedds_cpp \
+	-e REACT_APP_CYCLONEDDS_URI="$CYCLONEDDS_URI" \
 	-v /tmp/.X11-unix:/tmp/.X11-unix:rw \
 	-v $XAUTH:$XAUTH \
 	-v /run/user/1000/at-spi:/run/user/1000/at-spi \
