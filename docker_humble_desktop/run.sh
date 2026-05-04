@@ -1,10 +1,8 @@
-#!/bin/bash
 # If not working, first do: sudo rm -rf /tmp/.docker.xauth
 # If still not working, try running the script as root.
-echo "Launching Chrome at http://localhost:3000/ ..."
-google-chrome --new-window "http://localhost:3000/" >/dev/null 2>&1 &
-sleep 1
+
 XAUTH=/tmp/.docker.xauth
+
 echo "Preparing Xauthority data..."
 xauth_list=$(xauth nlist :0 | tail -n 1 | sed -e 's/^..../ffff/')
 if [ ! -f $XAUTH ]; then
@@ -15,6 +13,7 @@ if [ ! -f $XAUTH ]; then
     fi
     chmod a+r $XAUTH
 fi
+
 echo "Done."
 echo ""
 echo "Verifying file contents:"
@@ -25,20 +24,12 @@ echo "Permissions:"
 ls -FAlh $XAUTH
 echo ""
 echo "Running docker..."
-if docker ps --format '{{.Names}}' | grep -Fxq cs_humble_desktop; then
-    echo "Container cs_humble_desktop is already running. Opening a shell in it..."
-    docker exec -it -e RMW_IMPLEMENTATION=rmw_cyclonedds_cpp -e CYCLONEDDS_URI="file:///cyclone.xml" cs_humble_desktop bash
-    exit 0
-fi
-if docker ps -a --format '{{.Names}}' | grep -Fxq cs_humble_desktop; then
-    echo "Removing stale container cs_humble_desktop..."
-    docker rm cs_humble_desktop >/dev/null
-fi
-current_dir=$(pwd)
-parent_dir=$(dirname "$current_dir")
 
-# Directory containing this script (for CycloneDDS config mount)
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+# Get the current working directory
+current_dir=$(pwd)
+
+# Use dirname to get the parent directory
+parent_dir=$(dirname "$current_dir")
 
 docker run -it \
     --name cs_humble_desktop \
@@ -55,9 +46,8 @@ docker run -it \
     -v /dev:/dev \
     -v $parent_dir:/home/xplore/dev_ws/src \
     -v cs_humble_desktop_home_volume:/home/xplore \
-    -v "$SCRIPT_DIR/cyclonedds.xml:/home/xplore/cyclonedds.xml:ro" \
     ghcr.io/epflxplore/cs:humble-desktop \
-    bash -lc "cd /home/xplore/dev_ws/src; \
-              chmod +x ./launch_with_server.sh; \
-              ./launch_with_server.sh; \
-              exec bash"
+    /bin/bash -c "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp; /bin/bash"
+
+    # -v ~/Documents/xplore/ERC_CS_ControlStation/docker_humble_desktop/cyclonedds.xml:/home/xplore/cyclonedds.xml:ro \
+    # -e CYCLONEDDS_URI="file:///home/xplore/cyclonedds.xml" \
