@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CycloneDDS xmlns="https://cdds.io/config">
+  <!--
+    ** DIRECT ROVER NETWORK — Ethernet OR Wi-Fi **
+
+    Use this file when **this computer is on the rover’s network** , whether you connect **via Ethernet** (e.g. enp129s0) or
+    **via Wi-Fi** (e.g. wlp…, wlan0). Peers listed below should match your Jetsons.
+
+    **You must set <NetworkInterface> to the NIC that actually reaches the rover**
+    (the one with the 169.254.x.x / rover-LAN address). Check with: ip -br addr
+
+    ** ROS_DOMAIN_ID ** must match on PC and Jetsons (default 0 if unset).
+
+  -->
+  <Domain Id="0">
+    <General>
+      <!-- Match the interface used for rover traffic (wired or wireless). -->
+      <Interfaces>
+        <NetworkInterface name="enp129s0" />
+      </Interfaces>
+      <AllowMulticast>true</AllowMulticast>
+      <MaxMessageSize>65500B</MaxMessageSize>
+    </General>
+    <Discovery>
+      <Peers>
+        <!-- Workstation on rover LAN (uncomment + set IP if multicast discovery is unreliable) -->
+        <!-- <Peer address="169.254.55.YOUR_PC"/> -->
+        <Peer address="169.254.55.231"/>
+        <Peer address="169.254.55.230"/>
+        <Peer address="169.254.55.252"/>
+        <Peer address="169.254.55.240"/>
+        <!-- <Peer address="169.254.56.221"/> -->
+      </Peers>
+    </Discovery>
+  </Domain>
+</CycloneDDS>

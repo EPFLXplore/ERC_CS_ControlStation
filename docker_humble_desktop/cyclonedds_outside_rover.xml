@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CycloneDDS xmlns="https://cdds.io/config">
+  <!--
+    ** OUTSIDE THE ROVER LAN — laptop testing **
+
+    Use this file when **you are not on the rover’s wired or Wi-Fi segment** (e.g. no
+    169.254.x.x link to the Jetsons). CycloneDDS **auto-selects a sensible interface**
+    (often your laptop Wi-Fi or Ethernet) and relies on **multicast discovery** on
+    whatever LAN you are on.
+
+    **There is no fixed <Peers> list** — you will **not** discover the real rover
+    Jetsons from here.
+
+    For a stubborn NIC (wrong interface chosen), add an <Interfaces> block with the
+    interface name from `ip -br addr` (same pattern as cyclonedds_with_rover.xml).
+  -->
+  <Domain Id="0">
+    <General>
+      <AllowMulticast>true</AllowMulticast>
+      <MaxMessageSize>65500B</MaxMessageSize>
+    </General>
+  </Domain>
+</CycloneDDS>
