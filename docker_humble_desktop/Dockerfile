@@ -1,5 +1,6 @@
 ###########################################
 # Xplore Control Station image Build Docker
+# Size: 5.81GB
 ###########################################
 FROM ghcr.io/epflxplore/docker_commons:humble-desktop
 
@@ -17,6 +18,13 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y ros-${ROS_DISTRO}-rosbridge-server
 RUN apt install ros-humble-rmw-cyclonedds-cpp -y
 RUN apt install net-tools iputils-ping -y
+RUN apt install -y \
+    gstreamer1.0-tools \
+    gstreamer1.0-plugins-base \
+    gstreamer1.0-plugins-good \
+    gstreamer1.0-plugins-bad \
+    gstreamer1.0-plugins-ugly \
+    gstreamer1.0-libav
 
 # nvm environment variables
 WORKDIR /usr/local/nvm

@@ -16,7 +16,7 @@
     <General>
       <!-- Match the interface used for rover traffic (wired or wireless). -->
       <Interfaces>
-        <NetworkInterface name="eno1" />
+        <NetworkInterface name="enp129s0" />
       </Interfaces>
       <AllowMulticast>spdp</AllowMulticast>
       <MaxMessageSize>65500B</MaxMessageSize>
