@@ -18,14 +18,18 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y ros-${ROS_DISTRO}-rosbridge-server
 RUN apt install ros-humble-rmw-cyclonedds-cpp -y
 RUN apt install net-tools iputils-ping -y
-RUN apt install -y \
+RUN apt-get update && apt-get install -y --fix-missing --no-install-recommends \
+    python3-gi \
+    python3-gi-cairo \
+    gir1.2-gstreamer-1.0 \
     gstreamer1.0-tools \
     gstreamer1.0-plugins-base \
     gstreamer1.0-plugins-good \
     gstreamer1.0-plugins-bad \
     gstreamer1.0-plugins-ugly \
-    gstreamer1.0-libav
+    && rm -rf /var/lib/apt/lists/*
 
+    
 # nvm environment variables
 WORKDIR /usr/local/nvm
 ENV NVM_DIR /usr/local/nvm
