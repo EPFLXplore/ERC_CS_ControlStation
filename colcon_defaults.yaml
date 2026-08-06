@@ -1,0 +1,18 @@
+# Default arguments for `colcon build` inside the CS container.
+#
+# Picked up via COLCON_DEFAULTS_FILE, which docker_humble_desktop/run_*.sh set on the container.
+# The point is that plain `colcon build` from ~/dev_ws just works, with no extra flags.
+
+build:
+  # Confine discovery to the repo. The container home volume also has a stray ~/dev_ws/node_modules
+  # whose vendored CMake projects (cpu_features, nan) colcon would otherwise try to build.
+  # frontend/COLCON_IGNORE excludes the React app from within the repo.
+  base-paths:
+    - /home/xplore/dev_ws/src
+
+  # rosbridge_library, rosapi and rosbridge_server all do `find_package(ament_cmake_mypy REQUIRED)`
+  # inside `if (BUILD_TESTING)`, and ament turns BUILD_TESTING on by default. That package is a
+  # <test_depend> and is not installed in the image, so the build fails at configure time. We do
+  # not run rosbridge's unit tests here.
+  cmake-args:
+    - -DBUILD_TESTING=OFF

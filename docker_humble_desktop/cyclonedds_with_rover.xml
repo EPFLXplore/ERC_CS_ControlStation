@@ -12,7 +12,10 @@
     ** ROS_DOMAIN_ID ** must match on PC and Jetsons (default 0 if unset).
 
   -->
-  <Domain Id="0">
+  <!-- "any" rather than "0": if ROS_DOMAIN_ID is ever not 0, a domain-scoped config would be
+       silently ignored and the <Peers> list below would not apply, breaking discovery to the
+       Jetsons with no error message. -->
+  <Domain Id="any">
     <General>
       <!-- Match the interface used for rover traffic (wired or wireless). -->
       <Interfaces>

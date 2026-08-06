@@ -14,7 +14,9 @@
     For a stubborn NIC (wrong interface chosen), add an <Interfaces> block with the
     interface name from `ip -br addr` (same pattern as cyclonedds_with_rover.xml).
   -->
-  <Domain Id="0">
+  <!-- "any" rather than "0": if ROS_DOMAIN_ID is ever not 0, a domain-scoped config would be
+       silently ignored and these settings would not apply. -->
+  <Domain Id="any">
     <General>
       <AllowMulticast>true</AllowMulticast>
       <MaxMessageSize>65500B</MaxMessageSize>

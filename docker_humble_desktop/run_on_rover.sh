@@ -86,6 +86,9 @@ echo "  ros2 daemon stop && ros2 topic list | grep -E 'NAV/State|State' || true"
 echo "  # If Nav2 topics exist but not /NAV/State → NAV interface node not publishing (not DDS)."
 echo ""
 
+# ROS_DOMAIN_ID is pinned to 0 rather than inherited from the host: both cyclonedds_*.xml
+# are scoped to a single domain, so a host override would silently disable the peers list
+# and buffer settings without any error.
 docker run -it \
 	--name "$CONTAINER_NAME" \
 	--rm \
@@ -96,9 +99,10 @@ docker run -it \
 	-e XAUTHORITY=$XAUTH \
 	-e CYCLONEDDS_URI="$CYCLONEDDS_URI" \
 	-e RMW_IMPLEMENTATION=rmw_cyclonedds_cpp \
-	-e ROS_DOMAIN_ID="${ROS_DOMAIN_ID:-0}" \
+	-e COLCON_DEFAULTS_FILE=/home/xplore/dev_ws/src/colcon_defaults.yaml \
+	-e ROS_DOMAIN_ID=0 \
 	-e REACT_APP_DDS_PROFILE=rover \
-	-e REACT_APP_ROS_DOMAIN_ID="${ROS_DOMAIN_ID:-0}" \
+	-e REACT_APP_ROS_DOMAIN_ID=0 \
 	-e REACT_APP_RMW_IMPLEMENTATION=rmw_cyclonedds_cpp \
 	-e REACT_APP_CYCLONEDDS_URI="$CYCLONEDDS_URI" \
 	-v /tmp/.X11-unix:/tmp/.X11-unix:rw \
