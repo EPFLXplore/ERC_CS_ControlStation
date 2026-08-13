@@ -47,6 +47,15 @@ echo "Permissions:"
 ls -FAlh $XAUTH
 echo ""
 
+
+sudo sysctl -w net.core.rmem_max=2147483647         # 2 GiB
+# CycloneDDS requests >= 1 MiB. Give it plenty of headroom.
+sudo sysctl -w net.core.wmem_max=33554432
+# Reasonable defaults for sockets that do not explicitly request a size.
+sudo sysctl -w net.core.rmem_default=8388608
+sudo sysctl -w net.core.wmem_default=8388608
+
+
 CONTAINER_NAME=cs_humble_desktop
 
 # Reuse first: bind-mounts only apply to docker run, so don't print "mounting" when we only exec.
