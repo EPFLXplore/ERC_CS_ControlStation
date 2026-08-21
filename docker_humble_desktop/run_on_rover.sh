@@ -58,19 +58,12 @@ sudo sysctl -w net.core.wmem_default=8388608
 
 CONTAINER_NAME=cs_humble_desktop
 
-# Reuse first: bind-mounts only apply to docker run, so don't print "mounting" when we only exec.
+# Field runs must be created fresh: bind mounts/env only apply at docker run,
+# and stale rosbridge/CycloneDDS state can otherwise survive between profiles.
 if docker container inspect "$CONTAINER_NAME" >/dev/null 2>&1; then
-	echo "Reusing existing container $CONTAINER_NAME (docker exec — Cyclone XML is from container create, not remounted)."
-	echo "To remount cyclonedds_with_rover.xml:  docker rm -f $CONTAINER_NAME  then run this script again."
+	echo "Removing existing $CONTAINER_NAME so the rover CycloneDDS profile is remounted fresh."
+	docker rm -f "$CONTAINER_NAME" >/dev/null || exit 1
 	echo ""
-	if [ "$(docker container inspect -f '{{.State.Running}}' "$CONTAINER_NAME")" = "true" ]; then
-		echo "Already running — opening an interactive shell..."
-		exec docker exec -it "$CONTAINER_NAME" /bin/bash
-	else
-		echo "Starting stopped container, then opening a shell..."
-		docker start "$CONTAINER_NAME" || exit 1
-		exec docker exec -it "$CONTAINER_NAME" /bin/bash
-	fi
 fi
 
 echo "Running docker (rover CycloneDDS profile) — new container"
