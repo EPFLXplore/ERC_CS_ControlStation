@@ -22,12 +22,16 @@
         <NetworkInterface name="eno1" />
       </Interfaces>
       <AllowMulticast>spdp</AllowMulticast>
-      <MaxMessageSize>65500B</MaxMessageSize>
+          <!-- Stay under the 1500-byte MTU set on mikrotik so IP never fragments; one lost IP
+          fragment kills the whole datagram, and DDSI-level fragments are
+          individually retransmittable while IP fragments are not. -->
+      <MaxMessageSize>1400B</MaxMessageSize>
+      <FragmentSize>1344B</FragmentSize>
     </General>
     <Discovery>
       <!-- Do not declare another machine dead because of
            a short network interruption. -->
-      <LeaseDuration>30s</LeaseDuration>
+      <LeaseDuration>6s</LeaseDuration>
 
       <!-- Re-advertise ourselves frequently so discovery
            recovers quickly after a network interruption. -->
@@ -49,11 +53,16 @@
       <SocketReceiveBufferSize min="8MiB"/>
       <SocketSendBufferSize min="1MiB"/>
 
-      <!-- Allow reliable writers to retain more unacknowledged
-           data during temporary network problems. -->
+      <!-- Small WHC: reliable writers block or drop rather than accumulate a
+           backlog of stale control data. Adaptive backpressure throttles the
+           writer instead of letting the queue grow. -->
       <Watermarks>
-        <WhcHigh>8MiB</WhcHigh>
+        <WhcHigh>512kB</WhcHigh>
+        <WhcLow>16kB</WhcLow>
+        <WhcAdaptive>true</WhcAdaptive>
       </Watermarks>
+
+      <HeartbeatInterval min="20ms" max="250ms"/>
 
     </Internal>
   </Domain>
