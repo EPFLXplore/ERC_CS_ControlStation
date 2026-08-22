@@ -23,6 +23,9 @@ fi
 # Bind-mount rover Cyclone config here (not under /home/xplore — named volume would hide it).
 CYCLONEDDS_CONTAINER="/etc/cyclonedds.xml"
 CYCLONEDDS_URI="file://${CYCLONEDDS_CONTAINER}"
+# The container always sees the file at /etc/cyclonedds.xml, so the URI cannot tell you which
+# profile is mounted. Pass the host file name through for the CS "Data Path" panel to show.
+CYCLONEDDS_FILE="$(basename "$CYCLONEDDS_HOST")"
 
 XAUTH=/tmp/.docker.xauth
 
@@ -107,6 +110,7 @@ docker run -it \
 	-e REACT_APP_ROS_DOMAIN_ID=0 \
 	-e REACT_APP_RMW_IMPLEMENTATION=rmw_cyclonedds_cpp \
 	-e REACT_APP_CYCLONEDDS_URI="$CYCLONEDDS_URI" \
+	-e REACT_APP_CYCLONEDDS_FILE="$CYCLONEDDS_FILE" \
 	-v /tmp/.X11-unix:/tmp/.X11-unix:rw \
 	-v $XAUTH:$XAUTH \
 	-v /run/user/1000/at-spi:/run/user/1000/at-spi \
