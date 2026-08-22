@@ -24,8 +24,11 @@
       <AllowMulticast>spdp</AllowMulticast>
           <!-- Stay under the 1500-byte MTU set on mikrotik so IP never fragments; one lost IP
           fragment kills the whole datagram, and DDSI-level fragments are
-          individually retransmittable while IP fragments are not. -->
-      <MaxMessageSize>1400B</MaxMessageSize>
+          individually retransmittable while IP fragments are not.
+          MaxMessageSize must leave room for the RTPS header (20B), INFO_TS (12B) and the
+          DATA_FRAG submessage header (~36B) on top of FragmentSize, or Cyclone cannot fit a
+          whole fragment into one datagram and silently shrinks the payload it actually sends. -->
+      <MaxMessageSize>1456B</MaxMessageSize>
       <FragmentSize>1344B</FragmentSize>
     </General>
     <Discovery>
