@@ -32,6 +32,8 @@
       <FragmentSize>1344B</FragmentSize>
     </General>
     <Discovery>
+      <ParticipantIndex>auto</ParticipantIndex>
+
       <!-- Do not declare another machine dead because of
            a short network interruption.
           ->every hiccup longer than that dropped the remote participant and
