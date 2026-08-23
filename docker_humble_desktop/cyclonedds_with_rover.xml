@@ -33,8 +33,12 @@
     </General>
     <Discovery>
       <!-- Do not declare another machine dead because of
-           a short network interruption. -->
-      <LeaseDuration>6s</LeaseDuration>
+           a short network interruption.
+          ->every hiccup longer than that dropped the remote participant and
+           forced a full rediscovery, which is exactly what makes a service client stop matching
+           its server and a call time out. SPDPInterval below already gives fast recovery, so a
+           long lease costs nothing in responsiveness. -->
+      <LeaseDuration>15s</LeaseDuration>
 
       <!-- Re-advertise ourselves frequently so discovery
            recovers quickly after a network interruption. -->
@@ -56,16 +60,21 @@
       <SocketReceiveBufferSize min="8MiB"/>
       <SocketSendBufferSize min="1MiB"/>
 
-      <!-- Small WHC: reliable writers block or drop rather than accumulate a
-           backlog of stale control data. Adaptive backpressure throttles the
-           writer instead of letting the queue grow. -->
+      <!-- Bounded WHC: reliable writers throttle rather than accumulate a backlog of stale
+           control data, with adaptive backpressure instead of an unbounded queue.
+           2MiB rather than the 512kB tried earlier: 512kB throttles a reliable writer far
+           harder than this control traffic ever needs, and the stall shows up as a slow
+           service call. Still well under the old 8MiB, which let stale data pile up. -->
       <Watermarks>
-        <WhcHigh>512kB</WhcHigh>
+        <WhcHigh>2MiB</WhcHigh>
         <WhcLow>16kB</WhcLow>
         <WhcAdaptive>true</WhcAdaptive>
       </Watermarks>
 
-      <HeartbeatInterval min="20ms" max="250ms"/>
+      <!-- min was 20ms, i.e. a 50Hz floor of heartbeats per reliable writer. That is a lot of
+           packets on a link that is already unicast-only to five peers, for no gain: 100ms is
+           still far below the round-trip an operator can perceive. -->
+      <HeartbeatInterval min="100ms" max="250ms"/>
 
     </Internal>
   </Domain>
