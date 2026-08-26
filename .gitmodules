@@ -1,9 +1,9 @@
 [submodule "custom_msg"]
 	path = custom_msg
-	url = https://github.com/EPFLXplore/ERC_SE_CustomMessages
+	url = git@github.com:EPFLXplore/ERC_SE_CustomMessages.git
 [submodule "frontend"]
 	path = frontend
-	url = https://github.com/EPFLXplore/ERC_CS_GUI
+	url = git@github.com:EPFLXplore/ERC_CS_GUI.git
 [submodule "rosbridge_suite"]
 	path = rosbridge_suite
-	url = https://github.com/EPFLXplore/rosbridge_suite.git
+	url = git@github.com:EPFLXplore/rosbridge_suite.git
